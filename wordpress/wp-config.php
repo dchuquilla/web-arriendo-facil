@@ -18,6 +18,11 @@
  * @package WordPress
  */
 
+// Enable Assets in HTTPS (Cloudflare Tunnel)
+define('WP_HOME','https://development.arriendofacil.net/');
+define('WP_SITEURL','https://development.arriendofacil.net/');
+$_SERVER['HTTPS'] = 'on';
+
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define( 'DB_NAME', 'arriendo_facil' );
