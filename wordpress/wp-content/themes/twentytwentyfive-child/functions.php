@@ -19,12 +19,12 @@ function twentytwentyfive_child_enqueue_assets() {
     wp_get_theme(get_template())->get('Version')
   );
 
-  // Child style
+  // Child style (con cache busting basado en modificación del archivo)
   wp_enqueue_style(
     'twentytwentyfive-child-style',
     get_stylesheet_uri(),
     array($parent_style_handle),
-    wp_get_theme()->get('Version')
+    filemtime( get_stylesheet_directory() . '/style.css' )
   );
 
   // JS para el carrusel solo en homepage

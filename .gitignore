@@ -46,3 +46,10 @@
 # Note: If you wish to whitelist themes,
 # uncomment the next line
 #/wordpress/wp-content/themes
+
+.DS_Store
+/wordpress/.DS_Store
+/wordpress/wp-content/.DS_Store
+/wordpress/wp-content/themes/.DS_Store
+/wordpress/wp-content/themes/twentytwentyfive-child/.DS_Store
+/wordpress/wp-content/themes/twentytwentyfive-child/assets/.DS_Store

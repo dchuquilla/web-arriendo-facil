@@ -7,6 +7,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/png" href="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/favicon/apple-touch-icon.png" />
+  <link rel="manifest" href="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/favicon/site.webmanifest" />
+
   <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -15,7 +22,7 @@
 <header class="site-header" role="banner" id="site-header">
   <div class="container header-inner">
     <a class="brand" href="<?php echo esc_url(home_url('/')); ?>">
-      <span class="logo-box">AF</span>
+      <img src="<?php echo esc_url(get_stylesheet_directory_uri()) ?>/assets/images/arriendo-facil-logo-web-sq.png" alt="" width="60px">
       <span><?php bloginfo('name'); ?></span>
     </a>
 
