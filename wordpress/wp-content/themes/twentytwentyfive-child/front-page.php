@@ -154,6 +154,47 @@ get_header();
     </div>
   </section>
 
+  <?php
+    $q = new WP_Query([
+      'post_type'      => 'post',
+      'posts_per_page' => 4,
+      'post_status'    => 'publish',
+      'category_name'  => 'propiedades-destacadas',
+      'orderby'        => 'date',
+      'order'          => 'DESC',
+    ]);
+
+    $posts = [];
+    if ($q->have_posts()) {
+      while ($q->have_posts()) { $q->the_post();
+        $id = get_the_ID();
+
+        $img = get_the_post_thumbnail_url($id, 'large');
+        if (!$img) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
+
+        // Tags del post (post_tag)
+        $tags = get_the_tags($id);
+        $tag_names = [];
+        if ($tags && !is_wp_error($tags)) {
+          foreach ($tags as $t) { $tag_names[] = $t->name; }
+        }
+
+        $posts[] = [
+          'id'      => $id,
+          'title'   => get_the_title(),
+          'link'    => get_permalink(),
+          'image'   => $img,
+          'excerpt' => get_the_excerpt(),
+          'tags'    => $tag_names, // array de strings
+        ];
+      }
+      wp_reset_postdata();
+    }
+
+    $main = $posts[0] ?? null;
+    $rest = array_slice($posts, 1, 3);
+  ?>
+
   <!-- ========== PROPIEDADES DESTACADAS ========== -->
   <section class="section section--soft" id="arrendamiento">
     <div class="container">
@@ -163,72 +204,83 @@ get_header();
         <p class="p mx-auto"><?php esc_html_e('Descubre las propiedades que maximizan su rentabilidad con nuestra operación inteligente.', 'twentytwentyfive-child'); ?></p>
       </div>
 
-      <div class="showcase" data-home-showcase>
-        <div class="showcase-head">
-          <strong><?php esc_html_e('Propiedad destacada', 'twentytwentyfive-child'); ?></strong>
-          <div class="carousel-controls">
-            <button class="icon-btn" type="button" data-carousel-prev aria-label="<?php esc_attr_e('Anterior', 'twentytwentyfive-child'); ?>">
-              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-            </button>
-            <button class="icon-btn" type="button" data-carousel-next aria-label="<?php esc_attr_e('Siguiente', 'twentytwentyfive-child'); ?>">
-              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="showcase-body">
-          <div class="showcase-media">
-            <a href="#" data-property-link>
-              <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-full-placeholder.jpg" alt="<?php esc_attr_e('Propiedad destacada', 'twentytwentyfive-child'); ?>" data-property-image>
-            </a>
+      <?php if ($main) : ?>
+        <div class="showcase" data-home-showcase>
+          <div class="showcase-head">
+            <strong><?php esc_html_e('Propiedad destacada', 'twentytwentyfive-child'); ?></strong>
+            <div class="carousel-controls">
+              <button class="icon-btn" type="button" data-carousel-prev aria-label="<?php esc_attr_e('Anterior', 'twentytwentyfive-child'); ?>">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+              </button>
+              <button class="icon-btn" type="button" data-carousel-next aria-label="<?php esc_attr_e('Siguiente', 'twentytwentyfive-child'); ?>">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
           </div>
 
-          <div class="showcase-info">
-            <h3 data-property-title><?php esc_html_e('Suite Ejecutiva Centro Histórico', 'twentytwentyfive-child'); ?></h3>
-            <p class="p" style="margin:0 0 10px;">
-              <span data-property-location><?php esc_html_e('Quito, Ecuador', 'twentytwentyfive-child'); ?></span> •
-              <strong data-property-price>$85/noche</strong>
-            </p>
-
-            <div class="badges" data-property-badges>
-              <span class="badge badge--feature">WiFi</span>
-              <span class="badge badge--feature">Cocina</span>
-              <span class="badge badge--feature">Parking</span>
-              <span class="badge badge--feature">Smart TV</span>
+          <div class="showcase-body">
+            <div class="showcase-media">
+              <a href="<?php echo esc_url($main['link']); ?>" data-property-link>
+                <img src="<?php echo esc_url($main['image']); ?>" alt="<?php
+                  $thumb_id = get_post_thumbnail_id($main['id']);
+                  $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
+                  echo esc_attr($thumb_alt ? $thumb_alt : $main['title']);
+                ?>" data-property-image>
+              </a>
             </div>
 
-            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 20px;">
-              <a class="btn btn--primary" href="#contacto"><?php esc_html_e('Quiero rentabilizar mi propiedad', 'twentytwentyfive-child'); ?></a>
-              <a class="btn btn--outline" href="#" data-property-link-secondary><?php esc_html_e('Ver detalles', 'twentytwentyfive-child'); ?></a>
+            <div class="showcase-info">
+              <h3 data-property-title><?php echo esc_html($main['title']); ?></h3>
+              <?php if (!empty($main['excerpt'])) : ?>
+                <p class="p showcase-meta"><?php echo esc_html($main['excerpt']); ?></p>
+              <?php endif; ?>
+
+              <?php if (!empty($main['tags'])) : ?>
+                <div class="badges" data-property-badges>
+                  <?php foreach ($main['tags'] as $tag) : ?>
+                    <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+
+              <div class="showcase-actions">
+                <a class="btn btn--primary" href="#contacto"><?php esc_html_e('Quiero rentabilizar mi propiedad', 'twentytwentyfive-child'); ?></a>
+                <a class="btn btn--outline" href="<?php echo esc_url($main['link']); ?>" data-property-link-secondary><?php esc_html_e('Ver detalles', 'twentytwentyfive-child'); ?></a>
+              </div>
+
+              <p class="small mt-4">
+                <?php esc_html_e('¿Eres propietario? Agenda una asesoría y evaluamos tu potencial de ingresos.', 'twentytwentyfive-child'); ?>
+              </p>
             </div>
+          </div>
 
-            <p class="small" style="margin-top: 16px;">
-              <?php esc_html_e('¿Eres propietario? Agenda una asesoría y evaluamos tu potencial de ingresos.', 'twentytwentyfive-child'); ?>
-            </p>
+          <div class="dots" data-carousel-dots aria-label="<?php esc_attr_e('Navegación del carrusel', 'twentytwentyfive-child'); ?>">
+            <button class="dot-btn is-active" aria-label="Imagen 1"></button>
+            <button class="dot-btn" aria-label="Imagen 2"></button>
+            <button class="dot-btn" aria-label="Imagen 3"></button>
+          </div>
+
+          <?php if (!empty($rest)) : ?>
+            <div class="featured-strip" data-featured-strip>
+              <?php foreach ($rest as $item) : ?>
+                <a class="featured-item" href="<?php echo esc_url($item['link']); ?>" aria-label="<?php echo esc_attr($item['title']); ?>">
+                  <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>">
+                  <div class="fi-title"><?php echo esc_html($item['title']); ?></div>
+                </a>
+              <?php endforeach; ?>
+            </div>
+          <?php endif; ?>
+        </div>
+      <?php else : ?>
+        <div class="showcase showcase--empty" data-home-showcase>
+          <div class="showcase-head">
+            <strong><?php esc_html_e('Propiedad destacada', 'twentytwentyfive-child'); ?></strong>
+          </div>
+          <div class="showcase-empty" role="status">
+            <?php esc_html_e('Aún no hay propiedades destacadas publicadas.', 'twentytwentyfive-child'); ?>
           </div>
         </div>
-
-        <div class="dots" data-carousel-dots aria-label="<?php esc_attr_e('Navegación del carrusel', 'twentytwentyfive-child'); ?>">
-          <button class="dot-btn is-active" aria-label="Imagen 1"></button>
-          <button class="dot-btn" aria-label="Imagen 2"></button>
-          <button class="dot-btn" aria-label="Imagen 3"></button>
-        </div>
-
-        <div class="featured-strip" data-featured-strip>
-          <div class="featured-item">
-            <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-full-placeholder.jpg" alt="">
-            <div class="fi-title"><?php esc_html_e('Loft Moderno La Carolina', 'twentytwentyfive-child'); ?></div>
-          </div>
-          <div class="featured-item">
-            <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-full-placeholder.jpg" alt="">
-            <div class="fi-title"><?php esc_html_e('Penthouse Cumbayá', 'twentytwentyfive-child'); ?></div>
-          </div>
-          <div class="featured-item">
-            <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-full-placeholder.jpg" alt="">
-            <div class="fi-title"><?php esc_html_e('Casa de Campo Tumbaco', 'twentytwentyfive-child'); ?></div>
-          </div>
-        </div>
-      </div>
+      <?php endif; ?>
     </div>
   </section>
 
@@ -351,22 +403,5 @@ get_header();
   </section>
 
 </main>
-
-<script>
-// Simple scroll animation
-document.addEventListener('DOMContentLoaded', function() {
-  const animatedElements = document.querySelectorAll('[data-animate]');
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-      }
-    });
-  }, { threshold: 0.1 });
-
-  animatedElements.forEach(el => observer.observe(el));
-});
-</script>
 
 <?php get_footer(); ?>
