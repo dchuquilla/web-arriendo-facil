@@ -27,6 +27,15 @@ function twentytwentyfive_child_enqueue_assets() {
     filemtime( get_stylesheet_directory() . '/style.css' )
   );
 
+  // Lightbox para bloques de galería (site-wide; no-op si no hay galerías)
+  wp_enqueue_script(
+    'twentytwentyfive-child-gallery-lightbox',
+    get_stylesheet_directory_uri() . '/assets/js/gallery-lightbox.js',
+    array(),
+    wp_get_theme()->get('Version'),
+    true
+  );
+
   // JS para el carrusel solo en homepage
   if ( is_front_page() ) {
     wp_enqueue_script(

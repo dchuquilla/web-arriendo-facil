@@ -402,6 +402,117 @@ hr.sep {
   padding: 100px 0;
 }
 
+/* ---------- WP Gallery + Lightbox ---------- */
+.wp-block-gallery.has-nested-images {
+  --af-gallery-gap: calc(var(--gap) / 2);
+  gap: var(--af-gallery-gap);
+}
+
+.wp-block-gallery.has-nested-images.is-layout-flex,
+.wp-block-gallery.has-nested-images.wp-block-gallery-is-layout-flex {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  padding-bottom: 6px;
+}
+
+.wp-block-gallery.has-nested-images.is-layout-flex > .wp-block-image,
+.wp-block-gallery.has-nested-images.wp-block-gallery-is-layout-flex > .wp-block-image {
+  margin: 0;
+  flex: 0 0 calc((100% - (2 * var(--af-gallery-gap))) / 3);
+  max-width: calc((100% - (2 * var(--af-gallery-gap))) / 3);
+  scroll-snap-align: start;
+  min-width: 220px;
+}
+
+.wp-block-gallery.has-nested-images img {
+  width: 100%;
+  height: auto;
+  cursor: zoom-in;
+}
+
+.wp-block-gallery.has-nested-images.is-cropped img {
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .wp-block-gallery.has-nested-images.is-layout-flex > .wp-block-image,
+  .wp-block-gallery.has-nested-images.wp-block-gallery-is-layout-flex > .wp-block-image {
+    flex-basis: calc((100% - var(--af-gallery-gap)) / 2);
+    max-width: calc((100% - var(--af-gallery-gap)) / 2);
+  }
+}
+
+@media (max-width: 560px) {
+  .wp-block-gallery.has-nested-images.is-layout-flex > .wp-block-image,
+  .wp-block-gallery.has-nested-images.wp-block-gallery-is-layout-flex > .wp-block-image {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
+
+body.is-lightbox-open {
+  overflow: hidden;
+}
+
+.af-lightbox {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 9999;
+}
+
+.af-lightbox.is-open {
+  display: flex;
+}
+
+.af-lightbox__content {
+  max-width: min(1100px, 92vw);
+  max-height: 88vh;
+}
+
+.af-lightbox__img {
+  max-width: 100%;
+  max-height: 88vh;
+  height: auto;
+  width: auto;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
+  background: #fff;
+}
+
+.af-lightbox__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  background: #fff;
+  color: var(--azul-marino);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.af-lightbox__close:hover {
+  box-shadow: var(--shadow-md);
+}
+
 /* Futuristic circuit pattern overlay */
 .hero::before {
   content: '';
