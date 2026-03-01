@@ -10,13 +10,13 @@ get_header();
     <div class="container">
       <div class="hero-grid">
         <div class="hero-content" data-animate>
-          <span class="badge"><?php esc_html_e('Tecnología + Real Estate', 'twentytwentyfive-child'); ?></span>
+          <span class="badge"><?php esc_html_e('Tecnología + Arrendamiento', 'twentytwentyfive-child'); ?></span>
           <h1 class="h1">
             <?php esc_html_e('Administramos tu', 'twentytwentyfive-child'); ?>
             <span class="text-gradient"><?php esc_html_e('hospedaje', 'twentytwentyfive-child'); ?></span>
           </h1>
           <p class="p">
-            <?php esc_html_e('Gestión inteligente de arriendos, limpieza y mantenimiento con IA para maximizar tu rentabilidad inmobiliaria.', 'twentytwentyfive-child'); ?>
+            <?php esc_html_e('Gestión inteligente de arriendos y limpieza de habitaciones. Maximizamos tu rentabilidad inmobiliaria con IA.', 'twentytwentyfive-child'); ?>
           </p>
 
           <div class="cta-row">
@@ -65,7 +65,7 @@ get_header();
           <div class="stat-label"><?php esc_html_e('Tasa de ocupación', 'twentytwentyfive-child'); ?></div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">+35%</div>
+          <div class="stat-number">+25%</div>
           <div class="stat-label"><?php esc_html_e('Incremento en rentabilidad', 'twentytwentyfive-child'); ?></div>
         </div>
         <div class="stat-item">
@@ -88,7 +88,7 @@ get_header();
         <div class="problem-card" data-animate>
           <div class="problem-icon">⏰</div>
           <h3 class="h3"><?php esc_html_e('Operación desgastante', 'twentytwentyfive-child'); ?></h3>
-          <p class="p" style="margin:0;"><?php esc_html_e('Coordinar limpieza y mantenimiento consume tu tiempo. El trabajo reactivo incrementa costos.', 'twentytwentyfive-child'); ?></p>
+          <p class="p" style="margin:0;"><?php esc_html_e('Coordinar la limpieza consume tu tiempo. El trabajo reactivo incrementa costos.', 'twentytwentyfive-child'); ?></p>
         </div>
         <div class="problem-card" data-animate>
           <div class="problem-icon">📊</div>
@@ -104,7 +104,7 @@ get_header();
 
       <div class="solution-highlight" data-animate>
         <h3 class="h3"><?php esc_html_e('Nosotros lo resolvemos por ti', 'twentytwentyfive-child'); ?></h3>
-        <p class="p"><?php esc_html_e('Automatizamos la operación con tecnología para que tú solo recibas ganancias.', 'twentytwentyfive-child'); ?></p>
+        <p class="p"><?php esc_html_e('Nos encargamos de todo: coordinación de reservas, limpieza profesional entre huéspedes, atención 24/7 y reportes automáticos. Tú solo recibes tus ganancias.', 'twentytwentyfive-child'); ?></p>
       </div>
     </div>
   </section>
@@ -123,16 +123,16 @@ get_header();
           <div class="card-icon">🏠</div>
           <h3><?php esc_html_e('Gestión de arriendos', 'twentytwentyfive-child'); ?></h3>
           <ul class="ul">
-            <li><?php esc_html_e('Coordinación de reservas y calendario unificado', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Reservas y calendario unificado', 'twentytwentyfive-child'); ?></li>
             <li><?php esc_html_e('Atención al huésped con procesos automatizados', 'twentytwentyfive-child'); ?></li>
             <li><?php esc_html_e('Optimización de precios dinámicos', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Reportes financieros en tiempo real', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Reportes financieros de arriendamientos', 'twentytwentyfive-child'); ?></li>
           </ul>
         </div>
 
         <div class="card" data-animate>
           <div class="card-icon">✨</div>
-          <h3><?php esc_html_e('Limpieza y mantenimiento', 'twentytwentyfive-child'); ?></h3>
+          <h3><?php esc_html_e('Limpieza de habitaciones', 'twentytwentyfive-child'); ?></h3>
           <ul class="ul">
             <li><?php esc_html_e('Programación automática de limpiezas', 'twentytwentyfive-child'); ?></li>
             <li><?php esc_html_e('Checklist digital de calidad', 'twentytwentyfive-child'); ?></li>
@@ -148,7 +148,6 @@ get_header();
             <li><?php esc_html_e('Predicción de costos y proyecciones', 'twentytwentyfive-child'); ?></li>
             <li><?php esc_html_e('Chatbot 24/7 para huéspedes', 'twentytwentyfive-child'); ?></li>
             <li><?php esc_html_e('Generación automática de documentos', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Análisis de mercado y competencia', 'twentytwentyfive-child'); ?></li>
           </ul>
         </div>
       </div>
@@ -180,7 +179,7 @@ get_header();
         <div class="showcase-body">
           <div class="showcase-media">
             <a href="#" data-property-link>
-              <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/property-placeholder.jpg" alt="<?php esc_attr_e('Propiedad destacada', 'twentytwentyfive-child'); ?>" data-property-image>
+              <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-full-placeholder.jpg" alt="<?php esc_attr_e('Propiedad destacada', 'twentytwentyfive-child'); ?>" data-property-image>
             </a>
           </div>
 
@@ -217,15 +216,15 @@ get_header();
 
         <div class="featured-strip" data-featured-strip>
           <div class="featured-item">
-            <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/property-2.jpg" alt="">
+            <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-full-placeholder.jpg" alt="">
             <div class="fi-title"><?php esc_html_e('Loft Moderno La Carolina', 'twentytwentyfive-child'); ?></div>
           </div>
           <div class="featured-item">
-            <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/property-3.jpg" alt="">
+            <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-full-placeholder.jpg" alt="">
             <div class="fi-title"><?php esc_html_e('Penthouse Cumbayá', 'twentytwentyfive-child'); ?></div>
           </div>
           <div class="featured-item">
-            <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/property-4.jpg" alt="">
+            <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-full-placeholder.jpg" alt="">
             <div class="fi-title"><?php esc_html_e('Casa de Campo Tumbaco', 'twentytwentyfive-child'); ?></div>
           </div>
         </div>
@@ -250,14 +249,14 @@ get_header();
             <span><?php esc_html_e('Completa datos básicos, fotos y define tus objetivos de rentabilidad.', 'twentytwentyfive-child'); ?></span>
           </div>
           <div class="step" data-animate>
-            <div class="step-number">2</div>
-            <h4><?php esc_html_e('Análisis con IA', 'twentytwentyfive-child'); ?></h4>
-            <span><?php esc_html_e('Evaluamos costos, competencia y creamos tu plan operativo personalizado.', 'twentytwentyfive-child'); ?></span>
-          </div>
-          <div class="step" data-animate>
             <div class="step-number">3</div>
             <h4><?php esc_html_e('Activamos operación', 'twentytwentyfive-child'); ?></h4>
             <span><?php esc_html_e('Gestionamos limpieza, mantenimiento, reservas y atención al huésped.', 'twentytwentyfive-child'); ?></span>
+          </div>
+          <div class="step" data-animate>
+            <div class="step-number">2</div>
+            <h4><?php esc_html_e('Automatización con IA', 'twentytwentyfive-child'); ?></h4>
+            <span><?php esc_html_e('Evaluamos huéspedes y optimizamos tu plan operativo de arriendos personalizado.', 'twentytwentyfive-child'); ?></span>
           </div>
           <div class="step" data-animate>
             <div class="step-number">4</div>
