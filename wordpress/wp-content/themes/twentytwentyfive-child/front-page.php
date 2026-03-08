@@ -279,7 +279,18 @@ get_header();
 
                           <div class="badges" data-property-badges>
                             <?php foreach (($post['tags'] ?? []) as $tag) : ?>
-                              <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
+                              <?php if ($tag === 'Áreas comunales') : ?>
+                                <?php $residencia_link = get_field('residencia', $post['id']); ?>
+                                <?php if ($residencia_link) : ?>
+                                  <a href="<?php echo esc_url($residencia_link); ?>" class="badge badge--feature">
+                                    <?php echo esc_html($tag); ?>
+                                  </a>
+                                <?php else : ?>
+                                  <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
+                                <?php endif; ?>
+                              <?php else : ?>
+                                <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
+                              <?php endif; ?>
                             <?php endforeach; ?>
                           </div>
 
