@@ -53,4 +53,4 @@
 /wordpress/wp-content/themes/.DS_Store
 /wordpress/wp-content/themes/twentytwentyfive-child/.DS_Store
 /wordpress/wp-content/themes/twentytwentyfive-child/assets/.DS_Store
-/wordpress/wp-content/plugins
+/wordpress/wp-content/plugins/*.*
