@@ -1548,3 +1548,15 @@ body.is-lightbox-open {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ---------- Carousel ---------- */
+.carousel-slide {
+  display: none;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.carousel-slide.is-active {
+  display: block;
+  opacity: 1;
+}

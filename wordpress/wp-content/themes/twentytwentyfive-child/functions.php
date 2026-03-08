@@ -42,7 +42,7 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-home',
       get_stylesheet_directory_uri() . '/assets/js/home.js',
       array(),
-      wp_get_theme()->get('Version'),
+      '2.0.3',
       true
     );
 
