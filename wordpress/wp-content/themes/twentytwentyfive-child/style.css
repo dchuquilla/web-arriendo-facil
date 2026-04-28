@@ -1915,10 +1915,71 @@ select[aria-invalid="false"] {
   }
 }
 
-/* ---------- Utilities ---------- */
+/* ========================================
+   ACCESSIBILITY & PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* Ensure minimum touch target size (48px) */
+a, button {
+  min-height: 44px;
+  display: inline-block;
+}
+
+/* Better focus visibility for keyboard navigation */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+/* Remove default outline to use custom focus ring */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+/* Skip to content link (hidden by default) */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-accent-primary);
+  color: var(--color-text-inverse);
+  padding: var(--space-2) var(--space-4);
+  text-decoration: none;
+  z-index: 100;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Better color contrast */
+.small {
+  color: var(--color-text-secondary);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Utilities */
 .small {
   font-size: 14px;
-  color: var(--muted);
+  color: var(--color-text-secondary);
 }
 
 .mt-0 { margin-top: 0; }
