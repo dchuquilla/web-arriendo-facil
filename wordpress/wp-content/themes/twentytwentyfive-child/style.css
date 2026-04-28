@@ -1453,7 +1453,7 @@ body.is-lightbox-open {
 
 /* ---------- Testimonials ---------- */
 .testimonials-section {
-  background: var(--gradient-hero);
+  background: var(--color-bg-inverse);
   position: relative;
   overflow: hidden;
 }
@@ -1465,55 +1465,55 @@ body.is-lightbox-open {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
+  background-image:
     radial-gradient(circle at 10% 90%, var(--tech-glow) 0%, transparent 30%),
-    radial-gradient(circle at 90% 10%, rgba(74, 93, 110, 0.2) 0%, transparent 30%);
+    radial-gradient(circle at 90% 10%, rgba(125, 190, 82, 0.05) 0%, transparent 30%);
+  pointer-events: none;
 }
 
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
-  margin-top: 48px;
+  gap: var(--space-7);
+  margin-top: var(--space-12);
   position: relative;
   z-index: 1;
 }
 
 .quote {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  padding: 32px;
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-8);
   transition: all var(--transition);
 }
 
 .quote:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
   transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .quote-icon {
-  font-size: 48px;
-  color: var(--verde-dolar);
+  font-size: var(--font-size-5xl);
+  color: var(--color-accent-primary);
   line-height: 1;
-  margin-bottom: 16px;
-  opacity: 0.7;
+  margin-bottom: var(--space-4);
+  opacity: 0.8;
 }
 
 .quote p {
-  font-size: 17px;
+  font-size: var(--font-size-md);
   color: rgba(255, 255, 255, 0.9);
   font-style: italic;
-  margin: 0 0 20px;
-  line-height: 1.7;
+  margin: 0 0 var(--space-5) 0;
+  line-height: var(--line-height-relaxed);
 }
 
 .quote-author {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-3);
 }
 
 .quote-avatar {
@@ -1523,19 +1523,21 @@ body.is-lightbox-open {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-weight: 700;
-  color: #fff;
-  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-base);
+  flex-shrink: 0;
 }
 
 .quote-info strong {
   display: block;
-  color: #fff;
-  font-weight: 600;
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-600);
+  font-size: var(--font-size-sm);
 }
 
 .quote-info span {
-  font-size: 14px;
+  font-size: var(--font-size-xs);
   color: rgba(255, 255, 255, 0.6);
 }
 
@@ -1688,7 +1690,7 @@ select[aria-invalid="false"] {
 .split-cta {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: var(--space-10);
   align-items: stretch;
 }
 
@@ -1700,60 +1702,69 @@ select[aria-invalid="false"] {
 .testimonials-mini {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
-  margin-top: 28px;
+  gap: var(--space-4);
+  margin-top: var(--space-7);
   flex: 1;
 }
 
 .quote-mini {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-5);
   transition: all var(--transition);
 }
 
 .quote-mini:hover {
-  border-color: var(--verde-dolar);
+  border-color: var(--color-accent-primary);
   box-shadow: var(--shadow-sm);
+  background: var(--color-bg-primary);
 }
 
 .quote-mini strong {
   display: block;
-  margin-bottom: 8px;
-  color: var(--azul-marino);
+  margin-bottom: var(--space-2);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-600);
 }
 
 .quote-mini p {
   margin: 0;
-  color: var(--muted);
-  font-size: 15px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  font-style: italic;
 }
 
 .contact-card {
-  background: #fff;
-  border-radius: 24px;
-  padding: 40px;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border-light);
+  background: var(--color-bg-primary);
+  border-radius: var(--border-radius-xl);
+  padding: var(--space-10);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border-secondary);
 }
 
 .contact-card .h2 {
-  font-size: 28px;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-6);
+  color: var(--color-text-primary);
 }
 
 .form-placeholder {
-  background: var(--gradient-tech);
-  border: 2px dashed var(--border);
-  border-radius: 16px;
-  padding: 32px;
+  background: var(--color-bg-secondary);
+  border: 2px dashed var(--color-border-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-8);
   text-align: center;
-  margin: 24px 0;
+  margin: var(--space-6) 0;
+  color: var(--color-text-secondary);
 }
 
 @media (max-width: 900px) {
   .split-cta { grid-template-columns: 1fr; }
-  .cta-card { padding: 40px 24px; }
+  .contact-card { padding: var(--space-8); }
 }
 
 /* ---------- Footer ---------- */
