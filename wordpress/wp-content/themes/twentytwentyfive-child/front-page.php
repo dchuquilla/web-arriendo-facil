@@ -350,32 +350,27 @@ get_header();
   <section class="section" id="como-funciona">
     <div class="container">
       <div class="text-center" data-animate>
-        <span class="badge"><?php esc_html_e('Proceso simple', 'twentytwentyfive-child'); ?></span>
+        <span class="badge"><?php esc_html_e('Tres pasos simples', 'twentytwentyfive-child'); ?></span>
         <h2 class="h2"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></h2>
-        <p class="p mx-auto"><?php esc_html_e('En 4 simples pasos empezamos a maximizar la rentabilidad de tu propiedad.', 'twentytwentyfive-child'); ?></p>
+        <p class="p mx-auto"><?php esc_html_e('Encuentra tu hogar perfecto en minutos, sin complicaciones.', 'twentytwentyfive-child'); ?></p>
       </div>
 
       <div class="steps-container">
         <div class="steps">
           <div class="step" data-animate>
             <div class="step-number">1</div>
-            <h4><?php esc_html_e('Registra tu propiedad', 'twentytwentyfive-child'); ?></h4>
-            <span><?php esc_html_e('Completa datos básicos, fotos y define tus objetivos de rentabilidad.', 'twentytwentyfive-child'); ?></span>
-          </div>
-          <div class="step" data-animate>
-            <div class="step-number">3</div>
-            <h4><?php esc_html_e('Activamos operación', 'twentytwentyfive-child'); ?></h4>
-            <span><?php esc_html_e('Gestionamos limpieza, mantenimiento, reservas y atención al huésped.', 'twentytwentyfive-child'); ?></span>
+            <h4><?php esc_html_e('Busca', 'twentytwentyfive-child'); ?></h4>
+            <span><?php esc_html_e('Explora nuestro catálogo con filtros por ubicación, precio, tipo de propiedad y disponibilidad.', 'twentytwentyfive-child'); ?></span>
           </div>
           <div class="step" data-animate>
             <div class="step-number">2</div>
-            <h4><?php esc_html_e('Automatización con IA', 'twentytwentyfive-child'); ?></h3>
-            <span><?php esc_html_e('Evaluamos huéspedes y optimizamos tu plan operativo de arriendos personalizado.', 'twentytwentyfive-child'); ?></span>
+            <h4><?php esc_html_e('Contacta', 'twentytwentyfive-child'); ?></h4>
+            <span><?php esc_html_e('Comunícate directamente con el propietario. Resuelve tus dudas y negocia los términos.', 'twentytwentyfive-child'); ?></span>
           </div>
           <div class="step" data-animate>
-            <div class="step-number">4</div>
-            <h4><?php esc_html_e('Recibes ganancias', 'twentytwentyfive-child'); ?></h4>
-            <span><?php esc_html_e('Reportes automáticos y transferencias con total transparencia.', 'twentytwentyfive-child'); ?></span>
+            <div class="step-number">3</div>
+            <h4><?php esc_html_e('Muda', 'twentytwentyfive-child'); ?></h4>
+            <span><?php esc_html_e('Confirma los términos, formaliza el contrato y ¡bienvenido a tu nuevo hogar!', 'twentytwentyfive-child'); ?></span>
           </div>
         </div>
       </div>
