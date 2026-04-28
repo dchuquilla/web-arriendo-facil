@@ -1,0 +1,269 @@
+/* Arriendo Fácil – Admin Styles */
+
+.af-dashboard .af-stats {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin: 24px 0;
+}
+
+.af-stat-card {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 20px 24px;
+	min-width: 160px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+}
+
+.af-stat-number {
+	font-size: 2.4em;
+	font-weight: 700;
+	color: #1d2327;
+	line-height: 1.2;
+}
+
+.af-stat-label {
+	font-size: 0.875em;
+	color: #646970;
+	margin: 4px 0 8px;
+}
+
+.af-stat-card a {
+	font-size: 0.8em;
+}
+
+.af-quick-actions {
+	margin-top: 24px;
+}
+
+.af-quick-actions .button {
+	margin-right: 8px;
+}
+
+/* Predict cost result inline */
+.af-predict-result {
+	margin-left: 10px;
+	color: #1d6c00;
+	font-weight: 600;
+}
+
+/* Owner contacts: legal agent details modal */
+.af-modal[hidden] {
+	display: none;
+}
+
+.af-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+}
+
+.af-modal__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.45);
+}
+
+.af-modal__dialog {
+	position: relative;
+	width: min(560px, calc(100% - 32px));
+	margin: 8vh auto 0;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+	max-height: 84vh;
+	overflow-y: auto;
+}
+
+.af-modal__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 20px;
+	border-bottom: 1px solid #dcdcde;
+}
+
+.af-modal__header h2 {
+	margin: 0;
+	font-size: 18px;
+}
+
+.af-modal__close {
+	font-size: 22px;
+	line-height: 1;
+	text-decoration: none;
+}
+
+.af-modal__body {
+	padding: 16px 20px 20px;
+}
+
+.af-modal__body p {
+	margin: 0 0 10px;
+}
+
+.af-modal__body p:last-child {
+	margin-bottom: 0;
+}
+
+body.af-modal-open {
+	overflow: hidden;
+}
+
+/* Cleaning service details box (blue tone) */
+.af-cleaning-service-table {
+	background: #e8f1ff;
+	border: 1px solid #bcd3ff;
+	border-radius: 8px;
+	padding: 12px;
+}
+
+.af-cleaning-service-table th {
+	color: #123a75;
+	font-weight: 700;
+}
+
+.af-cleaning-service-table td input,
+.af-cleaning-service-table td textarea {
+	border-color: #8bb2f3;
+}
+
+/* Blue Add New button on Cleaning Services screens */
+body.post-type-cleaning_service .page-title-action {
+	background: #2271b1;
+	border-color: #2271b1;
+	color: #fff;
+}
+
+body.post-type-cleaning_service .page-title-action:hover,
+body.post-type-cleaning_service .page-title-action:focus {
+	background: #135e96;
+	border-color: #135e96;
+	color: #fff;
+}
+
+/* Leases table UX/UI improvements */
+.af-lease-actions {
+	margin-bottom: 16px;
+}
+
+.af-leases-table td,
+.af-leases-table th {
+	vertical-align: top;
+}
+
+.af-lease-document-cell {
+	min-width: 180px;
+}
+
+.af-lease-view-link {
+	font-weight: 600;
+}
+
+.af-lease-version-meta {
+	margin-top: 6px;
+	font-size: 12px;
+	color: #555;
+}
+
+.af-lease-empty-document {
+	display: inline-block;
+	color: #777;
+	line-height: 1.4;
+}
+
+.af-lease-actions-cell {
+	min-width: 320px;
+}
+
+.af-lease-actions-stack {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+}
+
+.af-lease-actions-stack .button {
+	width: 100%;
+	justify-content: center;
+}
+
+.af-lease-activate-button {
+	margin-top: 2px;
+}
+
+.af-lease-upload-modal .af-modal__dialog {
+	width: min(560px, calc(100% - 32px));
+}
+
+.af-lease-upload-help {
+	margin: 0 0 4px;
+	font-weight: 600;
+}
+
+.af-lease-upload-rules {
+	margin: 0 0 14px;
+	font-size: 12px;
+	color: #646970;
+}
+
+.af-lease-upload-picker {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	padding: 12px;
+	border: 1px dashed #8c8f94;
+	border-radius: 6px;
+	background: #f8f9fa;
+}
+
+.af-lease-upload-file-name {
+	font-size: 12px;
+	color: #3c434a;
+	max-width: 320px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.af-lease-upload-feedback {
+	min-height: 20px;
+	margin: 10px 0 0;
+	font-size: 13px;
+}
+
+.af-lease-upload-feedback-success {
+	color: #1d6c00;
+}
+
+.af-lease-upload-feedback-error {
+	color: #b32d2e;
+}
+
+.af-lease-upload-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 14px;
+}
+
+@media (max-width: 1200px) {
+	.af-lease-actions-cell {
+		min-width: 260px;
+	}
+
+	.af-lease-actions-stack .button {
+		width: auto;
+	}
+
+	.af-lease-upload-file-name {
+		max-width: 220px;
+	}
+}

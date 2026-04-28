@@ -236,9 +236,9 @@ get_header();
         <section class="section section--soft" id="arrendamiento">
           <div class="container">
             <div class="text-center" data-animate>
-              <span class="badge"><?php esc_html_e('Portafolio activo', 'twentytwentyfive-child'); ?></span>
-              <h2 class="h2"><?php esc_html_e('Propiedades bajo nuestra gestión', 'twentytwentyfive-child'); ?></h2>
-              <p class="p mx-auto"><?php esc_html_e('Descubre las propiedades que maximizan su rentabilidad con nuestra operación inteligente.', 'twentytwentyfive-child'); ?></p>
+              <span class="badge"><?php esc_html_e('Propiedades destacadas', 'twentytwentyfive-child'); ?></span>
+              <h2 class="h2"><?php esc_html_e('Hospedajes verificados y listos', 'twentytwentyfive-child'); ?></h2>
+              <p class="p mx-auto"><?php esc_html_e('Descubre propiedades de calidad seleccionadas para ti. Ubicación, comodidad y confianza garantizadas.', 'twentytwentyfive-child'); ?></p>
             </div>
 
             <div class="showcase" data-home-showcase>
@@ -297,13 +297,9 @@ get_header();
                           </div>
 
                           <div class="showcase-actions">
-                            <a class="btn btn--primary" href="#contacto"><?php esc_html_e('Quiero rentabilizar mi propiedad', 'twentytwentyfive-child'); ?></a>
-                            <a class="btn btn--outline" href="<?php echo esc_url($post['link']); ?>" data-property-link-secondary><?php esc_html_e('Ver detalles', 'twentytwentyfive-child'); ?></a>
+                            <a class="btn btn--primary" href="<?php echo esc_url($post['link']); ?>"><?php esc_html_e('Ver detalles completos', 'twentytwentyfive-child'); ?></a>
+                            <a class="btn btn--outline" href="#contacto"><?php esc_html_e('Contactar propietario', 'twentytwentyfive-child'); ?></a>
                           </div>
-
-                          <p class="small mt-4">
-                            <?php esc_html_e('¿Eres propietario? Agenda una asesoría y evaluamos tu potencial de ingresos.', 'twentytwentyfive-child'); ?>
-                          </p>
                         </div>
                       </div>
                     </div>
