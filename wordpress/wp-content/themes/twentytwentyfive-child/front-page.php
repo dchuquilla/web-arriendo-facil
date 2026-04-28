@@ -111,45 +111,46 @@ get_header();
     </div>
   </section>
 
-  <!-- ========== SERVICIOS ========== -->
+  <!-- ========== CARACTERÍSTICAS PARA RENTERS ========== -->
   <section class="section" id="servicios">
     <div class="container">
       <div class="text-center" data-animate>
-        <span class="badge"><?php esc_html_e('Soluciones integrales', 'twentytwentyfive-child'); ?></span>
-        <h2 class="h2"><?php esc_html_e('Nuestros servicios', 'twentytwentyfive-child'); ?></h2>
-        <p class="p mx-auto"><?php esc_html_e('Todo lo que necesitas para profesionalizar tu hospedaje y maximizar ingresos.', 'twentytwentyfive-child'); ?></p>
+        <span class="badge"><?php esc_html_e('Lo que ofrecemos', 'twentytwentyfive-child'); ?></span>
+        <h2 class="h2"><?php esc_html_e('Diseñado pensando en ti', 'twentytwentyfive-child'); ?></h2>
+        <p class="p mx-auto"><?php esc_html_e('Herramientas y servicios que hacen tu búsqueda más fácil, segura y rápida.', 'twentytwentyfive-child'); ?></p>
       </div>
 
       <div class="kv-grid">
         <div class="card" data-animate>
-          <div class="card-icon">🏠</div>
-          <h3><?php esc_html_e('Gestión de arriendos', 'twentytwentyfive-child'); ?></h3>
+          <div class="card-icon">🔍</div>
+          <h3><?php esc_html_e('Búsqueda inteligente', 'twentytwentyfive-child'); ?></h3>
           <ul class="ul">
-            <li><?php esc_html_e('Reservas y calendario unificado', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Atención al huésped con procesos automatizados', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Optimización de precios dinámicos', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Reportes financieros de arriendamientos', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Filtros por ubicación, presupuesto y tipo de propiedad', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Disponibilidad actualizada en tiempo real', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Fotos de alta calidad y tours virtuales', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Comparar propiedades lado a lado', 'twentytwentyfive-child'); ?></li>
           </ul>
         </div>
 
         <div class="card" data-animate>
-          <div class="card-icon">✨</div>
-          <h3><?php esc_html_e('Limpieza de habitaciones', 'twentytwentyfive-child'); ?></h3>
+          <div class="card-icon">🛡️</div>
+          <h3><?php esc_html_e('Propiedades verificadas', 'twentytwentyfive-child'); ?></h3>
           <ul class="ul">
-            <li><?php esc_html_e('Programación automática de limpiezas', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Checklist digital de calidad', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Mantenimiento preventivo programado', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Red de proveedores verificados', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Inspección de seguridad en cada propiedad', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Propietarios y documentación validados', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Historial de inquilinos satisfechos', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Garantía de seguridad en tu nuevo hogar', 'twentytwentyfive-child'); ?></li>
           </ul>
         </div>
 
         <div class="card" data-animate>
-          <div class="card-icon">🤖</div>
-          <h3><?php esc_html_e('IA y automatización', 'twentytwentyfive-child'); ?></h3>
+          <div class="card-icon">📞</div>
+          <h3><?php esc_html_e('Soporte confiable', 'twentytwentyfive-child'); ?></h3>
           <ul class="ul">
-            <li><?php esc_html_e('Predicción de costos y proyecciones', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Chatbot 24/7 para huéspedes', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Generación automática de documentos', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Atención 24/7 en dudas y problemas', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Respuestas rápidas a tus preguntas', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Mediación neutral en conflictos', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Asesoría legal en contratación', 'twentytwentyfive-child'); ?></li>
           </ul>
         </div>
       </div>
@@ -377,40 +378,40 @@ get_header();
     </div>
   </section>
 
-  <!-- ========== BENEFICIOS ========== -->
+  <!-- ========== RAZONES PARA ELEGIR ARRIENDO FÁCIL ========== -->
   <section class="section section--dark">
     <div class="container">
       <div class="text-center" data-animate>
-        <span class="badge"><?php esc_html_e('Ventajas competitivas', 'twentytwentyfive-child'); ?></span>
+        <span class="badge"><?php esc_html_e('Para renters', 'twentytwentyfive-child'); ?></span>
         <h2 class="h2"><?php esc_html_e('¿Por qué elegir Arriendo Fácil?', 'twentytwentyfive-child'); ?></h2>
       </div>
 
       <div class="kv-grid">
         <div class="card" data-animate>
-          <div class="card-icon">📈</div>
-          <h3><?php esc_html_e('Más rentabilidad', 'twentytwentyfive-child'); ?></h3>
+          <div class="card-icon">⚡</div>
+          <h3><?php esc_html_e('Búsqueda rápida', 'twentytwentyfive-child'); ?></h3>
           <ul class="ul">
-            <li><?php esc_html_e('Costos previstos y controlados', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Precios dinámicos optimizados por IA', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Mejor ocupación con operación ordenada', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Encuentra hogar en minutos, no semanas', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Notificaciones instantáneas de nuevas propiedades', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Contacta directamente con propietarios', 'twentytwentyfive-child'); ?></li>
           </ul>
         </div>
         <div class="card" data-animate>
-          <div class="card-icon">😌</div>
-          <h3><?php esc_html_e('Menos estrés', 'twentytwentyfive-child'); ?></h3>
+          <div class="card-icon">🔒</div>
+          <h3><?php esc_html_e('Seguridad garantizada', 'twentytwentyfive-child'); ?></h3>
           <ul class="ul">
-            <li><?php esc_html_e('Delegas coordinación completa', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Incidencias con respuesta inmediata', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Soporte 24/7 para ti y tus huéspedes', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Todas las propiedades son inspeccionadas', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Propietarios verificados y validados', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Tu información personal protegida', 'twentytwentyfive-child'); ?></li>
           </ul>
         </div>
         <div class="card" data-animate>
-          <div class="card-icon">🔍</div>
-          <h3><?php esc_html_e('Transparencia total', 'twentytwentyfive-child'); ?></h3>
+          <div class="card-icon">💰</div>
+          <h3><?php esc_html_e('Precios claros', 'twentytwentyfive-child'); ?></h3>
           <ul class="ul">
-            <li><?php esc_html_e('Dashboard en tiempo real', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Reportes automáticos semanales', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Historial completo y trazabilidad', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Sin sorpresas o costos ocultos', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Todos los gastos desglosados desde el inicio', 'twentytwentyfive-child'); ?></li>
+            <li><?php esc_html_e('Comparar precios entre propiedades fácilmente', 'twentytwentyfive-child'); ?></li>
           </ul>
         </div>
       </div>
@@ -421,21 +422,21 @@ get_header();
   <section class="section" id="contacto">
     <div class="container split-cta">
       <div>
-        <span class="badge" data-animate><?php esc_html_e('Casos de éxito', 'twentytwentyfive-child'); ?></span>
-        <h2 class="h2" data-animate><?php esc_html_e('Lo que dicen nuestros clientes', 'twentytwentyfive-child'); ?></h2>
-        
+        <span class="badge" data-animate><?php esc_html_e('Testimonios', 'twentytwentyfive-child'); ?></span>
+        <h2 class="h2" data-animate><?php esc_html_e('Lo que dicen quienes encontraron su hogar', 'twentytwentyfive-child'); ?></h2>
+
         <div class="testimonials-mini">
           <div class="quote-mini" data-animate>
-            <strong><?php esc_html_e('Carlos M. — Propietario en Quito', 'twentytwentyfive-child'); ?></strong>
-            <p>"<?php esc_html_e('Delegué la operación y ahora tengo ingresos 40% más estables. La plataforma con IA es increíble.', 'twentytwentyfive-child'); ?>"</p>
+            <strong><?php esc_html_e('Alejandra M. — Quito', 'twentytwentyfive-child'); ?></strong>
+            <p>"<?php esc_html_e('Encontré mi apartamento en 3 días. Todo fue fácil, seguro y transparente. Recomiendo Arriendo Fácil.', 'twentytwentyfive-child'); ?>"</p>
           </div>
           <div class="quote-mini" data-animate>
-            <strong><?php esc_html_e('María L. — Dueña en Guayaquil', 'twentytwentyfive-child'); ?></strong>
-            <p>"<?php esc_html_e('La limpieza y mantenimiento dejaron de ser mi problema. Todo está automatizado y bajo control.', 'twentytwentyfive-child'); ?>"</p>
+            <strong><?php esc_html_e('Diego R. — Guayaquil', 'twentytwentyfive-child'); ?></strong>
+            <p>"<?php esc_html_e('La mejor experiencia arrendando. Propietario responsable, proceso rápido y soporte disponible siempre.', 'twentytwentyfive-child'); ?>"</p>
           </div>
           <div class="quote-mini" data-animate>
-            <strong><?php esc_html_e('Roberto S. — Inversionista', 'twentytwentyfive-child'); ?></strong>
-            <p>"<?php esc_html_e('Tengo 5 propiedades y ahora las gestiono desde mi celular. El ROI mejoró significativamente.', 'twentytwentyfive-child'); ?>"</p>
+            <strong><?php esc_html_e('Sofía L. — Cuenca', 'twentytwentyfive-child'); ?></strong>
+            <p>"<?php esc_html_e('Sentía que el hogar debe venir con paz mental. Arriendo Fácil me la dio desde el primer día.', 'twentytwentyfive-child'); ?>"</p>
           </div>
         </div>
       </div>
