@@ -78,35 +78,35 @@ get_header();
     </div>
   </section>
 
-  <!-- ========== PROBLEMAS ========== -->
+  <!-- ========== BENEFICIOS ========== -->
   <section class="section section--soft">
     <div class="container">
       <div class="text-center" data-animate>
-        <h2 class="h2"><?php esc_html_e('¿Te identificas con esto?', 'twentytwentyfive-child'); ?></h2>
-        <p class="p mx-auto"><?php esc_html_e('Los propietarios de hospedajes enfrentan desafíos operativos que reducen su rentabilidad.', 'twentytwentyfive-child'); ?></p>
+        <h2 class="h2"><?php esc_html_e('¿Por qué elegir Arriendo Fácil?', 'twentytwentyfive-child'); ?></h2>
+        <p class="p mx-auto"><?php esc_html_e('Una plataforma confiable, rápida y transparente para encontrar tu próximo hogar.', 'twentytwentyfive-child'); ?></p>
       </div>
 
-      <div class="problem-grid">
-        <div class="problem-card" data-animate>
-          <div class="problem-icon">⏰</div>
-          <h3 class="h3"><?php esc_html_e('Operación desgastante', 'twentytwentyfive-child'); ?></h3>
-          <p class="p" style="margin:0;"><?php esc_html_e('Coordinar la limpieza consume tu tiempo. El trabajo reactivo incrementa costos.', 'twentytwentyfive-child'); ?></p>
+      <div class="benefits-grid">
+        <div class="benefit-card" data-animate>
+          <div class="benefit-icon">🛡️</div>
+          <h3 class="h3"><?php esc_html_e('Plataforma confiable', 'twentytwentyfive-child'); ?></h3>
+          <p class="p" style="margin:0;"><?php esc_html_e('Todos nuestros hospedajes son verificados. Seguridad y calidad garantizadas en cada propiedad.', 'twentytwentyfive-child'); ?></p>
         </div>
-        <div class="problem-card" data-animate>
-          <div class="problem-icon">📊</div>
-          <h3 class="h3"><?php esc_html_e('Poca claridad financiera', 'twentytwentyfive-child'); ?></h3>
-          <p class="p" style="margin:0;"><?php esc_html_e('No conoces el costo real por reserva. Gastos inesperados reducen tu rentabilidad.', 'twentytwentyfive-child'); ?></p>
+        <div class="benefit-card" data-animate>
+          <div class="benefit-icon">⚡</div>
+          <h3 class="h3"><?php esc_html_e('Proceso ágil', 'twentytwentyfive-child'); ?></h3>
+          <p class="p" style="margin:0;"><?php esc_html_e('Busca, contacta y muda en días. Sin trámites innecesarios, solo lo esencial.', 'twentytwentyfive-child'); ?></p>
         </div>
-        <div class="problem-card" data-animate>
-          <div class="problem-icon">💬</div>
-          <h3 class="h3"><?php esc_html_e('Gestión del huésped', 'twentytwentyfive-child'); ?></h3>
-          <p class="p" style="margin:0;"><?php esc_html_e('Mensajes, incidencias y reglas sin proceso definido. Documentación dispersa.', 'twentytwentyfive-child'); ?></p>
+        <div class="benefit-card" data-animate>
+          <div class="benefit-icon">📞</div>
+          <h3 class="h3"><?php esc_html_e('Soporte siempre disponible', 'twentytwentyfive-child'); ?></h3>
+          <p class="p" style="margin:0;"><?php esc_html_e('Estamos aquí 24/7 para resolver tus dudas. Respuestas rápidas, sin esperas.', 'twentytwentyfive-child'); ?></p>
         </div>
-      </div>
-
-      <div class="solution-highlight" data-animate>
-        <h3 class="h3"><?php esc_html_e('Nosotros lo resolvemos por ti', 'twentytwentyfive-child'); ?></h3>
-        <p class="p"><?php esc_html_e('Nos encargamos de todo: coordinación de reservas, limpieza profesional entre huéspedes, atención 24/7 y reportes automáticos. Tú solo recibes tus ganancias.', 'twentytwentyfive-child'); ?></p>
+        <div class="benefit-card" data-animate>
+          <div class="benefit-icon">💰</div>
+          <h3 class="h3"><?php esc_html_e('Precios claros', 'twentytwentyfive-child'); ?></h3>
+          <p class="p" style="margin:0;"><?php esc_html_e('Sin sorpresas. Todos los costos incluidos desde el inicio. Transparencia total.', 'twentytwentyfive-child'); ?></p>
+        </div>
       </div>
     </div>
   </section>
