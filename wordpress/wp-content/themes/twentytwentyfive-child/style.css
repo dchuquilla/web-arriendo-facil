@@ -1871,21 +1871,47 @@ select[aria-invalid="false"] {
 
 .social-links a:hover {
   background: var(--color-accent-primary);
+  color: var(--color-text-inverse);
   transform: translateY(-2px);
+}
+
+.footer-owner-link {
+  color: var(--color-accent-primary) !important;
+  font-weight: var(--font-weight-600) !important;
+}
+
+.footer-owner-link:hover {
+  color: var(--color-accent-primary-hover) !important;
 }
 
 @media (max-width: 900px) {
   .footer-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-8);
+  }
+
+  .footer-grid > div:first-child {
+    grid-column: 1 / -1;
   }
 }
 
 @media (max-width: 600px) {
-  .footer-grid { grid-template-columns: 1fr; }
-  .footer-bottom { 
-    flex-direction: column; 
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid > div:first-child {
+    grid-column: auto;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
     text-align: center;
+    gap: var(--space-3);
+  }
+
+  .social-links {
+    justify-content: center;
   }
 }
 
@@ -2408,7 +2434,7 @@ select[aria-invalid="false"] {
 
 .amenities-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--space-3);
 }
 
