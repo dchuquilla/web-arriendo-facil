@@ -3,7 +3,7 @@ if ( ! defined('ABSPATH') ) { exit; }
 get_header();
 ?>
 
-<main>
+<main id="main-content">
   <!-- ========== CONTACT HERO ========== -->
   <section class="contact-hero">
     <div class="container">

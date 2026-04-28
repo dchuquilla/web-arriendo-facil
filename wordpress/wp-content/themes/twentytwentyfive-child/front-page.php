@@ -3,7 +3,7 @@ if ( ! defined('ABSPATH') ) { exit; }
 get_header();
 ?>
 
-<main>
+<main id="main-content">
 
   <!-- ========== HERO ========== -->
   <section class="hero" id="inicio">
@@ -267,6 +267,8 @@ get_header();
                               src="<?php echo esc_url($post['image']); ?>"
                               alt="<?php echo esc_attr($post['alt']); ?>"
                               data-property-image
+                              loading="lazy"
+                              decoding="async"
                             >
                           </a>
                         </div>

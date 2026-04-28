@@ -19,6 +19,10 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<a href="#main-content" class="skip-to-content">
+  <?php esc_html_e('Ir al contenido principal', 'twentytwentyfive-child'); ?>
+</a>
+
 <header class="site-header" role="banner" id="site-header">
   <div class="container header-inner">
     <a class="brand" href="<?php echo esc_url(home_url('/')); ?>">

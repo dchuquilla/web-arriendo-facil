@@ -3,7 +3,7 @@ if ( ! defined('ABSPATH') ) { exit; }
 get_header();
 ?>
 
-<main>
+<main id="main-content">
   <!-- ========== HERO / SEARCH ========== -->
   <section class="properties-hero">
     <div class="container">
@@ -121,7 +121,7 @@ get_header();
         ?>
           <a href="<?php echo esc_url(get_permalink()); ?>" class="property-card" data-animate>
             <div class="property-image">
-              <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($img_alt); ?>">
+              <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($img_alt); ?>" loading="lazy">
               <span class="property-badge"><?php esc_html_e('Verificado', 'twentytwentyfive-child'); ?></span>
             </div>
             <div class="property-info">

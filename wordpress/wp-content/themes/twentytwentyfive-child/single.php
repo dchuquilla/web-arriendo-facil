@@ -3,7 +3,7 @@ if ( ! defined('ABSPATH') ) { exit; }
 get_header();
 ?>
 
-<main>
+<main id="main-content">
   <?php if (have_posts()) { while (have_posts()) { the_post(); ?>
 
   <!-- ========== PROPERTY HERO / GALLERY ========== -->
@@ -21,7 +21,7 @@ get_header();
           $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg';
         }
       ?>
-      <img src="<?php echo esc_url($img); ?>" alt="<?php the_title_attribute(); ?>" class="gallery-main">
+      <img src="<?php echo esc_url($img); ?>" alt="<?php the_title_attribute(); ?>" class="gallery-main" loading="lazy">
     </div>
   </section>
 
@@ -178,7 +178,7 @@ get_header();
         ?>
           <a href="<?php echo esc_url(get_permalink()); ?>" class="property-card" data-animate>
             <div class="property-image">
-              <img src="<?php echo esc_url($img); ?>" alt="<?php the_title_attribute(); ?>">
+              <img src="<?php echo esc_url($img); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
               <span class="property-badge"><?php esc_html_e('Verificado', 'twentytwentyfive-child'); ?></span>
             </div>
             <div class="property-info">
