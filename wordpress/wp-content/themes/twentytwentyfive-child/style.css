@@ -1046,25 +1046,77 @@ body.is-lightbox-open {
 }
 
 /* ---------- Problem Section ---------- */
+/* ---------- Benefits Grid ---------- */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-12);
+}
+
+.benefit-card {
+  background: var(--color-bg-primary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-7);
+  border: 1px solid var(--color-border-secondary);
+  text-align: center;
+  transition: all var(--transition);
+}
+
+.benefit-card:hover {
+  border-color: var(--color-accent-primary);
+  background: var(--color-bg-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+.benefit-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, rgba(125, 190, 82, 0.1), rgba(125, 190, 82, 0.05));
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: 0 auto var(--space-5);
+  font-size: var(--font-size-3xl);
+  line-height: 1;
+}
+
+.benefit-card .h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-600);
+  margin: 0 0 var(--space-3) 0;
+  color: var(--color-text-primary);
+}
+
+.benefit-card .p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+  margin: 0;
+}
+
+/* Legacy problem-grid support (backwards compatibility) */
 .problem-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 48px;
+  gap: var(--space-6);
+  margin-top: var(--space-12);
 }
 
 .problem-card {
-  background: #fff;
-  border-radius: 20px;
-  padding: 28px;
-  border: 2px solid var(--border);
+  background: var(--color-bg-primary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-7);
+  border: 1px solid var(--color-border-primary);
   text-align: center;
   transition: all var(--transition);
 }
 
 .problem-card:hover {
-  border-color: #ef4444;
+  border-color: var(--color-status-error);
   background: #fef2f2;
+  box-shadow: var(--shadow-md);
 }
 
 .problem-icon {
@@ -1074,23 +1126,25 @@ body.is-lightbox-open {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  margin: 0 auto 20px;
-  font-size: 28px;
+  margin: 0 auto var(--space-5);
+  font-size: var(--font-size-3xl);
+  line-height: 1;
 }
 
 .solution-highlight {
   background: var(--gradient-accent);
-  color: #fff;
-  border-radius: 16px;
-  padding: 32px;
+  color: var(--color-text-inverse);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-8);
   text-align: center;
-  margin-top: 40px;
+  margin-top: var(--space-10);
 }
 
 .solution-highlight .h3 {
-  color: #fff;
-  font-size: 24px;
-  margin-bottom: 8px;
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-600);
+  margin-bottom: var(--space-3);
 }
 
 .solution-highlight .p {
@@ -1099,6 +1153,12 @@ body.is-lightbox-open {
 }
 
 @media (max-width: 900px) {
+  .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+  .problem-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .benefits-grid { grid-template-columns: 1fr; }
   .problem-grid { grid-template-columns: 1fr; }
 }
 
