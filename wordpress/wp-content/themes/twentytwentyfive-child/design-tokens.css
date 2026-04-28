@@ -1,0 +1,401 @@
+/**
+ * Design Tokens – Arriendo Fácil Platform Redesign
+ *
+ * Philosophy: Modern Professional Clean
+ * A hybrid of Stripe (clarity, trust, precision) and Airbnb (image-forward, discovery, friendly).
+ *
+ * This file defines the foundational design system: colors, spacing, typography, shadows,
+ * border radius, motion, and responsive breakpoints.
+ *
+ * Principles:
+ * - Clarity over decoration
+ * - Generous whitespace
+ * - Strategic color use (accent only, not fill)
+ * - Subtle shadows and minimal borders
+ * - Professional trust through design
+ */
+
+/* ========================================
+   COLOR TOKENS
+   ======================================== */
+
+:root {
+  /* -------- Semantic Color Palette (Light Mode) -------- */
+
+  /* Backgrounds */
+  --color-bg-primary: #ffffff;          /* Main page background */
+  --color-bg-secondary: #f8f9fa;        /* Card/section backgrounds (very light gray) */
+  --color-bg-tertiary: #f2f2f2;         /* Input, well, subtle background (current --gris-suave-bg) */
+  --color-bg-inverse: #1d2d44;          /* Dark background (current --azul-marino) */
+  --color-bg-overlay: rgba(29, 45, 68, 0.5); /* Modal/overlay backdrop */
+
+  /* Text Colors */
+  --color-text-primary: #1d2d44;        /* Main text (current --azul-marino) */
+  --color-text-secondary: #9e9e9e;      /* Secondary/muted text (current --gris-suave-text) */
+  --color-text-tertiary: #b0b0b0;       /* Placeholder, disabled text (lighter) */
+  --color-text-inverse: #ffffff;        /* Text on dark backgrounds */
+  --color-text-link: #7dbe52;           /* Link color (green accent) */
+
+  /* Borders */
+  --color-border-primary: rgba(29, 45, 68, 0.12);   /* Default borders (current --border) */
+  --color-border-secondary: rgba(29, 45, 68, 0.06); /* Subtle borders (current --border-light) */
+  --color-border-focus: #7dbe52;                     /* Focus ring color (green accent) */
+
+  /* Accent Colors */
+  --color-accent-primary: #7dbe52;           /* Primary action (current --verde-dolar) */
+  --color-accent-primary-hover: #6ba847;     /* Hover state (slightly darker) */
+  --color-accent-primary-active: #4b8b4b;    /* Active state (current --verde-bosque) */
+  --color-accent-secondary: #4a5d6e;         /* Secondary action (current --gris-azulado) */
+
+  /* Status Colors */
+  --color-status-success: #22c55e;  /* Green for success */
+  --color-status-warning: #f59e0b;  /* Amber for warning */
+  --color-status-error: #ef4444;    /* Red for error */
+  --color-status-info: #3b82f6;     /* Blue for info */
+
+  /* Legacy/Gradient Support */
+  --tech-cyan: #e0f2f1;
+  --tech-glow: rgba(125, 190, 82, 0.3);
+  --muted: var(--color-text-secondary);
+}
+
+/* -------- Dark Mode Tokens (Future) -------- */
+[data-theme="dark"] {
+  /* Backgrounds */
+  --color-bg-primary: #1a1a1a;
+  --color-bg-secondary: #262626;
+  --color-bg-tertiary: #333333;
+  --color-bg-inverse: #f8f9fa;
+  --color-bg-overlay: rgba(0, 0, 0, 0.6);
+
+  /* Text Colors */
+  --color-text-primary: #f8f9fa;
+  --color-text-secondary: #a1a1a1;
+  --color-text-tertiary: #808080;
+  --color-text-inverse: #1d2d44;
+  --color-text-link: #8dd962;
+
+  /* Borders */
+  --color-border-primary: rgba(255, 255, 255, 0.12);
+  --color-border-secondary: rgba(255, 255, 255, 0.06);
+  --color-border-focus: #8dd962;
+
+  /* Accent Colors (adjusted for dark mode contrast) */
+  --color-accent-primary: #8dd962;
+  --color-accent-primary-hover: #7ec54f;
+  --color-accent-primary-active: #6fa940;
+  --color-accent-secondary: #7a8a9f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg-primary: #1a1a1a;
+    --color-bg-secondary: #262626;
+    --color-bg-tertiary: #333333;
+    --color-bg-inverse: #f8f9fa;
+    --color-bg-overlay: rgba(0, 0, 0, 0.6);
+
+    --color-text-primary: #f8f9fa;
+    --color-text-secondary: #a1a1a1;
+    --color-text-tertiary: #808080;
+    --color-text-inverse: #1d2d44;
+    --color-text-link: #8dd962;
+
+    --color-border-primary: rgba(255, 255, 255, 0.12);
+    --color-border-secondary: rgba(255, 255, 255, 0.06);
+    --color-border-focus: #8dd962;
+
+    --color-accent-primary: #8dd962;
+    --color-accent-primary-hover: #7ec54f;
+    --color-accent-primary-active: #6fa940;
+    --color-accent-secondary: #7a8a9f;
+  }
+}
+
+/* ========================================
+   SPACING SCALE
+   ======================================== */
+
+:root {
+  /* Base unit: 4px (tight but flexible) */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  /* Common spacing (for legacy compatibility) */
+  --gap: 28px; /* Falls between space-6 (32px) and space-5 (24px) */
+  --container: 1200px;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+
+:root {
+  /* Font Families */
+  --font-family-display: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-family-body: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-family-mono: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+
+  /* Font Sizes */
+  --font-size-xs: 12px;    /* 0.75rem */
+  --font-size-sm: 14px;    /* 0.875rem */
+  --font-size-base: 16px;  /* 1rem - body baseline */
+  --font-size-md: 17px;    /* Slightly larger body (current standard) */
+  --font-size-lg: 20px;    /* 1.25rem */
+  --font-size-xl: 24px;    /* 1.5rem */
+  --font-size-2xl: 28px;   /* 1.75rem */
+  --font-size-3xl: 32px;   /* 2rem */
+  --font-size-4xl: 40px;   /* 2.5rem */
+  --font-size-5xl: 48px;   /* 3rem */
+  --font-size-6xl: 64px;   /* 4rem - hero display */
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 800;
+
+  /* Line Heights */
+  --line-height-tight: 1.1;      /* Headlines */
+  --line-height-snug: 1.25;      /* Subheadings */
+  --line-height-normal: 1.5;     /* Body text (readable) */
+  --line-height-relaxed: 1.6;    /* Spacious body */
+  --line-height-loose: 1.8;      /* Extra spacious (rare) */
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.02em;   /* Display/headlines (negative for tightness) */
+  --letter-spacing-normal: 0;        /* Body text */
+  --letter-spacing-wide: 0.05em;     /* Labels, all-caps */
+}
+
+/* ========================================
+   LAYOUT & BORDERS
+   ======================================== */
+
+:root {
+  /* Max Widths */
+  --max-width-content: 65ch;      /* Optimal reading width for body text */
+  --max-width-wide: 90ch;         /* Wider content area */
+  --max-width-page: 1200px;       /* Full page width (current --container) */
+
+  /* Border Radius */
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 20px;
+  --border-radius-2xl: 24px;
+  --border-radius-full: 9999px;
+
+  /* Borders */
+  --border-width-default: 1px;
+  --border-width-thick: 2px;
+}
+
+/* ========================================
+   SHADOWS
+   ======================================== */
+
+:root {
+  /* Simplified shadow system (less blur, flatter feel) */
+  /* Following Stripe aesthetic: subtle, purposeful shadows */
+
+  --shadow-sm: 0 2px 8px rgba(29, 45, 68, 0.08);        /* Small, barely noticeable */
+  --shadow-md: 0 4px 16px rgba(29, 45, 68, 0.12);       /* Medium, card-like */
+  --shadow-lg: 0 8px 32px rgba(29, 45, 68, 0.16);       /* Large, modal-like */
+  --shadow-xl: 0 12px 48px rgba(29, 45, 68, 0.2);       /* Extra large */
+
+  /* Focus Shadow (for accessibility) */
+  --shadow-focus: 0 0 0 3px rgba(125, 190, 82, 0.2);    /* Green focus ring */
+
+  /* Inset Shadow (for inputs) */
+  --shadow-inset: inset 0 1px 2px rgba(29, 45, 68, 0.05);
+}
+
+[data-theme="dark"] {
+  /* Darker, less harsh shadows in dark mode */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.4);
+  --shadow-focus: 0 0 0 3px rgba(141, 217, 98, 0.2);
+}
+
+/* ========================================
+   MOTION & TRANSITIONS
+   ======================================== */
+
+:root {
+  /* Duration */
+  --duration-instant: 50ms;     /* Instant feedback */
+  --duration-fast: 150ms;       /* Fast interactions */
+  --duration-normal: 250ms;     /* Default transition */
+  --duration-slow: 400ms;       /* Slow transitions */
+  --duration-slower: 600ms;     /* Very slow transitions */
+
+  /* Easing Functions */
+  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);  /* Standard ease */
+  --easing-in: cubic-bezier(0.4, 0, 1, 1);         /* Acceleration */
+  --easing-out: cubic-bezier(0, 0, 0.2, 1);        /* Deceleration */
+  --easing-inout: cubic-bezier(0.4, 0, 0.2, 1);    /* Smooth both ways */
+
+  /* Common Transitions */
+  --transition: var(--duration-normal) var(--easing-default);
+  --transition-fast: var(--duration-fast) var(--easing-default);
+  --transition-slow: var(--duration-slow) var(--easing-default);
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+  }
+}
+
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+   ======================================== */
+
+:root {
+  /* Mobile-first breakpoints (matching current codebase) */
+  --breakpoint-sm: 375px;      /* Mobile (iPhone SE) */
+  --breakpoint-md: 600px;      /* Larger mobile */
+  --breakpoint-lg: 768px;      /* Tablet */
+  --breakpoint-xl: 900px;      /* Small desktop (current threshold) */
+  --breakpoint-2xl: 1200px;    /* Desktop (current --container) */
+  --breakpoint-3xl: 1536px;    /* Large desktop */
+}
+
+/* ========================================
+   COMPONENT-LEVEL TOKENS
+   ======================================== */
+
+:root {
+  /* Buttons */
+  --button-padding-sm: var(--space-2) var(--space-4);
+  --button-padding-md: var(--space-3) var(--space-6);
+  --button-padding-lg: var(--space-4) var(--space-8);
+  --button-border-radius: var(--border-radius-md);
+  --button-font-weight: var(--font-weight-semibold);
+  --button-font-size: var(--font-size-base);
+
+  /* Cards */
+  --card-padding: var(--space-6);
+  --card-border-radius: var(--border-radius-lg);
+  --card-border-width: var(--border-width-default);
+  --card-box-shadow: var(--shadow-sm);
+
+  /* Inputs */
+  --input-padding: var(--space-3) var(--space-4);
+  --input-border-radius: var(--border-radius-md);
+  --input-font-size: var(--font-size-base);
+  --input-line-height: var(--line-height-normal);
+  --input-border-width: var(--border-width-default);
+
+  /* Forms */
+  --form-label-font-weight: var(--font-weight-semibold);
+  --form-label-font-size: var(--font-size-sm);
+  --form-label-margin-bottom: var(--space-2);
+
+  /* Property Cards (Image-first, Airbnb-style) */
+  --property-card-border-radius: var(--border-radius-lg);
+  --property-card-image-aspect-ratio: 16 / 9;
+  --property-card-image-height: 240px;
+  --property-card-padding: var(--space-4);
+  --property-card-gap: var(--space-3);
+
+  /* Spacing for common patterns */
+  --section-padding-mobile: var(--space-6) 0;
+  --section-padding-tablet: var(--space-8) 0;
+  --section-padding-desktop: var(--space-10) 0;
+  --container-padding: var(--space-4);
+}
+
+/* ========================================
+   GRADIENTS (Simplified, Accent Only)
+   ======================================== */
+
+:root {
+  /* Accent gradients (used sparingly) */
+  --gradient-accent: linear-gradient(
+    135deg,
+    var(--color-accent-primary) 0%,
+    var(--color-accent-primary-active) 100%
+  );
+
+  /* Subtle overlay gradient (for image overlays) */
+  --gradient-overlay: linear-gradient(
+    to top,
+    rgba(29, 45, 68, 0.5) 0%,
+    transparent 100%
+  );
+}
+
+/* ========================================
+   UTILITY TOKENS
+   ======================================== */
+
+:root {
+  /* Z-index scale */
+  --z-dropdown: 100;
+  --z-sticky: 50;
+  --z-fixed: 100;
+  --z-modal: 1000;
+  --z-tooltip: 1100;
+
+  /* Opacity */
+  --opacity-disabled: 0.5;
+  --opacity-placeholder: 0.6;
+  --opacity-hover: 0.8;
+  --opacity-focus: 0.95;
+}
+
+/* ========================================
+   LEGACY COMPATIBILITY
+   Mapping old tokens to new semantic tokens
+   ======================================== */
+
+:root {
+  /* Old color names → new semantic names */
+  --azul-marino: var(--color-text-primary);
+  --verde-dolar: var(--color-accent-primary);
+  --verde-bosque: var(--color-accent-primary-active);
+  --gris-azulado: var(--color-accent-secondary);
+  --gris-suave-bg: var(--color-bg-tertiary);
+  --gris-suave-text: var(--color-text-secondary);
+
+  /* Old shadow names → new */
+  --bg: var(--color-bg-primary);
+  --bg-soft: var(--color-bg-secondary);
+  --bg-dark: var(--color-bg-inverse);
+  --text: var(--color-text-primary);
+  --cta: var(--color-accent-primary);
+  --cta-text: var(--color-text-inverse);
+  --cta-hover: var(--color-accent-primary-hover);
+
+  /* Old border names */
+  --border: var(--color-border-primary);
+  --border-light: var(--color-border-secondary);
+
+  /* Old gradient names */
+  --gradient-hero: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent-secondary) 100%);
+  --gradient-tech: linear-gradient(135deg, var(--tech-cyan) 0%, rgba(125, 190, 82, 0.1) 100%);
+  --gradient-tech-marino: linear-gradient(135deg, var(--color-text-primary) 0%, rgba(125, 190, 82, 0.1) 100%);
+
+  /* Transition (already exists) */
+  --transition: var(--duration-normal) var(--easing-default);
+  --transition-slow: var(--duration-slow) var(--easing-default);
+}
