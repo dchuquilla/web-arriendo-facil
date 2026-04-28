@@ -871,19 +871,22 @@ body.is-lightbox-open {
   50% { opacity: 0.5; transform: scale(1.2); }
 }
 
-/* Stats Bar */
+/* ========================================
+   STATS BAR
+   ======================================== */
+
 .stats-bar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  background: #fff;
-  margin-top: -60px;
+  gap: var(--space-6);
+  background: var(--color-bg-primary);
+  margin-top: calc(-1 * var(--space-8));
   position: relative;
   z-index: 10;
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-2xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-md);
+  border: var(--border-width-default) solid var(--color-border-secondary);
 }
 
 .stat-item {
@@ -892,29 +895,30 @@ body.is-lightbox-open {
 
 .stat-number {
   font-size: clamp(32px, 3vw, 48px);
-  font-weight: 800;
-  color: var(--verde-dolar);
+  font-weight: var(--font-weight-black);
+  color: var(--color-accent-primary);
   line-height: 1;
 }
 
 .stat-label {
-  margin-top: 8px;
-  font-size: 14px;
-  color: var(--muted);
-  font-weight: 500;
+  margin-top: var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
 }
 
 @media (max-width: 900px) {
-  .hero { min-height: auto; padding: 80px 0; }
-  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero { min-height: auto; padding: var(--space-8) 0; }
+  .hero-grid { grid-template-columns: 1fr; gap: var(--space-8); }
   .hero-card { transform: none; }
   .hero-card .block { min-height: 120px; }
-  .hero-card .feature-title { font-size: 13px; }
+  .hero-card .feature-title { font-size: var(--font-size-sm); }
   .hero-card .feature-copy { font-size: 11px; }
-  .stats-bar { 
-    grid-template-columns: repeat(2, 1fr); 
-    margin-top: -40px;
-    padding: 28px;
+  .stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: calc(-1 * var(--space-6));
+    padding: var(--space-6);
+    gap: var(--space-5);
   }
 }
 
