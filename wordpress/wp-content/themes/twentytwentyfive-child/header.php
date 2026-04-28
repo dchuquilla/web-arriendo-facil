@@ -39,23 +39,22 @@
             'menu_class' => 'main-menu',
             'theme_location' => 'primary',
             'container' => false,
-            'depth' => 2,
+            'depth' => 1,
             'fallback_cb' => false
           ));
         } else {
-          $links = array(
-            array('Inicio', home_url('/')),
-            array('Servicios', '#servicios'),
-            array('Propiedades', '#arrendamiento'),
+          // Simplified fallback navigation (4 items: Logo handled separately, + 3 nav items + CTA)
+          $nav_links = array(
             array('Cómo funciona', '#como-funciona'),
+            array('Contacto', '#contacto'),
           );
-          foreach ($links as $l){
-            echo '<a href="' . esc_url($l[1]) . '">' . esc_html($l[0]) . '</a>';
+          foreach ($nav_links as $link) {
+            echo '<a href="' . esc_url($link[1]) . '">' . esc_html($link[0]) . '</a>';
           }
         }
       ?>
-      <a class="btn btn--primary" href="#contacto">
-        <?php esc_html_e('Agenda asesoría', 'twentytwentyfive-child'); ?>
+      <a class="btn btn--primary" href="<?php echo esc_url(home_url('/propiedades')); ?>">
+        <?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?>
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </nav>

@@ -61,6 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
           <a href="#contacto"><?php esc_html_e('Contacto', 'twentytwentyfive-child'); ?></a>
           <a href="#"><?php esc_html_e('Blog', 'twentytwentyfive-child'); ?></a>
           <a href="#"><?php esc_html_e('Trabaja con nosotros', 'twentytwentyfive-child'); ?></a>
+          <a href="#" style="font-weight: 600; color: var(--color-accent-primary);">
+            <?php esc_html_e('¿Eres propietario?', 'twentytwentyfive-child'); ?>
+          </a>
         </div>
       </div>
 
