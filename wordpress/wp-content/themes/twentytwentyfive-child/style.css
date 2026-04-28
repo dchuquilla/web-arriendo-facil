@@ -421,15 +421,18 @@ hr.sep {
   }
 }
 
-/* ---------- Hero Section ---------- */
+/* ========================================
+   HERO SECTION
+   ======================================== */
+
 .hero {
   min-height: 85vh;
   display: flex;
   align-items: center;
-  background: var(--gradient-hero);
+  background: var(--color-bg-inverse);
   position: relative;
   overflow: hidden;
-  padding: 100px 0;
+  padding: var(--space-10) 0;
 }
 
 /* ---------- WP Gallery + Lightbox ---------- */
@@ -543,34 +546,8 @@ body.is-lightbox-open {
   box-shadow: var(--shadow-md);
 }
 
-/* Futuristic circuit pattern overlay */
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(circle at 20% 80%, var(--tech-glow) 0%, transparent 40%),
-    radial-gradient(circle at 80% 20%, rgba(74, 93, 110, 0.2) 0%, transparent 40%);
-  pointer-events: none;
-}
-
-/* Animated grid lines */
-.hero::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-}
+/* Removed: Decorative patterns (circuit, grid lines)
+   For modern clean look, hero background is now solid navy */
 
 .hero .container {
   position: relative;
@@ -622,26 +599,25 @@ body.is-lightbox-open {
   border-color: #fff;
 }
 
-/* Hero Visual - 3D Building Effect */
+/* Hero Visual */
 .hero-visual {
   position: relative;
-  perspective: 1000px;
 }
 
 .hero-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 24px;
-  padding: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius-xl);
+  padding: var(--space-6);
   position: relative;
-  transform: rotateY(-5deg) rotateX(5deg);
-  transition: transform var(--transition-slow);
+  transition: all var(--transition);
 }
 
 .hero-card:hover {
-  transform: rotateY(0deg) rotateX(0deg);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .hero-card::before {
@@ -804,6 +780,67 @@ body.is-lightbox-open {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Search Preview Mockup (v1 renter-focused) */
+.mock-body.search-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: rgba(255, 255, 255, 0.08);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.search-input span {
+  font-size: 20px;
+}
+
+.search-input input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  padding: 0;
+}
+
+.search-input input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.search-input input:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.search-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.search-filter span {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--border-radius-md);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.search-cta {
+  text-align: center;
+  padding-top: var(--space-3);
 }
 
 .badge {
