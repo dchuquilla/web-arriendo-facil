@@ -27,6 +27,7 @@ html {
 html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 body {
@@ -53,17 +54,55 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+  width: 100%;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+table {
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
+pre {
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 /* ---------- Layout ---------- */
 .container {
-  width: min(var(--container), calc(100% - 48px));
+  width: min(var(--container), calc(100% - var(--space-8)));
   margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: calc(100% - var(--space-4));
+  }
 }
 
 .section {
-  padding: 80px 0;
+  padding: var(--space-12) 0;
   position: relative;
+}
+
+@media (max-width: 900px) {
+  .section {
+    padding: var(--space-10) 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .section {
+    padding: var(--space-8) 0;
+  }
 }
 
 .section--soft {
@@ -1248,6 +1287,8 @@ body.is-lightbox-open {
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border-secondary);
   margin-top: var(--space-12);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .showcase-head {
@@ -1772,6 +1813,8 @@ select[aria-invalid="false"] {
   background: var(--color-bg-inverse);
   color: var(--color-text-inverse);
   padding: var(--space-12) 0 var(--space-7);
+  margin-top: var(--space-12);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer-grid {
