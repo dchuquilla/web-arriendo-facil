@@ -116,26 +116,15 @@ pre {
 }
 
 .section--dark {
-  background: linear-gradient(135deg, #1a2a3a 0%, #1d2d44 50%, #1a2838 100%);
-  color: var(--color-text-inverse);
+  background: var(--gradient-hero);
+  color: #fff;
 }
 
 .section--dark .h2,
 .section--dark .h3,
-.section--dark .p { color: var(--color-text-inverse); }
+.section--dark .p { color: #fff; }
 
-.section--dark .p { opacity: 0.9; }
-
-.section--dark .card {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: var(--color-text-inverse);
-}
-
-.section--dark .card:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(125, 190, 82, 0.3);
-}
+.section--dark .p { opacity: 0.85; }
 
 /* ---------- Typography ---------- */
 .h1 {
