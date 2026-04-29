@@ -562,6 +562,20 @@ hr.sep {
   padding: var(--space-10) 0;
 }
 
+/* Overlay: oscuro a la izquierda (texto), casi transparente a la derecha (tarjeta) */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(10, 20, 40, 0.72) 0%,
+    rgba(10, 20, 40, 0.55) 45%,
+    rgba(10, 20, 40, 0.30) 100%
+  );
+  z-index: 1;
+}
+
 /* ---------- WP Gallery + Lightbox ---------- */
 .wp-block-gallery.has-nested-images {
   --af-gallery-gap: calc(var(--gap) / 2);
