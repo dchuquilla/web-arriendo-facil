@@ -54,6 +54,120 @@ get_header();
     </div>
   </section>
 
+  <!-- ========== PROPIEDADES DESTACADAS ========== -->
+  <section class="section section--soft" id="arrendamiento">
+    <div class="container">
+      <?php if ($featured_posts) : ?>
+        <div class="text-center" data-animate>
+          <span class="badge"><?php esc_html_e('Propiedades destacadas', 'twentytwentyfive-child'); ?></span>
+          <h2 class="h2"><?php esc_html_e('Hospedajes verificados y listos', 'twentytwentyfive-child'); ?></h2>
+          <p class="p mx-auto"><?php esc_html_e('Descubre propiedades de calidad seleccionadas para ti. Ubicación, comodidad y confianza garantizadas.', 'twentytwentyfive-child'); ?></p>
+        </div>
+
+        <div class="showcase" data-home-showcase>
+          <div class="showcase-head">
+            <strong><?php esc_html_e('Propiedad destacada', 'twentytwentyfive-child'); ?></strong>
+
+            <div class="carousel-controls">
+              <button class="icon-btn" type="button" data-carousel-prev aria-label="<?php esc_attr_e('Anterior', 'twentytwentyfive-child'); ?>">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+              </button>
+              <button class="icon-btn" type="button" data-carousel-next aria-label="<?php esc_attr_e('Siguiente', 'twentytwentyfive-child'); ?>">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="carousel-wrapper">
+            <div class="carousel-inner">
+              <?php foreach ($featured_posts as $i => $post) : ?>
+                <div class="carousel-slide <?php echo $i === 0 ? 'is-active' : ''; ?>" data-carousel-slide="<?php echo esc_attr($i); ?>">
+                  <div class="showcase-body">
+                    <div class="showcase-media">
+                      <a href="<?php echo esc_url($post['link']); ?>" data-property-link>
+                        <img
+                          src="<?php echo esc_url($post['image']); ?>"
+                          alt="<?php echo esc_attr($post['alt']); ?>"
+                          data-property-image
+                          loading="lazy"
+                          decoding="async"
+                        >
+                      </a>
+                    </div>
+
+                    <div class="showcase-info">
+                      <h3 data-property-title><?php echo esc_html($post['title']); ?></h3>
+
+                      <p
+                        class="p showcase-meta"
+                        data-property-excerpt
+                        <?php if (empty($post['excerpt'])) : ?>style="display:none;"<?php endif; ?>
+                      ><?php echo esc_html($post['excerpt']); ?></p>
+
+                      <div class="badges" data-property-badges>
+                        <?php foreach (($post['tags'] ?? []) as $tag) : ?>
+                          <?php if ($tag === 'Áreas comunales') : ?>
+                            <?php $residencia_link = get_field('residencia', $post['id']); ?>
+                            <?php if ($residencia_link) : ?>
+                              <a href="<?php echo esc_url($residencia_link); ?>" class="badge badge--feature">
+                                <?php echo esc_html($tag); ?>
+                              </a>
+                            <?php else : ?>
+                              <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
+                            <?php endif; ?>
+                          <?php else : ?>
+                            <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+                      </div>
+
+                      <div class="showcase-actions">
+                        <a class="btn btn--primary" href="<?php echo esc_url($post['link']); ?>"><?php esc_html_e('Ver detalles completos', 'twentytwentyfive-child'); ?></a>
+                        <a class="btn btn--outline" href="#contacto"><?php esc_html_e('Contactar propietario', 'twentytwentyfive-child'); ?></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </div>
+
+            <div class="dots" data-carousel-dots aria-label="<?php esc_attr_e('Navegación del carrusel', 'twentytwentyfive-child'); ?>">
+              <?php foreach ($featured_posts as $i => $post) : ?>
+                <button
+                  class="dot-btn <?php echo $i === 0 ? 'is-active' : ''; ?>"
+                  data-carousel-dot="<?php echo esc_attr($i); ?>"
+                  aria-label="<?php echo esc_attr(sprintf(__('Imagen %d', 'twentytwentyfive-child'), $i + 1)); ?>"
+                  aria-current="<?php echo $i === 0 ? 'true' : 'false'; ?>"
+                  type="button"
+                ></button>
+              <?php endforeach; ?>
+            </div>
+
+            <?php if (!empty($residencias)) : ?>
+              <div class="featured-strip" data-featured-strip>
+                <?php foreach ($residencias as $item) : ?>
+                  <a class="featured-item" href="<?php echo esc_url($item['link']); ?>" aria-label="<?php echo esc_attr($item['title']); ?>">
+                    <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>">
+                    <div class="fi-title"><?php echo esc_html($item['title']); ?></div>
+                  </a>
+                <?php endforeach; ?>
+              </div>
+            <?php endif; ?>
+          </div>
+        </div>
+      <?php else : ?>
+        <div class="showcase showcase--empty" data-home-showcase>
+          <div class="showcase-head">
+            <strong><?php esc_html_e('Propiedad destacada', 'twentytwentyfive-child'); ?></strong>
+          </div>
+          <div class="showcase-empty" role="status">
+            <?php esc_html_e('Aún no hay propiedades destacadas publicadas.', 'twentytwentyfive-child'); ?>
+          </div>
+        </div>
+      <?php endif; ?>
+    </div>
+  </section>
+
   <!-- ========== STATS BAR ========== -->
   <section class="section" style="padding-top: 0;">
     <div class="container">
@@ -229,125 +343,6 @@ get_header();
       wp_reset_postdata();
     }
   ?>
-
-  <!-- ========== PROPIEDADES DESTACADAS ========== -->
-  <section class="section section--soft" id="arrendamiento">
-    <div class="container">
-      <?php if ($featured_posts) : ?>
-        <section class="section section--soft" id="arrendamiento">
-          <div class="container">
-            <div class="text-center" data-animate>
-              <span class="badge"><?php esc_html_e('Propiedades destacadas', 'twentytwentyfive-child'); ?></span>
-              <h2 class="h2"><?php esc_html_e('Hospedajes verificados y listos', 'twentytwentyfive-child'); ?></h2>
-              <p class="p mx-auto"><?php esc_html_e('Descubre propiedades de calidad seleccionadas para ti. Ubicación, comodidad y confianza garantizadas.', 'twentytwentyfive-child'); ?></p>
-            </div>
-
-            <div class="showcase" data-home-showcase>
-              <div class="showcase-head">
-                <strong><?php esc_html_e('Propiedad destacada', 'twentytwentyfive-child'); ?></strong>
-
-                <div class="carousel-controls">
-                  <button class="icon-btn" type="button" data-carousel-prev aria-label="<?php esc_attr_e('Anterior', 'twentytwentyfive-child'); ?>">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-                  </button>
-                  <button class="icon-btn" type="button" data-carousel-next aria-label="<?php esc_attr_e('Siguiente', 'twentytwentyfive-child'); ?>">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-                  </button>
-                </div>
-              </div>
-
-              <div class="carousel-wrapper">
-                <div class="carousel-inner">
-                  <?php foreach ($featured_posts as $i => $post) : ?>
-                    <div class="carousel-slide <?php echo $i === 0 ? 'is-active' : ''; ?>" data-carousel-slide="<?php echo esc_attr($i); ?>">
-                      <div class="showcase-body">
-                        <div class="showcase-media">
-                          <a href="<?php echo esc_url($post['link']); ?>" data-property-link>
-                            <img
-                              src="<?php echo esc_url($post['image']); ?>"
-                              alt="<?php echo esc_attr($post['alt']); ?>"
-                              data-property-image
-                              loading="lazy"
-                              decoding="async"
-                            >
-                          </a>
-                        </div>
-
-                        <div class="showcase-info">
-                          <h3 data-property-title><?php echo esc_html($post['title']); ?></h3>
-
-                          <p
-                            class="p showcase-meta"
-                            data-property-excerpt
-                            <?php if (empty($post['excerpt'])) : ?>style="display:none;"<?php endif; ?>
-                          ><?php echo esc_html($post['excerpt']); ?></p>
-
-                          <div class="badges" data-property-badges>
-                            <?php foreach (($post['tags'] ?? []) as $tag) : ?>
-                              <?php if ($tag === 'Áreas comunales') : ?>
-                                <?php $residencia_link = get_field('residencia', $post['id']); ?>
-                                <?php if ($residencia_link) : ?>
-                                  <a href="<?php echo esc_url($residencia_link); ?>" class="badge badge--feature">
-                                    <?php echo esc_html($tag); ?>
-                                  </a>
-                                <?php else : ?>
-                                  <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
-                                <?php endif; ?>
-                              <?php else : ?>
-                                <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
-                              <?php endif; ?>
-                            <?php endforeach; ?>
-                          </div>
-
-                          <div class="showcase-actions">
-                            <a class="btn btn--primary" href="<?php echo esc_url($post['link']); ?>"><?php esc_html_e('Ver detalles completos', 'twentytwentyfive-child'); ?></a>
-                            <a class="btn btn--outline" href="#contacto"><?php esc_html_e('Contactar propietario', 'twentytwentyfive-child'); ?></a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  <?php endforeach; ?>
-                </div>
-
-                <div class="dots" data-carousel-dots aria-label="<?php esc_attr_e('Navegación del carrusel', 'twentytwentyfive-child'); ?>">
-                  <?php foreach ($featured_posts as $i => $post) : ?>
-                    <button
-                      class="dot-btn <?php echo $i === 0 ? 'is-active' : ''; ?>"
-                      data-carousel-dot="<?php echo esc_attr($i); ?>"
-                      aria-label="<?php echo esc_attr(sprintf(__('Imagen %d', 'twentytwentyfive-child'), $i + 1)); ?>"
-                      aria-current="<?php echo $i === 0 ? 'true' : 'false'; ?>"
-                      type="button"
-                    ></button>
-                  <?php endforeach; ?>
-                </div>
-                
-                <?php if (!empty($residencias)) : ?>
-                  <div class="featured-strip" data-featured-strip>
-                    <?php foreach ($residencias as $item) : ?>
-                      <a class="featured-item" href="<?php echo esc_url($item['link']); ?>" aria-label="<?php echo esc_attr($item['title']); ?>">
-                        <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>">
-                        <div class="fi-title"><?php echo esc_html($item['title']); ?></div>
-                      </a>
-                    <?php endforeach; ?>
-                  </div>
-                <?php endif; ?>
-              </div>
-            </div>
-          </section>
-        </section>
-        
-      <?php else : ?>
-        <div class="showcase showcase--empty" data-home-showcase>
-          <div class="showcase-head">
-            <strong><?php esc_html_e('Propiedad destacada', 'twentytwentyfive-child'); ?></strong>
-          </div>
-          <div class="showcase-empty" role="status">
-            <?php esc_html_e('Aún no hay propiedades destacadas publicadas.', 'twentytwentyfive-child'); ?>
-          </div>
-        </div>
-      <?php endif; ?>
-    </div>
-  </section>
 
   <!-- ========== CÓMO FUNCIONA ========== -->
   <section class="section" id="como-funciona">
