@@ -54,3 +54,5 @@
 /wordpress/wp-content/themes/twentytwentyfive-child/.DS_Store
 /wordpress/wp-content/themes/twentytwentyfive-child/assets/.DS_Store
 /wordpress/wp-content/plugins/*.*
+# Sensitive files - never commit
+wordpress/wp-content/plugins/arriendo-facil-main/includes/other
