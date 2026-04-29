@@ -1,6 +1,76 @@
 <?php
 if ( ! defined('ABSPATH') ) { exit; }
 get_header();
+
+$q = new WP_Query([
+  'post_type'      => 'post',
+  'posts_per_page' => 3,
+  'post_status'    => 'publish',
+  'category_name'  => 'propiedades-destacadas',
+  'orderby'        => 'date',
+  'order'          => 'DESC',
+]);
+
+$featured_posts = [];
+if ($q->have_posts()) {
+  while ($q->have_posts()) { $q->the_post();
+    $id = get_the_ID();
+
+    $img = get_the_post_thumbnail_url($id, 'large');
+    if (!$img) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
+
+    $thumb_id  = get_post_thumbnail_id($id);
+    $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
+    $img_alt   = $thumb_alt ? $thumb_alt : get_the_title();
+
+    $tags = get_the_tags($id);
+    $tag_names = [];
+    if ($tags && !is_wp_error($tags)) {
+      foreach ($tags as $t) { $tag_names[] = $t->name; }
+    }
+
+    $featured_posts[] = [
+      'id'      => $id,
+      'title'   => get_the_title(),
+      'link'    => get_permalink(),
+      'image'   => $img,
+      'alt'     => $img_alt,
+      'excerpt' => get_the_excerpt(),
+      'tags'    => $tag_names,
+    ];
+  }
+  wp_reset_postdata();
+}
+
+$q_residencias = new WP_Query([
+  'post_type'      => 'residencia',
+  'posts_per_page' => 3,
+  'post_status'    => 'publish',
+  'orderby'        => 'date',
+  'order'          => 'DESC',
+]);
+
+$residencias = [];
+if ($q_residencias->have_posts()) {
+  while ($q_residencias->have_posts()) { $q_residencias->the_post();
+    $id = get_the_ID();
+
+    $img = get_the_post_thumbnail_url($id, 'large');
+    if (!$img) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
+
+    $thumb_id  = get_post_thumbnail_id($id);
+    $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
+    $img_alt   = $thumb_alt ? $thumb_alt : get_the_title();
+    $residencias[] = [
+      'id'    => $id,
+      'title' => get_the_title(),
+      'link'  => get_permalink(),
+      'image' => esc_url_raw($img),
+      'alt'   => esc_attr($img_alt),
+    ];
+  }
+  wp_reset_postdata();
+}
 ?>
 
 <main id="main-content">
@@ -270,79 +340,6 @@ get_header();
       </div>
     </div>
   </section>
-
-  <?php
-    $q = new WP_Query([
-      'post_type'      => 'post',
-      'posts_per_page' => 3,
-      'post_status'    => 'publish',
-      'category_name'  => 'propiedades-destacadas',
-      'orderby'        => 'date',
-      'order'          => 'DESC',
-    ]);
-
-    $featured_posts = [];
-    if ($q->have_posts()) {
-      while ($q->have_posts()) { $q->the_post();
-        $id = get_the_ID();
-
-        $img = get_the_post_thumbnail_url($id, 'large');
-        if (!$img) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
-
-        $thumb_id  = get_post_thumbnail_id($id);
-        $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
-        $img_alt   = $thumb_alt ? $thumb_alt : get_the_title();
-
-        $tags = get_the_tags($id);
-        $tag_names = [];
-        if ($tags && !is_wp_error($tags)) {
-          foreach ($tags as $t) { $tag_names[] = $t->name; }
-        }
-
-        $featured_posts[] = [
-          'id'      => $id,
-          'title'   => get_the_title(),
-          'link'    => get_permalink(),
-          'image'   => $img,
-          'alt'     => $img_alt,
-          'excerpt' => get_the_excerpt(),
-          'tags'    => $tag_names,
-        ];
-      }
-      wp_reset_postdata();
-    }
-
-    # Add a query to get the latest 3 active posts where post_type=residencia.
-    $q_residencias = new WP_Query([
-      'post_type'      => 'residencia',
-      'posts_per_page' => 3,
-      'post_status'    => 'publish',
-      'orderby'        => 'date',
-      'order'          => 'DESC',
-    ]);
-
-    $residencias = [];
-    if ($q_residencias->have_posts()) {
-      while ($q_residencias->have_posts()) { $q_residencias->the_post();
-        $id = get_the_ID();
-
-        $img = get_the_post_thumbnail_url($id, 'large');
-        if (!$img) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
-
-        $thumb_id  = get_post_thumbnail_id($id);
-        $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
-        $img_alt   = $thumb_alt ? $thumb_alt : get_the_title();
-        $residencias[] = [
-          'id'    => $id,
-          'title' => get_the_title(),
-          'link'  => get_permalink(),
-          'image' => esc_url_raw($img),
-          'alt'   => esc_attr($img_alt),
-        ];
-      }
-      wp_reset_postdata();
-    }
-  ?>
 
   <!-- ========== CÓMO FUNCIONA ========== -->
   <section class="section" id="como-funciona">
