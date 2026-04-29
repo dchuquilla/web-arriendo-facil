@@ -221,6 +221,10 @@
 
   /* Inset Shadow (for inputs) */
   --shadow-inset: inset 0 1px 2px rgba(29, 45, 68, 0.05);
+
+  /* Enhanced Shadows (for better visual hierarchy) */
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.06);     /* Card hover states */
+  --shadow-interactive: 0 8px 20px rgba(125, 190, 82, 0.08); /* Interactive hover */
 }
 
 [data-theme="dark"] {
@@ -230,6 +234,28 @@
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
   --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.4);
   --shadow-focus: 0 0 0 3px rgba(141, 217, 98, 0.2);
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-interactive: 0 8px 20px rgba(125, 190, 82, 0.15);
+}
+
+/* ========================================
+   TEXTURES & PATTERNS
+   ======================================== */
+
+:root {
+  /* Subtle texture patterns (using CSS gradients) */
+  --bg-texture-dots: radial-gradient(circle, rgba(125, 190, 82, 0.02) 1px, transparent 1px);
+  --bg-texture-noise: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.01) 1px, transparent 1px);
+
+  /* Hero texture - subtle dots on dark background */
+  --bg-texture-hero: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1.5px, transparent 1.5px);
+
+  /* Textured backgrounds */
+  --color-bg-textured: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+
+  /* Accent colors for hover states */
+  --color-accent-light: rgba(125, 190, 82, 0.06);
+  --color-accent-lighter: rgba(125, 190, 82, 0.03);
 }
 
 /* ========================================
