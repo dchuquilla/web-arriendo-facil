@@ -9,7 +9,7 @@ get_header();
   <!-- ========== PROPERTY HERO / GALLERY ========== -->
   <section class="property-detail-hero">
     <div class="container">
-      <a href="<?php echo esc_url(home_url('/propiedades')); ?>" class="back-link">
+      <a href="<?php echo esc_url(home_url('/propiedades/')); ?>" class="back-link">
         ← <?php esc_html_e('Volver a propiedades', 'twentytwentyfive-child'); ?>
       </a>
     </div>
@@ -26,9 +26,9 @@ get_header();
   </section>
 
   <!-- ========== PROPERTY DETAILS ========== -->
-  <section class="section">
+  <section class="section section--single-detail">
     <div class="container">
-      <div class="property-detail-grid">
+      <div class="property-detail-grid property-detail-grid--single">
         <!-- Main Info -->
         <div class="property-main">
           <!-- Title & Price -->
@@ -58,6 +58,27 @@ get_header();
             <h2 class="h3"><?php esc_html_e('Sobre esta propiedad', 'twentytwentyfive-child'); ?></h2>
             <div class="property-description">
               <?php the_content(); ?>
+            </div>
+          </div>
+
+          <!-- Primary Actions & Info -->
+          <div class="property-priority-cards">
+            <div class="card cta-card">
+              <h3><?php esc_html_e('¿Interesado?', 'twentytwentyfive-child'); ?></h3>
+              <p class="small"><?php esc_html_e('Contáctate directamente con el propietario para más detalles.', 'twentytwentyfive-child'); ?></p>
+              <a href="<?php echo esc_url(home_url('/contacto/')); ?>" class="btn btn--primary btn--block">
+                <?php esc_html_e('Contactar propietario', 'twentytwentyfive-child'); ?>
+              </a>
+            </div>
+
+            <div class="card info-card">
+              <h4><?php esc_html_e('Información importante', 'twentytwentyfive-child'); ?></h4>
+              <ul class="small">
+                <li><?php esc_html_e('Disponible desde: Enero 2025', 'twentytwentyfive-child'); ?></li>
+                <li><?php esc_html_e('Contrato: 6 meses mínimo', 'twentytwentyfive-child'); ?></li>
+                <li><?php esc_html_e('Depósito: 2 meses de renta', 'twentytwentyfive-child'); ?></li>
+                <li><?php esc_html_e('Mascotas: Permitidas', 'twentytwentyfive-child'); ?></li>
+              </ul>
             </div>
           </div>
 
@@ -96,66 +117,34 @@ get_header();
             </div>
           </div>
 
-          <!-- Amenities -->
-          <div class="property-section">
-            <h2 class="h3"><?php esc_html_e('Servicios e instalaciones', 'twentytwentyfive-child'); ?></h2>
-            <div class="amenities-grid">
-              <div class="amenity">✓ <?php esc_html_e('Aire acondicionado', 'twentytwentyfive-child'); ?></div>
-              <div class="amenity">✓ <?php esc_html_e('Calefacción', 'twentytwentyfive-child'); ?></div>
-              <div class="amenity">✓ <?php esc_html_e('Lavadora', 'twentytwentyfive-child'); ?></div>
-              <div class="amenity">✓ <?php esc_html_e('Garaje', 'twentytwentyfive-child'); ?></div>
-              <div class="amenity">✓ <?php esc_html_e('Piscina', 'twentytwentyfive-child'); ?></div>
-              <div class="amenity">✓ <?php esc_html_e('Área de juegos', 'twentytwentyfive-child'); ?></div>
-            </div>
-          </div>
+        </div>
+      </div>
 
-          <!-- Safety Info -->
-          <div class="property-section safety-section">
-            <h2 class="h3">🛡️ <?php esc_html_e('Seguridad de la propiedad', 'twentytwentyfive-child'); ?></h2>
-            <p><?php esc_html_e('Esta propiedad ha sido verificada por nuestro equipo. Inspección de seguridad completada. Propietario validado.', 'twentytwentyfive-child'); ?></p>
+      <div class="property-secondary-full">
+        <!-- Amenities -->
+        <div class="property-section property-section--amenities">
+          <h2 class="h3"><?php esc_html_e('Servicios e instalaciones', 'twentytwentyfive-child'); ?></h2>
+          <div class="amenities-grid">
+            <div class="amenity">✓ <?php esc_html_e('Aire acondicionado', 'twentytwentyfive-child'); ?></div>
+            <div class="amenity">✓ <?php esc_html_e('Calefacción', 'twentytwentyfive-child'); ?></div>
+            <div class="amenity">✓ <?php esc_html_e('Lavadora', 'twentytwentyfive-child'); ?></div>
+            <div class="amenity">✓ <?php esc_html_e('Garaje', 'twentytwentyfive-child'); ?></div>
+            <div class="amenity">✓ <?php esc_html_e('Piscina', 'twentytwentyfive-child'); ?></div>
+            <div class="amenity">✓ <?php esc_html_e('Área de juegos', 'twentytwentyfive-child'); ?></div>
           </div>
         </div>
 
-        <!-- Sidebar -->
-        <div class="property-sidebar">
-          <!-- Owner Card -->
-          <div class="card owner-card">
-            <div class="owner-header">
-              <div class="owner-avatar">JD</div>
-              <div>
-                <h4><?php esc_html_e('Juan Díaz', 'twentytwentyfive-child'); ?></h4>
-                <p class="small"><?php esc_html_e('Propietario verificado', 'twentytwentyfive-child'); ?></p>
-              </div>
-            </div>
-            <p class="small"><?php esc_html_e('Propietario responsable con excelentes referencias de inquilinos previos.', 'twentytwentyfive-child'); ?></p>
-          </div>
-
-          <!-- Contact CTA -->
-          <div class="card cta-card">
-            <h3><?php esc_html_e('¿Interesado?', 'twentytwentyfive-child'); ?></h3>
-            <p class="small"><?php esc_html_e('Contáctate directamente con el propietario para más detalles.', 'twentytwentyfive-child'); ?></p>
-            <a href="<?php echo esc_url(home_url('/contacto')); ?>" class="btn btn--primary btn--block">
-              <?php esc_html_e('Contactar propietario', 'twentytwentyfive-child'); ?>
-            </a>
-          </div>
-
-          <!-- Key Info -->
-          <div class="card info-card">
-            <h4><?php esc_html_e('Información importante', 'twentytwentyfive-child'); ?></h4>
-            <ul class="small">
-              <li><?php esc_html_e('Disponible desde: Enero 2025', 'twentytwentyfive-child'); ?></li>
-              <li><?php esc_html_e('Contrato: 6 meses mínimo', 'twentytwentyfive-child'); ?></li>
-              <li><?php esc_html_e('Depósito: 2 meses de renta', 'twentytwentyfive-child'); ?></li>
-              <li><?php esc_html_e('Mascotas: Permitidas', 'twentytwentyfive-child'); ?></li>
-            </ul>
-          </div>
+        <!-- Safety Info -->
+        <div class="property-section safety-section">
+          <h2 class="h3">🛡️ <?php esc_html_e('Seguridad de la propiedad', 'twentytwentyfive-child'); ?></h2>
+          <p><?php esc_html_e('Esta propiedad ha sido verificada por nuestro equipo. Inspección de seguridad completada. Propietario validado.', 'twentytwentyfive-child'); ?></p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ========== SIMILAR PROPERTIES ========== -->
-  <section class="section section--soft">
+  <section class="section section--soft section--single-related">
     <div class="container">
       <h2 class="h2"><?php esc_html_e('Propiedades similares', 'twentytwentyfive-child'); ?></h2>
       <div class="properties-grid">
@@ -166,6 +155,9 @@ get_header();
             'post_status'    => 'publish',
             'exclude'        => get_the_ID(),
             'category_name'  => 'propiedades-destacadas',
+            'no_found_rows'  => true,
+            'ignore_sticky_posts' => true,
+            'update_post_term_cache' => false,
           ]);
 
           if ($related->have_posts()) {
@@ -202,15 +194,15 @@ get_header();
   </section>
 
   <!-- ========== FINAL CTA ========== -->
-  <section class="section">
+  <section class="section section--single-final-cta" id="single-final-cta">
     <div class="container text-center">
       <h2 class="h2"><?php esc_html_e('¿Listo para dar el próximo paso?', 'twentytwentyfive-child'); ?></h2>
       <p class="p mx-auto"><?php esc_html_e('Nuestro equipo está aquí para ayudarte con cualquier pregunta sobre esta propiedad o para encontrar otras opciones.', 'twentytwentyfive-child'); ?></p>
-      <div style="margin-top: var(--space-8); display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
-        <a href="<?php echo esc_url(home_url('/contacto')); ?>" class="btn btn--primary btn--lg">
+      <div class="single-cta-actions">
+        <a href="<?php echo esc_url(home_url('/contacto/')); ?>" class="btn btn--primary btn--lg">
           <?php esc_html_e('Contactar soporte', 'twentytwentyfive-child'); ?>
         </a>
-        <a href="<?php echo esc_url(home_url('/propiedades')); ?>" class="btn btn--outline btn--lg">
+        <a href="<?php echo esc_url(home_url('/propiedades/')); ?>" class="btn btn--outline btn--lg">
           <?php esc_html_e('Ver más propiedades', 'twentytwentyfive-child'); ?>
         </a>
       </div>

@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="footer-col">
         <h4><?php esc_html_e('Para Renters', 'twentytwentyfive-child'); ?></h4>
         <div class="footer-links">
-          <a href="<?php echo esc_url(home_url('/propiedades')); ?>"><?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?></a>
+          <a href="<?php echo esc_url(home_url('/propiedades/')); ?>"><?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?></a>
           <a href="#como-funciona"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a>
-          <a href="<?php echo esc_url(home_url('/contacto')); ?>"><?php esc_html_e('Contacto y soporte', 'twentytwentyfive-child'); ?></a>
+          <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Contacto y soporte', 'twentytwentyfive-child'); ?></a>
           <a href="#"><?php esc_html_e('Preguntas frecuentes', 'twentytwentyfive-child'); ?></a>
         </div>
       </div>
