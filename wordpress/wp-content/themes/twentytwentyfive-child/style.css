@@ -411,7 +411,135 @@ hr.sep {
   text-decoration: none;
 }
 
-/* Search Bar */
+/* Hero Search Bar */
+.hero-search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-6) 0 var(--space-8) 0;
+  max-width: 500px;
+}
+
+.hero-search-input {
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-default);
+  font-size: var(--font-size-base);
+  background: #fff;
+  color: var(--color-text-primary);
+  transition: all var(--transition);
+}
+
+.hero-search-input:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 4px rgba(125, 190, 82, 0.15);
+}
+
+.hero-search-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.hero-search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 48px;
+  background: #fff;
+  border: 1px solid var(--color-border-secondary);
+  border-top: none;
+  border-radius: 0 0 var(--border-radius-default) var(--border-radius-default);
+  max-height: 300px;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: none;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+}
+
+.hero-search-suggestions li {
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  transition: background var(--transition);
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.hero-search-suggestions li:last-child {
+  border-bottom: none;
+}
+
+.hero-search-suggestions li:hover {
+  background: var(--color-bg-secondary);
+}
+
+.hero-search-suggestions strong {
+  display: block;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+}
+
+.hero-search-suggestions small {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-1);
+}
+
+.hero-search-btn {
+  background: var(--color-accent-primary);
+  color: #fff;
+  border: none;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--border-radius-default);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  font-weight: var(--font-weight-medium);
+}
+
+.hero-search-btn:hover {
+  background: var(--color-accent-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.hero-search-btn:active {
+  transform: translateY(0);
+}
+
+/* Stats Grid in Hero Card */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.stat-item {
+  padding: var(--space-3);
+}
+
+.stat-number {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-primary);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-1);
+}
+
+/* Search Bar (Header) */
 .search-bar-wrapper {
   flex: 1;
   max-width: 400px;
