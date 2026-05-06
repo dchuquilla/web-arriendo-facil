@@ -88,23 +88,9 @@ if ($q_residencias->have_posts()) {
             <?php esc_html_e('Descubre hospedajes de calidad, confiables y bien ubicados. Rápido, seguro y sin complicaciones.', 'twentytwentyfive-child'); ?>
           </p>
 
-          <!-- Hero Search Bar -->
-          <div class="hero-search-bar">
-            <input
-              type="text"
-              id="hero-search-input"
-              class="hero-search-input"
-              placeholder="<?php esc_attr_e('¿Dónde quieres vivir?', 'twentytwentyfive-child'); ?>"
-              autocomplete="off" />
-            <ul id="hero-search-suggestions" class="hero-search-suggestions"></ul>
-            <button id="hero-search-btn" class="hero-search-btn" aria-label="<?php esc_attr_e('Buscar', 'twentytwentyfive-child'); ?>">
-              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            </button>
-          </div>
-
           <div class="cta-row">
             <a class="btn btn--primary btn--lg" href="<?php echo esc_url(home_url('/search-results')); ?>">
-              <?php esc_html_e('Ver todas las propiedades', 'twentytwentyfive-child'); ?>
+              <?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?>
               <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
             <a class="btn btn--outline btn--lg" href="#como-funciona">
@@ -116,9 +102,25 @@ if ($q_residencias->have_posts()) {
         <div class="hero-visual" data-animate>
           <div class="hero-card" aria-label="<?php esc_attr_e('Búsqueda de propiedades disponibles', 'twentytwentyfive-child'); ?>">
             <div class="mock-header">
-              <span class="badge"><?php esc_html_e('150+ propiedades', 'twentytwentyfive-child'); ?></span>
+              <span class="badge"><?php esc_html_e('Búsqueda rápida', 'twentytwentyfive-child'); ?></span>
             </div>
             <div class="mock-body">
+              <!-- Hero Search Bar -->
+              <div class="hero-search-bar">
+                <input
+                  type="text"
+                  id="hero-search-input"
+                  class="hero-search-input"
+                  placeholder="<?php esc_attr_e('¿Dónde quieres vivir?', 'twentytwentyfive-child'); ?>"
+                  autocomplete="off" />
+                <ul id="hero-search-suggestions" class="hero-search-suggestions"></ul>
+                <button id="hero-search-btn" class="hero-search-btn" aria-label="<?php esc_attr_e('Buscar', 'twentytwentyfive-child'); ?>">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                </button>
+              </div>
+
+              <div class="hero-search-divider"></div>
+
               <div class="stats-grid">
                 <div class="stat-item">
                   <div class="stat-number">150+</div>

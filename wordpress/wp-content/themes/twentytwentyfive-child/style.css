@@ -417,8 +417,17 @@ hr.sep {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin: var(--space-6) 0 var(--space-8) 0;
-  max-width: 500px;
+  margin: 0 0 var(--space-4) 0;
+}
+
+.mock-body .hero-search-bar {
+  margin-bottom: var(--space-4);
+}
+
+.hero-search-divider {
+  height: 1px;
+  background: var(--color-border-secondary);
+  margin: var(--space-4) 0;
 }
 
 .hero-search-input {
