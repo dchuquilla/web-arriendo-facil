@@ -64,6 +64,14 @@ function twentytwentyfive_child_enqueue_assets() {
       true
     );
 
+    wp_enqueue_script(
+      'twentytwentyfive-child-hero-search',
+      get_stylesheet_directory_uri() . '/assets/js/hero-search.js',
+      array(),
+      filemtime( get_stylesheet_directory() . '/assets/js/hero-search.js' ),
+      true
+    );
+
     // Data para el carrusel (propiedades destacadas)
     $properties = twentytwentyfive_child_get_featured_properties_payload();
     wp_localize_script('twentytwentyfive-child-home', 'twentytwentyfive_HOME', array(
