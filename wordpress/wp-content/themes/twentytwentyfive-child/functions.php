@@ -36,6 +36,15 @@ function twentytwentyfive_child_enqueue_assets() {
     true
   );
 
+  // Search bar (global)
+  wp_enqueue_script(
+    'twentytwentyfive-child-search-bar',
+    get_stylesheet_directory_uri() . '/assets/js/search-bar.js',
+    array(),
+    filemtime( get_stylesheet_directory() . '/assets/js/search-bar.js' ),
+    true
+  );
+
   // Warm likely next pages (property detail and properties list) to improve perceived navigation speed.
   wp_enqueue_script(
     'twentytwentyfive-child-nav-prefetch',
@@ -60,6 +69,39 @@ function twentytwentyfive_child_enqueue_assets() {
     wp_localize_script('twentytwentyfive-child-home', 'twentytwentyfive_HOME', array(
       'properties' => $properties,
     ));
+  }
+
+  // Leaflet.js y estilos para página de búsqueda
+  if ( is_page('search-results') || is_singular('accommodation') ) {
+    wp_enqueue_style(
+      'leaflet-css',
+      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css',
+      array(),
+      '1.9.4'
+    );
+
+    wp_enqueue_script(
+      'leaflet-js',
+      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js',
+      array(),
+      '1.9.4',
+      true
+    );
+
+    wp_enqueue_style(
+      'twentytwentyfive-child-search-results',
+      get_stylesheet_directory_uri() . '/assets/css/search-results.css',
+      array( 'twentytwentyfive-child-style' ),
+      filemtime( get_stylesheet_directory() . '/assets/css/search-results.css' )
+    );
+
+    wp_enqueue_script(
+      'twentytwentyfive-child-search-results',
+      get_stylesheet_directory_uri() . '/assets/js/search-results-interactive.js',
+      array( 'leaflet-js' ),
+      filemtime( get_stylesheet_directory() . '/assets/js/search-results-interactive.js' ),
+      true
+    );
   }
 }
 add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
