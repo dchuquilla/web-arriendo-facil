@@ -89,7 +89,7 @@ if ($q_residencias->have_posts()) {
           </p>
 
           <div class="cta-row">
-            <a class="btn btn--primary btn--lg" href="<?php echo esc_url(home_url('/propiedades')); ?>">
+            <a class="btn btn--primary btn--lg" href="<?php echo esc_url(home_url('/propiedades/')); ?>">
               <?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?>
               <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
@@ -439,7 +439,7 @@ if ($q_residencias->have_posts()) {
         <h2 class="h2"><?php esc_html_e('¿Listo para encontrar tu próximo hogar?', 'twentytwentyfive-child'); ?></h2>
         <p class="p"><?php esc_html_e('Explora cientos de propiedades verificadas. Seguridad, rapidez y transparencia garantizadas.', 'twentytwentyfive-child'); ?></p>
 
-        <a class="btn btn--primary btn--lg" href="<?php echo esc_url(home_url('/propiedades')); ?>">
+        <a class="btn btn--primary btn--lg" href="<?php echo esc_url(home_url('/propiedades/')); ?>">
           <?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?>
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>

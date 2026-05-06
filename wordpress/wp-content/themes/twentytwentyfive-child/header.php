@@ -30,12 +30,6 @@
       <span><?php bloginfo('name'); ?></span>
     </a>
 
-    <button class="nav-toggle" type="button" aria-label="<?php esc_attr_e('Menú', 'twentytwentyfive-child'); ?>" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
     <nav class="nav" aria-label="<?php esc_attr_e('Navegación principal', 'twentytwentyfive-child'); ?>">
       <?php
         if ( has_nav_menu('primary') ) {
@@ -57,7 +51,7 @@
           }
         }
       ?>
-      <a class="btn btn--primary" href="<?php echo esc_url(home_url('/propiedades')); ?>">
+      <a class="btn btn--primary" href="<?php echo esc_url(home_url('/propiedades/')); ?>">
         <?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?>
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
