@@ -6,6 +6,8 @@ get_header();
 <main id="main-content">
   <?php if (have_posts()) { while (have_posts()) { the_post(); ?>
 
+  <?php $main_img = get_the_post_thumbnail_url(get_the_ID(), 'large'); ?>
+
   <!-- ========== PROPERTY HERO / GALLERY ========== -->
   <section class="property-detail-hero">
     <div class="container">
@@ -14,19 +16,15 @@ get_header();
       </a>
     </div>
 
-    <div class="property-gallery">
-      <?php
-        $img = get_the_post_thumbnail_url(get_the_ID(), 'large');
-        if (!$img) {
-          $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg';
-        }
-      ?>
-      <img src="<?php echo esc_url($img); ?>" alt="<?php the_title_attribute(); ?>" class="gallery-main" loading="lazy">
-    </div>
+    <?php if ($main_img) : ?>
+      <div class="property-gallery">
+        <img src="<?php echo esc_url($main_img); ?>" alt="<?php the_title_attribute(); ?>" class="gallery-main" loading="lazy">
+      </div>
+    <?php endif; ?>
   </section>
 
   <!-- ========== PROPERTY DETAILS ========== -->
-  <section class="section section--single-detail">
+  <section class="section section--single-detail<?php echo $main_img ? '' : ' section--single-detail-no-hero'; ?>">
     <div class="container">
       <div class="property-detail-grid property-detail-grid--single">
         <!-- Main Info -->

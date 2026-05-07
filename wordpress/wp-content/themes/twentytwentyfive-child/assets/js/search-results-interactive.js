@@ -6,6 +6,7 @@
 	'use strict';
 
 	const SearchResults = {
+		defaultCenter: { lat: -0.1807, lng: -78.4678 }, // Quito fallback
 		map: null,
 		accommodationMarkers: {},
 		poiMarkers: {},
@@ -31,11 +32,12 @@
 			radius: 2,
 		},
 
-		init() {
+		async init() {
 			this.cacheElements();
 			this.initMap();
 			this.bindEvents();
 			this.loadInitialLocation();
+			await this.setInitialMapCenter();
 			this.loadResults();
 		},
 
@@ -45,14 +47,19 @@
 			const lat = params.get('latitude');
 			const lng = params.get('longitude');
 			if (lat && lng) {
-				this.currentFilters.latitude = parseFloat(lat);
-				this.currentFilters.longitude = parseFloat(lng);
+				const parsedLat = parseFloat(lat);
+				const parsedLng = parseFloat(lng);
+				if (Number.isFinite(parsedLat) && Number.isFinite(parsedLng)) {
+					this.currentFilters.latitude = parsedLat;
+					this.currentFilters.longitude = parsedLng;
+				}
 			}
 		},
 
 		cacheElements() {
 			this.elements = {
 				map: document.getElementById('map'),
+				mapAlert: document.getElementById('map-alert'),
 				resultsList: document.getElementById('results-list'),
 				resultsCount: document.getElementById('results-count-text'),
 				priceMinInput: document.getElementById('filter-price-min'),
@@ -71,12 +78,132 @@
 				return;
 			}
 
-			this.map = L.map('map').setView([0, 0], 13);
+			this.map = L.map('map').setView([this.defaultCenter.lat, this.defaultCenter.lng], 12);
 
 			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: '© OpenStreetMap contributors',
 				maxZoom: 19,
 			}).addTo(this.map);
+		},
+
+		async setInitialMapCenter() {
+			if (!this.map) {
+				return;
+			}
+
+			const searchLocation = this.getSearchLocation();
+			const hasUrlCoordinates = Number.isFinite(this.currentFilters.latitude) && Number.isFinite(this.currentFilters.longitude);
+			const urlLocation = hasUrlCoordinates
+				? { lat: this.currentFilters.latitude, lng: this.currentFilters.longitude }
+				: null;
+
+			let userLocation = null;
+			if (!urlLocation) {
+				userLocation = await this.getUserLocation();
+			}
+
+			if (searchLocation && searchLocation.toLowerCase() !== 'my location') {
+				const biasLocation = urlLocation || userLocation;
+				const geocoded = await this.geocodeLocation(searchLocation, biasLocation);
+				if (geocoded) {
+					this.currentFilters.latitude = geocoded.lat;
+					this.currentFilters.longitude = geocoded.lng;
+					this.map.setView([geocoded.lat, geocoded.lng], 15);
+					this.currentLocation = geocoded;
+					return;
+				}
+			}
+
+			if (urlLocation) {
+				this.map.setView([this.currentFilters.latitude, this.currentFilters.longitude], 15);
+				this.currentLocation = {
+					lat: this.currentFilters.latitude,
+					lng: this.currentFilters.longitude,
+				};
+				return;
+			}
+
+			if (userLocation) {
+				this.currentFilters.latitude = userLocation.lat;
+				this.currentFilters.longitude = userLocation.lng;
+				this.map.setView([userLocation.lat, userLocation.lng], 14);
+				this.currentLocation = userLocation;
+				return;
+			}
+
+			this.map.setView([this.defaultCenter.lat, this.defaultCenter.lng], 12);
+		},
+
+		async geocodeLocation(locationText, userLocation = null) {
+			try {
+				const attempts = [];
+
+				if (userLocation && Number.isFinite(userLocation.lat) && Number.isFinite(userLocation.lng)) {
+					const latDelta = 1.2;
+					const lngDelta = 1.2;
+					const left = userLocation.lng - lngDelta;
+					const right = userLocation.lng + lngDelta;
+					const top = userLocation.lat + latDelta;
+					const bottom = userLocation.lat - latDelta;
+					attempts.push(
+						`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&bounded=1&viewbox=${left},${top},${right},${bottom}&q=${encodeURIComponent(locationText)}`
+					);
+				}
+
+				attempts.push(
+					`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=ec&q=${encodeURIComponent(locationText)}`,
+					`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=ec&q=${encodeURIComponent(`${locationText}, Ecuador`)}`,
+					`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(locationText)}`
+				);
+
+				for (const url of attempts) {
+					const response = await fetch(url, {
+						headers: { Accept: 'application/json' },
+					});
+
+					if (!response.ok) {
+						continue;
+					}
+
+					const data = await response.json();
+					if (!Array.isArray(data) || data.length === 0) {
+						continue;
+					}
+
+					const lat = parseFloat(data[0].lat);
+					const lng = parseFloat(data[0].lon);
+					if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+						continue;
+					}
+
+					return { lat, lng };
+				}
+
+				return null;
+			} catch (error) {
+				console.warn('Location geocoding failed:', error);
+				return null;
+			}
+		},
+
+		getUserLocation() {
+			return new Promise(resolve => {
+				if (!navigator.geolocation) {
+					resolve(null);
+					return;
+				}
+
+				navigator.geolocation.getCurrentPosition(
+					position => {
+						resolve({
+							lat: position.coords.latitude,
+							lng: position.coords.longitude,
+						});
+					},
+					() => resolve(null),
+					{ enableHighAccuracy: false, timeout: 4000, maximumAge: 600000 }
+				);
+			});
 		},
 
 		bindEvents() {
@@ -138,6 +265,13 @@
 				location: this.getSearchLocation(),
 			};
 
+			if (!Number.isFinite(params.latitude)) {
+				delete params.latitude;
+			}
+			if (!Number.isFinite(params.longitude)) {
+				delete params.longitude;
+			}
+
 			fetch(`${window.location.origin}/wp-json/af/v1/accommodations/search`, {
 				method: 'POST',
 				headers: {
@@ -155,20 +289,37 @@
 			return params.get('location') || '';
 		},
 
-		renderResults(data) {
+		async renderResults(data) {
 			if (!data.success) {
+				this.showMapAlert('No se pudieron cargar resultados en este momento.');
 				this.elements.resultsList.innerHTML = '<p>Error loading results</p>';
 				return;
 			}
 
 			this.updateResultsCount(data.count, data.total);
-			this.renderResultsList(data.results);
-			this.updateMapMarkers(data.results);
+			this.clearPoiMarkers();
+			const markerCount = this.updateMapMarkers(data.results);
 
-			if (data.results.length > 0) {
+			if (markerCount > 0) {
+				this.hideMapAlert();
+			}
+
+			if (data.results.length > 0 && markerCount > 0) {
+				this.renderResultsList(data.results);
 				this.fitMapBounds(data.results);
 				this.loadPoiMarkers();
+				return;
 			}
+
+			if (data.results.length > 0 && markerCount === 0) {
+				this.renderResultsList(data.results);
+				this.showMapAlert('No hay coordenadas para mostrar estas acomodaciones en el mapa.');
+				return;
+			}
+
+			this.showMapAlert('No existen acomodaciones para esa busqueda en el mapa.');
+			const fallbackResults = await this.fetchAllAccommodations();
+			this.renderResultsList(data.results, fallbackResults);
 		},
 
 		updateResultsCount(count, total) {
@@ -178,26 +329,46 @@
 					: `Showing ${count} of ${total} accommodations`;
 		},
 
-		renderResultsList(accommodations) {
+		renderResultsList(accommodations, fallbackAccommodations = []) {
 			if (accommodations.length === 0) {
-				this.elements.resultsList.innerHTML = '<p>No accommodations match your filters</p>';
+				if (fallbackAccommodations.length === 0) {
+					this.elements.resultsList.innerHTML = '<p>No accommodations match your filters</p>';
+					return;
+				}
+
+				const fallbackHtml = fallbackAccommodations.map(acc => this.buildAccommodationCardHtml(acc)).join('');
+				this.elements.resultsList.innerHTML = `
+					<p>No accommodations match your filters.</p>
+					<p class="fallback-results-title">Mas opciones disponibles</p>
+					${fallbackHtml}
+				`;
+				this.bindAccommodationCardClicks();
 				return;
 			}
 
-			const html = accommodations.map(acc => `
+			const html = accommodations.map(acc => this.buildAccommodationCardHtml(acc)).join('');
+
+			this.elements.resultsList.innerHTML = html;
+			this.bindAccommodationCardClicks();
+		},
+
+		buildAccommodationCardHtml(acc) {
+			const price = Number.isFinite(Number(acc.price)) ? Number(acc.price).toFixed(0) : '0';
+			return `
 				<div class="accommodation-card" data-id="${acc.id}">
 					${acc.image_url ? `<div class="accommodation-image"><img src="${this.escapeHtml(acc.image_url)}" alt="${this.escapeHtml(acc.title)}" loading="lazy" /></div>` : ''}
 					<h4 class="accommodation-title">${this.escapeHtml(acc.title)}</h4>
 					<p class="accommodation-location">${this.escapeHtml(acc.location)}</p>
 					<div class="accommodation-meta">
 						<span>${acc.bedrooms} 🛏️ ${acc.bathrooms} 🚿</span>
-						<span class="accommodation-price">$${acc.price.toFixed(0)}</span>
+						<span class="accommodation-price">$${price}</span>
 					</div>
 					<a href="${this.escapeHtml(acc.url)}" class="button button-small">${window.i18n?.viewDetails || 'View Details'}</a>
 				</div>
-			`).join('');
+			`;
+		},
 
-			this.elements.resultsList.innerHTML = html;
+		bindAccommodationCardClicks() {
 
 			// Add click handlers for cards
 			document.querySelectorAll('.accommodation-card').forEach(card => {
@@ -206,6 +377,46 @@
 					this.highlightAccommodation(id);
 				});
 			});
+		},
+
+		async fetchAllAccommodations() {
+			try {
+				const payload = {
+					location: '',
+					radius_km: 50,
+					price_min: 0,
+					price_max: 999999,
+					bedrooms: 0,
+					bathrooms: 0,
+					property_type: '',
+					amenities: [],
+					sort: 'newest',
+					per_page: 24,
+					page: 1,
+				};
+
+				const response = await fetch(`${window.location.origin}/wp-json/af/v1/accommodations/search`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(payload),
+				});
+
+				if (!response.ok) {
+					return [];
+				}
+
+				const data = await response.json();
+				if (!data.success || !Array.isArray(data.results)) {
+					return [];
+				}
+
+				return data.results;
+			} catch (error) {
+				console.warn('Fallback accommodations load failed:', error);
+				return [];
+			}
 		},
 
 		highlightAccommodation(accommodationId) {
@@ -227,6 +438,7 @@
 
 		updateMapMarkers(accommodations) {
 			this.clearAccommodationMarkers();
+			let markerCount = 0;
 
 			accommodations.forEach(acc => {
 				if (acc.latitude && acc.longitude) {
@@ -257,20 +469,33 @@
 					});
 
 					this.accommodationMarkers[acc.id] = marker;
+					markerCount += 1;
 				}
 			});
+
+			return markerCount;
 		},
 
 		fitMapBounds(accommodations) {
 			const bounds = L.latLngBounds();
+			let coordinateCount = 0;
 			accommodations.forEach(acc => {
 				if (acc.latitude && acc.longitude) {
 					bounds.extend([acc.latitude, acc.longitude]);
+					coordinateCount += 1;
 				}
 			});
 
 			if (bounds.isValid()) {
-				this.map.fitBounds(bounds, { padding: [50, 50] });
+				if (coordinateCount === 1) {
+					this.map.setView(bounds.getCenter(), 16);
+					return;
+				}
+
+				this.map.fitBounds(bounds, {
+					padding: [20, 20],
+					maxZoom: 15,
+				});
 			}
 		},
 
@@ -357,6 +582,22 @@
 		clearPoiMarkers() {
 			Object.values(this.poiMarkers).forEach(marker => marker.remove());
 			this.poiMarkers = {};
+		},
+
+		showMapAlert(message) {
+			if (!this.elements.mapAlert) {
+				return;
+			}
+			this.elements.mapAlert.textContent = message;
+			this.elements.mapAlert.classList.remove('is-hidden');
+		},
+
+		hideMapAlert() {
+			if (!this.elements.mapAlert) {
+				return;
+			}
+			this.elements.mapAlert.textContent = '';
+			this.elements.mapAlert.classList.add('is-hidden');
 		},
 
 		escapeHtml(text) {

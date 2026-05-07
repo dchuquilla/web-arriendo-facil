@@ -260,7 +260,7 @@ if ($q_residencias->have_posts()) {
   </section>
 
   <!-- ========== STATS BAR ========== -->
-  <section class="section" style="padding-top: 0;">
+  <section class="section home-stats" style="padding-top: 0;">
     <div class="container">
       <div class="stats-bar" data-animate>
         <div class="stat-item">
@@ -284,7 +284,7 @@ if ($q_residencias->have_posts()) {
   </section>
 
   <!-- ========== BENEFICIOS ========== -->
-  <section class="section section--soft">
+  <section class="section section--soft" id="por-que-elegir">
     <div class="container">
       <div class="text-center" data-animate>
         <h2 class="h2"><?php esc_html_e('¿Por qué elegir Arriendo Fácil?', 'twentytwentyfive-child'); ?></h2>
@@ -394,7 +394,7 @@ if ($q_residencias->have_posts()) {
   </section>
 
   <!-- ========== RAZONES PARA ELEGIR ARRIENDO FÁCIL ========== -->
-  <section class="section section--dark">
+  <section class="section section--dark" id="para-renters">
     <div class="container">
       <div class="text-center" data-animate>
         <span class="badge"><?php esc_html_e('Para renters', 'twentytwentyfive-child'); ?></span>
