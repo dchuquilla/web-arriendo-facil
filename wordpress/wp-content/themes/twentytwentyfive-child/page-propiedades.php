@@ -4,10 +4,12 @@ get_header();
 ?>
 
 <main id="main-content">
+  <?php $current_page = max( 1, get_query_var( 'paged' ), get_query_var( 'page' ) ); ?>
+
   <!-- ========== HERO / SEARCH ========== -->
-  <section class="properties-hero">
+  <section class="properties-hero properties-hero--listing">
     <div class="container">
-      <div class="properties-hero-content" data-animate>
+      <div class="properties-hero-content properties-hero-content--listing" data-animate>
         <h1 class="h1"><?php esc_html_e('Encuentra tu próximo hogar', 'twentytwentyfive-child'); ?></h1>
         <p class="p"><?php esc_html_e('Explora cientos de propiedades verificadas en tu ciudad.', 'twentytwentyfive-child'); ?></p>
 
@@ -97,14 +99,50 @@ get_header();
       <!-- Properties Grid -->
       <div class="properties-grid">
         <?php
-          // Query featured properties for now (placeholder)
+          $meta_query = [ 'relation' => 'AND' ];
+
+          if ( ! empty( $_GET['location'] ) ) {
+            $meta_query[] = [
+              'key'     => '_af_location_text',
+              'value'   => sanitize_text_field( wp_unslash( $_GET['location'] ) ),
+              'compare' => 'LIKE',
+            ];
+          }
+
+          if ( isset( $_GET['price_min'] ) && $_GET['price_min'] !== '' ) {
+            $meta_query[] = [
+              'key'     => '_af_monthly_rent',
+              'value'   => floatval( wp_unslash( $_GET['price_min'] ) ),
+              'type'    => 'NUMERIC',
+              'compare' => '>=',
+            ];
+          }
+
+          if ( isset( $_GET['price_max'] ) && $_GET['price_max'] !== '' ) {
+            $meta_query[] = [
+              'key'     => '_af_monthly_rent',
+              'value'   => floatval( wp_unslash( $_GET['price_max'] ) ),
+              'type'    => 'NUMERIC',
+              'compare' => '<=',
+            ];
+          }
+
+          if ( ! empty( $_GET['property_type'] ) ) {
+            $meta_query[] = [
+              'key'     => '_af_property_type',
+              'value'   => sanitize_text_field( wp_unslash( $_GET['property_type'] ) ),
+              'compare' => '=',
+            ];
+          }
+
           $q = new WP_Query([
-            'post_type'      => 'post',
+            'post_type'      => 'accommodation',
             'posts_per_page' => 12,
             'post_status'    => 'publish',
-            'category_name'  => 'propiedades-destacadas',
             'orderby'        => 'date',
             'order'          => 'DESC',
+            'paged'          => $current_page,
+            'meta_query'     => count( $meta_query ) > 1 ? $meta_query : [],
           ]);
 
           if ($q->have_posts()) {
@@ -113,6 +151,21 @@ get_header();
               $img = get_the_post_thumbnail_url($id, 'large');
               if (!$img) {
                 $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg';
+              }
+
+              $location_text = get_post_meta( $id, '_af_location_text', true );
+              if ( ! $location_text ) {
+                $location_text = __( 'Ubicación no especificada', 'twentytwentyfive-child' );
+              }
+
+              $monthly_rent = floatval( get_post_meta( $id, '_af_monthly_rent', true ) );
+              $price_value = $monthly_rent > 0
+                ? '$' . number_format_i18n( $monthly_rent, 0 )
+                : __( 'Consultar', 'twentytwentyfive-child' );
+
+              $description = get_the_excerpt();
+              if ( ! $description ) {
+                $description = wp_trim_words( wp_strip_all_tags( get_the_content() ), 22, '...' );
               }
 
               $thumb_id  = get_post_thumbnail_id($id);
@@ -126,15 +179,16 @@ get_header();
             </div>
             <div class="property-info">
               <h3 class="property-title"><?php the_title(); ?></h3>
-              <p class="property-location">📍 <?php esc_html_e('Ubicación', 'twentytwentyfive-child'); ?></p>
+              <p class="property-location">📍 <?php echo esc_html( $location_text ); ?></p>
+              <p class="property-description-preview"><?php echo esc_html( $description ); ?></p>
               <div class="property-meta">
                 <div class="property-price">
                   <span class="price-label"><?php esc_html_e('Desde', 'twentytwentyfive-child'); ?></span>
-                  <span class="price-value">$1,200<span class="price-period">/mes</span></span>
+                  <span class="price-value"><?php echo esc_html( $price_value ); ?><span class="price-period">/mes</span></span>
                 </div>
-                <button type="button" class="btn btn--small btn--outline">
+                <span class="btn btn--small btn--outline" aria-hidden="true">
                   <?php esc_html_e('Ver detalles', 'twentytwentyfive-child'); ?>
-                </button>
+                </span>
               </div>
             </div>
           </a>
@@ -142,7 +196,7 @@ get_header();
             }
             wp_reset_postdata();
           } else {
-            echo '<div class="no-properties"><p>' . esc_html_e('No hay propiedades disponibles en este momento.', 'twentytwentyfive-child') . '</p></div>';
+            echo '<div class="no-properties"><p>' . esc_html__( 'No hay propiedades disponibles en este momento.', 'twentytwentyfive-child' ) . '</p></div>';
           }
         ?>
       </div>
@@ -150,21 +204,23 @@ get_header();
       <!-- Pagination -->
       <div class="pagination">
         <?php
-          // Simple pagination placeholder
-          echo '<span class="page-info">' . esc_html_e('Página 1 de 5', 'twentytwentyfive-child') . '</span>';
+          $pagination_links = paginate_links([
+            'base'      => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
+            'format'    => '?paged=%#%',
+            'current'   => $current_page,
+            'total'     => max( 1, (int) $q->max_num_pages ),
+            'type'      => 'array',
+            'prev_text' => esc_html__( 'Anterior', 'twentytwentyfive-child' ),
+            'next_text' => esc_html__( 'Siguiente', 'twentytwentyfive-child' ),
+          ]);
+
+          if ( ! empty( $pagination_links ) ) {
+            foreach ( $pagination_links as $pagination_link ) {
+              echo wp_kses_post( $pagination_link );
+            }
+          }
         ?>
       </div>
-    </div>
-  </section>
-
-  <!-- ========== CTA ========== -->
-  <section class="section section--soft">
-    <div class="container text-center">
-      <h2 class="h2"><?php esc_html_e('¿No encontraste lo que buscas?', 'twentytwentyfive-child'); ?></h2>
-      <p class="p mx-auto"><?php esc_html_e('Nuestro equipo puede ayudarte a encontrar la propiedad ideal. Contáctanos hoy.', 'twentytwentyfive-child'); ?></p>
-      <a href="<?php echo esc_url(home_url('/contacto')); ?>" class="btn btn--primary btn--lg" style="margin-top: 24px;">
-        <?php esc_html_e('Contactar soporte', 'twentytwentyfive-child'); ?>
-      </a>
     </div>
   </section>
 

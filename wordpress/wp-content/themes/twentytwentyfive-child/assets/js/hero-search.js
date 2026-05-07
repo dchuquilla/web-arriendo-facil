@@ -82,6 +82,26 @@
 			}
 		},
 
+		getUserLocation() {
+			return new Promise(resolve => {
+				if (!navigator.geolocation) {
+					resolve(null);
+					return;
+				}
+
+				navigator.geolocation.getCurrentPosition(
+					position => {
+						resolve({
+							latitude: position.coords.latitude,
+							longitude: position.coords.longitude,
+						});
+					},
+					() => resolve(null),
+					{ enableHighAccuracy: true, timeout: 6000, maximumAge: 300000 }
+				);
+			});
+		},
+
 		getGooglePlacesSuggestions(query) {
 			if (!this.autocompleteService) {
 				return;
@@ -170,7 +190,7 @@
 			}
 		},
 
-		performSearch() {
+		async performSearch() {
 			const location = this.elements.searchInput.value.trim();
 			if (!location) {
 				return;
@@ -179,6 +199,12 @@
 			const params = new URLSearchParams({
 				location: location,
 			});
+
+			const userLocation = await this.getUserLocation();
+			if (userLocation) {
+				params.set('latitude', userLocation.latitude);
+				params.set('longitude', userLocation.longitude);
+			}
 
 			window.location.href = `/search-results?${params.toString()}`;
 		},

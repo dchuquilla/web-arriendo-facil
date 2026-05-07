@@ -92,6 +92,7 @@ get_header();
 	</aside>
 
 	<main class="search-results-map">
+		<div id="map-alert" class="map-alert is-hidden" role="status" aria-live="polite"></div>
 		<div id="map" class="leaflet-map"></div>
 	</main>
 </div>
