@@ -19,6 +19,10 @@
 			}
 
 			this.bindEvents();
+		},
+
+		lazyInitGooglePlaces() {
+			if (this.autocompleteService) return;
 
 			const apiKey = document.body.dataset.googlePlacesKey || null;
 			if (apiKey) {
@@ -69,6 +73,8 @@
 				this.clearSuggestions();
 				return;
 			}
+
+			this.lazyInitGooglePlaces();
 
 			if (this.autocompleteService) {
 				this.getGooglePlacesSuggestions(value);
