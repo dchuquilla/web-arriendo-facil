@@ -54,6 +54,15 @@ function twentytwentyfive_child_enqueue_assets() {
     true
   );
 
+  // Service worker for offline support and page caching
+  wp_enqueue_script(
+    'twentytwentyfive-child-sw-register',
+    get_stylesheet_directory_uri() . '/assets/js/sw-register.js',
+    array(),
+    '1.0.0',
+    true
+  );
+
   // JS para el carrusel solo en homepage
   if ( is_front_page() ) {
     wp_enqueue_script(
@@ -119,6 +128,13 @@ add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
  * Ajusta esto a CPT/ACF si tu proyecto lo requiere.
  */
 function twentytwentyfive_child_get_featured_properties_payload() {
+  $cache_key = 'af_featured_properties';
+  $payload = wp_cache_get($cache_key);
+
+  if ($payload !== false) {
+    return $payload;
+  }
+
   $payload = array();
 
   $q = new WP_Query(array(
@@ -170,6 +186,8 @@ function twentytwentyfive_child_get_featured_properties_payload() {
       );
     }
   }
+
+  wp_cache_set($cache_key, $payload, '', 3600);
 
   return $payload;
 }
@@ -296,3 +314,21 @@ function twentytwentyfive_child_register_menus() {
   ));
 }
 add_action('after_setup_theme', 'twentytwentyfive_child_register_menus', 5);
+
+/**
+ * Agregar cache headers para mejor rendimiento
+ */
+function twentytwentyfive_child_add_cache_headers() {
+  if (is_user_logged_in()) {
+    return;
+  }
+
+  if (is_front_page() || is_page('propiedades') || is_page('search-results')) {
+    header('Cache-Control: public, max-age=3600');
+  } elseif (is_singular('accommodation')) {
+    header('Cache-Control: public, max-age=7200');
+  } else {
+    header('Cache-Control: public, max-age=1800');
+  }
+}
+add_action('wp_head', 'twentytwentyfive_child_add_cache_headers');
