@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  const carouselContainer = document.querySelector('[data-carousel-container]');
+  const carouselContainer = document.querySelector('#single-property-carousel');
   if (!carouselContainer) return;
 
   const slides = Array.from(carouselContainer.querySelectorAll('[data-carousel-slide]'));
@@ -13,6 +13,12 @@
   if (slides.length === 0) return;
 
   let currentIndex = 0;
+
+  // Hide navigation buttons if only one slide
+  if (slides.length === 1) {
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+  }
 
   function showSlide(index) {
     // Ensure index is within bounds with circular navigation

@@ -19,12 +19,12 @@ get_header();
     <?php
       $post_id = get_the_ID();
       $gallery_images = twentytwentyfive_child_get_accommodation_gallery_images($post_id);
-      $has_gallery = !empty($gallery_images) && count($gallery_images) >= 2;
+      $has_gallery = !empty($gallery_images);
     ?>
 
     <?php if ($has_gallery) : ?>
       <!-- Carousel with blur background -->
-      <div class="property-gallery property-carousel" data-carousel-container>
+      <div id="single-property-carousel" class="property-gallery property-carousel" data-carousel-container>
         <!-- Blur background -->
         <div class="carousel-blur-bg" style="--image-url: url('<?php echo esc_attr($gallery_images[0]['url_small']); ?>')"></div>
 
