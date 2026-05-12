@@ -29,26 +29,37 @@ get_header();
       <div class="property-detail-grid property-detail-grid--single">
         <!-- Main Info -->
         <div class="property-main">
+          <?php
+            $post_id = get_the_ID();
+            $address = (string) get_post_meta($post_id, '_af_address', true);
+            $monthly_rent = floatval(get_post_meta($post_id, '_af_monthly_rent', true));
+            $amenities = get_post_meta($post_id, '_af_amenities', true);
+            if (!is_array($amenities)) {
+              $amenities = [];
+            }
+          ?>
           <!-- Title & Price -->
           <div class="property-header">
             <div>
               <h1 class="h1"><?php the_title(); ?></h1>
               <p class="property-location">
-                📍 <?php esc_html_e('Ubicación en la ciudad', 'twentytwentyfive-child'); ?>
+                📍 <?php echo $address ? esc_html($address) : esc_html_e('Ubicación no especificada', 'twentytwentyfive-child'); ?>
               </p>
             </div>
             <div class="property-header-price">
-              <span class="price-label"><?php esc_html_e('Precio por noche', 'twentytwentyfive-child'); ?></span>
-              <span class="price-value">$1,200</span>
+              <span class="price-label"><?php esc_html_e('Precio mensual', 'twentytwentyfive-child'); ?></span>
+              <span class="price-value">
+                <?php echo $monthly_rent > 0 ? '$' . esc_html(number_format_i18n($monthly_rent, 0)) : esc_html_e('Consultar', 'twentytwentyfive-child'); ?>
+              </span>
             </div>
           </div>
 
           <!-- Badges & Tags -->
           <div class="property-tags">
             <span class="badge badge--feature"><?php esc_html_e('Verificado', 'twentytwentyfive-child'); ?></span>
-            <span class="tag">📶 WiFi</span>
-            <span class="tag">🏠 Amigable con mascotas</span>
-            <span class="tag">🍳 Cocina completa</span>
+            <?php foreach ($amenities as $amenity) : ?>
+              <span class="tag">✓ <?php echo esc_html($amenity); ?></span>
+            <?php endforeach; ?>
           </div>
 
           <!-- Description -->
@@ -84,34 +95,48 @@ get_header();
           <div class="property-section">
             <h2 class="h3"><?php esc_html_e('Características', 'twentytwentyfive-child'); ?></h2>
             <div class="features-grid">
-              <div class="feature-item">
-                <span class="feature-icon">🛏️</span>
-                <div>
-                  <h4><?php esc_html_e('Habitaciones', 'twentytwentyfive-child'); ?></h4>
-                  <p>2</p>
+              <?php
+                $bedrooms = (int) get_post_meta($post_id, '_af_bedrooms', true);
+                $bathrooms = (int) get_post_meta($post_id, '_af_bathrooms', true);
+                $square_meters = floatval(get_post_meta($post_id, '_af_square_meters', true));
+                $property_type = (string) get_post_meta($post_id, '_af_property_type', true);
+              ?>
+              <?php if ($bedrooms > 0) : ?>
+                <div class="feature-item">
+                  <span class="feature-icon">🛏️</span>
+                  <div>
+                    <h4><?php esc_html_e('Habitaciones', 'twentytwentyfive-child'); ?></h4>
+                    <p><?php echo esc_html($bedrooms); ?></p>
+                  </div>
                 </div>
-              </div>
-              <div class="feature-item">
-                <span class="feature-icon">🚿</span>
-                <div>
-                  <h4><?php esc_html_e('Baños', 'twentytwentyfive-child'); ?></h4>
-                  <p>1</p>
+              <?php endif; ?>
+              <?php if ($bathrooms > 0) : ?>
+                <div class="feature-item">
+                  <span class="feature-icon">🚿</span>
+                  <div>
+                    <h4><?php esc_html_e('Baños', 'twentytwentyfive-child'); ?></h4>
+                    <p><?php echo esc_html($bathrooms); ?></p>
+                  </div>
                 </div>
-              </div>
-              <div class="feature-item">
-                <span class="feature-icon">📐</span>
-                <div>
-                  <h4><?php esc_html_e('Tamaño', 'twentytwentyfive-child'); ?></h4>
-                  <p>80 m²</p>
+              <?php endif; ?>
+              <?php if ($square_meters > 0) : ?>
+                <div class="feature-item">
+                  <span class="feature-icon">📐</span>
+                  <div>
+                    <h4><?php esc_html_e('Tamaño', 'twentytwentyfive-child'); ?></h4>
+                    <p><?php echo esc_html(number_format_i18n($square_meters, 0)); ?> m²</p>
+                  </div>
                 </div>
-              </div>
-              <div class="feature-item">
-                <span class="feature-icon">🌳</span>
-                <div>
-                  <h4><?php esc_html_e('Zona', 'twentytwentyfive-child'); ?></h4>
-                  <p><?php esc_html_e('Residencial', 'twentytwentyfive-child'); ?></p>
+              <?php endif; ?>
+              <?php if ($property_type) : ?>
+                <div class="feature-item">
+                  <span class="feature-icon">🌳</span>
+                  <div>
+                    <h4><?php esc_html_e('Tipo de propiedad', 'twentytwentyfive-child'); ?></h4>
+                    <p><?php echo esc_html($property_type); ?></p>
+                  </div>
                 </div>
-              </div>
+              <?php endif; ?>
             </div>
           </div>
 
@@ -120,17 +145,16 @@ get_header();
 
       <div class="property-secondary-full">
         <!-- Amenities -->
-        <div class="property-section property-section--amenities">
-          <h2 class="h3"><?php esc_html_e('Servicios e instalaciones', 'twentytwentyfive-child'); ?></h2>
-          <div class="amenities-grid">
-            <div class="amenity">✓ <?php esc_html_e('Aire acondicionado', 'twentytwentyfive-child'); ?></div>
-            <div class="amenity">✓ <?php esc_html_e('Calefacción', 'twentytwentyfive-child'); ?></div>
-            <div class="amenity">✓ <?php esc_html_e('Lavadora', 'twentytwentyfive-child'); ?></div>
-            <div class="amenity">✓ <?php esc_html_e('Garaje', 'twentytwentyfive-child'); ?></div>
-            <div class="amenity">✓ <?php esc_html_e('Piscina', 'twentytwentyfive-child'); ?></div>
-            <div class="amenity">✓ <?php esc_html_e('Área de juegos', 'twentytwentyfive-child'); ?></div>
+        <?php if (!empty($amenities)) : ?>
+          <div class="property-section property-section--amenities">
+            <h2 class="h3"><?php esc_html_e('Servicios e instalaciones', 'twentytwentyfive-child'); ?></h2>
+            <div class="amenities-grid">
+              <?php foreach ($amenities as $amenity) : ?>
+                <div class="amenity">✓ <?php echo esc_html($amenity); ?></div>
+              <?php endforeach; ?>
+            </div>
           </div>
-        </div>
+        <?php endif; ?>
 
         <!-- Safety Info -->
         <div class="property-section safety-section">
@@ -165,6 +189,9 @@ get_header();
               if (!$img) {
                 $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg';
               }
+              $related_location = (string) get_post_meta($id, '_af_location_text', true);
+              $related_rent = floatval(get_post_meta($id, '_af_monthly_rent', true));
+              $price_display = $related_rent > 0 ? '$' . number_format_i18n($related_rent, 0) : esc_html__('Consultar', 'twentytwentyfive-child');
         ?>
           <a href="<?php echo esc_url(get_permalink()); ?>" class="property-card" data-animate>
             <div class="property-image">
@@ -173,11 +200,11 @@ get_header();
             </div>
             <div class="property-info">
               <h3 class="property-title"><?php the_title(); ?></h3>
-              <p class="property-location">📍 Ubicación</p>
+              <p class="property-location">📍 <?php echo $related_location ? esc_html($related_location) : esc_html_e('Ubicación no especificada', 'twentytwentyfive-child'); ?></p>
               <div class="property-meta">
                 <div class="property-price">
                   <span class="price-label"><?php esc_html_e('Desde', 'twentytwentyfive-child'); ?></span>
-                  <span class="price-value">$950<span class="price-period">/mes</span></span>
+                  <span class="price-value"><?php echo esc_html($price_display); ?><span class="price-period">/mes</span></span>
                 </div>
               </div>
             </div>

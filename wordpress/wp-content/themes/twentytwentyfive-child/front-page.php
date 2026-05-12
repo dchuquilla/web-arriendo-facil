@@ -71,6 +71,9 @@ if ($q_residencias->have_posts()) {
   }
   wp_reset_postdata();
 }
+
+$accommodation_count = wp_count_posts('accommodation');
+$total_accommodations = $accommodation_count->publish ?? 0;
 ?>
 
 <main id="main-content">
@@ -123,7 +126,7 @@ if ($q_residencias->have_posts()) {
 
               <div class="stats-grid">
                 <div class="stat-item">
-                  <div class="stat-number">150+</div>
+                  <div class="stat-number"><?php echo esc_html($total_accommodations); ?>+</div>
                   <div class="stat-label"><?php esc_html_e('Propiedades', 'twentytwentyfive-child'); ?></div>
                 </div>
                 <div class="stat-item">
@@ -259,29 +262,6 @@ if ($q_residencias->have_posts()) {
     </div>
   </section>
 
-  <!-- ========== STATS BAR ========== -->
-  <section class="section home-stats" style="padding-top: 0;">
-    <div class="container">
-      <div class="stats-bar" data-animate>
-        <div class="stat-item">
-          <div class="stat-number">+150</div>
-          <div class="stat-label"><?php esc_html_e('Propiedades gestionadas', 'twentytwentyfive-child'); ?></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">98%</div>
-          <div class="stat-label"><?php esc_html_e('Tasa de ocupación', 'twentytwentyfive-child'); ?></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">+25%</div>
-          <div class="stat-label"><?php esc_html_e('Incremento en rentabilidad', 'twentytwentyfive-child'); ?></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">24/7</div>
-          <div class="stat-label"><?php esc_html_e('Soporte con IA', 'twentytwentyfive-child'); ?></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ========== BENEFICIOS ========== -->
   <section class="section section--soft" id="por-que-elegir">

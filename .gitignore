@@ -56,3 +56,6 @@
 /wordpress/wp-content/plugins/*.*
 # Sensitive files - never commit
 wordpress/wp-content/plugins/arriendo-facil-main
+
+.claude
+.playwright-mcp
