@@ -175,6 +175,119 @@ function twentytwentyfive_child_get_featured_properties_payload() {
 }
 
 /**
+ * Obtiene imágenes del post para carousel desde galería WP o attachments.
+ * Retorna array de imágenes con URLs full y comprimidas para blur.
+ */
+function twentytwentyfive_child_get_accommodation_gallery_images($post_id) {
+  if (!$post_id) {
+    return [];
+  }
+
+  $images = [];
+  $post = get_post($post_id);
+
+  if (!$post || !$post->post_content) {
+    return [];
+  }
+
+  // Primero intentar extraer imágenes de bloque de galería WP
+  if (has_block('gallery', $post)) {
+    $pattern = '/<img[^>]+src=[\'"]([^\'"]+)[\'"][^>]*(?:data-id=[\'"]([^\'"]+)[\'"])?/';
+    if (preg_match_all($pattern, $post->post_content, $matches)) {
+      foreach ($matches[1] as $index => $src) {
+        $attachment_id = $matches[2][$index] ?? 0;
+
+        // Intentar obtener datos del attachment si existe
+        if ($attachment_id && is_numeric($attachment_id)) {
+          $full_url = wp_get_attachment_image_src($attachment_id, 'large');
+          $thumb_url = wp_get_attachment_image_src($attachment_id, 'thumbnail');
+
+          if ($full_url && $thumb_url) {
+            $images[] = [
+              'id'        => $attachment_id,
+              'url'       => $full_url[0],
+              'url_small' => $thumb_url[0],
+              'alt'       => get_post_meta($attachment_id, '_wp_attachment_image_alt', true),
+            ];
+          }
+        } else {
+          // Si no tenemos ID, usar la URL directa
+          if (!empty($src)) {
+            $images[] = [
+              'id'        => 0,
+              'url'       => $src,
+              'url_small' => $src, // Fallback
+              'alt'       => '',
+            ];
+          }
+        }
+      }
+    }
+
+    if (!empty($images)) {
+      return $images;
+    }
+  }
+
+  // Fallback: obtener todos los attachments del post
+  $attachments = get_posts([
+    'post_type'      => 'attachment',
+    'post_mime_type' => 'image',
+    'post_parent'    => $post_id,
+    'posts_per_page' => -1,
+    'orderby'        => 'menu_order ID',
+    'order'          => 'ASC',
+  ]);
+
+  if (!empty($attachments)) {
+    foreach ($attachments as $attachment) {
+      $full_url = wp_get_attachment_image_src($attachment->ID, 'large');
+      $thumb_url = wp_get_attachment_image_src($attachment->ID, 'thumbnail');
+
+      if ($full_url && $thumb_url) {
+        $images[] = [
+          'id'        => $attachment->ID,
+          'url'       => $full_url[0],
+          'url_small' => $thumb_url[0],
+          'alt'       => get_post_meta($attachment->ID, '_wp_attachment_image_alt', true),
+        ];
+      }
+    }
+  }
+
+  return $images;
+}
+
+/**
+ * Enqueue carousel script only on single accommodation pages.
+ */
+function twentytwentyfive_child_enqueue_single_carousel() {
+  if (!is_singular('accommodation')) {
+    return;
+  }
+
+  wp_enqueue_script(
+    'twentytwentyfive-child-single-carousel',
+    get_stylesheet_directory_uri() . '/assets/js/single.js',
+    [],
+    filemtime(get_stylesheet_directory() . '/assets/js/single.js'),
+    true
+  );
+
+  $post_id = get_the_ID();
+  $gallery_images = twentytwentyfive_child_get_accommodation_gallery_images($post_id);
+
+  wp_localize_script(
+    'twentytwentyfive-child-single-carousel',
+    'singleCarouselData',
+    [
+      'images' => $gallery_images,
+    ]
+  );
+}
+add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_single_carousel', 15);
+
+/**
  * Menú principal (si el tema padre no lo registra o quieres controlarlo).
  */
 function twentytwentyfive_child_register_menus() {

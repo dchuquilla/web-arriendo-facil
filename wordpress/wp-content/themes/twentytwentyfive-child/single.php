@@ -16,7 +16,60 @@ get_header();
       </a>
     </div>
 
-    <?php if ($main_img) : ?>
+    <?php
+      $post_id = get_the_ID();
+      $gallery_images = twentytwentyfive_child_get_accommodation_gallery_images($post_id);
+      $has_gallery = !empty($gallery_images) && count($gallery_images) >= 2;
+    ?>
+
+    <?php if ($has_gallery) : ?>
+      <!-- Carousel with blur background -->
+      <div class="property-gallery property-carousel" data-carousel-container>
+        <!-- Blur background -->
+        <div class="carousel-blur-bg" style="--image-url: url('<?php echo esc_attr($gallery_images[0]['url_small']); ?>')"></div>
+
+        <!-- Main carousel slides -->
+        <div class="carousel-main-wrapper">
+          <div class="carousel-inner">
+            <?php foreach ($gallery_images as $index => $image) : ?>
+              <div class="carousel-slide <?php echo $index === 0 ? 'is-active' : ''; ?>" data-carousel-slide="<?php echo esc_attr($index); ?>">
+                <img
+                  src="<?php echo esc_url($image['url']); ?>"
+                  alt="<?php echo esc_attr($image['alt'] ? $image['alt'] : get_the_title()); ?>"
+                  class="carousel-image"
+                  loading="<?php echo $index === 0 ? 'eager' : 'lazy'; ?>"
+                >
+              </div>
+            <?php endforeach; ?>
+          </div>
+
+          <!-- Navigation buttons -->
+          <button class="carousel-nav carousel-nav--prev" data-carousel-prev aria-label="<?php esc_attr_e('Imagen anterior', 'twentytwentyfive-child'); ?>">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+          <button class="carousel-nav carousel-nav--next" data-carousel-next aria-label="<?php esc_attr_e('Siguiente imagen', 'twentytwentyfive-child'); ?>">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Dots/indicators -->
+        <div class="carousel-dots" data-carousel-dots aria-label="<?php esc_attr_e('Indicadores de imagen', 'twentytwentyfive-child'); ?>">
+          <?php foreach ($gallery_images as $index => $image) : ?>
+            <button
+              class="dot-btn <?php echo $index === 0 ? 'is-active' : ''; ?>"
+              data-carousel-dot="<?php echo esc_attr($index); ?>"
+              aria-label="<?php echo esc_attr(sprintf(__('Imagen %d', 'twentytwentyfive-child'), $index + 1)); ?>"
+              aria-current="<?php echo $index === 0 ? 'true' : 'false'; ?>"
+            ></button>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    <?php elseif ($main_img) : ?>
+      <!-- Single image (no carousel if < 2 images) -->
       <div class="property-gallery">
         <img src="<?php echo esc_url($main_img); ?>" alt="<?php the_title_attribute(); ?>" class="gallery-main" loading="lazy">
       </div>
