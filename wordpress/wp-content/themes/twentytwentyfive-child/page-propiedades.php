@@ -78,7 +78,7 @@ get_header();
   </section>
 
   <!-- ========== PROPERTIES GRID ========== -->
-  <section class="section">
+  <section class="section section--properties-list">
     <div class="container">
       <div class="properties-header">
         <div>

@@ -46,6 +46,12 @@
       </button>
     </div>
 
+    <button class="nav-toggle" aria-label="<?php esc_attr_e('Menú', 'twentytwentyfive-child'); ?>" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
     <nav class="nav" aria-label="<?php esc_attr_e('Navegación principal', 'twentytwentyfive-child'); ?>">
       <?php
         if ( has_nav_menu('primary') ) {

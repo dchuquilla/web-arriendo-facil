@@ -123,16 +123,9 @@ get_header();
             </div>
           </div>
 
-          <!-- Primary Actions & Info -->
-          <div class="property-priority-cards">
-            <div class="card cta-card">
-              <h3><?php esc_html_e('¿Interesado?', 'twentytwentyfive-child'); ?></h3>
-              <p class="small"><?php esc_html_e('Contáctate directamente con el propietario para más detalles.', 'twentytwentyfive-child'); ?></p>
-              <a href="<?php echo esc_url(home_url('/contacto/')); ?>" class="btn btn--primary btn--block">
-                <?php esc_html_e('Contactar propietario', 'twentytwentyfive-child'); ?>
-              </a>
-            </div>
-
+          <!-- Primary Actions & Info - Three Column Layout -->
+          <div class="property-priority-cards property-priority-cards--three">
+            <!-- Información Importante -->
             <div class="card info-card">
               <h4><?php esc_html_e('Información importante', 'twentytwentyfive-child'); ?></h4>
               <ul class="small">
@@ -142,79 +135,77 @@ get_header();
                 <li><?php esc_html_e('Mascotas: Permitidas', 'twentytwentyfive-child'); ?></li>
               </ul>
             </div>
-          </div>
 
-          <!-- Features Grid -->
-          <div class="property-section">
-            <h2 class="h3"><?php esc_html_e('Características', 'twentytwentyfive-child'); ?></h2>
-            <div class="features-grid">
-              <?php
-                $bedrooms = (int) get_post_meta($post_id, '_af_bedrooms', true);
-                $bathrooms = (int) get_post_meta($post_id, '_af_bathrooms', true);
-                $square_meters = floatval(get_post_meta($post_id, '_af_square_meters', true));
-                $property_type = (string) get_post_meta($post_id, '_af_property_type', true);
-              ?>
-              <?php if ($bedrooms > 0) : ?>
-                <div class="feature-item">
-                  <span class="feature-icon">🛏️</span>
-                  <div>
-                    <h4><?php esc_html_e('Habitaciones', 'twentytwentyfive-child'); ?></h4>
-                    <p><?php echo esc_html($bedrooms); ?></p>
+            <!-- Características -->
+            <div class="card characteristics-card">
+              <h4><?php esc_html_e('Características', 'twentytwentyfive-child'); ?></h4>
+              <div class="characteristics-list">
+                <?php
+                  $bedrooms = (int) get_post_meta($post_id, '_af_bedrooms', true);
+                  $bathrooms = (int) get_post_meta($post_id, '_af_bathrooms', true);
+                  $square_meters = floatval(get_post_meta($post_id, '_af_square_meters', true));
+                  $property_type = (string) get_post_meta($post_id, '_af_property_type', true);
+                ?>
+                <?php if ($bedrooms > 0) : ?>
+                  <div class="characteristic-item">
+                    <span class="char-icon">🛏️</span>
+                    <div>
+                      <span class="char-label"><?php esc_html_e('Habitaciones', 'twentytwentyfive-child'); ?></span>
+                      <span class="char-value"><?php echo esc_html($bedrooms); ?></span>
+                    </div>
                   </div>
-                </div>
-              <?php endif; ?>
-              <?php if ($bathrooms > 0) : ?>
-                <div class="feature-item">
-                  <span class="feature-icon">🚿</span>
-                  <div>
-                    <h4><?php esc_html_e('Baños', 'twentytwentyfive-child'); ?></h4>
-                    <p><?php echo esc_html($bathrooms); ?></p>
+                <?php endif; ?>
+                <?php if ($bathrooms > 0) : ?>
+                  <div class="characteristic-item">
+                    <span class="char-icon">🚿</span>
+                    <div>
+                      <span class="char-label"><?php esc_html_e('Baños', 'twentytwentyfive-child'); ?></span>
+                      <span class="char-value"><?php echo esc_html($bathrooms); ?></span>
+                    </div>
                   </div>
-                </div>
-              <?php endif; ?>
-              <?php if ($square_meters > 0) : ?>
-                <div class="feature-item">
-                  <span class="feature-icon">📐</span>
-                  <div>
-                    <h4><?php esc_html_e('Tamaño', 'twentytwentyfive-child'); ?></h4>
-                    <p><?php echo esc_html(number_format_i18n($square_meters, 0)); ?> m²</p>
+                <?php endif; ?>
+                <?php if ($square_meters > 0) : ?>
+                  <div class="characteristic-item">
+                    <span class="char-icon">📐</span>
+                    <div>
+                      <span class="char-label"><?php esc_html_e('Tamaño', 'twentytwentyfive-child'); ?></span>
+                      <span class="char-value"><?php echo esc_html(number_format_i18n($square_meters, 0)); ?> m²</span>
+                    </div>
                   </div>
-                </div>
-              <?php endif; ?>
-              <?php if ($property_type) : ?>
-                <div class="feature-item">
-                  <span class="feature-icon">🌳</span>
-                  <div>
-                    <h4><?php esc_html_e('Tipo de propiedad', 'twentytwentyfive-child'); ?></h4>
-                    <p><?php echo esc_html($property_type); ?></p>
+                <?php endif; ?>
+                <?php if ($property_type) : ?>
+                  <div class="characteristic-item">
+                    <span class="char-icon">🌳</span>
+                    <div>
+                      <span class="char-label"><?php esc_html_e('Tipo de propiedad', 'twentytwentyfive-child'); ?></span>
+                      <span class="char-value"><?php echo esc_html($property_type); ?></span>
+                    </div>
                   </div>
-                </div>
-              <?php endif; ?>
+                <?php endif; ?>
+              </div>
+            </div>
+
+            <!-- Seguridad -->
+            <div class="card safety-card">
+              <h4>🛡️ <?php esc_html_e('Seguridad', 'twentytwentyfive-child'); ?></h4>
+              <p class="small"><?php esc_html_e('Esta propiedad ha sido verificada por nuestro equipo. Inspección completada. Propietario validado.', 'twentytwentyfive-child'); ?></p>
             </div>
           </div>
 
         </div>
       </div>
 
-      <div class="property-secondary-full">
-        <!-- Amenities -->
-        <?php if (!empty($amenities)) : ?>
-          <div class="property-section property-section--amenities">
-            <h2 class="h3"><?php esc_html_e('Servicios e instalaciones', 'twentytwentyfive-child'); ?></h2>
-            <div class="amenities-grid">
-              <?php foreach ($amenities as $amenity) : ?>
-                <div class="amenity">✓ <?php echo esc_html($amenity); ?></div>
-              <?php endforeach; ?>
-            </div>
+      <!-- Amenities -->
+      <?php if (!empty($amenities)) : ?>
+        <div class="property-section property-section--amenities">
+          <h2 class="h3"><?php esc_html_e('Servicios e instalaciones', 'twentytwentyfive-child'); ?></h2>
+          <div class="amenities-grid">
+            <?php foreach ($amenities as $amenity) : ?>
+              <div class="amenity">✓ <?php echo esc_html($amenity); ?></div>
+            <?php endforeach; ?>
           </div>
-        <?php endif; ?>
-
-        <!-- Safety Info -->
-        <div class="property-section safety-section">
-          <h2 class="h3">🛡️ <?php esc_html_e('Seguridad de la propiedad', 'twentytwentyfive-child'); ?></h2>
-          <p><?php esc_html_e('Esta propiedad ha sido verificada por nuestro equipo. Inspección de seguridad completada. Propietario validado.', 'twentytwentyfive-child'); ?></p>
         </div>
-      </div>
+      <?php endif; ?>
     </div>
   </section>
 
@@ -267,22 +258,6 @@ get_header();
             wp_reset_postdata();
           }
         ?>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== FINAL CTA ========== -->
-  <section class="section section--single-final-cta" id="single-final-cta">
-    <div class="container text-center">
-      <h2 class="h2"><?php esc_html_e('¿Listo para dar el próximo paso?', 'twentytwentyfive-child'); ?></h2>
-      <p class="p mx-auto"><?php esc_html_e('Nuestro equipo está aquí para ayudarte con cualquier pregunta sobre esta propiedad o para encontrar otras opciones.', 'twentytwentyfive-child'); ?></p>
-      <div class="single-cta-actions">
-        <a href="<?php echo esc_url(home_url('/contacto/')); ?>" class="btn btn--primary btn--lg">
-          <?php esc_html_e('Contactar soporte', 'twentytwentyfive-child'); ?>
-        </a>
-        <a href="<?php echo esc_url(home_url('/propiedades/')); ?>" class="btn btn--outline btn--lg">
-          <?php esc_html_e('Ver más propiedades', 'twentytwentyfive-child'); ?>
-        </a>
       </div>
     </div>
   </section>

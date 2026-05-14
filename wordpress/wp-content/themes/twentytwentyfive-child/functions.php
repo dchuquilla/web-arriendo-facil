@@ -81,6 +81,18 @@ function twentytwentyfive_child_enqueue_assets() {
       true
     );
 
+    wp_enqueue_script(
+      'twentytwentyfive-child-referral',
+      get_stylesheet_directory_uri() . '/assets/js/referral.js',
+      array(),
+      filemtime( get_stylesheet_directory() . '/assets/js/referral.js' ),
+      true
+    );
+
+    wp_localize_script('twentytwentyfive-child-referral', 'afReferral', array(
+      'whatsapp' => get_option( 'af_whatsapp_number', '' ),
+    ));
+
     // Data para el carrusel (propiedades destacadas)
     $properties = twentytwentyfive_child_get_featured_properties_payload();
     wp_localize_script('twentytwentyfive-child-home', 'twentytwentyfive_HOME', array(

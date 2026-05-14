@@ -217,7 +217,6 @@ $total_accommodations = $accommodation_count->publish ?? 0;
 
                       <div class="showcase-actions">
                         <a class="btn btn--primary" href="<?php echo esc_url($post['link']); ?>"><?php esc_html_e('Ver detalles completos', 'twentytwentyfive-child'); ?></a>
-                        <a class="btn btn--outline" href="#contacto"><?php esc_html_e('Contactar propietario', 'twentytwentyfive-child'); ?></a>
                       </div>
                     </div>
                   </div>
@@ -361,7 +360,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
           <div class="step" data-animate>
             <div class="step-number">2</div>
             <h4><?php esc_html_e('Contacta', 'twentytwentyfive-child'); ?></h4>
-            <span><?php esc_html_e('Comunícate directamente con el propietario. Resuelve tus dudas y negocia los términos.', 'twentytwentyfive-child'); ?></span>
+            <span><?php esc_html_e('Comunícate con nosotros. Resuelve tus dudas y negocia los términos.', 'twentytwentyfive-child'); ?></span>
           </div>
           <div class="step" data-animate>
             <div class="step-number">3</div>
@@ -388,7 +387,6 @@ $total_accommodations = $accommodation_count->publish ?? 0;
           <ul class="ul">
             <li><?php esc_html_e('Encuentra hogar en minutos, no semanas', 'twentytwentyfive-child'); ?></li>
             <li><?php esc_html_e('Notificaciones instantáneas de nuevas propiedades', 'twentytwentyfive-child'); ?></li>
-            <li><?php esc_html_e('Contacta directamente con propietarios', 'twentytwentyfive-child'); ?></li>
           </ul>
         </div>
         <div class="card" data-animate>
@@ -444,6 +442,104 @@ $total_accommodations = $accommodation_count->publish ?? 0;
           <?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?>
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROGRAMA DE RECOMENDACIONES ========== -->
+  <section class="section section--referral" id="recomendaciones">
+    <div class="container">
+      <div class="referral-grid" data-animate>
+        <div class="referral-left">
+          <span class="referral-badge">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <?php esc_html_e('Sé parte de nuestra comunidad', 'twentytwentyfive-child'); ?>
+          </span>
+
+          <h2 class="referral-title">
+            <?php echo wp_kses(
+              __('¿Conoces una propiedad que debería estar en <span class="text-accent">ArriendoFácil</span>?', 'twentytwentyfive-child'),
+              array('span' => array('class' => array()))
+            ); ?>
+          </h2>
+
+          <p class="referral-subtitle">
+            <?php esc_html_e('Ayúdanos a descubrir los mejores alojamientos y gana recompensas por cada recomendación exitosa.', 'twentytwentyfive-child'); ?>
+          </p>
+
+          <div class="referral-features">
+            <div class="referral-feature">
+              <div class="referral-feature-icon">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+              </div>
+              <div>
+                <strong><?php esc_html_e('Proceso seguro', 'twentytwentyfive-child'); ?></strong>
+                <span><?php esc_html_e('Evaluamos cada propiedad.', 'twentytwentyfive-child'); ?></span>
+              </div>
+            </div>
+            <div class="referral-feature">
+              <div class="referral-feature-icon">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div>
+                <strong><?php esc_html_e('Comunidad exclusiva', 'twentytwentyfive-child'); ?></strong>
+                <span><?php esc_html_e('Únete a nuestros recomendadores.', 'twentytwentyfive-child'); ?></span>
+              </div>
+            </div>
+          </div>
+
+          <a
+            href="https://wa.me/?text=Hola%2C%20quiero%20recomendar%20una%20propiedad%20para%20la%20plataforma%20y%20conocer%20c%C3%B3mo%20funciona%20el%20programa%20de%20recompensas."
+            class="referral-btn"
+            id="referral-whatsapp-btn"
+            aria-label="<?php esc_attr_e('Recomendar propiedad por WhatsApp', 'twentytwentyfive-child'); ?>"
+            target="_blank"
+            rel="noopener noreferrer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            <?php esc_html_e('Recomendar propiedad por WhatsApp', 'twentytwentyfive-child'); ?>
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+
+          <div class="referral-social-proof">
+            <div class="referral-avatars">
+              <div class="referral-avatar">D</div>
+              <div class="referral-avatar">M</div>
+              <div class="referral-avatar">S</div>
+              <div class="referral-avatar">A</div>
+            </div>
+            <div class="referral-stars">★★★★★</div>
+            <span><?php esc_html_e('+50 personas ya están recomendando propiedades', 'twentytwentyfive-child'); ?></span>
+          </div>
+        </div>
+
+        <div class="referral-right">
+          <div class="referral-phone">
+            <div class="referral-phone-header">
+              <div class="referral-phone-back">‹</div>
+              <div class="referral-phone-contact">
+                <div class="referral-phone-avatar-circle">AF</div>
+                <div>
+                  <strong>ArriendoFácil</strong>
+                  <span>En línea</span>
+                </div>
+              </div>
+            </div>
+            <div class="referral-phone-chat">
+              <div class="referral-chat-bubble referral-chat-incoming">
+                <p>¡Hola! 👋 Cuéntanos sobre la propiedad que quieres recomendar.</p>
+                <span class="referral-chat-time">11:30 a.m.</span>
+              </div>
+              <div class="referral-chat-bubble referral-chat-outgoing">
+                <p>Quiero recomendar una hermosa casa frente al mar.</p>
+                <span class="referral-chat-time">11:31 a.m.</span>
+              </div>
+              <div class="referral-chat-bubble referral-chat-incoming">
+                <p>¡Excelente! Envíanos los detalles y fotos, nuestro equipo la revisará.</p>
+                <span class="referral-chat-time">11:33 a.m.</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
