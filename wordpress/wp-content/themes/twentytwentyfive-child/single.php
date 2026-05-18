@@ -130,7 +130,7 @@ get_header();
               <h4><?php esc_html_e('Información importante', 'twentytwentyfive-child'); ?></h4>
               <ul class="small">
                 <li><?php esc_html_e('Disponible desde: Enero 2025', 'twentytwentyfive-child'); ?></li>
-                <li><?php esc_html_e('Contrato: 6 meses mínimo', 'twentytwentyfive-child'); ?></li>
+                <li><?php esc_html_e('Contrato: 1 año mínimo', 'twentytwentyfive-child'); ?></li>
                 <li><?php esc_html_e('Depósito: 2 meses de renta', 'twentytwentyfive-child'); ?></li>
                 <li><?php esc_html_e('Mascotas: Permitidas', 'twentytwentyfive-child'); ?></li>
               </ul>
