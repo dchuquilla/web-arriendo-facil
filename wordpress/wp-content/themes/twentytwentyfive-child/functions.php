@@ -328,6 +328,21 @@ function twentytwentyfive_child_register_menus() {
 add_action('after_setup_theme', 'twentytwentyfive_child_register_menus', 5);
 
 /**
+ * Remove 'Residencias' menu item from navigation
+ */
+function twentytwentyfive_child_remove_residencias_menu_item( $items, $args ) {
+  if ( isset( $args->theme_location ) && $args->theme_location === 'primary' ) {
+    foreach ( $items as $key => $item ) {
+      if ( stripos( $item->title, 'residencia' ) !== false ) {
+        unset( $items[ $key ] );
+      }
+    }
+  }
+  return $items;
+}
+add_filter( 'wp_nav_menu_objects', 'twentytwentyfive_child_remove_residencias_menu_item', 10, 2 );
+
+/**
  * Agregar cache headers para mejor rendimiento
  */
 function twentytwentyfive_child_add_cache_headers() {

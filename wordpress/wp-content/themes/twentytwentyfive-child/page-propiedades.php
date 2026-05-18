@@ -62,8 +62,13 @@ get_header();
                 <option value="room" <?php selected($_GET['property_type'] ?? '', 'room'); ?>>
                   <?php esc_html_e('Habitación', 'twentytwentyfive-child'); ?>
                 </option>
+                <option value="studio" <?php selected($_GET['property_type'] ?? '', 'studio'); ?>>
+                  <?php esc_html_e('Estudio', 'twentytwentyfive-child'); ?>
+                </option>
               </select>
             </div>
+
+            <input type="hidden" name="sort" value="<?php echo esc_attr($_GET['sort'] ?? 'newest'); ?>">
 
             <button type="submit" class="btn btn--primary">
               <?php esc_html_e('Buscar', 'twentytwentyfive-child'); ?>
@@ -89,9 +94,9 @@ get_header();
         <div class="sort-controls">
           <label for="sort"><?php esc_html_e('Ordenar por:', 'twentytwentyfive-child'); ?></label>
           <select id="sort" name="sort" class="sort-select">
-            <option value="newest"><?php esc_html_e('Más recientes', 'twentytwentyfive-child'); ?></option>
-            <option value="price-asc"><?php esc_html_e('Precio: menor a mayor', 'twentytwentyfive-child'); ?></option>
-            <option value="price-desc"><?php esc_html_e('Precio: mayor a menor', 'twentytwentyfive-child'); ?></option>
+            <option value="newest" <?php selected($_GET['sort'] ?? 'newest', 'newest'); ?>><?php esc_html_e('Más recientes', 'twentytwentyfive-child'); ?></option>
+            <option value="price-asc" <?php selected($_GET['sort'] ?? '', 'price-asc'); ?>><?php esc_html_e('Precio: menor a mayor', 'twentytwentyfive-child'); ?></option>
+            <option value="price-desc" <?php selected($_GET['sort'] ?? '', 'price-desc'); ?>><?php esc_html_e('Precio: mayor a menor', 'twentytwentyfive-child'); ?></option>
           </select>
         </div>
       </div>
@@ -135,15 +140,37 @@ get_header();
             ];
           }
 
-          $q = new WP_Query([
+          // Determine sort order
+          $sort_value = sanitize_text_field( $_GET['sort'] ?? 'newest' );
+          $orderby = 'date';
+          $order   = 'DESC';
+          $meta_key_sort = '';
+
+          if ( $sort_value === 'price-asc' ) {
+            $orderby = 'meta_value_num';
+            $order   = 'ASC';
+            $meta_key_sort = '_af_monthly_rent';
+          } elseif ( $sort_value === 'price-desc' ) {
+            $orderby = 'meta_value_num';
+            $order   = 'DESC';
+            $meta_key_sort = '_af_monthly_rent';
+          }
+
+          $query_args = [
             'post_type'      => 'accommodation',
             'posts_per_page' => 12,
             'post_status'    => 'publish',
-            'orderby'        => 'date',
-            'order'          => 'DESC',
+            'orderby'        => $orderby,
+            'order'          => $order,
             'paged'          => $current_page,
             'meta_query'     => count( $meta_query ) > 1 ? $meta_query : [],
-          ]);
+          ];
+
+          if ( $meta_key_sort ) {
+            $query_args['meta_key'] = $meta_key_sort;
+          }
+
+          $q = new WP_Query( $query_args );
 
           if ($q->have_posts()) {
             while ($q->have_posts()) { $q->the_post();
@@ -196,7 +223,7 @@ get_header();
             }
             wp_reset_postdata();
           } else {
-            echo '<div class="no-properties"><p>' . esc_html__( 'No hay propiedades disponibles en este momento.', 'twentytwentyfive-child' ) . '</p></div>';
+            echo '<div class="no-properties"><p>' . esc_html__( 'No hay propiedades disponibles con esos filtros.', 'twentytwentyfive-child' ) . '</p></div>';
           }
         ?>
       </div>
@@ -204,7 +231,7 @@ get_header();
       <!-- Pagination -->
       <div class="pagination">
         <?php
-          $pagination_links = paginate_links([
+          $pagination_args = [
             'base'      => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
             'format'    => '?paged=%#%',
             'current'   => $current_page,
@@ -212,7 +239,10 @@ get_header();
             'type'      => 'array',
             'prev_text' => esc_html__( 'Anterior', 'twentytwentyfive-child' ),
             'next_text' => esc_html__( 'Siguiente', 'twentytwentyfive-child' ),
-          ]);
+          ];
+
+          // Preserve query params in pagination links
+          $pagination_links = paginate_links( $pagination_args );
 
           if ( ! empty( $pagination_links ) ) {
             foreach ( $pagination_links as $pagination_link ) {
@@ -225,5 +255,19 @@ get_header();
   </section>
 
 </main>
+
+<script>
+(function() {
+  var sortSelect = document.getElementById('sort');
+  if (!sortSelect) return;
+
+  sortSelect.addEventListener('change', function() {
+    var url = new URL(window.location.href);
+    url.searchParams.set('sort', this.value);
+    url.searchParams.delete('paged');
+    window.location.href = url.toString();
+  });
+})();
+</script>
 
 <?php get_footer(); ?>
