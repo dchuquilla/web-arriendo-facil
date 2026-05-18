@@ -372,9 +372,15 @@
 
 			// Add click handlers for cards
 			document.querySelectorAll('.accommodation-card').forEach(card => {
-				card.addEventListener('click', () => {
+				card.addEventListener('click', (e) => {
+					if (e.target.closest('a')) return;
 					const id = card.dataset.id;
-					this.highlightAccommodation(id);
+					const link = card.querySelector('a.button');
+					if (link) {
+						window.location.href = link.href;
+					} else {
+						this.highlightAccommodation(id);
+					}
 				});
 			});
 		},

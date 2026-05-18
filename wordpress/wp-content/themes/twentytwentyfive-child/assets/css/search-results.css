@@ -310,14 +310,15 @@
 @media (max-width: 768px) {
 	.search-results-wrapper {
 		grid-template-columns: 1fr;
-		grid-template-rows: auto 1fr;
+		grid-template-rows: auto auto;
+		min-height: auto;
 	}
 
 	.search-results-sidebar {
 		grid-row: 2;
-		max-height: 50vh;
+		max-height: none;
 		min-height: 0;
-		overflow-y: auto;
+		overflow-y: visible;
 		position: static;
 		border-right: none;
 		border-top: 1px solid var(--wp--preset--color--light-slate-gray, #e0e0e0);
@@ -332,6 +333,7 @@
 
 	.leaflet-map {
 		height: 50vh;
+		min-height: 50vh;
 	}
 
 	.search-filters {
@@ -340,6 +342,12 @@
 
 	.filter-group {
 		margin-bottom: var(--wp--preset--spacing--3, 12px);
+	}
+
+	.results-list {
+		overflow: visible;
+		max-height: none;
+		padding-bottom: var(--wp--preset--spacing--8, 48px);
 	}
 }
 
