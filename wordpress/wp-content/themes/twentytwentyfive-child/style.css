@@ -21,13 +21,14 @@ Version: 2.0.0
 
 html {
   scroll-behavior: smooth;
-  color-scheme: only light;
+  color-scheme: light only !important;
 }
 
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
+  background-color: #ffffff !important;
 }
 
 #main-content {
@@ -890,7 +891,7 @@ hr.sep {
     height: 100vh;
     background: #ffffff;
     color: #1d2d44;
-    color-scheme: only light;
+    color-scheme: light only;
     flex-direction: column;
     padding: var(--space-8) var(--space-6);
     gap: var(--space-6);
@@ -4645,5 +4646,188 @@ body.single .section--single-related .container {
   .dot-btn {
     width: 10px;
     height: 10px;
+  }
+}
+
+/* ========================================
+   FORCED DARK MODE OVERRIDE
+   Prevents Android browsers (Samsung Internet, Chrome Auto Dark)
+   from inverting colors when device is in night/dark mode.
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  html, body {
+    background-color: #ffffff !important;
+    color: #1d2d44 !important;
+  }
+
+  .site-header {
+    background-color: #ffffff !important;
+    color: #1d2d44 !important;
+  }
+
+  .site-header a,
+  .nav a:not(.btn),
+  .main-menu .menu-item a {
+    color: #1d2d44 !important;
+  }
+
+  .nav {
+    background-color: #ffffff !important;
+    color: #1d2d44 !important;
+  }
+
+  .section,
+  .section--soft {
+    background-color: #ffffff !important;
+    color: #1d2d44 !important;
+  }
+
+  .section--soft {
+    background-color: #f8f9fa !important;
+  }
+
+  .hero {
+    background: #1d2d44 !important;
+    color: #ffffff !important;
+  }
+
+  .hero .h1,
+  .hero .p,
+  .hero-content {
+    color: #ffffff !important;
+  }
+
+  .hero-card {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .hero-search-input {
+    background: #ffffff !important;
+    color: #1d2d44 !important;
+  }
+
+  .btn--primary {
+    background: #7dbe52 !important;
+    color: #ffffff !important;
+  }
+
+  .btn--primary:hover {
+    background: #6ba847 !important;
+    color: #ffffff !important;
+  }
+
+  .showcase {
+    background: #ffffff !important;
+  }
+
+  .showcase-head {
+    background: #1d2d44 !important;
+    color: #ffffff !important;
+  }
+
+  .showcase-info {
+    background: #ffffff !important;
+    color: #1d2d44 !important;
+  }
+
+  .showcase-info h3 {
+    color: #1d2d44 !important;
+  }
+
+  .accommodation-card {
+    background-color: #ffffff !important;
+    color: #1d2d44 !important;
+  }
+
+  .site-footer {
+    background: #1d2d44 !important;
+    color: #ffffff !important;
+  }
+
+  .site-footer a,
+  .footer-links a,
+  .footer-col h4,
+  .footer-brand,
+  .footer-desc {
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  .section--referral {
+    background: #f8f9fa !important;
+    color: #1d2d44 !important;
+  }
+
+  .referral-phone {
+    background: #ffffff !important;
+  }
+
+  .referral-phone-header {
+    background: #075E54 !important;
+    color: #ffffff !important;
+  }
+
+  .referral-phone-chat {
+    background: #ECE5DD !important;
+  }
+
+  .referral-chat-incoming {
+    background: #ffffff !important;
+    color: #1d2d44 !important;
+  }
+
+  .referral-chat-outgoing {
+    background: #DCF8C6 !important;
+    color: #1d2d44 !important;
+  }
+
+  .referral-btn {
+    background: #25D366 !important;
+    color: #ffffff !important;
+  }
+
+  .contact-card,
+  .cta-card {
+    background: #ffffff !important;
+    color: #1d2d44 !important;
+  }
+
+  .testimonials-section {
+    background: #1d2d44 !important;
+    color: #ffffff !important;
+  }
+
+  img,
+  svg,
+  video {
+    filter: none !important;
+  }
+
+  .search-results-sidebar {
+    background-color: #f2f2f2 !important;
+    color: #1d2d44 !important;
+  }
+
+  .search-results-map {
+    background-color: #ffffff !important;
+  }
+
+  #af-chatbot-widget {
+    color-scheme: light only !important;
+  }
+
+  #af-chatbot-toggle {
+    background: linear-gradient(135deg, #0f766e, #0d9488) !important;
+    color: #ffffff !important;
+  }
+
+  .af-chatbot-logo {
+    background: #ffffff !important;
+    color: #0f766e !important;
+  }
+
+  #af-chatbot-panel {
+    background: #ffffff !important;
+    color: #0f172a !important;
   }
 }
