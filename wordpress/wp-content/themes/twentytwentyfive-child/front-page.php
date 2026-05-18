@@ -517,7 +517,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
             <div class="referral-phone-header">
               <div class="referral-phone-back">‹</div>
               <div class="referral-phone-contact">
-                <div class="referral-phone-avatar-circle">AF</div>
+                <div class="referral-phone-avatar-circle notranslate" translate="no">AF</div>
                 <div>
                   <strong>ArriendoFácil</strong>
                   <span>En línea</span>

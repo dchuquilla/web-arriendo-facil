@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <span class="logo-box">AF</span>
+          <span class="logo-box notranslate" translate="no">AF</span>
           <span><?php bloginfo('name'); ?></span>
         </div>
         <p class="footer-desc">
