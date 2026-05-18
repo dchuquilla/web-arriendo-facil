@@ -551,12 +551,14 @@ hr.sep {
 
 .mock-body .hero-search-bar {
   margin-bottom: var(--space-4);
+  grid-column: 1 / -1;
 }
 
 .hero-search-divider {
   height: 1px;
   background: var(--color-border-secondary);
   margin: var(--space-4) 0;
+  grid-column: 1 / -1;
 }
 
 .hero-search-input {
@@ -658,6 +660,11 @@ hr.sep {
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-4);
   text-align: center;
+  grid-column: 1 / -1;
+}
+
+.mock-body > p {
+  grid-column: 1 / -1;
 }
 
 .stat-item {
@@ -845,6 +852,18 @@ hr.sep {
   background: var(--color-text-primary);
   transition: all var(--transition);
   transform-origin: center;
+}
+
+.nav-toggle.is-active span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle.is-active span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.is-active span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 /* Mobile Navigation Breakpoint */
@@ -3053,6 +3072,10 @@ body.single .site-footer .container {
 
   .social-links {
     justify-content: center;
+  }
+
+  .footer-desc {
+    max-width: none;
   }
 }
 
