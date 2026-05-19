@@ -158,96 +158,63 @@ $total_accommodations = $accommodation_count->publish ?? 0;
           <p class="p mx-auto"><?php esc_html_e('Descubre propiedades de calidad seleccionadas para ti. Ubicación, comodidad y confianza garantizadas.', 'twentytwentyfive-child'); ?></p>
         </div>
 
-        <div class="showcase" data-home-showcase>
-          <div class="showcase-head">
-            <strong><?php esc_html_e('Propiedad destacada', 'twentytwentyfive-child'); ?></strong>
-
-            <div class="carousel-controls">
-              <button class="icon-btn" type="button" data-carousel-prev aria-label="<?php esc_attr_e('Anterior', 'twentytwentyfive-child'); ?>">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-              </button>
-              <button class="icon-btn" type="button" data-carousel-next aria-label="<?php esc_attr_e('Siguiente', 'twentytwentyfive-child'); ?>">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="carousel-wrapper">
-            <div class="carousel-inner">
-              <?php foreach ($featured_posts as $i => $post) : ?>
-                <div class="carousel-slide <?php echo $i === 0 ? 'is-active' : ''; ?>" data-carousel-slide="<?php echo esc_attr($i); ?>">
-                  <div class="showcase-body">
-                    <div class="showcase-media">
-                      <a href="<?php echo esc_url($post['link']); ?>" data-property-link>
-                        <img
-                          src="<?php echo esc_url($post['image']); ?>"
-                          alt="<?php echo esc_attr($post['alt']); ?>"
-                          data-property-image
-                          loading="lazy"
-                          decoding="async"
-                        >
-                      </a>
+        <div class="flip-carousel" data-flip-carousel>
+          <div class="flip-carousel__track" data-flip-track>
+            <?php foreach ($featured_posts as $i => $post) : ?>
+              <div class="flip-card" data-flip-card>
+                <div class="flip-card__inner">
+                  <div class="flip-card__front">
+                    <img
+                      src="<?php echo esc_url($post['image']); ?>"
+                      alt="<?php echo esc_attr($post['alt']); ?>"
+                      loading="lazy"
+                      decoding="async">
+                    <div class="flip-card__overlay">
+                      <h3 class="flip-card__title"><?php echo esc_html($post['title']); ?></h3>
                     </div>
-
-                    <div class="showcase-info">
-                      <h3 data-property-title><?php echo esc_html($post['title']); ?></h3>
-
-                      <p
-                        class="p showcase-meta"
-                        data-property-excerpt
-                        <?php if (empty($post['excerpt'])) : ?>style="display:none;"<?php endif; ?>
-                      ><?php echo esc_html($post['excerpt']); ?></p>
-
-                      <div class="badges" data-property-badges>
-                        <?php foreach (($post['tags'] ?? []) as $tag) : ?>
-                          <?php if ($tag === 'Áreas comunales') : ?>
-                            <?php $residencia_link = get_field('residencia', $post['id']); ?>
-                            <?php if ($residencia_link) : ?>
-                              <a href="<?php echo esc_url($residencia_link); ?>" class="badge badge--feature">
-                                <?php echo esc_html($tag); ?>
-                              </a>
-                            <?php else : ?>
-                              <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
-                            <?php endif; ?>
-                          <?php else : ?>
+                  </div>
+                  <div class="flip-card__back">
+                    <div class="flip-card__back-content">
+                      <h3><?php echo esc_html($post['title']); ?></h3>
+                      <?php if (!empty($post['excerpt'])) : ?>
+                        <p class="flip-card__excerpt"><?php echo esc_html($post['excerpt']); ?></p>
+                      <?php endif; ?>
+                      <?php if (!empty($post['tags'])) : ?>
+                        <div class="flip-card__badges">
+                          <?php foreach ($post['tags'] as $tag) : ?>
                             <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
-                          <?php endif; ?>
-                        <?php endforeach; ?>
-                      </div>
-
-                      <div class="showcase-actions">
-                        <a class="btn btn--primary" href="<?php echo esc_url($post['link']); ?>"><?php esc_html_e('Ver detalles completos', 'twentytwentyfive-child'); ?></a>
-                      </div>
+                          <?php endforeach; ?>
+                        </div>
+                      <?php endif; ?>
+                      <a class="btn btn--primary" href="<?php echo esc_url($post['link']); ?>">
+                        <?php esc_html_e('Ver detalles', 'twentytwentyfive-child'); ?>
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      </a>
                     </div>
                   </div>
                 </div>
-              <?php endforeach; ?>
-            </div>
-
-            <div class="dots" data-carousel-dots aria-label="<?php esc_attr_e('Navegación del carrusel', 'twentytwentyfive-child'); ?>">
-              <?php foreach ($featured_posts as $i => $post) : ?>
-                <button
-                  class="dot-btn <?php echo $i === 0 ? 'is-active' : ''; ?>"
-                  data-carousel-dot="<?php echo esc_attr($i); ?>"
-                  aria-label="<?php echo esc_attr(sprintf(__('Imagen %d', 'twentytwentyfive-child'), $i + 1)); ?>"
-                  aria-current="<?php echo $i === 0 ? 'true' : 'false'; ?>"
-                  type="button"
-                ></button>
-              <?php endforeach; ?>
-            </div>
-
-            <?php if (!empty($residencias)) : ?>
-              <div class="featured-strip" data-featured-strip>
-                <?php foreach ($residencias as $item) : ?>
-                  <a class="featured-item" href="<?php echo esc_url($item['link']); ?>" aria-label="<?php echo esc_attr($item['title']); ?>">
-                    <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>">
-                    <div class="fi-title"><?php echo esc_html($item['title']); ?></div>
-                  </a>
-                <?php endforeach; ?>
               </div>
-            <?php endif; ?>
+            <?php endforeach; ?>
           </div>
+
+          <button class="flip-carousel__prev" data-flip-prev aria-label="<?php esc_attr_e('Anterior', 'twentytwentyfive-child'); ?>">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="flip-carousel__next" data-flip-next aria-label="<?php esc_attr_e('Siguiente', 'twentytwentyfive-child'); ?>">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
         </div>
+
+        <?php if (!empty($residencias)) : ?>
+          <div class="featured-strip" data-featured-strip>
+            <?php foreach ($residencias as $item) : ?>
+              <a class="featured-item" href="<?php echo esc_url($item['link']); ?>" aria-label="<?php echo esc_attr($item['title']); ?>">
+                <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>">
+                <div class="fi-title"><?php echo esc_html($item['title']); ?></div>
+              </a>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
       <?php else : ?>
         <div class="showcase showcase--empty" data-home-showcase>
           <div class="showcase-head">
@@ -272,24 +239,40 @@ $total_accommodations = $accommodation_count->publish ?? 0;
 
       <div class="benefits-grid">
         <div class="benefit-card" data-animate>
-          <div class="benefit-icon">🛡️</div>
-          <h3 class="h3"><?php esc_html_e('Plataforma confiable', 'twentytwentyfive-child'); ?></h3>
-          <p class="p" style="margin:0;"><?php esc_html_e('Todos nuestros hospedajes son verificados. Seguridad y calidad garantizadas en cada propiedad.', 'twentytwentyfive-child'); ?></p>
+          <div class="benefit-icon-wrapper">
+            <span class="benefit-icon" aria-hidden="true">&#x1F6E1;&#xFE0F;</span>
+          </div>
+          <div class="benefit-content">
+            <h3 class="benefit-title"><?php esc_html_e('Plataforma confiable', 'twentytwentyfive-child'); ?></h3>
+            <p class="benefit-desc"><?php esc_html_e('Todos nuestros hospedajes son verificados. Seguridad y calidad garantizadas en cada propiedad.', 'twentytwentyfive-child'); ?></p>
+          </div>
         </div>
         <div class="benefit-card" data-animate>
-          <div class="benefit-icon">⚡</div>
-          <h3 class="h3"><?php esc_html_e('Proceso ágil', 'twentytwentyfive-child'); ?></h3>
-          <p class="p" style="margin:0;"><?php esc_html_e('Busca, contacta y muda en días. Sin trámites innecesarios, solo lo esencial.', 'twentytwentyfive-child'); ?></p>
+          <div class="benefit-icon-wrapper">
+            <span class="benefit-icon" aria-hidden="true">&#x26A1;</span>
+          </div>
+          <div class="benefit-content">
+            <h3 class="benefit-title"><?php esc_html_e('Proceso ágil', 'twentytwentyfive-child'); ?></h3>
+            <p class="benefit-desc"><?php esc_html_e('Busca, contacta y muda en días. Sin trámites innecesarios, solo lo esencial.', 'twentytwentyfive-child'); ?></p>
+          </div>
         </div>
         <div class="benefit-card" data-animate>
-          <div class="benefit-icon">📞</div>
-          <h3 class="h3"><?php esc_html_e('Soporte siempre disponible', 'twentytwentyfive-child'); ?></h3>
-          <p class="p" style="margin:0;"><?php esc_html_e('Estamos aquí 24/7 para resolver tus dudas. Respuestas rápidas, sin esperas.', 'twentytwentyfive-child'); ?></p>
+          <div class="benefit-icon-wrapper">
+            <span class="benefit-icon" aria-hidden="true">&#x1F4DE;</span>
+          </div>
+          <div class="benefit-content">
+            <h3 class="benefit-title"><?php esc_html_e('Soporte siempre disponible', 'twentytwentyfive-child'); ?></h3>
+            <p class="benefit-desc"><?php esc_html_e('Estamos aquí 24/7 para resolver tus dudas. Respuestas rápidas, sin esperas.', 'twentytwentyfive-child'); ?></p>
+          </div>
         </div>
         <div class="benefit-card" data-animate>
-          <div class="benefit-icon">💰</div>
-          <h3 class="h3"><?php esc_html_e('Precios claros', 'twentytwentyfive-child'); ?></h3>
-          <p class="p" style="margin:0;"><?php esc_html_e('Sin sorpresas. Todos los costos incluidos desde el inicio. Transparencia total.', 'twentytwentyfive-child'); ?></p>
+          <div class="benefit-icon-wrapper">
+            <span class="benefit-icon" aria-hidden="true">&#x1F4B0;</span>
+          </div>
+          <div class="benefit-content">
+            <h3 class="benefit-title"><?php esc_html_e('Precios claros', 'twentytwentyfive-child'); ?></h3>
+            <p class="benefit-desc"><?php esc_html_e('Sin sorpresas. Todos los costos incluidos desde el inicio. Transparencia total.', 'twentytwentyfive-child'); ?></p>
+          </div>
         </div>
       </div>
     </div>

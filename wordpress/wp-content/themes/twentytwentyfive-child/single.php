@@ -115,97 +115,135 @@ get_header();
             <?php endforeach; ?>
           </div>
 
-          <!-- Description -->
-          <div class="property-section">
-            <h2 class="h3"><?php esc_html_e('Sobre esta propiedad', 'twentytwentyfive-child'); ?></h2>
-            <div class="property-description">
-              <?php the_content(); ?>
-            </div>
+          <!-- Tab Navigation -->
+          <?php
+            $latitude = floatval(get_post_meta($post_id, '_af_latitude', true));
+            $longitude = floatval(get_post_meta($post_id, '_af_longitude', true));
+            $bedrooms = (int) get_post_meta($post_id, '_af_bedrooms', true);
+            $bathrooms = (int) get_post_meta($post_id, '_af_bathrooms', true);
+            $square_meters = floatval(get_post_meta($post_id, '_af_square_meters', true));
+            $property_type = (string) get_post_meta($post_id, '_af_property_type', true);
+          ?>
+          <div class="property-tabs" role="tablist" aria-label="<?php esc_attr_e('Información de la propiedad', 'twentytwentyfive-child'); ?>">
+            <button class="property-tab is-active" role="tab" aria-selected="true" aria-controls="tab-detalles" id="tab-btn-detalles" data-tab="detalles" type="button">
+              <?php esc_html_e('Detalles', 'twentytwentyfive-child'); ?>
+            </button>
+            <button class="property-tab" role="tab" aria-selected="false" aria-controls="tab-caracteristicas" id="tab-btn-caracteristicas" data-tab="caracteristicas" type="button">
+              <?php esc_html_e('Características', 'twentytwentyfive-child'); ?>
+            </button>
+            <button class="property-tab" role="tab" aria-selected="false" aria-controls="tab-ubicacion" id="tab-btn-ubicacion" data-tab="ubicacion" type="button">
+              <?php esc_html_e('Ubicación', 'twentytwentyfive-child'); ?>
+            </button>
+            <span class="property-tab__indicator" aria-hidden="true"></span>
           </div>
 
-          <!-- Primary Actions & Info - Three Column Layout -->
-          <div class="property-priority-cards property-priority-cards--three">
-            <!-- Información Importante -->
-            <div class="card info-card">
-              <h4><?php esc_html_e('Información importante', 'twentytwentyfive-child'); ?></h4>
-              <ul class="small">
-                <li><?php esc_html_e('Disponible desde: Enero 2025', 'twentytwentyfive-child'); ?></li>
-                <li><?php esc_html_e('Contrato: 1 año mínimo', 'twentytwentyfive-child'); ?></li>
-                <li><?php esc_html_e('Depósito: 2 meses de renta', 'twentytwentyfive-child'); ?></li>
-                <li><?php esc_html_e('Mascotas: Permitidas', 'twentytwentyfive-child'); ?></li>
-              </ul>
-            </div>
+          <!-- Tab Panels -->
+          <div class="property-tab-panels">
+            <!-- Tab 1: Detalles -->
+            <div class="property-tab-panel is-active" role="tabpanel" id="tab-detalles" aria-labelledby="tab-btn-detalles">
+              <div class="property-section">
+                <h2 class="h3"><?php esc_html_e('Sobre esta propiedad', 'twentytwentyfive-child'); ?></h2>
+                <div class="property-description">
+                  <?php
+                    $content = get_the_content();
+                    $content = preg_replace('/<!-- wp:gallery.*?<!-- \/wp:gallery -->/s', '', $content);
+                    echo apply_filters('the_content', $content);
+                  ?>
+                </div>
+              </div>
 
-            <!-- Características -->
-            <div class="card characteristics-card">
-              <h4><?php esc_html_e('Características', 'twentytwentyfive-child'); ?></h4>
-              <div class="characteristics-list">
-                <?php
-                  $bedrooms = (int) get_post_meta($post_id, '_af_bedrooms', true);
-                  $bathrooms = (int) get_post_meta($post_id, '_af_bathrooms', true);
-                  $square_meters = floatval(get_post_meta($post_id, '_af_square_meters', true));
-                  $property_type = (string) get_post_meta($post_id, '_af_property_type', true);
-                ?>
+              <!-- Stats Bar -->
+              <div class="property-stats-bar">
                 <?php if ($bedrooms > 0) : ?>
-                  <div class="characteristic-item">
-                    <span class="char-icon">🛏️</span>
-                    <div>
-                      <span class="char-label"><?php esc_html_e('Habitaciones', 'twentytwentyfive-child'); ?></span>
-                      <span class="char-value"><?php echo esc_html($bedrooms); ?></span>
-                    </div>
-                  </div>
+                  <div class="property-stat-chip"><span class="stat-icon">🛏️</span> <?php echo esc_html($bedrooms); ?> <?php esc_html_e('Habitaciones', 'twentytwentyfive-child'); ?></div>
                 <?php endif; ?>
                 <?php if ($bathrooms > 0) : ?>
-                  <div class="characteristic-item">
-                    <span class="char-icon">🚿</span>
-                    <div>
-                      <span class="char-label"><?php esc_html_e('Baños', 'twentytwentyfive-child'); ?></span>
-                      <span class="char-value"><?php echo esc_html($bathrooms); ?></span>
-                    </div>
-                  </div>
+                  <div class="property-stat-chip"><span class="stat-icon">🚿</span> <?php echo esc_html($bathrooms); ?> <?php esc_html_e('Baños', 'twentytwentyfive-child'); ?></div>
                 <?php endif; ?>
                 <?php if ($square_meters > 0) : ?>
-                  <div class="characteristic-item">
-                    <span class="char-icon">📐</span>
-                    <div>
-                      <span class="char-label"><?php esc_html_e('Tamaño', 'twentytwentyfive-child'); ?></span>
-                      <span class="char-value"><?php echo esc_html(number_format_i18n($square_meters, 0)); ?> m²</span>
-                    </div>
-                  </div>
+                  <div class="property-stat-chip"><span class="stat-icon">📐</span> <?php echo esc_html(number_format_i18n($square_meters, 0)); ?> m²</div>
                 <?php endif; ?>
                 <?php if ($property_type) : ?>
-                  <div class="characteristic-item">
-                    <span class="char-icon">🌳</span>
-                    <div>
-                      <span class="char-label"><?php esc_html_e('Tipo de propiedad', 'twentytwentyfive-child'); ?></span>
-                      <span class="char-value"><?php echo esc_html($property_type); ?></span>
-                    </div>
-                  </div>
+                  <div class="property-stat-chip"><span class="stat-icon">🏠</span> <?php echo esc_html(ucfirst($property_type)); ?></div>
                 <?php endif; ?>
               </div>
             </div>
 
-            <!-- Seguridad -->
-            <div class="card safety-card">
-              <h4>🛡️ <?php esc_html_e('Seguridad', 'twentytwentyfive-child'); ?></h4>
-              <p class="small"><?php esc_html_e('Esta propiedad ha sido verificada por nuestro equipo. Inspección completada. Propietario validado.', 'twentytwentyfive-child'); ?></p>
+            <!-- Tab 2: Características -->
+            <div class="property-tab-panel" role="tabpanel" id="tab-caracteristicas" aria-labelledby="tab-btn-caracteristicas" hidden>
+              <?php if (!empty($amenities)) : ?>
+                <div class="property-section">
+                  <h3 class="h3"><?php esc_html_e('Servicios e instalaciones', 'twentytwentyfive-child'); ?></h3>
+                  <div class="amenities-grid">
+                    <?php foreach ($amenities as $amenity) : ?>
+                      <div class="amenity">✓ <?php echo esc_html($amenity); ?></div>
+                    <?php endforeach; ?>
+                  </div>
+                </div>
+              <?php endif; ?>
+
+              <div class="property-section" style="margin-top: var(--space-6);">
+                <h3 class="h3"><?php esc_html_e('Información importante', 'twentytwentyfive-child'); ?></h3>
+                <div class="property-info-list">
+                  <div class="property-info-item">
+                    <span class="property-info-icon">📅</span>
+                    <div>
+                      <strong><?php esc_html_e('Disponibilidad', 'twentytwentyfive-child'); ?></strong>
+                      <span><?php esc_html_e('Disponible ahora', 'twentytwentyfive-child'); ?></span>
+                    </div>
+                  </div>
+                  <div class="property-info-item">
+                    <span class="property-info-icon">📝</span>
+                    <div>
+                      <strong><?php esc_html_e('Contrato', 'twentytwentyfive-child'); ?></strong>
+                      <span><?php esc_html_e('1 año mínimo', 'twentytwentyfive-child'); ?></span>
+                    </div>
+                  </div>
+                  <div class="property-info-item">
+                    <span class="property-info-icon">💰</span>
+                    <div>
+                      <strong><?php esc_html_e('Depósito', 'twentytwentyfive-child'); ?></strong>
+                      <span><?php esc_html_e('2 meses de renta', 'twentytwentyfive-child'); ?></span>
+                    </div>
+                  </div>
+                  <div class="property-info-item">
+                    <span class="property-info-icon">🐾</span>
+                    <div>
+                      <strong><?php esc_html_e('Mascotas', 'twentytwentyfive-child'); ?></strong>
+                      <span><?php echo in_array('pet-friendly', $amenities) ? esc_html_e('Permitidas', 'twentytwentyfive-child') : esc_html_e('No permitidas', 'twentytwentyfive-child'); ?></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="property-section" style="margin-top: var(--space-6);">
+                <h3 class="h3">🛡️ <?php esc_html_e('Seguridad', 'twentytwentyfive-child'); ?></h3>
+                <p class="property-security-note"><?php esc_html_e('Esta propiedad ha sido verificada por nuestro equipo. Inspección completada. Propietario validado.', 'twentytwentyfive-child'); ?></p>
+              </div>
+            </div>
+
+            <!-- Tab 3: Ubicación -->
+            <div class="property-tab-panel" role="tabpanel" id="tab-ubicacion" aria-labelledby="tab-btn-ubicacion" hidden>
+              <?php if ($latitude && $longitude) : ?>
+                <div id="property-map" class="property-map"
+                     data-lat="<?php echo esc_attr($latitude); ?>"
+                     data-lng="<?php echo esc_attr($longitude); ?>">
+                </div>
+                <?php if ($address) : ?>
+                  <p class="property-map-address">📍 <?php echo esc_html($address); ?></p>
+                <?php endif; ?>
+              <?php else : ?>
+                <div class="property-map-empty">
+                  <p><?php esc_html_e('Ubicación no disponible para esta propiedad.', 'twentytwentyfive-child'); ?></p>
+                </div>
+              <?php endif; ?>
             </div>
           </div>
 
         </div>
       </div>
 
-      <!-- Amenities -->
-      <?php if (!empty($amenities)) : ?>
-        <div class="property-section property-section--amenities">
-          <h2 class="h3"><?php esc_html_e('Servicios e instalaciones', 'twentytwentyfive-child'); ?></h2>
-          <div class="amenities-grid">
-            <?php foreach ($amenities as $amenity) : ?>
-              <div class="amenity">✓ <?php echo esc_html($amenity); ?></div>
-            <?php endforeach; ?>
-          </div>
-        </div>
-      <?php endif; ?>
+      <!-- Amenities removed - now inside tabs -->
     </div>
   </section>
 

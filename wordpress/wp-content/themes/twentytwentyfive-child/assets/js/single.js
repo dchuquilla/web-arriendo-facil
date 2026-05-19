@@ -71,3 +71,91 @@
   // Initialize first slide
   showSlide(0);
 })();
+
+// === PROPERTY TABS ===
+(function() {
+  'use strict';
+
+  var tabContainer = document.querySelector('.property-tabs');
+  if (!tabContainer) return;
+
+  var tabs = Array.from(tabContainer.querySelectorAll('[data-tab]'));
+  var panels = document.querySelectorAll('.property-tab-panel');
+  var indicator = tabContainer.querySelector('.property-tab__indicator');
+
+  function activateTab(tab) {
+    var targetId = 'tab-' + tab.dataset.tab;
+
+    tabs.forEach(function(t) {
+      t.classList.remove('is-active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    panels.forEach(function(p) {
+      p.classList.remove('is-active');
+      p.hidden = true;
+    });
+
+    tab.classList.add('is-active');
+    tab.setAttribute('aria-selected', 'true');
+    var panel = document.getElementById(targetId);
+    if (panel) {
+      panel.hidden = false;
+      panel.classList.add('is-active');
+    }
+
+    moveIndicator(tab);
+
+    if (tab.dataset.tab === 'ubicacion') {
+      initPropertyMap();
+    }
+  }
+
+  function moveIndicator(tab) {
+    if (!indicator) return;
+    indicator.style.left = tab.offsetLeft + 'px';
+    indicator.style.width = tab.offsetWidth + 'px';
+  }
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() { activateTab(tab); });
+  });
+
+  tabContainer.addEventListener('keydown', function(e) {
+    var index = tabs.indexOf(document.activeElement);
+    if (index < 0) return;
+    if (e.key === 'ArrowRight') {
+      var next = tabs[(index + 1) % tabs.length];
+      next.focus();
+      activateTab(next);
+    } else if (e.key === 'ArrowLeft') {
+      var prev = tabs[(index - 1 + tabs.length) % tabs.length];
+      prev.focus();
+      activateTab(prev);
+    }
+  });
+
+  moveIndicator(tabs[0]);
+
+  // === LEAFLET MAP (lazy) ===
+  var mapInitialized = false;
+
+  function initPropertyMap() {
+    if (mapInitialized) return;
+    var mapEl = document.getElementById('property-map');
+    if (!mapEl || typeof L === 'undefined') return;
+
+    var lat = parseFloat(mapEl.dataset.lat);
+    var lng = parseFloat(mapEl.dataset.lng);
+    if (!isFinite(lat) || !isFinite(lng)) {
+      mapEl.innerHTML = '<p style="padding:2rem;text-align:center;color:#9e9e9e;">Ubicación no disponible</p>';
+      return;
+    }
+
+    var map = L.map(mapEl).setView([lat, lng], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    L.marker([lat, lng]).addTo(map);
+    mapInitialized = true;
+  }
+})();

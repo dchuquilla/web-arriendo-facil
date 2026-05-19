@@ -69,7 +69,7 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-home',
       get_stylesheet_directory_uri() . '/assets/js/home.js',
       array(),
-      '2.0.3',
+      filemtime( get_stylesheet_directory() . '/assets/js/home.js' ),
       true
     );
 
