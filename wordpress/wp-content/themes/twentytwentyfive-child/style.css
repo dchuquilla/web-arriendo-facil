@@ -2164,7 +2164,12 @@ body.is-lightbox-open {
   cursor: pointer;
 }
 
-.flip-card:hover .flip-card__inner,
+@media (hover: hover) {
+  .flip-card:hover .flip-card__inner {
+    transform: rotateY(180deg);
+  }
+}
+
 .flip-card.is-flipped .flip-card__inner {
   transform: rotateY(180deg);
 }
@@ -2304,17 +2309,14 @@ body.is-lightbox-open {
   .flip-card__inner {
     transition: none;
   }
-  .flip-card:hover .flip-card__inner,
   .flip-card.is-flipped .flip-card__inner {
     transform: none;
   }
-  .flip-card:hover .flip-card__back,
   .flip-card.is-flipped .flip-card__back {
     transform: none;
     position: relative;
     inset: auto;
   }
-  .flip-card:hover .flip-card__front,
   .flip-card.is-flipped .flip-card__front {
     display: none;
   }

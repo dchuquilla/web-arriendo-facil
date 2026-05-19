@@ -41,9 +41,16 @@
     track.style.transform = 'translateX(' + (-(currentIndex * cardWidth) + deltaX) + 'px)';
   }
 
+  function resetFlippedCards() {
+    cards.forEach(function(card) {
+      card.classList.remove('is-flipped');
+    });
+  }
+
   function slideTo(index) {
     currentIndex = Math.max(0, Math.min(index, maxIndex));
     deltaX = 0;
+    resetFlippedCards();
     applyTransform(true);
   }
 
