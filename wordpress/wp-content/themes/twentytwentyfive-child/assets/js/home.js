@@ -29,6 +29,16 @@
     visibleCards = viewportWidth <= 600 ? 1 : viewportWidth <= 900 ? 2 : 3;
     maxIndex = Math.max(0, cards.length - visibleCards);
     currentIndex = Math.min(currentIndex, maxIndex);
+
+    // Center track when cards don't fill the viewport
+    if (cards.length <= visibleCards) {
+      var totalWidth = (cards.length * cardWidth) - gap;
+      var offset = (viewportWidth - totalWidth) / 2;
+      track.style.paddingLeft = Math.max(0, offset) + 'px';
+    } else {
+      track.style.paddingLeft = '0px';
+    }
+
     applyTransform(false);
   }
 
@@ -157,17 +167,47 @@
 
   // --- Tap to flip on mobile ---
   var tapStartX = 0;
+  var tapOnClose = false;
   cards.forEach(function(card) {
+    var closeBtn = card.querySelector('.flip-card__close');
+
     card.addEventListener('touchstart', function(e) {
+      tapOnClose = closeBtn && closeBtn.contains(e.target);
       tapStartX = e.touches[0].clientX;
     }, { passive: true });
 
     card.addEventListener('touchend', function(e) {
+      if (tapOnClose) return;
       var dx = Math.abs(e.changedTouches[0].clientX - tapStartX);
       if (dx < 10 && window.innerWidth <= 900) {
+        card.classList.remove('is-closed');
         card.classList.toggle('is-flipped');
       }
     });
+
+    // Re-enable hover when mouse leaves card
+    card.addEventListener('mouseleave', function() {
+      card.classList.remove('is-closed');
+    });
+
+    // Close button on back face
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        card.classList.remove('is-flipped');
+        card.classList.add('is-closed');
+      });
+      closeBtn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        card.classList.remove('is-flipped');
+        card.classList.add('is-closed');
+      });
+      closeBtn.addEventListener('touchstart', function(e) {
+        e.stopPropagation();
+      }, { passive: false });
+    }
   });
 
   // --- Init ---

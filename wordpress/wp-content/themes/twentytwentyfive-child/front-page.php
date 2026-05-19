@@ -174,6 +174,9 @@ $total_accommodations = $accommodation_count->publish ?? 0;
                     </div>
                   </div>
                   <div class="flip-card__back">
+                    <button class="flip-card__close" aria-label="<?php esc_attr_e('Cerrar', 'twentytwentyfive-child'); ?>" type="button">
+                      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
                     <div class="flip-card__back-content">
                       <h3><?php echo esc_html($post['title']); ?></h3>
                       <?php if (!empty($post['excerpt'])) : ?>
