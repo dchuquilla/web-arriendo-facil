@@ -69,9 +69,9 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="footer-col">
         <h4><?php esc_html_e('Legal', 'twentytwentyfive-child'); ?></h4>
         <div class="footer-links">
-          <a href="#"><?php esc_html_e('Términos de servicio', 'twentytwentyfive-child'); ?></a>
-          <a href="#"><?php esc_html_e('Política de privacidad', 'twentytwentyfive-child'); ?></a>
-          <a href="#"><?php esc_html_e('Cookies', 'twentytwentyfive-child'); ?></a>
+          <a href="<?php echo esc_url(home_url('/terms-and-conditions/')); ?>"><?php esc_html_e('Términos y condiciones', 'twentytwentyfive-child'); ?></a>
+          <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>"><?php esc_html_e('Política de privacidad', 'twentytwentyfive-child'); ?></a>
+          <a href="<?php echo esc_url(home_url('/cookie-policy-eu/')); ?>"><?php esc_html_e('Política de cookies', 'twentytwentyfive-child'); ?></a>
         </div>
       </div>
     </div>
