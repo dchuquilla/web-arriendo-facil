@@ -4,26 +4,47 @@
   var POLL_INTERVAL = 30000;
   var apiUrl = (window.afPropiedades && window.afPropiedades.apiUrl) || '/wp-json/af/v1/accommodations/search';
   var currentFilters = (window.afPropiedades && window.afPropiedades.filters) || {};
-  var knownIds = [];
+  var baselineIds = [];
   var pollTimer = null;
+  var initialized = false;
 
   function init() {
-    var cards = document.querySelectorAll('.properties-grid .property-card');
-    cards.forEach(function (card) {
-      var href = card.getAttribute('href') || '';
-      var match = href.match(/\/([^/]+)\/?$/);
-      if (match) knownIds.push(match[1]);
+    fetchAllIds(function (ids) {
+      baselineIds = ids;
+      initialized = true;
+      startPolling();
     });
-
-    startPolling();
 
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) {
         stopPolling();
-      } else {
+      } else if (initialized) {
         startPolling();
       }
     });
+  }
+
+  function fetchAllIds(callback) {
+    var body = { sort: 'newest', per_page: 100, page: 1 };
+    if (currentFilters.location) body.location = currentFilters.location;
+    if (currentFilters.price_min) body.price_min = parseFloat(currentFilters.price_min);
+    if (currentFilters.price_max) body.price_max = parseFloat(currentFilters.price_max);
+    if (currentFilters.property_type) body.property_type = currentFilters.property_type;
+
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.success && data.results) {
+          callback(data.results.map(function (r) { return r.id; }));
+        } else {
+          callback([]);
+        }
+      })
+      .catch(function () { callback([]); });
   }
 
   function startPolling() {
@@ -39,12 +60,7 @@
   }
 
   function checkForUpdates() {
-    var body = {
-      sort: 'newest',
-      per_page: 50,
-      page: 1,
-    };
-
+    var body = { sort: 'newest', per_page: 100, page: 1 };
     if (currentFilters.location) body.location = currentFilters.location;
     if (currentFilters.price_min) body.price_min = parseFloat(currentFilters.price_min);
     if (currentFilters.price_max) body.price_max = parseFloat(currentFilters.price_max);
@@ -60,12 +76,14 @@
         if (!data.success || !data.results) return;
 
         var newItems = data.results.filter(function (item) {
-          var slug = item.url.replace(/\/$/, '').split('/').pop();
-          return knownIds.indexOf(slug) === -1;
+          return baselineIds.indexOf(item.id) === -1;
         });
 
         if (newItems.length) {
           appendNewCards(newItems);
+          newItems.forEach(function (item) {
+            baselineIds.push(item.id);
+          });
         }
       })
       .catch(function () {});
@@ -79,9 +97,6 @@
     if (noProps) noProps.remove();
 
     items.forEach(function (item) {
-      var slug = item.url.replace(/\/$/, '').split('/').pop();
-      knownIds.push(slug);
-
       var card = createCard(item);
       card.classList.add('af-fade-in');
       grid.prepend(card);
@@ -92,7 +107,6 @@
     var a = document.createElement('a');
     a.href = item.url;
     a.className = 'property-card';
-    a.setAttribute('data-animate', '');
 
     var imgSrc = item.image_url || (window.afPropiedades && window.afPropiedades.placeholder) || '';
     var location = item.location || 'Ubicación no especificada';
