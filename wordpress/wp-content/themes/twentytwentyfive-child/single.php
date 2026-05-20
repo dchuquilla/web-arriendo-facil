@@ -6,7 +6,10 @@ get_header();
 <main id="main-content">
   <?php if (have_posts()) { while (have_posts()) { the_post(); ?>
 
-  <?php $main_img = get_the_post_thumbnail_url(get_the_ID(), 'large'); ?>
+  <?php
+    $thumb_id = twentytwentyfive_child_get_property_thumbnail_id(get_the_ID());
+    $main_img = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'af-banner') : '';
+  ?>
 
   <!-- ========== PROPERTY HERO / GALLERY ========== -->
   <section class="property-detail-hero">

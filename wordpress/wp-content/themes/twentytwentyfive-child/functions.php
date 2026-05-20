@@ -282,8 +282,8 @@ function twentytwentyfive_child_get_accommodation_gallery_images($post_id) {
 
         // Intentar obtener datos del attachment si existe
         if ($attachment_id && is_numeric($attachment_id)) {
-          $full_url = wp_get_attachment_image_src($attachment_id, 'large');
-          $thumb_url = wp_get_attachment_image_src($attachment_id, 'thumbnail');
+          $full_url = wp_get_attachment_image_src($attachment_id, 'af-banner');
+          $thumb_url = wp_get_attachment_image_src($attachment_id, 'af-thumbnail');
 
           if ($full_url && $thumb_url) {
             $images[] = [
@@ -324,8 +324,8 @@ function twentytwentyfive_child_get_accommodation_gallery_images($post_id) {
 
   if (!empty($attachments)) {
     foreach ($attachments as $attachment) {
-      $full_url = wp_get_attachment_image_src($attachment->ID, 'large');
-      $thumb_url = wp_get_attachment_image_src($attachment->ID, 'thumbnail');
+      $full_url = wp_get_attachment_image_src($attachment->ID, 'af-banner');
+      $thumb_url = wp_get_attachment_image_src($attachment->ID, 'af-thumbnail');
 
       if ($full_url && $thumb_url) {
         $images[] = [
@@ -384,9 +384,9 @@ add_action('after_setup_theme', 'twentytwentyfive_child_register_menus', 5);
  * Register custom image sizes for property cards and banners.
  */
 function twentytwentyfive_child_register_image_sizes() {
-  add_image_size( 'af-card', 600, 400, true );
-  add_image_size( 'af-banner', 1200, 500, true );
-  add_image_size( 'af-thumbnail', 300, 200, true );
+  add_image_size( 'af-card', 480, 320, true );
+  add_image_size( 'af-banner', 900, 400, true );
+  add_image_size( 'af-thumbnail', 240, 160, true );
 }
 add_action( 'after_setup_theme', 'twentytwentyfive_child_register_image_sizes' );
 
