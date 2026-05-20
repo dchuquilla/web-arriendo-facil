@@ -166,7 +166,7 @@ function twentytwentyfive_child_enqueue_assets() {
   }
 
   // Owner registration wizard
-  if ( is_page_template( 'page-registro-propietario.php' ) ) {
+  if ( is_page( 'registro-propietario' ) ) {
     wp_enqueue_script(
       'twentytwentyfive-child-owner-registration',
       get_stylesheet_directory_uri() . '/assets/js/owner-registration.js',
@@ -175,8 +175,9 @@ function twentytwentyfive_child_enqueue_assets() {
       true
     );
 
-    wp_localize_script('twentytwentyfive-child-owner-registration', 'afOwnerReg', array(
-      'apiUrl' => esc_url_raw( rest_url( 'af/v1/owner-register' ) ),
+    wp_localize_script('twentytwentyfive-child-owner-registration', 'afOwnerRegister', array(
+      'endpoint' => esc_url_raw( rest_url( 'af/v1/owner-register' ) ),
+      'nonce'    => wp_create_nonce( 'af_owner_register' ),
     ));
   }
 }

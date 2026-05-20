@@ -12,7 +12,7 @@
   var submitBtn = wizard.querySelector('.af-wizard__submit');
   var feedbackEl = document.getElementById('af-wizard-feedback');
   var summaryEl = document.getElementById('af-wizard-summary');
-  var nonce = wizard.getAttribute('data-nonce');
+  var nonce = (window.afOwnerRegister && window.afOwnerRegister.nonce) || '';
 
   var currentStep = 1;
   var totalSteps = panels.length;
@@ -25,7 +25,10 @@
     nextBtn.addEventListener('click', goForward);
     submitBtn.addEventListener('click', submitForm);
 
+    submitBtn.style.display = 'none';
+
     initFileUploads();
+    initLegalAgentToggle();
     updateNav();
   }
 
@@ -39,26 +42,56 @@
       input.addEventListener('change', function () {
         if (this.files.length) {
           var file = this.files[0];
-          if (file.size > MAX_FILE_SIZE) {
+          var isDocx = input.accept && input.accept.indexOf('.docx') !== -1;
+          var maxSize = MAX_FILE_SIZE;
+
+          if (file.size > maxSize) {
             showFieldError(input, 'El archivo excede el tamaño máximo de 5MB.');
             this.value = '';
             nameEl.textContent = '';
             labelEl.hidden = false;
             return;
           }
-          if (file.type !== 'application/pdf') {
+
+          if (!isDocx && file.type !== 'application/pdf') {
             showFieldError(input, 'Solo se permiten archivos PDF.');
             this.value = '';
             nameEl.textContent = '';
             labelEl.hidden = false;
             return;
           }
+
+          if (isDocx && file.type !== 'application/pdf' &&
+              file.type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' &&
+              file.type !== 'application/msword') {
+            showFieldError(input, 'Solo se permiten archivos PDF o Word (.docx).');
+            this.value = '';
+            nameEl.textContent = '';
+            labelEl.hidden = false;
+            return;
+          }
+
           clearFieldError(input);
           nameEl.textContent = file.name;
           labelEl.hidden = true;
         } else {
           nameEl.textContent = '';
           labelEl.hidden = false;
+        }
+      });
+    });
+  }
+
+  function initLegalAgentToggle() {
+    var radios = wizard.querySelectorAll('input[name="has_legal_agent"]');
+    var fieldsContainer = document.getElementById('af-legal-fields');
+
+    radios.forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        if (this.value === 'yes') {
+          fieldsContainer.hidden = false;
+        } else {
+          fieldsContainer.hidden = true;
         }
       });
     });
@@ -101,11 +134,11 @@
   function updateNav() {
     prevBtn.disabled = currentStep === 1;
     if (currentStep === totalSteps) {
-      nextBtn.hidden = true;
-      submitBtn.hidden = false;
+      nextBtn.style.display = 'none';
+      submitBtn.style.display = '';
     } else {
-      nextBtn.hidden = false;
-      submitBtn.hidden = true;
+      nextBtn.style.display = '';
+      submitBtn.style.display = 'none';
     }
   }
 
@@ -122,7 +155,6 @@
       var idType = panel.querySelector('#af-id-type');
       var idNumber = panel.querySelector('#af-id-number');
       var email = panel.querySelector('#af-email');
-      var phone = panel.querySelector('#af-phone');
 
       if (idType.value && idNumber.value) {
         if (!validateDocumentNumber(idType.value, idNumber.value)) {
@@ -135,27 +167,25 @@
         showFieldError(email, 'Ingresa un correo electrónico válido.');
         valid = false;
       }
+    }
 
-      if (phone.value && !isValidPhone(phone.value)) {
-        showFieldError(phone, 'Ingresa un número de teléfono ecuatoriano válido.');
-        valid = false;
+    if (step === 2) {
+      var hasAgent = wizard.querySelector('input[name="has_legal_agent"]:checked');
+      if (hasAgent && hasAgent.value === 'yes') {
+        var legalEmail = panel.querySelector('#af-legal-email');
+        var legalPhone = panel.querySelector('#af-legal-phone');
+        if (legalEmail.value && !isValidEmail(legalEmail.value)) {
+          showFieldError(legalEmail, 'Ingresa un correo electrónico válido.');
+          valid = false;
+        }
+        if (legalPhone.value && !isValidPhone(legalPhone.value)) {
+          showFieldError(legalPhone, 'Ingresa un número de teléfono válido.');
+          valid = false;
+        }
       }
     }
 
     if (step === 3) {
-      var legalEmail = panel.querySelector('#af-legal-email');
-      var legalPhone = panel.querySelector('#af-legal-phone');
-      if (legalEmail.value && !isValidEmail(legalEmail.value)) {
-        showFieldError(legalEmail, 'Ingresa un correo electrónico válido.');
-        valid = false;
-      }
-      if (legalPhone.value && !isValidPhone(legalPhone.value)) {
-        showFieldError(legalPhone, 'Ingresa un número de teléfono válido.');
-        valid = false;
-      }
-    }
-
-    if (step === 4) {
       var terms = panel.querySelector('#af-terms');
       if (!terms.checked) {
         showFieldError(terms, 'Debes aceptar los términos y condiciones.');
@@ -198,7 +228,7 @@
     var clean = number.replace(/[^0-9]/g, '');
 
     if (type === 'cedula') {
-      return validateCedula(clean);
+      return clean.length === 10;
     } else if (type === 'ruc') {
       return validateRUC(clean);
     } else if (type === 'pasaporte') {
@@ -207,48 +237,14 @@
     return true;
   }
 
-  function validateCedula(cedula) {
-    if (cedula.length !== 10) return false;
-
-    var province = parseInt(cedula.substring(0, 2), 10);
-    if (province < 1 || province > 24) return false;
-
-    var thirdDigit = parseInt(cedula[2], 10);
-    if (thirdDigit > 5) return false;
-
-    var coefficients = [2, 1, 2, 1, 2, 1, 2, 1, 2];
-    var total = 0;
-
-    for (var i = 0; i < 9; i++) {
-      var digit = parseInt(cedula[i], 10) * coefficients[i];
-      if (digit > 9) digit -= 9;
-      total += digit;
-    }
-
-    var checkDigit = (10 - (total % 10)) % 10;
-    return checkDigit === parseInt(cedula[9], 10);
-  }
-
   function validateRUC(ruc) {
     if (ruc.length !== 13) return false;
     if (!ruc.endsWith('001')) return false;
-
-    var cedulaPart = ruc.substring(0, 10);
-    var thirdDigit = parseInt(ruc[2], 10);
-
-    if (thirdDigit <= 5) {
-      return validateCedula(cedulaPart);
-    } else if (thirdDigit === 6) {
-      return ruc.length === 13;
-    } else if (thirdDigit === 9) {
-      return ruc.length === 13;
-    }
-
-    return false;
+    return true;
   }
 
   function getDocumentError(type) {
-    if (type === 'cedula') return 'Cédula ecuatoriana inválida (10 dígitos, módulo 10).';
+    if (type === 'cedula') return 'La cédula debe tener exactamente 10 dígitos.';
     if (type === 'ruc') return 'RUC inválido (13 dígitos terminando en 001).';
     if (type === 'pasaporte') return 'Pasaporte inválido (5-20 caracteres).';
     return 'Documento inválido.';
@@ -289,14 +285,9 @@
     var fields = [
       { label: 'Tipo Documento', id: 'af-id-type', isSelect: true },
       { label: 'Número Documento', id: 'af-id-number' },
-      { label: 'Nombre', id: 'af-fullname' },
+      { label: 'Nombre del Cliente', id: 'af-client-name' },
       { label: 'Email', id: 'af-email' },
-      { label: 'Teléfono', id: 'af-phone' },
-      { label: 'Tipo Propiedad', id: 'af-property-type-reg', isSelect: true },
-      { label: 'Observaciones', id: 'af-message' },
-      { label: 'Rep. Legal', id: 'af-legal-name' },
-      { label: 'Tel. Rep. Legal', id: 'af-legal-phone' },
-      { label: 'Email Rep. Legal', id: 'af-legal-email' },
+      { label: 'Observaciones', id: 'af-observations' },
     ];
 
     var html = '<dl class="af-summary-list">';
@@ -308,10 +299,27 @@
       html += '<dt>' + escHtml(f.label) + '</dt><dd>' + escHtml(val) + '</dd>';
     });
 
+    var hasAgent = wizard.querySelector('input[name="has_legal_agent"]:checked');
+    if (hasAgent && hasAgent.value === 'yes') {
+      html += '<dt>Representante Legal</dt><dd>Sí</dd>';
+      var legalFields = [
+        { label: 'Nombre Rep. Legal', id: 'af-legal-name' },
+        { label: 'Doc. Rep. Legal', id: 'af-legal-id-number' },
+        { label: 'Tel. Rep. Legal', id: 'af-legal-phone' },
+        { label: 'Email Rep. Legal', id: 'af-legal-email' },
+      ];
+      legalFields.forEach(function (f) {
+        var el = document.getElementById(f.id);
+        if (!el || !el.value.trim()) return;
+        html += '<dt>' + escHtml(f.label) + '</dt><dd>' + escHtml(el.value.trim()) + '</dd>';
+      });
+    }
+
     var files = [
-      { label: 'Poder Notarial', id: 'af-legal-pdf' },
-      { label: 'Cédula PDF', id: 'af-doc-cedula' },
-      { label: 'RUC PDF', id: 'af-doc-ruc' },
+      { label: 'Servicios Básicos', id: 'af-doc-servicios' },
+      { label: 'Documentos Identidad', id: 'af-doc-identidad' },
+      { label: 'Contratos', id: 'af-doc-contratos' },
+      { label: 'Ejemplo Contrato', id: 'af-doc-contrato-ejemplo' },
     ];
     files.forEach(function (f) {
       var el = document.getElementById(f.id);
@@ -333,28 +341,45 @@
     var formData = new FormData();
     formData.append('nonce', nonce);
 
-    var textFields = ['id_type', 'id_number', 'fullname', 'email', 'phone',
-      'property_type_interest', 'message', 'legal_agent_name',
-      'legal_agent_phone', 'legal_agent_email'];
+    var textFields = ['id_type', 'id_number', 'client_name', 'email',
+      'has_legal_agent', 'observations'];
 
     textFields.forEach(function (name) {
       var el = wizard.querySelector('[name="' + name + '"]');
-      if (el) formData.append(name, el.value.trim());
+      if (el) {
+        if (el.type === 'radio') {
+          var checked = wizard.querySelector('[name="' + name + '"]:checked');
+          if (checked) formData.append(name, checked.value);
+        } else {
+          formData.append(name, el.value.trim());
+        }
+      }
     });
 
-    var fileFields = ['legal_agent_pdf', 'doc_cedula', 'doc_ruc'];
+    var hasAgent = wizard.querySelector('input[name="has_legal_agent"]:checked');
+    if (hasAgent && hasAgent.value === 'yes') {
+      var legalTextFields = ['legal_agent_name', 'legal_agent_id_type',
+        'legal_agent_id_number', 'legal_agent_phone', 'legal_agent_email'];
+      legalTextFields.forEach(function (name) {
+        var el = wizard.querySelector('[name="' + name + '"]');
+        if (el) formData.append(name, el.value.trim());
+      });
+    }
+
+    var fileFields = ['doc_servicios_basicos', 'doc_identidad', 'doc_contratos', 'doc_contrato_ejemplo'];
     fileFields.forEach(function (name) {
       var el = wizard.querySelector('[name="' + name + '"]');
       if (el && el.files.length) formData.append(name, el.files[0]);
     });
 
-    var apiUrl = (window.afOwnerReg && window.afOwnerReg.apiUrl)
-      ? window.afOwnerReg.apiUrl
+    var apiUrl = (window.afOwnerRegister && window.afOwnerRegister.endpoint)
+      ? window.afOwnerRegister.endpoint
       : '/wp-json/af/v1/owner-register';
 
     fetch(apiUrl, {
       method: 'POST',
       body: formData,
+      credentials: 'same-origin',
     })
       .then(function (r) { return r.json(); })
       .then(function (data) {
