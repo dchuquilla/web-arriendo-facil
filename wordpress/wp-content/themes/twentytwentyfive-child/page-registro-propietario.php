@@ -8,31 +8,28 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 get_header();
-
-$nonce = wp_create_nonce( 'af_owner_register' );
 ?>
 
 <main id="main-content" class="af-register-page">
   <section class="section">
     <div class="container container--narrow">
-      <div class="af-wizard" data-nonce="<?php echo esc_attr( $nonce ); ?>">
+      <div class="af-wizard">
 
         <!-- Progress Bar -->
-        <div class="af-wizard__progress" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
-          <div class="af-wizard__progress-bar" style="width: 20%;"></div>
+        <div class="af-wizard__progress" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4">
+          <div class="af-wizard__progress-bar" style="width: 25%;"></div>
           <div class="af-wizard__steps">
             <span class="af-wizard__step is-active" data-step="1">1</span>
             <span class="af-wizard__step" data-step="2">2</span>
             <span class="af-wizard__step" data-step="3">3</span>
             <span class="af-wizard__step" data-step="4">4</span>
-            <span class="af-wizard__step" data-step="5">5</span>
           </div>
         </div>
 
-        <!-- Step 1: Datos Personales -->
+        <!-- Step 1: Datos del Propietario -->
         <div class="af-wizard__panel is-active" data-panel="1">
-          <h2><?php esc_html_e( 'Datos Personales', 'twentytwentyfive-child' ); ?></h2>
-          <p class="af-wizard__subtitle"><?php esc_html_e( 'Ingresa tu información básica para crear tu cuenta de propietario.', 'twentytwentyfive-child' ); ?></p>
+          <h2><?php esc_html_e( 'Datos del Propietario', 'twentytwentyfive-child' ); ?></h2>
+          <p class="af-wizard__subtitle"><?php esc_html_e( 'Ingresa tu información para crear tu cuenta de propietario.', 'twentytwentyfive-child' ); ?></p>
 
           <div class="af-form-grid">
             <div class="af-form-group">
@@ -54,106 +51,104 @@ $nonce = wp_create_nonce( 'af_owner_register' );
             </div>
 
             <div class="af-form-group af-form-group--full">
-              <label for="af-fullname"><?php esc_html_e( 'Nombre Completo', 'twentytwentyfive-child' ); ?> *</label>
-              <input type="text" id="af-fullname" name="fullname" maxlength="120" autocomplete="name" required
+              <label for="af-client-name"><?php esc_html_e( 'Nombre del Cliente', 'twentytwentyfive-child' ); ?> *</label>
+              <input type="text" id="af-client-name" name="client_name" maxlength="120" autocomplete="name" required
                 placeholder="<?php esc_attr_e( 'Nombres y Apellidos', 'twentytwentyfive-child' ); ?>">
               <span class="af-form-error" hidden></span>
             </div>
 
-            <div class="af-form-group">
-              <label for="af-email"><?php esc_html_e( 'Correo Electrónico', 'twentytwentyfive-child' ); ?> *</label>
+            <div class="af-form-group af-form-group--full">
+              <label for="af-email"><?php esc_html_e( 'Email del Propietario', 'twentytwentyfive-child' ); ?> *</label>
               <input type="email" id="af-email" name="email" maxlength="100" autocomplete="email" required
                 placeholder="<?php esc_attr_e( 'correo@ejemplo.com', 'twentytwentyfive-child' ); ?>">
-              <span class="af-form-error" hidden></span>
-            </div>
-
-            <div class="af-form-group">
-              <label for="af-phone"><?php esc_html_e( 'Teléfono', 'twentytwentyfive-child' ); ?> *</label>
-              <input type="tel" id="af-phone" name="phone" maxlength="15" autocomplete="tel" required
-                placeholder="<?php esc_attr_e( '0991234567', 'twentytwentyfive-child' ); ?>">
+              <p class="af-form-help"><?php esc_html_e( 'Las instrucciones de activación se enviarán únicamente a este correo.', 'twentytwentyfive-child' ); ?></p>
               <span class="af-form-error" hidden></span>
             </div>
           </div>
         </div>
 
-        <!-- Step 2: Información Adicional -->
+        <!-- Step 2: Representante Legal (Condicional) -->
         <div class="af-wizard__panel" data-panel="2">
-          <h2><?php esc_html_e( 'Información Adicional', 'twentytwentyfive-child' ); ?></h2>
-          <p class="af-wizard__subtitle"><?php esc_html_e( 'Cuéntanos más sobre tu propiedad y tus necesidades.', 'twentytwentyfive-child' ); ?></p>
+          <h2><?php esc_html_e( 'Representante Legal', 'twentytwentyfive-child' ); ?></h2>
+          <p class="af-wizard__subtitle"><?php esc_html_e( '¿El propietario cuenta con un representante legal?', 'twentytwentyfive-child' ); ?></p>
 
           <div class="af-form-grid">
             <div class="af-form-group af-form-group--full">
-              <label for="af-property-type-reg"><?php esc_html_e( 'Tipo de Propiedad a Registrar', 'twentytwentyfive-child' ); ?></label>
-              <select id="af-property-type-reg" name="property_type_interest">
-                <option value=""><?php esc_html_e( 'Seleccionar...', 'twentytwentyfive-child' ); ?></option>
-                <option value="apartment"><?php esc_html_e( 'Apartamento', 'twentytwentyfive-child' ); ?></option>
-                <option value="house"><?php esc_html_e( 'Casa', 'twentytwentyfive-child' ); ?></option>
-                <option value="office"><?php esc_html_e( 'Oficina', 'twentytwentyfive-child' ); ?></option>
-                <option value="room"><?php esc_html_e( 'Habitación', 'twentytwentyfive-child' ); ?></option>
-                <option value="commercial"><?php esc_html_e( 'Comercial', 'twentytwentyfive-child' ); ?></option>
-              </select>
-              <span class="af-form-error" hidden></span>
+              <label><?php esc_html_e( '¿Tiene Representante Legal?', 'twentytwentyfive-child' ); ?></label>
+              <div class="af-radio-group">
+                <label class="af-radio-label">
+                  <input type="radio" name="has_legal_agent" value="no" checked>
+                  <span><?php esc_html_e( 'No', 'twentytwentyfive-child' ); ?></span>
+                </label>
+                <label class="af-radio-label">
+                  <input type="radio" name="has_legal_agent" value="yes">
+                  <span><?php esc_html_e( 'Sí', 'twentytwentyfive-child' ); ?></span>
+                </label>
+              </div>
             </div>
 
+            <div class="af-legal-fields" id="af-legal-fields" hidden>
+              <div class="af-form-grid">
+                <div class="af-form-group af-form-group--full">
+                  <label for="af-legal-name"><?php esc_html_e( 'Nombre del Representante', 'twentytwentyfive-child' ); ?></label>
+                  <input type="text" id="af-legal-name" name="legal_agent_name" maxlength="120"
+                    placeholder="<?php esc_attr_e( 'Nombre completo del representante legal', 'twentytwentyfive-child' ); ?>">
+                  <span class="af-form-error" hidden></span>
+                </div>
+
+                <div class="af-form-group">
+                  <label for="af-legal-id-type"><?php esc_html_e( 'Tipo de Documento', 'twentytwentyfive-child' ); ?></label>
+                  <select id="af-legal-id-type" name="legal_agent_id_type">
+                    <option value="cedula"><?php esc_html_e( 'Cédula', 'twentytwentyfive-child' ); ?></option>
+                    <option value="ruc"><?php esc_html_e( 'RUC', 'twentytwentyfive-child' ); ?></option>
+                    <option value="pasaporte"><?php esc_html_e( 'Pasaporte', 'twentytwentyfive-child' ); ?></option>
+                  </select>
+                  <span class="af-form-error" hidden></span>
+                </div>
+
+                <div class="af-form-group">
+                  <label for="af-legal-id-number"><?php esc_html_e( 'Número de Documento', 'twentytwentyfive-child' ); ?></label>
+                  <input type="text" id="af-legal-id-number" name="legal_agent_id_number" maxlength="13"
+                    placeholder="<?php esc_attr_e( 'Ej: 1712345678', 'twentytwentyfive-child' ); ?>">
+                  <span class="af-form-error" hidden></span>
+                </div>
+
+                <div class="af-form-group">
+                  <label for="af-legal-phone"><?php esc_html_e( 'Teléfono', 'twentytwentyfive-child' ); ?></label>
+                  <input type="tel" id="af-legal-phone" name="legal_agent_phone" maxlength="15"
+                    placeholder="<?php esc_attr_e( '0991234567', 'twentytwentyfive-child' ); ?>">
+                  <span class="af-form-error" hidden></span>
+                </div>
+
+                <div class="af-form-group">
+                  <label for="af-legal-email"><?php esc_html_e( 'Email', 'twentytwentyfive-child' ); ?></label>
+                  <input type="email" id="af-legal-email" name="legal_agent_email" maxlength="100"
+                    placeholder="<?php esc_attr_e( 'correo@ejemplo.com', 'twentytwentyfive-child' ); ?>">
+                  <span class="af-form-error" hidden></span>
+                </div>
+              </div>
+              <p class="af-form-help af-form-help--note"><?php esc_html_e( 'No se envía correo de activación al representante legal.', 'twentytwentyfive-child' ); ?></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Observaciones y Documentos -->
+        <div class="af-wizard__panel" data-panel="3">
+          <h2><?php esc_html_e( 'Observaciones y Documentos', 'twentytwentyfive-child' ); ?></h2>
+          <p class="af-wizard__subtitle"><?php esc_html_e( 'Agrega observaciones y sube los documentos necesarios.', 'twentytwentyfive-child' ); ?></p>
+
+          <div class="af-form-grid">
             <div class="af-form-group af-form-group--full">
-              <label for="af-message"><?php esc_html_e( 'Observaciones / Mensaje', 'twentytwentyfive-child' ); ?></label>
-              <textarea id="af-message" name="message" rows="4" maxlength="1000"
+              <label for="af-observations"><?php esc_html_e( 'Observaciones', 'twentytwentyfive-child' ); ?> *</label>
+              <textarea id="af-observations" name="observations" rows="4" maxlength="1000" required
                 placeholder="<?php esc_attr_e( 'Describe brevemente tu propiedad o requerimientos especiales...', 'twentytwentyfive-child' ); ?>"></textarea>
               <span class="af-form-error" hidden></span>
             </div>
-          </div>
-        </div>
-
-        <!-- Step 3: Representante Legal (Opcional) -->
-        <div class="af-wizard__panel" data-panel="3">
-          <h2><?php esc_html_e( 'Representante Legal', 'twentytwentyfive-child' ); ?></h2>
-          <p class="af-wizard__subtitle"><?php esc_html_e( 'Si tienes un representante legal, ingresa sus datos aquí. Este paso es opcional.', 'twentytwentyfive-child' ); ?></p>
-
-          <div class="af-form-grid">
-            <div class="af-form-group af-form-group--full">
-              <label for="af-legal-name"><?php esc_html_e( 'Nombre del Representante', 'twentytwentyfive-child' ); ?></label>
-              <input type="text" id="af-legal-name" name="legal_agent_name" maxlength="120"
-                placeholder="<?php esc_attr_e( 'Nombre completo del representante legal', 'twentytwentyfive-child' ); ?>">
-              <span class="af-form-error" hidden></span>
-            </div>
-
-            <div class="af-form-group">
-              <label for="af-legal-phone"><?php esc_html_e( 'Teléfono del Representante', 'twentytwentyfive-child' ); ?></label>
-              <input type="tel" id="af-legal-phone" name="legal_agent_phone" maxlength="15"
-                placeholder="<?php esc_attr_e( '0991234567', 'twentytwentyfive-child' ); ?>">
-              <span class="af-form-error" hidden></span>
-            </div>
-
-            <div class="af-form-group">
-              <label for="af-legal-email"><?php esc_html_e( 'Email del Representante', 'twentytwentyfive-child' ); ?></label>
-              <input type="email" id="af-legal-email" name="legal_agent_email" maxlength="100"
-                placeholder="<?php esc_attr_e( 'correo@ejemplo.com', 'twentytwentyfive-child' ); ?>">
-              <span class="af-form-error" hidden></span>
-            </div>
 
             <div class="af-form-group af-form-group--full">
-              <label for="af-legal-pdf"><?php esc_html_e( 'Poder Notarial (PDF)', 'twentytwentyfive-child' ); ?></label>
+              <label for="af-doc-servicios"><?php esc_html_e( 'Servicios básicos del lugar (PDF)', 'twentytwentyfive-child' ); ?></label>
               <div class="af-file-upload">
-                <input type="file" id="af-legal-pdf" name="legal_agent_pdf" accept=".pdf">
-                <span class="af-file-upload__label"><?php esc_html_e( 'Arrastra un PDF o haz clic para seleccionar', 'twentytwentyfive-child' ); ?></span>
-                <span class="af-file-upload__name"></span>
-              </div>
-              <p class="af-form-help"><?php esc_html_e( 'Máximo 5MB. Solo archivos PDF.', 'twentytwentyfive-child' ); ?></p>
-              <span class="af-form-error" hidden></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 4: Documentos -->
-        <div class="af-wizard__panel" data-panel="4">
-          <h2><?php esc_html_e( 'Documentos', 'twentytwentyfive-child' ); ?></h2>
-          <p class="af-wizard__subtitle"><?php esc_html_e( 'Sube los documentos necesarios para verificar tu identidad.', 'twentytwentyfive-child' ); ?></p>
-
-          <div class="af-form-grid">
-            <div class="af-form-group af-form-group--full">
-              <label for="af-doc-cedula"><?php esc_html_e( 'Cédula / Documento de Identidad (PDF)', 'twentytwentyfive-child' ); ?> *</label>
-              <div class="af-file-upload">
-                <input type="file" id="af-doc-cedula" name="doc_cedula" accept=".pdf" required>
+                <input type="file" id="af-doc-servicios" name="doc_servicios_basicos" accept=".pdf">
                 <span class="af-file-upload__label"><?php esc_html_e( 'Arrastra un PDF o haz clic para seleccionar', 'twentytwentyfive-child' ); ?></span>
                 <span class="af-file-upload__name"></span>
               </div>
@@ -162,13 +157,35 @@ $nonce = wp_create_nonce( 'af_owner_register' );
             </div>
 
             <div class="af-form-group af-form-group--full">
-              <label for="af-doc-ruc"><?php esc_html_e( 'RUC (PDF) — Solo si aplica', 'twentytwentyfive-child' ); ?></label>
+              <label for="af-doc-identidad"><?php esc_html_e( 'Documentos de identidad del propietario — cédula y papeleta de votación (PDF)', 'twentytwentyfive-child' ); ?></label>
               <div class="af-file-upload">
-                <input type="file" id="af-doc-ruc" name="doc_ruc" accept=".pdf">
+                <input type="file" id="af-doc-identidad" name="doc_identidad" accept=".pdf">
                 <span class="af-file-upload__label"><?php esc_html_e( 'Arrastra un PDF o haz clic para seleccionar', 'twentytwentyfive-child' ); ?></span>
                 <span class="af-file-upload__name"></span>
               </div>
               <p class="af-form-help"><?php esc_html_e( 'Máximo 5MB. Solo archivos PDF.', 'twentytwentyfive-child' ); ?></p>
+              <span class="af-form-error" hidden></span>
+            </div>
+
+            <div class="af-form-group af-form-group--full">
+              <label for="af-doc-contratos"><?php esc_html_e( 'Contratos de arrendamientos suscritos (PDF)', 'twentytwentyfive-child' ); ?></label>
+              <div class="af-file-upload">
+                <input type="file" id="af-doc-contratos" name="doc_contratos" accept=".pdf">
+                <span class="af-file-upload__label"><?php esc_html_e( 'Arrastra un PDF o haz clic para seleccionar', 'twentytwentyfive-child' ); ?></span>
+                <span class="af-file-upload__name"></span>
+              </div>
+              <p class="af-form-help"><?php esc_html_e( 'Máximo 5MB. Solo archivos PDF.', 'twentytwentyfive-child' ); ?></p>
+              <span class="af-form-error" hidden></span>
+            </div>
+
+            <div class="af-form-group af-form-group--full">
+              <label for="af-doc-contrato-ejemplo"><?php esc_html_e( 'Ejemplo de contrato (Word .docx)', 'twentytwentyfive-child' ); ?></label>
+              <div class="af-file-upload">
+                <input type="file" id="af-doc-contrato-ejemplo" name="doc_contrato_ejemplo" accept=".docx,.doc">
+                <span class="af-file-upload__label"><?php esc_html_e( 'Arrastra un archivo Word o haz clic para seleccionar', 'twentytwentyfive-child' ); ?></span>
+                <span class="af-file-upload__name"></span>
+              </div>
+              <p class="af-form-help"><?php esc_html_e( 'Campo opcional. Puedes subir la plantilla del owner con su estructura y campos propios.', 'twentytwentyfive-child' ); ?></p>
               <span class="af-form-error" hidden></span>
             </div>
 
@@ -186,8 +203,8 @@ $nonce = wp_create_nonce( 'af_owner_register' );
           </div>
         </div>
 
-        <!-- Step 5: Confirmación -->
-        <div class="af-wizard__panel" data-panel="5">
+        <!-- Step 4: Confirmación -->
+        <div class="af-wizard__panel" data-panel="4">
           <h2><?php esc_html_e( 'Confirmación', 'twentytwentyfive-child' ); ?></h2>
           <p class="af-wizard__subtitle"><?php esc_html_e( 'Revisa tus datos antes de enviar el formulario.', 'twentytwentyfive-child' ); ?></p>
 
@@ -206,7 +223,7 @@ $nonce = wp_create_nonce( 'af_owner_register' );
           <button type="button" class="btn btn--primary af-wizard__next">
             <?php esc_html_e( 'Siguiente', 'twentytwentyfive-child' ); ?>
           </button>
-          <button type="button" class="btn btn--primary af-wizard__submit" hidden>
+          <button type="button" class="btn btn--primary af-wizard__submit" style="display:none">
             <?php esc_html_e( 'Enviar Solicitud', 'twentytwentyfive-child' ); ?>
           </button>
         </div>
