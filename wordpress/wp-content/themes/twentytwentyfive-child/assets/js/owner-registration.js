@@ -232,7 +232,7 @@
     } else if (type === 'ruc') {
       return validateRUC(clean);
     } else if (type === 'pasaporte') {
-      return number.trim().length >= 5 && number.trim().length <= 20;
+      return number.trim().length >= 5 && number.trim().length <= 15;
     }
     return true;
   }
@@ -246,7 +246,7 @@
   function getDocumentError(type) {
     if (type === 'cedula') return 'La cédula debe tener exactamente 10 dígitos.';
     if (type === 'ruc') return 'RUC inválido (13 dígitos terminando en 001).';
-    if (type === 'pasaporte') return 'Pasaporte inválido (5-20 caracteres).';
+    if (type === 'pasaporte') return 'Pasaporte inválido (5-15 caracteres).';
     return 'Documento inválido.';
   }
 
