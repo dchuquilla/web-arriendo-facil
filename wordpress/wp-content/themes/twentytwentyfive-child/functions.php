@@ -63,6 +63,15 @@ function twentytwentyfive_child_enqueue_assets() {
     true
   );
 
+  // Cookie wall enforcement (blocks page until cookies accepted)
+  wp_enqueue_script(
+    'twentytwentyfive-child-cookie-wall',
+    get_stylesheet_directory_uri() . '/assets/js/cookie-wall.js',
+    array(),
+    filemtime( get_stylesheet_directory() . '/assets/js/cookie-wall.js' ),
+    false
+  );
+
   // JS para el carrusel solo en homepage
   if ( is_front_page() ) {
     wp_enqueue_script(
@@ -100,6 +109,29 @@ function twentytwentyfive_child_enqueue_assets() {
     ));
   }
 
+  // Real-time polling for properties page
+  if ( is_page('propiedades') ) {
+    wp_enqueue_script(
+      'twentytwentyfive-child-propiedades',
+      get_stylesheet_directory_uri() . '/assets/js/propiedades.js',
+      array(),
+      filemtime( get_stylesheet_directory() . '/assets/js/propiedades.js' ),
+      true
+    );
+
+    wp_localize_script('twentytwentyfive-child-propiedades', 'afPropiedades', array(
+      'apiUrl'      => esc_url_raw( rest_url( 'af/v1/accommodations/search' ) ),
+      'placeholder' => get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg',
+      'filters'     => array(
+        'location'      => isset( $_GET['location'] ) ? sanitize_text_field( wp_unslash( $_GET['location'] ) ) : '',
+        'price_min'     => isset( $_GET['price_min'] ) ? sanitize_text_field( wp_unslash( $_GET['price_min'] ) ) : '',
+        'price_max'     => isset( $_GET['price_max'] ) ? sanitize_text_field( wp_unslash( $_GET['price_max'] ) ) : '',
+        'property_type' => isset( $_GET['property_type'] ) ? sanitize_text_field( wp_unslash( $_GET['property_type'] ) ) : '',
+        'sort'          => isset( $_GET['sort'] ) ? sanitize_text_field( wp_unslash( $_GET['sort'] ) ) : 'newest',
+      ),
+    ));
+  }
+
   // Leaflet.js y estilos para página de búsqueda
   if ( is_page('search-results') || is_singular('accommodation') ) {
     wp_enqueue_style(
@@ -132,6 +164,21 @@ function twentytwentyfive_child_enqueue_assets() {
       true
     );
   }
+
+  // Owner registration wizard
+  if ( is_page_template( 'page-registro-propietario.php' ) ) {
+    wp_enqueue_script(
+      'twentytwentyfive-child-owner-registration',
+      get_stylesheet_directory_uri() . '/assets/js/owner-registration.js',
+      array(),
+      filemtime( get_stylesheet_directory() . '/assets/js/owner-registration.js' ),
+      true
+    );
+
+    wp_localize_script('twentytwentyfive-child-owner-registration', 'afOwnerReg', array(
+      'apiUrl' => esc_url_raw( rest_url( 'af/v1/owner-register' ) ),
+    ));
+  }
 }
 add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
 
@@ -161,7 +208,13 @@ function twentytwentyfive_child_get_featured_properties_payload() {
     while ( $q->have_posts() ) {
       $q->the_post();
 
-      $img = get_the_post_thumbnail_url(get_the_ID(), 'large');
+      $img = get_the_post_thumbnail_url(get_the_ID(), 'af-card');
+      if ( ! $img ) {
+        $gallery = twentytwentyfive_child_get_accommodation_gallery_images(get_the_ID());
+        if ( ! empty($gallery) && ! empty($gallery[0]['id']) ) {
+          $img = wp_get_attachment_image_url($gallery[0]['id'], 'af-card');
+        }
+      }
       if ( ! $img ) {
         $img = get_stylesheet_directory_uri() . '/assets/img/placeholder.jpg';
       }
@@ -328,6 +381,51 @@ function twentytwentyfive_child_register_menus() {
 add_action('after_setup_theme', 'twentytwentyfive_child_register_menus', 5);
 
 /**
+ * Register custom image sizes for property cards and banners.
+ */
+function twentytwentyfive_child_register_image_sizes() {
+  add_image_size( 'af-card', 600, 400, true );
+  add_image_size( 'af-banner', 1200, 500, true );
+  add_image_size( 'af-thumbnail', 300, 200, true );
+}
+add_action( 'after_setup_theme', 'twentytwentyfive_child_register_image_sizes' );
+
+/**
+ * Auto-assign first gallery image as featured image when saving an accommodation.
+ */
+function twentytwentyfive_child_auto_featured_image( $post_id ) {
+  if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+    return;
+  }
+  if ( has_post_thumbnail( $post_id ) ) {
+    return;
+  }
+
+  $gallery_images = twentytwentyfive_child_get_accommodation_gallery_images( $post_id );
+  if ( ! empty( $gallery_images ) && ! empty( $gallery_images[0]['id'] ) ) {
+    set_post_thumbnail( $post_id, $gallery_images[0]['id'] );
+  }
+}
+add_action( 'save_post_accommodation', 'twentytwentyfive_child_auto_featured_image', 20 );
+
+/**
+ * Get featured image ID with gallery fallback for templates.
+ */
+function twentytwentyfive_child_get_property_thumbnail_id( $post_id ) {
+  $thumb_id = get_post_thumbnail_id( $post_id );
+  if ( $thumb_id ) {
+    return $thumb_id;
+  }
+
+  $gallery = twentytwentyfive_child_get_accommodation_gallery_images( $post_id );
+  if ( ! empty( $gallery ) && ! empty( $gallery[0]['id'] ) ) {
+    return (int) $gallery[0]['id'];
+  }
+
+  return 0;
+}
+
+/**
  * Remove 'Residencias' menu item from navigation
  */
 function twentytwentyfive_child_remove_residencias_menu_item( $items, $args ) {
@@ -350,8 +448,10 @@ function twentytwentyfive_child_add_cache_headers() {
     return;
   }
 
-  if (is_front_page() || is_page('propiedades') || is_page('search-results')) {
+  if (is_front_page() || is_page('search-results')) {
     header('Cache-Control: public, max-age=3600');
+  } elseif (is_page('propiedades')) {
+    header('Cache-Control: public, max-age=60');
   } elseif (is_singular('accommodation')) {
     header('Cache-Control: public, max-age=7200');
   } else {

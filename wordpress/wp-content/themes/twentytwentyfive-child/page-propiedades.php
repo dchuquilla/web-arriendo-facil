@@ -175,7 +175,8 @@ get_header();
           if ($q->have_posts()) {
             while ($q->have_posts()) { $q->the_post();
               $id = get_the_ID();
-              $img = get_the_post_thumbnail_url($id, 'large');
+              $thumb_id  = twentytwentyfive_child_get_property_thumbnail_id($id);
+              $img = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'af-card') : '';
               if (!$img) {
                 $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg';
               }
@@ -195,7 +196,6 @@ get_header();
                 $description = wp_trim_words( wp_strip_all_tags( get_the_content() ), 22, '...' );
               }
 
-              $thumb_id  = get_post_thumbnail_id($id);
               $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
               $img_alt   = $thumb_alt ? $thumb_alt : get_the_title();
         ?>

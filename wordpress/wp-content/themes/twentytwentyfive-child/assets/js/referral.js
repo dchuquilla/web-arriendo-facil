@@ -133,8 +133,17 @@
   }
 
   function initReferralButton() {
+    referralBtn.classList.add('is-disabled');
+    referralBtn.setAttribute('aria-disabled', 'true');
+    referralBtn.setAttribute('tabindex', '-1');
+
     referralBtn.addEventListener('click', function(e) {
       e.preventDefault();
+
+      if (referralBtn.classList.contains('is-disabled')) {
+        nameInput.focus();
+        return;
+      }
 
       var rawValue = nameInput.value;
       var cleanName = sanitizeName(rawValue);
@@ -160,11 +169,27 @@
       window.open(url, '_blank', 'noopener,noreferrer');
 
       nameInput.value = '';
+      referralBtn.classList.add('is-disabled');
+      referralBtn.setAttribute('aria-disabled', 'true');
+      referralBtn.setAttribute('tabindex', '-1');
     });
 
     nameInput.addEventListener('input', function() {
       if (!errorEl.hidden) {
         clearError();
+      }
+
+      var clean = sanitizeName(this.value);
+      var isValid = clean.length >= 2 && !validateName(clean);
+
+      if (isValid) {
+        referralBtn.classList.remove('is-disabled');
+        referralBtn.removeAttribute('aria-disabled');
+        referralBtn.removeAttribute('tabindex');
+      } else {
+        referralBtn.classList.add('is-disabled');
+        referralBtn.setAttribute('aria-disabled', 'true');
+        referralBtn.setAttribute('tabindex', '-1');
       }
     });
   }
