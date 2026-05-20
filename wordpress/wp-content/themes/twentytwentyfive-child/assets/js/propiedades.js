@@ -6,7 +6,6 @@
   var currentFilters = (window.afPropiedades && window.afPropiedades.filters) || {};
   var knownIds = [];
   var pollTimer = null;
-  var notificationEl = null;
 
   function init() {
     var cards = document.querySelectorAll('.properties-grid .property-card');
@@ -15,13 +14,6 @@
       var match = href.match(/\/([^/]+)\/?$/);
       if (match) knownIds.push(match[1]);
     });
-
-    if (!cards.length) {
-      var grid = document.querySelector('.properties-grid');
-      if (grid && grid.querySelector('.no-properties')) {
-        knownIds = [];
-      }
-    }
 
     startPolling();
 
@@ -48,7 +40,7 @@
 
   function checkForUpdates() {
     var body = {
-      sort: currentFilters.sort || 'newest',
+      sort: 'newest',
       per_page: 50,
       page: 1,
     };
@@ -67,60 +59,32 @@
       .then(function (data) {
         if (!data.success || !data.results) return;
 
-        var newIds = data.results.map(function (r) { return r.id; });
-        var hasNew = newIds.some(function (id) {
-          return knownIds.indexOf(String(id)) === -1 && knownIds.indexOf(id) === -1;
+        var newItems = data.results.filter(function (item) {
+          var slug = item.url.replace(/\/$/, '').split('/').pop();
+          return knownIds.indexOf(slug) === -1;
         });
 
-        if (hasNew) {
-          showNotification(data.results);
+        if (newItems.length) {
+          appendNewCards(newItems);
         }
       })
       .catch(function () {});
   }
 
-  function showNotification(results) {
-    if (notificationEl) return;
-
+  function appendNewCards(items) {
     var grid = document.querySelector('.properties-grid');
     if (!grid) return;
 
-    notificationEl = document.createElement('div');
-    notificationEl.className = 'af-realtime-notification';
-    notificationEl.innerHTML =
-      '<span>Nuevas propiedades disponibles</span>' +
-      '<button type="button" class="af-realtime-btn">Actualizar</button>';
+    var noProps = grid.querySelector('.no-properties');
+    if (noProps) noProps.remove();
 
-    grid.parentNode.insertBefore(notificationEl, grid);
-
-    requestAnimationFrame(function () {
-      notificationEl.classList.add('is-visible');
-    });
-
-    notificationEl.querySelector('.af-realtime-btn').addEventListener('click', function () {
-      updateGrid(results);
-    });
-  }
-
-  function updateGrid(results) {
-    var grid = document.querySelector('.properties-grid');
-    if (!grid) return;
-
-    if (notificationEl) {
-      notificationEl.remove();
-      notificationEl = null;
-    }
-
-    grid.innerHTML = '';
-    knownIds = [];
-
-    results.forEach(function (item) {
-      var card = createCard(item);
-      card.classList.add('af-fade-in');
-      grid.appendChild(card);
-
+    items.forEach(function (item) {
       var slug = item.url.replace(/\/$/, '').split('/').pop();
       knownIds.push(slug);
+
+      var card = createCard(item);
+      card.classList.add('af-fade-in');
+      grid.prepend(card);
     });
   }
 
