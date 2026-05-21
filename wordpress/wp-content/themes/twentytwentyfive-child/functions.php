@@ -176,8 +176,9 @@ function twentytwentyfive_child_enqueue_assets() {
     );
 
     wp_localize_script('twentytwentyfive-child-owner-registration', 'afOwnerRegister', array(
-      'endpoint' => esc_url_raw( rest_url( 'af/v1/owner-register' ) ),
-      'nonce'    => wp_create_nonce( 'af_owner_register' ),
+      'endpoint'  => esc_url_raw( rest_url( 'af/v1/owner-register' ) ),
+      'nonce'     => wp_create_nonce( 'af_owner_register' ),
+      'restNonce' => wp_create_nonce( 'wp_rest' ),
     ));
   }
 }

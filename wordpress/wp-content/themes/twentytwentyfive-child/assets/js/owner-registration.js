@@ -376,8 +376,14 @@
       ? window.afOwnerRegister.endpoint
       : '/wp-json/af/v1/owner-register';
 
+    var headers = {};
+    if (window.afOwnerRegister && window.afOwnerRegister.restNonce) {
+      headers['X-WP-Nonce'] = window.afOwnerRegister.restNonce;
+    }
+
     fetch(apiUrl, {
       method: 'POST',
+      headers: headers,
       body: formData,
       credentials: 'same-origin',
     })
