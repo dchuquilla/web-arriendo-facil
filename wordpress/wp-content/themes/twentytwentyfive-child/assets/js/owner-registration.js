@@ -390,29 +390,45 @@
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (data.success) {
-          showFeedback('success', data.message || 'Tu solicitud ha sido enviada exitosamente. Te contactaremos en 24-48 horas.');
-          wizard.querySelector('.af-wizard__nav').hidden = true;
-          panels.forEach(function (p) { p.classList.remove('is-active'); });
+          showResult('success', data.message || 'Registro exitoso. Revisa tu correo electrónico para activar tu cuenta.');
         } else {
-          showFeedback('error', data.message || 'Ocurrió un error al enviar tu solicitud. Intenta de nuevo.');
-          isSubmitting = false;
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Enviar Solicitud';
+          showResult('error', data.message || 'Ocurrió un error al enviar tu solicitud.');
         }
       })
       .catch(function () {
-        showFeedback('error', 'Error de conexión. Verifica tu internet e intenta de nuevo.');
-        isSubmitting = false;
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Enviar Solicitud';
+        showResult('error', 'Error de conexión. Verifica tu internet e intenta de nuevo.');
       });
   }
 
-  function showFeedback(type, message) {
+  function showResult(type, message) {
+    panels.forEach(function (p) { p.classList.remove('is-active'); });
+    wizard.querySelector('.af-wizard__nav').style.display = 'none';
+
+    var icon = type === 'success'
+      ? '<svg class="af-result-icon af-result-icon--success" viewBox="0 0 52 52"><circle cx="26" cy="26" r="25" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14 27l7 7 16-16"/></svg>'
+      : '<svg class="af-result-icon af-result-icon--error" viewBox="0 0 52 52"><circle cx="26" cy="26" r="25" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M16 16l20 20M36 16l-20 20"/></svg>';
+
+    var btnHtml = type === 'success'
+      ? '<a href="/" class="btn btn--primary af-result-btn">Volver</a>'
+      : '<button type="button" class="btn btn--primary af-result-btn" id="af-retry-btn">Volver a intentar</button>';
+
     feedbackEl.className = 'af-wizard__feedback af-wizard__feedback--' + type;
-    feedbackEl.textContent = message;
+    feedbackEl.innerHTML = icon + '<p class="af-result-message">' + escHtml(message) + '</p>' + btnHtml;
     feedbackEl.hidden = false;
     feedbackEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    if (type === 'error') {
+      var retryBtn = document.getElementById('af-retry-btn');
+      retryBtn.addEventListener('click', function () {
+        feedbackEl.hidden = true;
+        wizard.querySelector('.af-wizard__nav').style.display = '';
+        isSubmitting = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar Solicitud';
+        currentStep = 1;
+        showStep(1);
+      });
+    }
   }
 
   function escHtml(str) {
