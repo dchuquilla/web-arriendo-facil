@@ -5765,10 +5765,15 @@ body.cmplz-denied-message .cmplz-cookiebanner .cmplz-message::after {
 
 .af-wizard__feedback {
   margin-top: var(--space-6);
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-8) var(--space-5);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
 }
 
 .af-wizard__feedback--success {
@@ -5781,6 +5786,52 @@ body.cmplz-denied-message .cmplz-cookiebanner .cmplz-message::after {
   background: #fef2f2;
   border: 1px solid #fca5a5;
   color: #991b1b;
+}
+
+.af-result-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.af-result-icon--success {
+  color: #10b981;
+  animation: af-result-draw 0.6s ease forwards;
+}
+
+.af-result-icon--error {
+  color: #ef4444;
+  animation: af-result-draw 0.6s ease forwards;
+}
+
+.af-result-icon circle {
+  stroke-dasharray: 157;
+  stroke-dashoffset: 157;
+  animation: af-circle-draw 0.4s ease forwards;
+}
+
+.af-result-icon path {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: af-check-draw 0.3s ease 0.4s forwards;
+}
+
+@keyframes af-circle-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes af-check-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.af-result-message {
+  margin: 0;
+  font-size: var(--font-size-base);
+  max-width: 400px;
+}
+
+.af-result-btn {
+  margin-top: var(--space-3);
+  text-decoration: none;
 }
 
 @media (max-width: 600px) {
