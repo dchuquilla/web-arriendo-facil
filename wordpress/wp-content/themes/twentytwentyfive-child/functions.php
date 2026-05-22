@@ -461,3 +461,73 @@ function twentytwentyfive_child_add_cache_headers() {
   }
 }
 add_action('wp_head', 'twentytwentyfive_child_add_cache_headers');
+
+/**
+ * Translate Complianz cookie policy strings to Spanish.
+ */
+function twentytwentyfive_child_complianz_translations( $translated, $text, $domain ) {
+  if ( $domain !== 'complianz-gdpr' ) {
+    return $translated;
+  }
+
+  static $translations = null;
+  if ( $translations === null ) {
+    $translations = array(
+      'Introduction' => 'Introducción',
+      'What are cookies?' => '¿Qué son las cookies?',
+      'What are scripts?' => '¿Qué son los scripts?',
+      'What is a web beacon?' => '¿Qué es un web beacon?',
+      'Cookies' => 'Cookies',
+      'Technical or functional cookies' => 'Cookies técnicas o funcionales',
+      'Statistics cookies' => 'Cookies de estadísticas',
+      'Advertising cookies' => 'Cookies de publicidad',
+      'Marketing/Tracking cookies' => 'Cookies de marketing/seguimiento',
+      'Social media' => 'Redes sociales',
+      'Placed cookies' => 'Cookies implementadas',
+      'Consent' => 'Consentimiento',
+      'Manage your consent settings' => 'Gestionar tu configuración de consentimiento',
+      'Vendors' => 'Proveedores',
+      'Enabling/disabling and deleting cookies' => 'Activar/desactivar y eliminar cookies',
+      'Your rights with respect to personal data' => 'Tus derechos respecto a datos personales',
+      'Contact details' => 'Datos de contacto',
+      'This Cookie Policy was last updated on %s and applies to citizens and legal permanent residents of the European Economic Area and Switzerland.' => 'Esta Política de Cookies fue actualizada por última vez el %s y aplica a ciudadanos y residentes legales permanentes del Espacio Económico Europeo y Suiza.',
+      'Our website, %s (hereinafter: "the website") uses cookies and other related technologies (for convenience all technologies are referred to as "cookies"). Cookies are also placed by third parties we have engaged. In the document below we inform you about the use of cookies on our website.' => 'Nuestro sitio web, %s (en adelante: "el sitio web") utiliza cookies y otras tecnologías relacionadas (por conveniencia, todas las tecnologías se denominan "cookies"). Las cookies también son colocadas por terceros que hemos contratado. En el siguiente documento te informamos sobre el uso de cookies en nuestro sitio web.',
+      'A cookie is a small simple file that is sent along with pages of this website and stored by your browser on the hard drive of your computer or another device. The information stored therein may be returned to our servers or to the servers of the relevant third parties during a subsequent visit.' => 'Una cookie es un pequeño archivo de texto que se envía junto con las páginas de este sitio web y que tu navegador almacena en el disco duro de tu computadora u otro dispositivo. La información almacenada puede ser devuelta a nuestros servidores o a los servidores de terceros relevantes durante una visita posterior.',
+      'A script is a piece of program code that is used to make our website function properly and interactively. This code is executed on our server or on your device.' => 'Un script es un fragmento de código de programa que se utiliza para que nuestro sitio web funcione correctamente y de manera interactiva. Este código se ejecuta en nuestro servidor o en tu dispositivo.',
+      'A web beacon (or a pixel tag) is a small, invisible piece of text or image on a website that is used to monitor traffic on a website. In order to do this, various data about you is stored using web beacons.' => 'Un web beacon (o etiqueta de píxel) es un pequeño fragmento de texto o imagen invisible en un sitio web que se utiliza para monitorear el tráfico. Para lograr esto, se almacenan diversos datos sobre ti mediante web beacons.',
+      'Some cookies ensure that certain parts of the website work properly and that your user preferences remain known. By placing functional cookies, we make it easier for you to visit our website. This way, you do not need to repeatedly enter the same information when visiting our website and, for example, the items remain in your shopping cart until you have paid. We may place these cookies without your consent.' => 'Algunas cookies aseguran que ciertas partes del sitio web funcionen correctamente y que tus preferencias se mantengan. Al colocar cookies funcionales, facilitamos tu visita a nuestro sitio web. De esta manera, no necesitas ingresar repetidamente la misma información. Podemos colocar estas cookies sin tu consentimiento.',
+      'We use statistics cookies to optimize the website experience for our users. With these statistics cookies we get insights in the usage of our website.' => 'Utilizamos cookies de estadísticas para optimizar la experiencia del sitio web para nuestros usuarios. Con estas cookies obtenemos información sobre el uso de nuestro sitio web.',
+      'We ask your permission to place statistics cookies.' => 'Te pedimos tu permiso para colocar cookies de estadísticas.',
+      'Because statistics are being tracked anonymously, no permission is asked to place statistics cookies.' => 'Dado que las estadísticas se rastrean de forma anónima, no se solicita permiso para colocar cookies de estadísticas.',
+      'Marketing/Tracking cookies are cookies or any other form of local storage, used to create user profiles to display advertising or to track the user on this website or across several websites for similar marketing purposes.' => 'Las cookies de marketing/seguimiento son cookies o cualquier otra forma de almacenamiento local, utilizadas para crear perfiles de usuario con el fin de mostrar publicidad o rastrear al usuario en este sitio web o en varios sitios web con propósitos de marketing similares.',
+      'Because these cookies are marked as tracking cookies, we ask your permission to place these.' => 'Dado que estas cookies están marcadas como cookies de seguimiento, te pedimos tu permiso para colocarlas.',
+      'On our website, we have included content to promote web pages (e.g. "like", "pin") or share (e.g. "tweet") on social networks. This content is embedded with code derived from third parties and places cookies. This content might store and process certain information for personalized advertising.' => 'En nuestro sitio web, hemos incluido contenido para promover páginas web (ej. "me gusta", "pin") o compartir (ej. "tweet") en redes sociales. Este contenido está incrustado con código de terceros y coloca cookies. Este contenido puede almacenar y procesar cierta información para publicidad personalizada.',
+      'You can use your internet browser to automatically or manually delete cookies. You can also specify that certain cookies may not be placed. Another option is to change the settings of your internet browser so that you receive a message each time a cookie is placed. For more information about these options, please refer to the instructions in the Help section of your browser.' => 'Puedes usar tu navegador de internet para eliminar cookies automática o manualmente. También puedes especificar que ciertas cookies no se coloquen. Otra opción es cambiar la configuración de tu navegador para recibir un mensaje cada vez que se coloque una cookie. Para más información sobre estas opciones, consulta las instrucciones en la sección de Ayuda de tu navegador.',
+      'Please note that our website may not work properly if all cookies are disabled. If you do delete the cookies in your browser, they will be placed again after your consent when you visit our website again.' => 'Ten en cuenta que nuestro sitio web puede no funcionar correctamente si se desactivan todas las cookies. Si eliminas las cookies en tu navegador, se volverán a colocar después de tu consentimiento cuando visites nuestro sitio web nuevamente.',
+      'You have the following rights with respect to your personal data:' => 'Tienes los siguientes derechos respecto a tus datos personales:',
+      'You have the right to know why your personal data is needed, what will happen to it, and how long it will be retained for.' => 'Tienes derecho a saber por qué se necesitan tus datos personales, qué sucederá con ellos y por cuánto tiempo se conservarán.',
+      'Right of access: You have the right to access your personal data that is known to us.' => 'Derecho de acceso: Tienes derecho a acceder a tus datos personales que tenemos.',
+      'Right to rectification: you have the right to supplement, correct, have deleted or blocked your personal data whenever you wish.' => 'Derecho de rectificación: Tienes derecho a complementar, corregir, eliminar o bloquear tus datos personales cuando lo desees.',
+      'If you give us your consent to process your data, you have the right to revoke that consent and to have your personal data deleted.' => 'Si nos das tu consentimiento para procesar tus datos, tienes derecho a revocar ese consentimiento y a que tus datos personales sean eliminados.',
+      'Right to transfer your data: you have the right to request all your personal data from the controller and transfer it in its entirety to another controller.' => 'Derecho a la portabilidad de datos: Tienes derecho a solicitar todos tus datos personales al responsable del tratamiento y transferirlos en su totalidad a otro responsable.',
+      'Right to object: you may object to the processing of your data. We comply with this, unless there are justified grounds for processing.' => 'Derecho de oposición: Puedes oponerte al procesamiento de tus datos. Cumpliremos con esto, a menos que existan motivos justificados para el procesamiento.',
+      'To exercise these rights, please contact us. Please refer to the contact details at the bottom of this Cookie Policy. If you have a complaint about how we handle your data, we would like to hear from you, but you also have the right to submit a complaint to the supervisory authority (the Data Protection Authority).' => 'Para ejercer estos derechos, por favor contáctanos. Consulta los datos de contacto al final de esta Política de Cookies. Si tienes una queja sobre cómo manejamos tus datos, nos gustaría saberlo, pero también tienes derecho a presentar una queja ante la autoridad de supervisión (la Autoridad de Protección de Datos).',
+      'Functional' => 'Funcional',
+      'Marketing' => 'Marketing',
+      'Statistics' => 'Estadísticas',
+      'Preferences' => 'Preferencias',
+      'Purpose pending investigation' => 'Propósito pendiente de investigación',
+      'Consent to service' => 'Consentimiento al servicio',
+    );
+  }
+
+  if ( isset( $translations[ $text ] ) ) {
+    return $translations[ $text ];
+  }
+
+  return $translated;
+}
+add_filter( 'gettext', 'twentytwentyfive_child_complianz_translations', 10, 3 );
+add_filter( 'gettext_with_context', function( $translated, $text, $context, $domain ) {
+  return twentytwentyfive_child_complianz_translations( $translated, $text, $domain );
+}, 10, 4 );
