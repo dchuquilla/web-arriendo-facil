@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </div>
 
+    <?php if ( ! is_page( 'registro-propietario' ) ) : ?>
     <!-- CTA Registro Propietario -->
     <div class="footer-cta-owner">
       <div class="footer-cta-owner__content">
@@ -89,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </a>
       </div>
     </div>
+    <?php endif; ?>
 
     <div class="footer-bottom">
       <p>© <?php echo esc_html(date('Y')); ?> <?php bloginfo('name'); ?>. <?php esc_html_e('Todos los derechos reservados.', 'twentytwentyfive-child'); ?></p>
