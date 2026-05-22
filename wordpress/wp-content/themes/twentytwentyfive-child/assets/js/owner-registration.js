@@ -29,6 +29,7 @@
 
     initFileUploads();
     initLegalAgentToggle();
+    initModals();
     updateNav();
   }
 
@@ -93,6 +94,39 @@
         } else {
           fieldsContainer.hidden = true;
         }
+      });
+    });
+  }
+
+  function initModals() {
+    var triggers = document.querySelectorAll('.af-modal-trigger');
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener('click', function (e) {
+        e.preventDefault();
+        var modalId = this.getAttribute('data-modal');
+        var modal = document.getElementById(modalId);
+        if (modal) {
+          modal.hidden = false;
+          var body = modal.querySelector('.af-modal__body');
+          if (body) body.scrollTop = 0;
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    var modals = document.querySelectorAll('.af-modal');
+    modals.forEach(function (modal) {
+      var closeBtn = modal.querySelector('.af-modal__close');
+      var backdrop = modal.querySelector('.af-modal__backdrop');
+
+      closeBtn.addEventListener('click', function () {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      });
+
+      backdrop.addEventListener('click', function () {
+        modal.hidden = true;
+        document.body.style.overflow = '';
       });
     });
   }

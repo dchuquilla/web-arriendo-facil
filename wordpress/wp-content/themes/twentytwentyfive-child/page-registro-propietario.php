@@ -194,8 +194,8 @@ get_header();
                 <input type="checkbox" id="af-terms" name="terms" required>
                 <span><?php printf(
                   esc_html__( 'Acepto los %1$sTérminos y Condiciones%2$s y la %3$sPolítica de Privacidad%4$s', 'twentytwentyfive-child' ),
-                  '<a href="/terminos" target="_blank">', '</a>',
-                  '<a href="/privacidad" target="_blank">', '</a>'
+                  '<a href="#" class="af-modal-trigger" data-modal="af-modal-terms">', '</a>',
+                  '<a href="#" class="af-modal-trigger" data-modal="af-modal-privacy">', '</a>'
                 ); ?></span>
               </label>
               <span class="af-form-error" hidden></span>
@@ -234,5 +234,47 @@ get_header();
     </div>
   </section>
 </main>
+
+<!-- Modal: Términos y Condiciones -->
+<div class="af-modal" id="af-modal-terms" hidden>
+  <div class="af-modal__backdrop"></div>
+  <div class="af-modal__container">
+    <div class="af-modal__header">
+      <h3><?php esc_html_e( 'Términos y Condiciones', 'twentytwentyfive-child' ); ?></h3>
+      <button type="button" class="af-modal__close" aria-label="Cerrar">&times;</button>
+    </div>
+    <div class="af-modal__body">
+      <?php
+      $terms_page = get_page_by_path( 'terminos-y-condiciones' );
+      if ( $terms_page ) {
+        echo apply_filters( 'the_content', $terms_page->post_content );
+      } else {
+        esc_html_e( 'Contenido no disponible.', 'twentytwentyfive-child' );
+      }
+      ?>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Política de Privacidad -->
+<div class="af-modal" id="af-modal-privacy" hidden>
+  <div class="af-modal__backdrop"></div>
+  <div class="af-modal__container">
+    <div class="af-modal__header">
+      <h3><?php esc_html_e( 'Política de Privacidad', 'twentytwentyfive-child' ); ?></h3>
+      <button type="button" class="af-modal__close" aria-label="Cerrar">&times;</button>
+    </div>
+    <div class="af-modal__body">
+      <?php
+      $privacy_page = get_page_by_path( 'politica-de-privacidad' );
+      if ( $privacy_page ) {
+        echo apply_filters( 'the_content', $privacy_page->post_content );
+      } else {
+        esc_html_e( 'Contenido no disponible.', 'twentytwentyfive-child' );
+      }
+      ?>
+    </div>
+  </div>
+</div>
 
 <?php get_footer(); ?>

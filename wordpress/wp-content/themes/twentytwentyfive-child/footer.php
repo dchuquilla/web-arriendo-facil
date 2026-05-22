@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
           <a href="#"><?php esc_html_e('Acerca de Arriendo Fácil', 'twentytwentyfive-child'); ?></a>
           <a href="#"><?php esc_html_e('Blog y recursos', 'twentytwentyfive-child'); ?></a>
           <a href="#"><?php esc_html_e('Trabaja con nosotros', 'twentytwentyfive-child'); ?></a>
-          <a href="#" class="footer-owner-link">
-            <?php esc_html_e('¿Eres propietario?', 'twentytwentyfive-child'); ?>
+          <a href="<?php echo esc_url(wp_login_url()); ?>" class="footer-owner-link">
+            <?php esc_html_e('Iniciar sesión', 'twentytwentyfive-child'); ?>
           </a>
         </div>
       </div>
@@ -69,10 +69,24 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="footer-col">
         <h4><?php esc_html_e('Legal', 'twentytwentyfive-child'); ?></h4>
         <div class="footer-links">
-          <a href="<?php echo esc_url(home_url('/terms-and-conditions/')); ?>"><?php esc_html_e('Términos y condiciones', 'twentytwentyfive-child'); ?></a>
-          <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>"><?php esc_html_e('Política de privacidad', 'twentytwentyfive-child'); ?></a>
+          <a href="<?php echo esc_url(home_url('/terminos-y-condiciones/')); ?>"><?php esc_html_e('Términos y condiciones', 'twentytwentyfive-child'); ?></a>
+          <a href="<?php echo esc_url(home_url('/politica-de-privacidad/')); ?>"><?php esc_html_e('Política de privacidad', 'twentytwentyfive-child'); ?></a>
           <a href="<?php echo esc_url(home_url('/cookie-policy-eu/')); ?>"><?php esc_html_e('Política de cookies', 'twentytwentyfive-child'); ?></a>
         </div>
+      </div>
+    </div>
+
+    <!-- CTA Registro Propietario -->
+    <div class="footer-cta-owner">
+      <div class="footer-cta-owner__content">
+        <div class="footer-cta-owner__text">
+          <h4><?php esc_html_e('¿Eres propietario?', 'twentytwentyfive-child'); ?></h4>
+          <p><?php esc_html_e('Regístrate como propietario y accede a nuestra plataforma de gestión profesional. Te ayudamos a administrar tus arriendos de forma segura y eficiente.', 'twentytwentyfive-child'); ?></p>
+        </div>
+        <a href="<?php echo esc_url(home_url('/registro-propietario/')); ?>" class="btn btn--accent footer-cta-owner__btn">
+          <?php esc_html_e('Registrarme como propietario', 'twentytwentyfive-child'); ?>
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
       </div>
     </div>
 
