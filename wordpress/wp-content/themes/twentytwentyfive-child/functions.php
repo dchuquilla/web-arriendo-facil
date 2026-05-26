@@ -381,6 +381,71 @@ function twentytwentyfive_child_enqueue_single_carousel() {
 add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_single_carousel', 15);
 
 /**
+ * Enqueue rental workflow script (availability, visit slots, interest queue)
+ * only on single accommodation pages.
+ */
+function twentytwentyfive_child_enqueue_rental_workflow() {
+  if ( ! is_singular( 'accommodation' ) ) {
+    return;
+  }
+
+  $js_path  = get_stylesheet_directory() . '/assets/js/rental-workflow.js';
+  $css_path = get_stylesheet_directory() . '/assets/css/rental-workflow.css';
+
+  if ( ! file_exists( $js_path ) ) {
+    return;
+  }
+
+  if ( file_exists( $css_path ) ) {
+    wp_enqueue_style(
+      'af-rental-workflow',
+      get_stylesheet_directory_uri() . '/assets/css/rental-workflow.css',
+      [ 'twentytwentyfive-child-style' ],
+      filemtime( $css_path )
+    );
+  }
+
+  wp_enqueue_script(
+    'af-rental-workflow',
+    get_stylesheet_directory_uri() . '/assets/js/rental-workflow.js',
+    [],
+    filemtime( $js_path ),
+    true
+  );
+
+  $post_id = get_the_ID();
+
+  wp_localize_script(
+    'af-rental-workflow',
+    'afWorkflow',
+    [
+      'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
+      'nonce'           => wp_create_nonce( 'af_guest_frontend_nonce' ),
+      'accommodationId' => (int) $post_id,
+      'i18n'            => [
+        'errorGeneric'    => __( 'No se pudo completar la operación. Intenta nuevamente.', 'twentytwentyfive-child' ),
+        'errorNetwork'    => __( 'Error de conexión. Recarga la página e intenta de nuevo.', 'twentytwentyfive-child' ),
+        'noSlots'         => __( 'No hay horarios de visita disponibles por ahora.', 'twentytwentyfive-child' ),
+        'spotsLeft'       => __( 'Disponible', 'twentytwentyfive-child' ),
+        'sending'         => __( 'Enviando…', 'twentytwentyfive-child' ),
+        'confirmVisit'    => __( 'Confirmar visita', 'twentytwentyfive-child' ),
+        'visitBooked'     => __( '¡Visita agendada! Te enviaremos un correo de confirmación.', 'twentytwentyfive-child' ),
+        'slotConflict'    => __( 'Este horario ya fue reservado. Por favor elige otro.', 'twentytwentyfive-child' ),
+        'fillRequired'    => __( 'Completa los campos obligatorios.', 'twentytwentyfive-child' ),
+        'joinQueue'       => __( 'Unirme a lista de espera', 'twentytwentyfive-child' ),
+        'queueJoined'     => __( '¡Listo! Te avisaremos cuando esta propiedad esté disponible.', 'twentytwentyfive-child' ),
+        'queueRented'     => __( 'Esta propiedad está actualmente rentada. Te avisamos cuando quede disponible.', 'twentytwentyfive-child' ),
+        'queueReserved'   => __( 'Esta propiedad tiene una reserva activa. Ingresa a la lista de espera.', 'twentytwentyfive-child' ),
+        'queuePrivate'    => __( 'Esta propiedad no está disponible públicamente en este momento.', 'twentytwentyfive-child' ),
+        'queueUnavailable'=> __( 'Propiedad no disponible. Únete a la lista de espera.', 'twentytwentyfive-child' ),
+        'queueNoSlots'    => __( 'No hay horarios de visita disponibles. Regístrate y te contactaremos.', 'twentytwentyfive-child' ),
+      ],
+    ]
+  );
+}
+add_action( 'wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_rental_workflow', 16 );
+
+/**
  * Menú principal (si el tema padre no lo registra o quieres controlarlo).
  */
 function twentytwentyfive_child_register_menus() {
@@ -560,12 +625,16 @@ remove_action( 'wp_head', 'wp_generator' );
  * Add SEO meta tags: title, description, canonical, Open Graph.
  */
 function af_seo_meta_tags() {
+  if ( is_admin() || is_search() || is_404() ) {
+    return;
+  }
+
   $site_name = 'Arriendo Fácil';
   $site_url  = home_url('/');
   $logo_url  = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web-sq.png';
 
   if ( is_front_page() ) {
-    $title       = 'Arriendo Fácil — Arriendos verificados en Quito y Ecuador';
+    $title       = 'Arriendo Fácil — Hospedajes verificados para ti';
     $description = 'Encuentra arriendos verificados en Quito y Ecuador. Apartamentos, casas y habitaciones con propietarios validados. Proceso rápido, precios claros y soporte 24/7.';
     $canonical   = $site_url;
   } elseif ( is_page('propiedades') ) {
@@ -574,7 +643,7 @@ function af_seo_meta_tags() {
     $canonical   = home_url('/propiedades/');
   } elseif ( is_page('contacto') ) {
     $title       = 'Contacto — Arriendo Fácil | Soporte 24/7 en Ecuador';
-    $description = 'Contáctanos para resolver tus dudas sobre arriendo en Ecuador. Atención por WhatsApp, email y teléfono. Respuesta en menos de 24 horas.';
+    $description = 'Contáctanos para resolver tus dudas sobre arriendo en Ecuador. Atención por email y respuesta en menos de 24 horas.';
     $canonical   = home_url('/contacto/');
   } elseif ( is_page('search-results') ) {
     $title       = 'Buscar propiedades en arriendo — Arriendo Fácil';
@@ -603,7 +672,6 @@ function af_seo_meta_tags() {
   echo "\n<!-- Arriendo Fácil SEO -->\n";
   echo '<title>' . esc_html($title) . "</title>\n";
   echo '<meta name="description" content="' . esc_attr($description) . "\">\n";
-  echo '<link rel="canonical" href="' . esc_url($canonical) . "\">\n";
   echo '<meta property="og:type" content="website">' . "\n";
   echo '<meta property="og:title" content="' . esc_attr($title) . "\">\n";
   echo '<meta property="og:description" content="' . esc_attr($description) . "\">\n";
@@ -620,14 +688,6 @@ function af_seo_meta_tags() {
   echo "<!-- /Arriendo Fácil SEO -->\n";
 }
 add_action( 'wp_head', 'af_seo_meta_tags', 1 );
-
-/**
- * Remove default WP title tag since we handle it ourselves.
- */
-remove_theme_support( 'title-tag' );
-add_action( 'after_setup_theme', function() {
-  remove_theme_support( 'title-tag' );
-}, 99 );
 
 /**
  * JSON-LD Schema: Organization + WebSite + SearchAction (sitewide).
@@ -649,7 +709,7 @@ function af_schema_organization() {
         ),
         'contactPoint' => array(
           '@type'            => 'ContactPoint',
-          'telephone'        => '+593-99-123-4567',
+          'email'            => 'arriendofacilnet@gmail.com',
           'contactType'      => 'customer service',
           'availableLanguage' => 'Spanish',
           'areaServed'       => 'EC',
@@ -703,8 +763,7 @@ function af_schema_local_business() {
     'name'     => 'Arriendo Fácil',
     'url'      => home_url('/'),
     'image'    => get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web-sq.png',
-    'telephone' => '+593-99-123-4567',
-    'email'    => 'contacto@arriendofacil.com',
+    'email'    => 'arriendofacilnet@gmail.com',
     'address'  => array(
       '@type'           => 'PostalAddress',
       'addressLocality' => 'Quito',
@@ -999,8 +1058,7 @@ function af_llms_txt_template_redirect() {
   echo "- Soporte al arrendatario y mediación en conflictos\n";
   echo "- Asesoría legal en contratación de arriendo\n\n";
   echo "## Contacto\n\n";
-  echo "- Email: contacto@arriendofacil.com\n";
-  echo "- Teléfono: +593 99 123 4567\n";
+  echo "- Email: arriendofacilnet@gmail.com\n";
   echo "- Ubicación: Quito, Pichincha, Ecuador\n";
   exit;
 }
