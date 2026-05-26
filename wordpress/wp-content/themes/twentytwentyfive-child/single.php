@@ -82,7 +82,7 @@ get_header();
   <!-- ========== PROPERTY DETAILS ========== -->
   <section class="section section--single-detail<?php echo $main_img ? '' : ' section--single-detail-no-hero'; ?>">
     <div class="container">
-      <div class="property-detail-grid property-detail-grid--single">
+      <div class="property-detail-grid property-detail-grid--single property-detail-grid--with-sidebar">
         <!-- Main Info -->
         <div class="property-main">
           <?php
@@ -245,6 +245,121 @@ get_header();
 
         </div>
       </div>
+
+        <!-- ========== BOOKING SIDEBAR ========== -->
+        <aside class="property-booking-sidebar" aria-label="<?php esc_attr_e('Reservar visita o unirse a lista de espera', 'twentytwentyfive-child'); ?>">
+
+          <?php
+            $avail_accommodation_id = get_the_ID();
+            $af_commercial_status   = (string) get_post_meta( $avail_accommodation_id, '_af_commercial_status', true );
+            $af_is_status_public    = in_array( $af_commercial_status, [ 'available', '', 'published' ], true );
+          ?>
+
+          <!-- Status Badge -->
+          <div id="af-booking-status-badge" class="af-booking-badge
+            <?php
+              switch ( $af_commercial_status ) {
+                case 'rented':    echo 'af-booking-badge--rented';    break;
+                case 'reserved':  echo 'af-booking-badge--reserved';  break;
+                case 'private':   echo 'af-booking-badge--private';   break;
+                default:          echo 'af-booking-badge--available'; break;
+              }
+            ?>
+          ">
+            <?php
+              switch ( $af_commercial_status ) {
+                case 'rented':    esc_html_e( 'Actualmente rentado', 'twentytwentyfive-child' );  break;
+                case 'reserved':  esc_html_e( 'Reservado — con abono', 'twentytwentyfive-child' ); break;
+                case 'private':   esc_html_e( 'No disponible', 'twentytwentyfive-child' );         break;
+                default:          esc_html_e( 'Disponible', 'twentytwentyfive-child' );            break;
+              }
+            ?>
+          </div>
+
+          <!-- Loading state -->
+          <div id="af-booking-loading" class="af-booking-section" hidden>
+            <span class="af-booking-spinner" aria-label="<?php esc_attr_e('Verificando disponibilidad…', 'twentytwentyfive-child'); ?>"></span>
+            <p><?php esc_html_e('Verificando disponibilidad…', 'twentytwentyfive-child'); ?></p>
+          </div>
+
+          <!-- Visit Slots (shown when available & slots exist) -->
+          <div id="af-booking-slots-section" class="af-booking-section" hidden>
+            <h3 class="af-booking-heading"><?php esc_html_e('Agendar visita', 'twentytwentyfive-child'); ?></h3>
+            <p class="af-booking-hint"><?php esc_html_e('Elige un horario disponible para conocer la propiedad.', 'twentytwentyfive-child'); ?></p>
+            <div id="af-booking-slots-list" class="af-slots-list" role="list"></div>
+
+            <!-- Slot booking form (hidden until slot selected) -->
+            <form id="af-visit-form" class="af-booking-form" hidden novalidate>
+              <input type="hidden" id="af-visit-slot-id" name="slot_id" value="">
+              <div id="af-visit-slot-label" class="af-selected-slot-label"></div>
+
+              <div class="af-form-row">
+                <label for="af-visit-name"><?php esc_html_e('Nombre completo', 'twentytwentyfive-child'); ?> *</label>
+                <input type="text" id="af-visit-name" name="guest_name" required minlength="3" maxlength="100"
+                       placeholder="<?php esc_attr_e('Tu nombre', 'twentytwentyfive-child'); ?>">
+              </div>
+              <div class="af-form-row">
+                <label for="af-visit-email"><?php esc_html_e('Correo electrónico', 'twentytwentyfive-child'); ?> *</label>
+                <input type="email" id="af-visit-email" name="guest_email" required maxlength="150"
+                       placeholder="<?php esc_attr_e('correo@ejemplo.com', 'twentytwentyfive-child'); ?>">
+              </div>
+              <div class="af-form-row">
+                <label for="af-visit-phone"><?php esc_html_e('Teléfono (opcional)', 'twentytwentyfive-child'); ?></label>
+                <input type="tel" id="af-visit-phone" name="guest_phone" maxlength="15"
+                       placeholder="<?php esc_attr_e('10 dígitos', 'twentytwentyfive-child'); ?>">
+              </div>
+              <div class="af-form-row">
+                <label for="af-visit-notes"><?php esc_html_e('Notas (opcional)', 'twentytwentyfive-child'); ?></label>
+                <textarea id="af-visit-notes" name="notes" rows="2" maxlength="300"
+                          placeholder="<?php esc_attr_e('Preguntas o comentarios…', 'twentytwentyfive-child'); ?>"></textarea>
+              </div>
+              <div id="af-visit-feedback" class="af-booking-feedback" role="alert" aria-live="polite"></div>
+              <button type="submit" id="af-visit-submit" class="btn btn--primary btn--full">
+                <?php esc_html_e('Confirmar visita', 'twentytwentyfive-child'); ?>
+              </button>
+              <button type="button" id="af-visit-cancel" class="btn btn--ghost btn--full" style="margin-top:.5rem">
+                <?php esc_html_e('Cancelar', 'twentytwentyfive-child'); ?>
+              </button>
+            </form>
+          </div>
+
+          <!-- Interest Queue (shown when not available OR no slots left) -->
+          <div id="af-booking-queue-section" class="af-booking-section" hidden>
+            <h3 class="af-booking-heading"><?php esc_html_e('Unirse a lista de espera', 'twentytwentyfive-child'); ?></h3>
+            <p class="af-booking-hint"><?php esc_html_e('Te avisamos cuando esta propiedad quede disponible.', 'twentytwentyfive-child'); ?></p>
+            <form id="af-queue-form" class="af-booking-form" novalidate>
+              <div class="af-form-row">
+                <label for="af-queue-name"><?php esc_html_e('Nombre completo', 'twentytwentyfive-child'); ?> *</label>
+                <input type="text" id="af-queue-name" name="name" required minlength="3" maxlength="100"
+                       placeholder="<?php esc_attr_e('Tu nombre', 'twentytwentyfive-child'); ?>">
+              </div>
+              <div class="af-form-row">
+                <label for="af-queue-email"><?php esc_html_e('Correo electrónico', 'twentytwentyfive-child'); ?> *</label>
+                <input type="email" id="af-queue-email" name="email" required maxlength="150"
+                       placeholder="<?php esc_attr_e('correo@ejemplo.com', 'twentytwentyfive-child'); ?>">
+              </div>
+              <div class="af-form-row">
+                <label for="af-queue-phone"><?php esc_html_e('Teléfono (opcional)', 'twentytwentyfive-child'); ?></label>
+                <input type="tel" id="af-queue-phone" name="phone" maxlength="15"
+                       placeholder="<?php esc_attr_e('10 dígitos', 'twentytwentyfive-child'); ?>">
+              </div>
+              <div class="af-form-row">
+                <label for="af-queue-message"><?php esc_html_e('Mensaje (opcional)', 'twentytwentyfive-child'); ?></label>
+                <textarea id="af-queue-message" name="message" rows="2" maxlength="300"
+                          placeholder="<?php esc_attr_e('¿Por qué te interesa esta propiedad?', 'twentytwentyfive-child'); ?>"></textarea>
+              </div>
+              <div id="af-queue-feedback" class="af-booking-feedback" role="alert" aria-live="polite"></div>
+              <button type="submit" id="af-queue-submit" class="btn btn--primary btn--full">
+                <?php esc_html_e('Unirme a lista de espera', 'twentytwentyfive-child'); ?>
+              </button>
+            </form>
+          </div>
+
+          <!-- Error state -->
+          <div id="af-booking-error" class="af-booking-section af-booking-feedback--error" hidden role="alert"></div>
+
+        </aside>
+        <!-- /BOOKING SIDEBAR -->
 
       <!-- Amenities removed - now inside tabs -->
     </div>

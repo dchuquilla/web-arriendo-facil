@@ -1,0 +1,267 @@
+/*
+ * rental-workflow.css
+ * Styles for the booking sidebar on single accommodation pages.
+ */
+
+/* ── Sidebar wrapper ────────────────────────────────────────────────────── */
+.property-booking-sidebar {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-6, 1.5rem);
+  position: sticky;
+  top: 5rem;
+  align-self: start;
+}
+
+/* Grid adjustment when sidebar is present */
+.property-detail-grid--with-sidebar {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-8, 2rem);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .property-detail-grid--with-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .property-booking-sidebar {
+    position: static;
+  }
+}
+
+/* ── Status badge ────────────────────────────────────────────────────────── */
+.af-booking-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem;
+  font-size: .8125rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  padding: .35rem .85rem;
+  border-radius: 999px;
+  margin-bottom: var(--space-4, 1rem);
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.af-booking-badge--available {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.af-booking-badge--reserved {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.af-booking-badge--rented {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.af-booking-badge--private {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* ── Sections ────────────────────────────────────────────────────────────── */
+.af-booking-section {
+  margin-top: var(--space-4, 1rem);
+}
+
+.af-booking-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 .25rem;
+  color: var(--color-text, #111827);
+}
+
+.af-booking-hint {
+  font-size: .875rem;
+  color: var(--color-text-muted, #6b7280);
+  margin: 0 0 var(--space-4, 1rem);
+  line-height: 1.5;
+}
+
+/* ── Loading spinner ─────────────────────────────────────────────────────── */
+.af-booking-spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--color-border, #e5e7eb);
+  border-top-color: var(--color-primary, #3b82f6);
+  border-radius: 50%;
+  animation: af-spin .7s linear infinite;
+  vertical-align: middle;
+  margin-right: .5rem;
+}
+
+@keyframes af-spin {
+  to { transform: rotate(360deg); }
+}
+
+.af-booking-loading > p {
+  display: inline;
+  font-size: .875rem;
+  color: var(--color-text-muted, #6b7280);
+  vertical-align: middle;
+}
+
+/* ── Slot list ───────────────────────────────────────────────────────────── */
+.af-slots-list {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-bottom: var(--space-4, 1rem);
+}
+
+.af-slot-btn {
+  display: flex;
+  flex-direction: column;
+  gap: .125rem;
+  text-align: left;
+  background: var(--color-surface-alt, #f9fafb);
+  border: 1.5px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-md, 8px);
+  padding: .75rem 1rem;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+  width: 100%;
+  font-family: inherit;
+}
+
+.af-slot-btn:hover,
+.af-slot-btn:focus-visible {
+  border-color: var(--color-primary, #3b82f6);
+  background: #eff6ff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .15);
+  outline: none;
+}
+
+.af-slot-date {
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  text-transform: capitalize;
+}
+
+.af-slot-time {
+  font-size: .8125rem;
+  color: var(--color-text-muted, #6b7280);
+}
+
+.af-slot-spots {
+  font-size: .75rem;
+  color: #059669;
+  font-weight: 600;
+  margin-top: .125rem;
+}
+
+.af-no-slots {
+  font-size: .875rem;
+  color: var(--color-text-muted, #6b7280);
+  text-align: center;
+  padding: var(--space-4, 1rem) 0;
+}
+
+/* ── Selected slot label ─────────────────────────────────────────────────── */
+.af-selected-slot-label {
+  background: #eff6ff;
+  border: 1.5px solid #bfdbfe;
+  border-radius: var(--radius-md, 8px);
+  padding: .5rem .875rem;
+  font-size: .875rem;
+  font-weight: 600;
+  color: #1d4ed8;
+  margin-bottom: var(--space-3, .75rem);
+  text-transform: capitalize;
+}
+
+/* ── Booking / queue forms ───────────────────────────────────────────────── */
+.af-booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.af-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.af-form-row label {
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+}
+
+.af-form-row input,
+.af-form-row textarea {
+  font-size: .875rem;
+  padding: .5rem .75rem;
+  border: 1.5px solid var(--color-border, #e5e7eb);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--color-surface, #fff);
+  color: var(--color-text, #111827);
+  transition: border-color .15s, box-shadow .15s;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.af-form-row input:focus,
+.af-form-row textarea:focus {
+  outline: none;
+  border-color: var(--color-primary, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .15);
+}
+
+.af-form-row textarea {
+  resize: vertical;
+  min-height: 64px;
+}
+
+/* ── Feedback messages ───────────────────────────────────────────────────── */
+.af-booking-feedback {
+  font-size: .8125rem;
+  border-radius: var(--radius-sm, 6px);
+  padding: .5rem .75rem;
+  display: none;
+}
+
+.af-booking-feedback--error {
+  background: #fee2e2;
+  color: #991b1b;
+  display: block;
+}
+
+.af-booking-feedback--success {
+  background: #d1fae5;
+  color: #065f46;
+  display: block;
+}
+
+/* ── Full-width button helpers ───────────────────────────────────────────── */
+.btn--full {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ── Highlight animation (triggered by chatbot redirect) ─────────────────── */
+@keyframes af-booking-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(59, 130, 246, .55); }
+  60%  { box-shadow: 0 0 0 14px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+.af-booking-section--highlight {
+  animation: af-booking-pulse 1s ease-out 3;
+  border-radius: var(--radius-lg, 12px);
+  outline: 2px solid var(--color-primary, #3b82f6);
+  outline-offset: 4px;
+}

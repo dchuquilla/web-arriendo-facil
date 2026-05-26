@@ -52,7 +52,7 @@ get_header();
                 type="tel"
                 id="phone"
                 name="phone"
-                placeholder="<?php esc_attr_e('+593 99 123 4567', 'twentytwentyfive-child'); ?>"
+                placeholder="<?php esc_attr_e('Tu número de contacto (opcional)', 'twentytwentyfive-child'); ?>"
               >
             </div>
 
@@ -99,8 +99,7 @@ get_header();
               <div>
                 <h4><?php esc_html_e('Email', 'twentytwentyfive-child'); ?></h4>
                 <p>
-                  <a href="mailto:contacto@arriendofacil.com">contacto@arriendofacil.com</a><br>
-                  <a href="mailto:soporte@arriendofacil.com">soporte@arriendofacil.com</a>
+                  <a href="mailto:arriendofacilnet@gmail.com">arriendofacilnet@gmail.com</a>
                 </p>
               </div>
             </div>
@@ -109,10 +108,10 @@ get_header();
             <div class="contact-info-item">
               <div class="contact-icon">📞</div>
               <div>
-                <h4><?php esc_html_e('Teléfono', 'twentytwentyfive-child'); ?></h4>
+                <h4><?php esc_html_e('Atención', 'twentytwentyfive-child'); ?></h4>
                 <p>
-                  <a href="tel:+593991234567">+593 99 123 4567</a><br>
-                  <?php esc_html_e('Lun - Vie: 8:00 - 18:00', 'twentytwentyfive-child'); ?>
+                  <?php esc_html_e('Atención por correo electrónico.', 'twentytwentyfive-child'); ?><br>
+                  <?php esc_html_e('Respuesta en menos de 24 horas hábiles.', 'twentytwentyfive-child'); ?>
                 </p>
               </div>
             </div>
@@ -121,10 +120,10 @@ get_header();
             <div class="contact-info-item">
               <div class="contact-icon">💬</div>
               <div>
-                <h4><?php esc_html_e('WhatsApp', 'twentytwentyfive-child'); ?></h4>
+                <h4><?php esc_html_e('Canal rápido', 'twentytwentyfive-child'); ?></h4>
                 <p>
-                  <a href="https://wa.me/593991234567" target="_blank">+593 99 123 4567</a><br>
-                  <?php esc_html_e('Respuesta en minutos', 'twentytwentyfive-child'); ?>
+                  <a href="mailto:arriendofacilnet@gmail.com">arriendofacilnet@gmail.com</a><br>
+                  <?php esc_html_e('Respuesta en minutos en horario laboral', 'twentytwentyfive-child'); ?>
                 </p>
               </div>
             </div>

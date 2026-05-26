@@ -85,7 +85,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
         <div class="hero-content" data-animate>
           <span class="badge"><?php esc_html_e('Encuentra tu lugar perfecto', 'twentytwentyfive-child'); ?></span>
           <h1 class="h1">
-            <?php esc_html_e('Arriendos verificados en Quito y Ecuador', 'twentytwentyfive-child'); ?>
+            <?php esc_html_e('Hospedajes verificados para ti', 'twentytwentyfive-child'); ?>
           </h1>
           <p class="p">
             <?php esc_html_e('Descubre arriendos de calidad en Ecuador. Propiedades confiables y bien ubicadas. Rápido, seguro y sin complicaciones.', 'twentytwentyfive-child'); ?>

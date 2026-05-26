@@ -116,7 +116,7 @@ get_header();
                 <div class="af-form-group">
                   <label for="af-legal-phone"><?php esc_html_e( 'Teléfono', 'twentytwentyfive-child' ); ?></label>
                   <input type="tel" id="af-legal-phone" name="legal_agent_phone" maxlength="15"
-                    placeholder="<?php esc_attr_e( '0991234567', 'twentytwentyfive-child' ); ?>">
+                    placeholder="<?php esc_attr_e( 'Tu número de contacto', 'twentytwentyfive-child' ); ?>">
                   <span class="af-form-error" hidden></span>
                 </div>
 
