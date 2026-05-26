@@ -16,7 +16,7 @@ if ($q->have_posts()) {
   while ($q->have_posts()) { $q->the_post();
     $id = get_the_ID();
 
-    $img = get_the_post_thumbnail_url($id, 'large');
+    $img = get_the_post_thumbnail_url($id, 'af-card');
     if (!$img) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
 
     $thumb_id  = get_post_thumbnail_id($id);
@@ -55,7 +55,7 @@ if ($q_residencias->have_posts()) {
   while ($q_residencias->have_posts()) { $q_residencias->the_post();
     $id = get_the_ID();
 
-    $img = get_the_post_thumbnail_url($id, 'large');
+    $img = get_the_post_thumbnail_url($id, 'af-card');
     if (!$img) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
 
     $thumb_id  = get_post_thumbnail_id($id);
@@ -85,10 +85,10 @@ $total_accommodations = $accommodation_count->publish ?? 0;
         <div class="hero-content" data-animate>
           <span class="badge"><?php esc_html_e('Encuentra tu lugar perfecto', 'twentytwentyfive-child'); ?></span>
           <h1 class="h1">
-            <?php esc_html_e('Hospedajes verificados para ti', 'twentytwentyfive-child'); ?>
+            <?php esc_html_e('Arriendos verificados en Quito y Ecuador', 'twentytwentyfive-child'); ?>
           </h1>
           <p class="p">
-            <?php esc_html_e('Descubre hospedajes de calidad, confiables y bien ubicados. Rápido, seguro y sin complicaciones.', 'twentytwentyfive-child'); ?>
+            <?php esc_html_e('Descubre arriendos de calidad en Ecuador. Propiedades confiables y bien ubicadas. Rápido, seguro y sin complicaciones.', 'twentytwentyfive-child'); ?>
           </p>
 
           <div class="cta-row">
@@ -167,6 +167,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
                     <img
                       src="<?php echo esc_url($post['image']); ?>"
                       alt="<?php echo esc_attr($post['alt']); ?>"
+                      width="480" height="320"
                       loading="lazy"
                       decoding="async">
                     <div class="flip-card__overlay">
@@ -212,7 +213,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
           <div class="featured-strip" data-featured-strip>
             <?php foreach ($residencias as $item) : ?>
               <a class="featured-item" href="<?php echo esc_url($item['link']); ?>" aria-label="<?php echo esc_attr($item['title']); ?>">
-                <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>">
+                <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>" width="480" height="320" loading="lazy" decoding="async">
                 <div class="fi-title"><?php echo esc_html($item['title']); ?></div>
               </a>
             <?php endforeach; ?>
@@ -363,7 +364,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
     <div class="container">
       <div class="text-center" data-animate>
         <span class="badge"><?php esc_html_e('Para renters', 'twentytwentyfive-child'); ?></span>
-        <h2 class="h2"><?php esc_html_e('¿Por qué elegir Arriendo Fácil?', 'twentytwentyfive-child'); ?></h2>
+        <h2 class="h2"><?php esc_html_e('Ventajas para arrendatarios en Ecuador', 'twentytwentyfive-child'); ?></h2>
       </div>
 
       <div class="kv-grid">
@@ -444,7 +445,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
 
           <h2 class="referral-title">
             <?php echo wp_kses(
-              __('¿Conoces una propiedad que debería estar en <span class="text-accent">ArriendoFácil</span>?', 'twentytwentyfive-child'),
+              __('¿Conoces una propiedad que debería estar en <span class="text-accent">Arriendo Fácil</span>?', 'twentytwentyfive-child'),
               array('span' => array('class' => array()))
             ); ?>
           </h2>
