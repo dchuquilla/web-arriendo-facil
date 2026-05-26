@@ -23,8 +23,16 @@ function twentytwentyfive_child_enqueue_assets() {
   wp_enqueue_style(
     'twentytwentyfive-child-style',
     get_stylesheet_uri(),
-    array($parent_style_handle),
+    array($parent_style_handle, 'twentytwentyfive-child-tokens'),
     filemtime( get_stylesheet_directory() . '/style.css' )
+  );
+
+  // Design tokens (loaded separately to avoid @import blocking chain)
+  wp_enqueue_style(
+    'twentytwentyfive-child-tokens',
+    get_stylesheet_directory_uri() . '/design-tokens.css',
+    array($parent_style_handle),
+    filemtime( get_stylesheet_directory() . '/design-tokens.css' )
   );
 
   // Lightbox para bloques de galería (site-wide; no-op si no hay galerías)
@@ -69,7 +77,7 @@ function twentytwentyfive_child_enqueue_assets() {
     get_stylesheet_directory_uri() . '/assets/js/cookie-wall.js',
     array(),
     filemtime( get_stylesheet_directory() . '/assets/js/cookie-wall.js' ),
-    false
+    true
   );
 
   // JS para el carrusel solo en homepage
@@ -460,7 +468,7 @@ function twentytwentyfive_child_add_cache_headers() {
     header('Cache-Control: public, max-age=1800');
   }
 }
-add_action('wp_head', 'twentytwentyfive_child_add_cache_headers');
+add_action('send_headers', 'twentytwentyfive_child_add_cache_headers');
 
 /**
  * Translate Complianz cookie policy strings to Spanish.
@@ -531,3 +539,469 @@ add_filter( 'gettext', 'twentytwentyfive_child_complianz_translations', 10, 3 );
 add_filter( 'gettext_with_context', function( $translated, $text, $context, $domain ) {
   return twentytwentyfive_child_complianz_translations( $translated, $text, $domain );
 }, 10, 4 );
+
+// ============================================================
+// SEO MODULE — Meta tags, Schema JSON-LD, Sitemap, Local SEO
+// ============================================================
+
+/**
+ * Force Spanish language attribute regardless of WP settings.
+ */
+add_filter( 'language_attributes', function( $output ) {
+  return str_replace( 'lang="en-US"', 'lang="es-EC"', $output );
+});
+
+/**
+ * Remove WordPress version meta tag for security.
+ */
+remove_action( 'wp_head', 'wp_generator' );
+
+/**
+ * Add SEO meta tags: title, description, canonical, Open Graph.
+ */
+function af_seo_meta_tags() {
+  $site_name = 'Arriendo Fácil';
+  $site_url  = home_url('/');
+  $logo_url  = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web-sq.png';
+
+  if ( is_front_page() ) {
+    $title       = 'Arriendo Fácil — Arriendos verificados en Quito y Ecuador';
+    $description = 'Encuentra arriendos verificados en Quito y Ecuador. Apartamentos, casas y habitaciones con propietarios validados. Proceso rápido, precios claros y soporte 24/7.';
+    $canonical   = $site_url;
+  } elseif ( is_page('propiedades') ) {
+    $title       = 'Propiedades en arriendo en Quito — Arriendo Fácil';
+    $description = 'Explora propiedades verificadas en arriendo en Quito y Ecuador. Filtra por ubicación, precio y tipo. Todas inspeccionadas y con propietarios validados.';
+    $canonical   = home_url('/propiedades/');
+  } elseif ( is_page('contacto') ) {
+    $title       = 'Contacto — Arriendo Fácil | Soporte 24/7 en Ecuador';
+    $description = 'Contáctanos para resolver tus dudas sobre arriendo en Ecuador. Atención por WhatsApp, email y teléfono. Respuesta en menos de 24 horas.';
+    $canonical   = home_url('/contacto/');
+  } elseif ( is_page('search-results') ) {
+    $title       = 'Buscar propiedades en arriendo — Arriendo Fácil';
+    $description = 'Busca propiedades en arriendo por ubicación con mapa interactivo. Filtra por precio, tipo de propiedad y amenities en Quito y Ecuador.';
+    $canonical   = home_url('/search-results/');
+  } elseif ( is_page('registro-propietario') ) {
+    $title       = 'Registrar propiedad — Arriendo Fácil para Propietarios';
+    $description = 'Registra tu propiedad en Arriendo Fácil. Gestión profesional de arriendos en Ecuador con verificación, soporte legal y máxima ocupación.';
+    $canonical   = home_url('/registro-propietario/');
+  } elseif ( is_singular('accommodation') ) {
+    $title       = get_the_title() . ' — Arriendo en ' . get_post_meta(get_the_ID(), '_af_address', true);
+    $description = wp_trim_words( get_the_excerpt() ?: get_the_content(), 25, '...' );
+    $description = $description ?: 'Propiedad verificada en arriendo en Ecuador. Ver detalles, fotos, ubicación y precio.';
+    $canonical   = get_permalink();
+  } else {
+    $title       = get_the_title() . ' — Arriendo Fácil';
+    $description = 'Arriendo Fácil: plataforma de arriendos verificados en Ecuador.';
+    $canonical   = get_permalink() ?: $site_url;
+  }
+
+  $og_image = $logo_url;
+  if ( is_singular() && has_post_thumbnail() ) {
+    $og_image = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+  }
+
+  echo "\n<!-- Arriendo Fácil SEO -->\n";
+  echo '<title>' . esc_html($title) . "</title>\n";
+  echo '<meta name="description" content="' . esc_attr($description) . "\">\n";
+  echo '<link rel="canonical" href="' . esc_url($canonical) . "\">\n";
+  echo '<meta property="og:type" content="website">' . "\n";
+  echo '<meta property="og:title" content="' . esc_attr($title) . "\">\n";
+  echo '<meta property="og:description" content="' . esc_attr($description) . "\">\n";
+  echo '<meta property="og:url" content="' . esc_url($canonical) . "\">\n";
+  echo '<meta property="og:image" content="' . esc_url($og_image) . "\">\n";
+  echo '<meta property="og:site_name" content="' . esc_attr($site_name) . "\">\n";
+  echo '<meta property="og:locale" content="es_EC">' . "\n";
+  echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+  echo '<meta name="twitter:title" content="' . esc_attr($title) . "\">\n";
+  echo '<meta name="twitter:description" content="' . esc_attr($description) . "\">\n";
+  echo '<meta name="twitter:image" content="' . esc_url($og_image) . "\">\n";
+  echo '<meta name="geo.region" content="EC-P">' . "\n";
+  echo '<meta name="geo.placename" content="Quito">' . "\n";
+  echo "<!-- /Arriendo Fácil SEO -->\n";
+}
+add_action( 'wp_head', 'af_seo_meta_tags', 1 );
+
+/**
+ * Remove default WP title tag since we handle it ourselves.
+ */
+remove_theme_support( 'title-tag' );
+add_action( 'after_setup_theme', function() {
+  remove_theme_support( 'title-tag' );
+}, 99 );
+
+/**
+ * JSON-LD Schema: Organization + WebSite + SearchAction (sitewide).
+ */
+function af_schema_organization() {
+  $schema = array(
+    '@context' => 'https://schema.org',
+    '@graph'   => array(
+      array(
+        '@type'       => 'Organization',
+        '@id'         => home_url('/#organization'),
+        'name'        => 'Arriendo Fácil',
+        'url'         => home_url('/'),
+        'logo'        => array(
+          '@type'      => 'ImageObject',
+          'url'        => get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web-sq.png',
+          'width'      => 512,
+          'height'     => 512,
+        ),
+        'contactPoint' => array(
+          '@type'            => 'ContactPoint',
+          'telephone'        => '+593-99-123-4567',
+          'contactType'      => 'customer service',
+          'availableLanguage' => 'Spanish',
+          'areaServed'       => 'EC',
+        ),
+        'sameAs' => array(
+          'https://www.facebook.com/profile.php?id=61590015435478',
+          'https://www.instagram.com/arriendofacilnet/',
+        ),
+        'address' => array(
+          '@type'           => 'PostalAddress',
+          'addressLocality' => 'Quito',
+          'addressRegion'   => 'Pichincha',
+          'addressCountry'  => 'EC',
+        ),
+      ),
+      array(
+        '@type'          => 'WebSite',
+        '@id'            => home_url('/#website'),
+        'name'           => 'Arriendo Fácil',
+        'url'            => home_url('/'),
+        'publisher'      => array( '@id' => home_url('/#organization') ),
+        'inLanguage'     => 'es',
+        'potentialAction' => array(
+          '@type'       => 'SearchAction',
+          'target'      => array(
+            '@type'        => 'EntryPoint',
+            'urlTemplate'  => home_url('/propiedades/?location={search_term_string}'),
+          ),
+          'query-input' => 'required name=search_term_string',
+        ),
+      ),
+    ),
+  );
+
+  echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
+}
+add_action( 'wp_head', 'af_schema_organization', 2 );
+
+/**
+ * JSON-LD Schema: RealEstateAgent (homepage and contact page).
+ */
+function af_schema_local_business() {
+  if ( ! is_front_page() && ! is_page('contacto') ) {
+    return;
+  }
+
+  $schema = array(
+    '@context' => 'https://schema.org',
+    '@type'    => 'RealEstateAgent',
+    '@id'      => home_url('/#business'),
+    'name'     => 'Arriendo Fácil',
+    'url'      => home_url('/'),
+    'image'    => get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web-sq.png',
+    'telephone' => '+593-99-123-4567',
+    'email'    => 'contacto@arriendofacil.com',
+    'address'  => array(
+      '@type'           => 'PostalAddress',
+      'addressLocality' => 'Quito',
+      'addressRegion'   => 'Pichincha',
+      'addressCountry'  => 'EC',
+    ),
+    'geo' => array(
+      '@type'     => 'GeoCoordinates',
+      'latitude'  => -0.18065,
+      'longitude' => -78.46784,
+    ),
+    'areaServed' => array(
+      array( '@type' => 'City', 'name' => 'Quito' ),
+      array( '@type' => 'City', 'name' => 'Guayaquil' ),
+      array( '@type' => 'City', 'name' => 'Cuenca' ),
+    ),
+    'openingHoursSpecification' => array(
+      '@type'     => 'OpeningHoursSpecification',
+      'dayOfWeek' => array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'),
+      'opens'     => '00:00',
+      'closes'    => '23:59',
+    ),
+    'priceRange'     => '$$',
+    'currenciesAccepted' => 'USD',
+    'paymentAccepted'    => 'Cash, Credit Card, Bank Transfer',
+  );
+
+  echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
+}
+add_action( 'wp_head', 'af_schema_local_business', 3 );
+
+/**
+ * JSON-LD Schema: RealEstateListing for individual property pages.
+ */
+function af_schema_property_listing() {
+  if ( ! is_singular('accommodation') ) {
+    return;
+  }
+
+  $post_id       = get_the_ID();
+  $title         = get_the_title();
+  $description   = wp_trim_words( get_the_content(), 50, '...' );
+  $address       = get_post_meta($post_id, '_af_address', true);
+  $monthly_rent  = floatval(get_post_meta($post_id, '_af_monthly_rent', true));
+  $latitude      = floatval(get_post_meta($post_id, '_af_latitude', true));
+  $longitude     = floatval(get_post_meta($post_id, '_af_longitude', true));
+  $bedrooms      = (int) get_post_meta($post_id, '_af_bedrooms', true);
+  $bathrooms     = (int) get_post_meta($post_id, '_af_bathrooms', true);
+  $square_meters = floatval(get_post_meta($post_id, '_af_square_meters', true));
+  $property_type = get_post_meta($post_id, '_af_property_type', true);
+  $amenities     = get_post_meta($post_id, '_af_amenities', true);
+
+  $thumb_id = get_post_thumbnail_id($post_id);
+  $image    = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'large') : '';
+
+  $type_map = array(
+    'apartamento' => 'Apartment',
+    'casa'        => 'SingleFamilyResidence',
+    'habitacion'  => 'Room',
+    'estudio'     => 'Apartment',
+  );
+  $schema_type = isset($type_map[$property_type]) ? $type_map[$property_type] : 'Accommodation';
+
+  $schema = array(
+    '@context'    => 'https://schema.org',
+    '@type'       => array('RealEstateListing', $schema_type),
+    '@id'         => get_permalink() . '#listing',
+    'name'        => $title,
+    'description' => $description,
+    'url'         => get_permalink(),
+    'datePosted'  => get_the_date('c'),
+  );
+
+  if ( $image ) {
+    $schema['image'] = $image;
+  }
+
+  if ( $address ) {
+    $schema['address'] = array(
+      '@type'           => 'PostalAddress',
+      'streetAddress'   => $address,
+      'addressLocality' => 'Quito',
+      'addressRegion'   => 'Pichincha',
+      'addressCountry'  => 'EC',
+    );
+  }
+
+  if ( $latitude && $longitude ) {
+    $schema['geo'] = array(
+      '@type'     => 'GeoCoordinates',
+      'latitude'  => $latitude,
+      'longitude' => $longitude,
+    );
+  }
+
+  if ( $monthly_rent > 0 ) {
+    $schema['offers'] = array(
+      '@type'         => 'Offer',
+      'price'         => $monthly_rent,
+      'priceCurrency' => 'USD',
+      'availability'  => 'https://schema.org/InStock',
+      'priceValidUntil' => date('Y-12-31'),
+    );
+  }
+
+  if ( $bedrooms > 0 ) {
+    $schema['numberOfBedrooms'] = $bedrooms;
+  }
+  if ( $bathrooms > 0 ) {
+    $schema['numberOfBathroomsTotal'] = $bathrooms;
+  }
+  if ( $square_meters > 0 ) {
+    $schema['floorSize'] = array(
+      '@type'    => 'QuantitativeValue',
+      'value'    => $square_meters,
+      'unitCode' => 'MTK',
+    );
+  }
+  if ( is_array($amenities) && ! empty($amenities) ) {
+    $schema['amenityFeature'] = array_map(function($a) {
+      return array( '@type' => 'LocationFeatureSpecification', 'name' => $a, 'value' => true );
+    }, $amenities);
+  }
+
+  echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
+}
+add_action( 'wp_head', 'af_schema_property_listing', 4 );
+
+/**
+ * JSON-LD Schema: BreadcrumbList for inner pages.
+ */
+function af_schema_breadcrumbs() {
+  if ( is_front_page() ) {
+    return;
+  }
+
+  $items = array(
+    array( '@type' => 'ListItem', 'position' => 1, 'name' => 'Inicio', 'item' => home_url('/') ),
+  );
+
+  if ( is_page('propiedades') ) {
+    $items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Propiedades' );
+  } elseif ( is_page('contacto') ) {
+    $items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Contacto' );
+  } elseif ( is_singular('accommodation') ) {
+    $items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Propiedades', 'item' => home_url('/propiedades/') );
+    $items[] = array( '@type' => 'ListItem', 'position' => 3, 'name' => get_the_title() );
+  } else {
+    $items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => get_the_title() );
+  }
+
+  $schema = array(
+    '@context'        => 'https://schema.org',
+    '@type'           => 'BreadcrumbList',
+    'itemListElement' => $items,
+  );
+
+  echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
+}
+add_action( 'wp_head', 'af_schema_breadcrumbs', 5 );
+
+/**
+ * Register custom XML sitemap provider for accommodations.
+ */
+function af_register_sitemap_provider() {
+  $provider = new AF_Accommodation_Sitemap_Provider();
+  wp_register_sitemap_provider( 'af-accommodations', $provider );
+}
+add_action( 'init', 'af_register_sitemap_provider' );
+
+class AF_Accommodation_Sitemap_Provider extends WP_Sitemaps_Provider {
+  public function __construct() {
+    $this->name        = 'af-accommodations';
+    $this->object_type = 'accommodation';
+  }
+
+  public function get_url_list( $page_num, $object_subtype = '' ) {
+    $args = array(
+      'post_type'      => 'accommodation',
+      'post_status'    => 'publish',
+      'posts_per_page' => 2000,
+      'paged'          => $page_num,
+      'orderby'        => 'modified',
+      'order'          => 'DESC',
+      'fields'         => 'ids',
+    );
+
+    $query = new WP_Query($args);
+    $urls  = array();
+
+    foreach ( $query->posts as $post_id ) {
+      $urls[] = array(
+        'loc'     => get_permalink($post_id),
+        'lastmod' => get_post_modified_time('Y-m-d\TH:i:sP', true, $post_id),
+      );
+    }
+
+    return $urls;
+  }
+
+  public function get_max_num_pages( $object_subtype = '' ) {
+    $count = wp_count_posts('accommodation');
+    $total = $count->publish ?? 0;
+    return (int) ceil( $total / 2000 );
+  }
+}
+
+/**
+ * Add static pages to the WordPress sitemap with higher priority.
+ */
+function af_sitemap_add_static_pages( $url_list, $post_type, $page_num ) {
+  if ( $post_type !== 'page' || $page_num !== 1 ) {
+    return $url_list;
+  }
+
+  $priority_pages = array('propiedades', 'contacto', 'search-results', 'registro-propietario');
+  foreach ( $priority_pages as $slug ) {
+    $page = get_page_by_path($slug);
+    if ( $page ) {
+      $url_list[] = array(
+        'loc'     => get_permalink($page->ID),
+        'lastmod' => get_post_modified_time('Y-m-d\TH:i:sP', true, $page->ID),
+      );
+    }
+  }
+
+  return $url_list;
+}
+add_filter( 'wp_sitemaps_posts_url_list', 'af_sitemap_add_static_pages', 10, 3 );
+
+/**
+ * Serve robots.txt with AI crawler rules.
+ */
+function af_custom_robots_txt( $output, $public ) {
+  $output  = "User-agent: *\n";
+  $output .= "Disallow: /wp-admin/\n";
+  $output .= "Allow: /wp-admin/admin-ajax.php\n\n";
+
+  $output .= "# AI Search Crawlers — Allow\n";
+  $output .= "User-agent: GPTBot\nAllow: /\n\n";
+  $output .= "User-agent: OAI-SearchBot\nAllow: /\n\n";
+  $output .= "User-agent: ClaudeBot\nAllow: /\n\n";
+  $output .= "User-agent: PerplexityBot\nAllow: /\n\n";
+  $output .= "User-agent: Google-Extended\nAllow: /\n\n";
+
+  $output .= "# Training Crawlers — Block\n";
+  $output .= "User-agent: CCBot\nDisallow: /\n\n";
+  $output .= "User-agent: anthropic-ai\nDisallow: /\n\n";
+
+  $output .= "Sitemap: " . home_url('/wp-sitemap.xml') . "\n";
+
+  return $output;
+}
+add_filter( 'robots_txt', 'af_custom_robots_txt', 10, 2 );
+
+/**
+ * Serve llms.txt at /llms.txt for AI engines.
+ */
+function af_serve_llms_txt() {
+  add_rewrite_rule( '^llms\.txt$', 'index.php?af_llms_txt=1', 'top' );
+}
+add_action( 'init', 'af_serve_llms_txt' );
+
+function af_llms_txt_query_var( $vars ) {
+  $vars[] = 'af_llms_txt';
+  return $vars;
+}
+add_filter( 'query_vars', 'af_llms_txt_query_var' );
+
+function af_llms_txt_template_redirect() {
+  if ( ! get_query_var('af_llms_txt') ) {
+    return;
+  }
+
+  header( 'Content-Type: text/plain; charset=utf-8' );
+  header( 'Cache-Control: public, max-age=86400' );
+
+  echo "# Arriendo Fácil\n\n";
+  echo "> Arriendo Fácil es una plataforma de arrendamiento verificado en Ecuador, con sede en Quito.\n";
+  echo "> Conecta arrendatarios con propiedades residenciales verificadas en ciudades ecuatorianas.\n";
+  echo "> Fundada para simplificar el proceso de arrendamiento con seguridad, transparencia y soporte 24/7.\n\n";
+  echo "## Páginas principales\n\n";
+  echo "- [Inicio](" . home_url('/') . "): Descripción general del servicio de arriendo verificado\n";
+  echo "- [Propiedades](" . home_url('/propiedades/') . "): Catálogo de propiedades disponibles en arriendo\n";
+  echo "- [Búsqueda con mapa](" . home_url('/search-results/') . "): Búsqueda por ubicación con mapa interactivo\n";
+  echo "- [Contacto](" . home_url('/contacto/') . "): Información de contacto y soporte al cliente\n";
+  echo "- [Registro de propietario](" . home_url('/registro-propietario/') . "): Registro para propietarios\n\n";
+  echo "## Servicios\n\n";
+  echo "- Búsqueda y filtrado de propiedades por ubicación, precio y tipo en Ecuador\n";
+  echo "- Verificación de propiedades e inspección de seguridad\n";
+  echo "- Gestión de contratos de arrendamiento\n";
+  echo "- Soporte al arrendatario y mediación en conflictos\n";
+  echo "- Asesoría legal en contratación de arriendo\n\n";
+  echo "## Contacto\n\n";
+  echo "- Email: contacto@arriendofacil.com\n";
+  echo "- Teléfono: +593 99 123 4567\n";
+  echo "- Ubicación: Quito, Pichincha, Ecuador\n";
+  exit;
+}
+add_action( 'template_redirect', 'af_llms_txt_template_redirect' );

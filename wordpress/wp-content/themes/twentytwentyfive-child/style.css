@@ -7,10 +7,8 @@ Version: 2.0.0
 */
 
 /* ========================================
-   DESIGN TOKENS IMPORT
+   DESIGN TOKENS — loaded via wp_enqueue_style in functions.php
    ======================================== */
-
-@import 'design-tokens.css';
 
 /* ========================================
    BASE STYLES & RESET

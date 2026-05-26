@@ -9,7 +9,8 @@
   <meta name="darkreader-lock">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
 
   <link rel="icon" type="image/png" href="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/favicon/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/favicon/favicon.svg" />
@@ -29,7 +30,7 @@
 <header class="site-header" role="banner" id="site-header">
   <div class="container header-inner">
     <a class="brand" href="<?php echo esc_url(home_url('/')); ?>">
-      <img src="<?php echo esc_url(get_stylesheet_directory_uri()) ?>/assets/images/arriendo-facil-logo-web-sq.png" alt="" width="60px">
+      <img src="<?php echo esc_url(get_stylesheet_directory_uri()) ?>/assets/images/arriendo-facil-logo-web-sq.png" alt="Arriendo Fácil" width="60" height="60">
       <span><?php bloginfo('name'); ?></span>
     </a>
 
@@ -38,13 +39,13 @@
         type="text"
         id="search-bar-input"
         class="search-bar-input"
-        placeholder="<?php esc_attr_e('Search by location...', 'twentytwentyfive-child'); ?>"
+        placeholder="<?php esc_attr_e('Busca por ubicación...', 'twentytwentyfive-child'); ?>"
         autocomplete="off" />
       <ul id="search-suggestions" class="search-suggestions"></ul>
-      <button id="search-bar-btn" class="search-bar-btn" aria-label="<?php esc_attr_e('Search', 'twentytwentyfive-child'); ?>">
+      <button id="search-bar-btn" class="search-bar-btn" aria-label="<?php esc_attr_e('Buscar', 'twentytwentyfive-child'); ?>">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       </button>
-      <button id="search-bar-gps" class="search-bar-gps" aria-label="<?php esc_attr_e('Use my location', 'twentytwentyfive-child'); ?>">
+      <button id="search-bar-gps" class="search-bar-gps" aria-label="<?php esc_attr_e('Usar mi ubicación', 'twentytwentyfive-child'); ?>">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24"/></svg>
       </button>
     </div>
