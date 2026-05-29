@@ -34,6 +34,7 @@
 			health: true,
 			radius: 2,
 		},
+		mapAlertTimeoutId: null,
 
 		async init() {
 			this.cacheElements();
@@ -337,7 +338,7 @@
 				return;
 			}
 
-			this.showMapAlert('No existen acomodaciones para esa búsqueda. Arrastra el mapa para explorar otras opciones.');
+			this.showMapAlert('No existen acomodaciones para esa búsqueda. Arrastra el mapa para explorar otras opciones.', 6500);
 			const fallbackResults = await this.fetchAllAccommodations();
 			this.renderResultsList(data.results, fallbackResults);
 
@@ -378,6 +379,7 @@
 
 		buildAccommodationCardHtml(acc) {
 			const price = Number.isFinite(Number(acc.price)) ? Number(acc.price).toFixed(0) : '0';
+			const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'View Details';
 			return `
 				<div class="accommodation-card" data-id="${acc.id}">
 					${acc.image_url ? `<div class="accommodation-image"><img src="${this.escapeHtml(acc.image_url)}" alt="${this.escapeHtml(acc.title)}" loading="lazy" /></div>` : ''}
@@ -387,7 +389,7 @@
 						<span>${acc.bedrooms} 🛏️ ${acc.bathrooms} 🚿</span>
 						<span class="accommodation-price">$${price}</span>
 					</div>
-					<a href="${this.escapeHtml(acc.url)}" class="button button-small">${window.i18n?.viewDetails || 'View Details'}</a>
+					<a href="${this.escapeHtml(acc.url)}" class="button button-small">${viewDetailsText}</a>
 				</div>
 			`;
 		},
@@ -421,6 +423,7 @@
 		async loadBackgroundMarkers() {
 			const accommodations = await this.fetchAllAccommodations();
 			accommodations.forEach(acc => {
+				const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'View Details';
 				const lat = parseFloat(acc.latitude);
 				const lng = parseFloat(acc.longitude);
 				if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
@@ -442,7 +445,7 @@
 						<div class="map-info-title">${this.escapeHtml(acc.title)}</div>
 						<div>${this.escapeHtml(acc.location)}</div>
 						<div class="map-info-price">$${Number(acc.price || 0).toFixed(0)}/mo</div>
-						<a href="${this.escapeHtml(acc.url)}" class="button button-small" style="margin-top:8px;">${window.i18n?.viewDetails || 'View Details'}</a>
+						<a href="${this.escapeHtml(acc.url)}" class="button button-small" style="margin-top:8px;">${viewDetailsText}</a>
 					</div>
 				`;
 				marker.bindPopup(popupContent);
@@ -530,6 +533,7 @@
 			let markerCount = 0;
 
 			accommodations.forEach(acc => {
+				const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'View Details';
 				const lat = parseFloat(acc.latitude);
 				const lng = parseFloat(acc.longitude);
 				if (Number.isFinite(lat) && Number.isFinite(lng)) {
@@ -549,7 +553,7 @@
 							<div class="map-info-title">${this.escapeHtml(acc.title)}</div>
 							<div>${this.escapeHtml(acc.location)}</div>
 							<div class="map-info-price">$${Number(acc.price || 0).toFixed(0)}/mo</div>
-							<a href="${this.escapeHtml(acc.url)}" class="button button-small" style="margin-top:8px;">${window.i18n?.viewDetails || 'View Details'}</a>
+							<a href="${this.escapeHtml(acc.url)}" class="button button-small" style="margin-top:8px;">${viewDetailsText}</a>
 						</div>
 					`;
 
@@ -651,8 +655,8 @@
 			};
 
 			elements.forEach(el => {
-				const lat = el.center?.lat || el.lat;
-				const lng = el.center?.lon || el.lon;
+				const lat = (el.center && el.center.lat) || el.lat;
+				const lng = (el.center && el.center.lon) || el.lon;
 
 				if (lat && lng) {
 					const marker = L.circleMarker([lat, lng], {
@@ -664,7 +668,8 @@
 						fillOpacity: 0.7,
 					}).addTo(this.map);
 
-					const title = el.tags?.name || el.tags?.shop || el.tags?.leisure || type;
+					const tags = el.tags || {};
+					const title = tags.name || tags.shop || tags.leisure || type;
 					marker.bindPopup(`<strong>${this.escapeHtml(title)}</strong><br>${type}`);
 
 					const key = `${type}_${lat}_${lng}`;
@@ -687,18 +692,36 @@
 			this.poiMarkers = {};
 		},
 
-		showMapAlert(message) {
+		showMapAlert(message, autoHideMs = 0) {
 			if (!this.elements.mapAlert) {
 				return;
 			}
+
+			if (this.mapAlertTimeoutId) {
+				window.clearTimeout(this.mapAlertTimeoutId);
+				this.mapAlertTimeoutId = null;
+			}
+
 			this.elements.mapAlert.textContent = message;
 			this.elements.mapAlert.classList.remove('is-hidden');
+
+			if (autoHideMs > 0) {
+				this.mapAlertTimeoutId = window.setTimeout(() => {
+					this.hideMapAlert();
+				}, autoHideMs);
+			}
 		},
 
 		hideMapAlert() {
 			if (!this.elements.mapAlert) {
 				return;
 			}
+
+			if (this.mapAlertTimeoutId) {
+				window.clearTimeout(this.mapAlertTimeoutId);
+				this.mapAlertTimeoutId = null;
+			}
+
 			this.elements.mapAlert.textContent = '';
 			this.elements.mapAlert.classList.add('is-hidden');
 		},
