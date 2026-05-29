@@ -45,9 +45,6 @@
       <button id="search-bar-btn" class="search-bar-btn" aria-label="<?php esc_attr_e('Buscar', 'twentytwentyfive-child'); ?>">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       </button>
-      <button id="search-bar-gps" class="search-bar-gps" aria-label="<?php esc_attr_e('Usar mi ubicación', 'twentytwentyfive-child'); ?>">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24"/></svg>
-      </button>
     </div>
 
     <button class="nav-toggle" aria-label="<?php esc_attr_e('Menú', 'twentytwentyfive-child'); ?>" aria-expanded="false">

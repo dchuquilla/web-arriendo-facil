@@ -34,7 +34,6 @@
 			this.elements = {
 				searchInput: document.getElementById('search-bar-input'),
 				searchBtn: document.getElementById('search-bar-btn'),
-				gpsBtn: document.getElementById('search-bar-gps'),
 				suggestionsList: document.getElementById('search-suggestions'),
 			};
 		},
@@ -43,9 +42,6 @@
 			this.elements.searchInput.addEventListener('input', (e) => this.onSearchInput(e));
 			this.elements.searchInput.addEventListener('keydown', (e) => this.onSearchKeydown(e));
 			this.elements.searchBtn.addEventListener('click', () => this.performSearch());
-			if (this.elements.gpsBtn) {
-				this.elements.gpsBtn.addEventListener('click', () => this.useCurrentLocation());
-			}
 		},
 
 		initGooglePlaces(apiKey) {
@@ -90,25 +86,6 @@
 			}
 		},
 
-		getUserLocation() {
-			return new Promise(resolve => {
-				if (!navigator.geolocation) {
-					resolve(null);
-					return;
-				}
-
-				navigator.geolocation.getCurrentPosition(
-					position => {
-						resolve({
-							latitude: position.coords.latitude,
-							longitude: position.coords.longitude,
-						});
-					},
-					() => resolve(null),
-					{ enableHighAccuracy: true, timeout: 6000, maximumAge: 300000 }
-				);
-			});
-		},
 
 		getGooglePlacesSuggestions(query) {
 			if (!this.autocompleteService) {
@@ -236,53 +213,11 @@
 				location: location,
 			});
 
-			if (
-				window.searchLocation &&
-				window.searchLocation.location === location &&
-				Number.isFinite(window.searchLocation.latitude) &&
-				Number.isFinite(window.searchLocation.longitude)
-			) {
-				params.set('latitude', window.searchLocation.latitude);
-				params.set('longitude', window.searchLocation.longitude);
-			} else {
-				const userLocation = await this.getUserLocation();
-				if (userLocation) {
-					params.set('latitude', userLocation.latitude);
-					params.set('longitude', userLocation.longitude);
-				}
-			}
+			   // Removed geolocation logic for GPS button
 
 			window.location.href = `/search-results?${params.toString()}`;
 		},
 
-		useCurrentLocation() {
-			if (!navigator.geolocation) {
-				alert('Geolocation is not supported');
-				return;
-			}
-
-			navigator.geolocation.getCurrentPosition(
-				(position) => {
-					window.searchLocation = {
-						location: 'My Location',
-						latitude: position.coords.latitude,
-						longitude: position.coords.longitude,
-					};
-
-					const params = new URLSearchParams({
-						location: 'My Location',
-						latitude: position.coords.latitude,
-						longitude: position.coords.longitude,
-					});
-
-					window.location.href = `/search-results?${params.toString()}`;
-				},
-				(error) => {
-					console.error('Geolocation error:', error);
-					alert('Unable to get your location');
-				}
-			);
-		},
 
 		escapeHtml(text) {
 			const div = document.createElement('div');

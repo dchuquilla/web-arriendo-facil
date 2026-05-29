@@ -8,6 +8,9 @@
 	const SearchResults = {
 		defaultCenter: { lat: -0.1807, lng: -78.4678 }, // Quito fallback
 		map: null,
+		markerLayer: null,
+		backgroundMarkerLayer: null,
+		allAccommodationMarkers: {},
 		accommodationMarkers: {},
 		poiMarkers: {},
 		currentLocation: null,
@@ -38,7 +41,10 @@
 			this.bindEvents();
 			this.loadInitialLocation();
 			await this.setInitialMapCenter();
+			// Kick off both in parallel: search results render immediately,
+			// background markers load during idle time to avoid blocking the UI.
 			this.loadResults();
+			this.scheduleBackgroundMarkers();
 		},
 
 		loadInitialLocation() {
@@ -84,6 +90,22 @@
 				attribution: '© OpenStreetMap contributors',
 				maxZoom: 19,
 			}).addTo(this.map);
+
+			// Background layer: all accommodations, always visible (added first = below search results)
+			this.backgroundMarkerLayer = L.layerGroup();
+			this.map.addLayer(this.backgroundMarkerLayer);
+
+			if (typeof L.markerClusterGroup === 'function') {
+				this.markerLayer = L.markerClusterGroup({
+					showCoverageOnHover: false,
+					spiderfyOnMaxZoom: true,
+					maxClusterRadius: 55,
+				});
+			} else {
+				this.markerLayer = L.layerGroup();
+			}
+
+			this.map.addLayer(this.markerLayer);
 		},
 
 		async setInitialMapCenter() {
@@ -124,8 +146,6 @@
 			}
 
 			if (userLocation) {
-				this.currentFilters.latitude = userLocation.lat;
-				this.currentFilters.longitude = userLocation.lng;
 				this.map.setView([userLocation.lat, userLocation.lng], 14);
 				this.currentLocation = userLocation;
 				return;
@@ -317,9 +337,13 @@
 				return;
 			}
 
-			this.showMapAlert('No existen acomodaciones para esa busqueda en el mapa.');
+			this.showMapAlert('No existen acomodaciones para esa búsqueda. Arrastra el mapa para explorar otras opciones.');
 			const fallbackResults = await this.fetchAllAccommodations();
 			this.renderResultsList(data.results, fallbackResults);
+
+			if (Number.isFinite(this.currentFilters.latitude) && Number.isFinite(this.currentFilters.longitude)) {
+				this.map.setView([this.currentFilters.latitude, this.currentFilters.longitude], 13);
+			}
 		},
 
 		updateResultsCount(count, total) {
@@ -385,7 +409,62 @@
 			});
 		},
 
+		scheduleBackgroundMarkers() {
+			const run = () => this.loadBackgroundMarkers();
+			if (typeof window.requestIdleCallback === 'function') {
+				window.requestIdleCallback(run, { timeout: 3000 });
+			} else {
+				setTimeout(run, 500);
+			}
+		},
+
+		async loadBackgroundMarkers() {
+			const accommodations = await this.fetchAllAccommodations();
+			accommodations.forEach(acc => {
+				const lat = parseFloat(acc.latitude);
+				const lng = parseFloat(acc.longitude);
+				if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+				if (this.allAccommodationMarkers[acc.id]) return;
+
+				const marker = L.marker([lat, lng], {
+					icon: L.divIcon({
+						className: 'accommodation-marker accommodation-marker--bg',
+						html: '<div class="marker-core marker-core--bg" aria-hidden="true">🏠</div>',
+						iconSize: [32, 32],
+						iconAnchor: [16, 32],
+						popupAnchor: [0, -32],
+					}),
+				});
+
+				const popupContent = `
+					<div class="map-info-popup">
+						${acc.image_url ? `<img src="${this.escapeHtml(acc.image_url)}" style="width:100%;height:120px;object-fit:cover;border-radius:4px;margin-bottom:8px;" />` : ''}
+						<div class="map-info-title">${this.escapeHtml(acc.title)}</div>
+						<div>${this.escapeHtml(acc.location)}</div>
+						<div class="map-info-price">$${Number(acc.price || 0).toFixed(0)}/mo</div>
+						<a href="${this.escapeHtml(acc.url)}" class="button button-small" style="margin-top:8px;">${window.i18n?.viewDetails || 'View Details'}</a>
+					</div>
+				`;
+				marker.bindPopup(popupContent);
+				this.backgroundMarkerLayer.addLayer(marker);
+				this.allAccommodationMarkers[acc.id] = marker;
+			});
+		},
+
 		async fetchAllAccommodations() {
+			const CACHE_KEY = 'af_all_accommodations';
+			const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+			try {
+				const cached = sessionStorage.getItem(CACHE_KEY);
+				if (cached) {
+					const { ts, data } = JSON.parse(cached);
+					if (Date.now() - ts < CACHE_TTL) {
+						return data;
+					}
+				}
+			} catch (_) { /* sessionStorage may be unavailable */ }
+
 			try {
 				const payload = {
 					location: '',
@@ -397,7 +476,7 @@
 					property_type: '',
 					amenities: [],
 					sort: 'newest',
-					per_page: 24,
+					per_page: 100,
 					page: 1,
 				};
 
@@ -417,6 +496,10 @@
 				if (!data.success || !Array.isArray(data.results)) {
 					return [];
 				}
+
+				try {
+					sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data.results }));
+				} catch (_) { /* storage full or unavailable */ }
 
 				return data.results;
 			} catch (error) {
@@ -447,23 +530,25 @@
 			let markerCount = 0;
 
 			accommodations.forEach(acc => {
-				if (acc.latitude && acc.longitude) {
-					const marker = L.marker([acc.latitude, acc.longitude], {
+				const lat = parseFloat(acc.latitude);
+				const lng = parseFloat(acc.longitude);
+				if (Number.isFinite(lat) && Number.isFinite(lng)) {
+					const marker = L.marker([lat, lng], {
 						icon: L.divIcon({
 							className: 'accommodation-marker',
-							html: '<div class="marker-bg">🏠</div>',
-							iconSize: [32, 32],
-							iconAnchor: [16, 32],
-							popupAnchor: [0, -32],
+							html: '<div class="marker-ping"></div><div class="marker-core" aria-hidden="true">🏠</div>',
+							iconSize: [44, 44],
+							iconAnchor: [22, 44],
+							popupAnchor: [0, -44],
 						}),
-					}).addTo(this.map);
+					});
 
 					const popupContent = `
 						<div class="map-info-popup">
 							${acc.image_url ? `<img src="${this.escapeHtml(acc.image_url)}" style="width:100%;height:120px;object-fit:cover;border-radius:4px;margin-bottom:8px;" />` : ''}
 							<div class="map-info-title">${this.escapeHtml(acc.title)}</div>
 							<div>${this.escapeHtml(acc.location)}</div>
-							<div class="map-info-price">$${acc.price.toFixed(0)}/mo</div>
+							<div class="map-info-price">$${Number(acc.price || 0).toFixed(0)}/mo</div>
 							<a href="${this.escapeHtml(acc.url)}" class="button button-small" style="margin-top:8px;">${window.i18n?.viewDetails || 'View Details'}</a>
 						</div>
 					`;
@@ -473,6 +558,12 @@
 					marker.addEventListener('click', () => {
 						this.highlightAccommodation(acc.id);
 					});
+
+					if (this.markerLayer) {
+						this.markerLayer.addLayer(marker);
+					} else {
+						marker.addTo(this.map);
+					}
 
 					this.accommodationMarkers[acc.id] = marker;
 					markerCount += 1;
@@ -486,8 +577,10 @@
 			const bounds = L.latLngBounds();
 			let coordinateCount = 0;
 			accommodations.forEach(acc => {
-				if (acc.latitude && acc.longitude) {
-					bounds.extend([acc.latitude, acc.longitude]);
+				const lat = parseFloat(acc.latitude);
+				const lng = parseFloat(acc.longitude);
+				if (Number.isFinite(lat) && Number.isFinite(lng)) {
+					bounds.extend([lat, lng]);
 					coordinateCount += 1;
 				}
 			});
@@ -581,7 +674,11 @@
 		},
 
 		clearAccommodationMarkers() {
-			Object.values(this.accommodationMarkers).forEach(marker => marker.remove());
+			if (this.markerLayer && typeof this.markerLayer.clearLayers === 'function') {
+				this.markerLayer.clearLayers();
+			} else {
+				Object.values(this.accommodationMarkers).forEach(marker => marker.remove());
+			}
 			this.accommodationMarkers = {};
 		},
 
