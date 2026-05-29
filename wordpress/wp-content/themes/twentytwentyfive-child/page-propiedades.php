@@ -70,12 +70,18 @@ get_header();
 
             <input type="hidden" name="sort" value="<?php echo esc_attr($_GET['sort'] ?? 'newest'); ?>">
 
-            <button type="submit" class="btn btn--primary">
-              <?php esc_html_e('Buscar', 'twentytwentyfive-child'); ?>
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
+            <div class="search-actions">
+              <button type="submit" class="btn btn--primary">
+                <?php esc_html_e('Buscar', 'twentytwentyfive-child'); ?>
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+
+              <button type="button" class="btn btn--outline" id="clear-filters-btn">
+                <?php esc_html_e('Limpiar filtros', 'twentytwentyfive-child'); ?>
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -223,7 +229,41 @@ get_header();
             }
             wp_reset_postdata();
           } else {
-            echo '<div class="no-properties"><p>' . esc_html__( 'No hay propiedades disponibles con esos filtros.', 'twentytwentyfive-child' ) . '</p></div>';
+            $active_filters_count = 0;
+
+            if ( ! empty( $_GET['location'] ) ) {
+              $active_filters_count++;
+            }
+            if ( isset( $_GET['price_min'] ) && $_GET['price_min'] !== '' ) {
+              $active_filters_count++;
+            }
+            if ( isset( $_GET['price_max'] ) && $_GET['price_max'] !== '' ) {
+              $active_filters_count++;
+            }
+            if ( ! empty( $_GET['property_type'] ) ) {
+              $active_filters_count++;
+            }
+
+            $location_text = isset( $_GET['location'] ) ? sanitize_text_field( wp_unslash( $_GET['location'] ) ) : '';
+            $empty_state_title = $location_text
+              ? sprintf( __( 'No encontramos propiedades en %s', 'twentytwentyfive-child' ), $location_text )
+              : __( 'No encontramos propiedades con tu búsqueda', 'twentytwentyfive-child' );
+
+            $reset_filters_url = remove_query_arg( array( 'location', 'price_min', 'price_max', 'property_type', 'paged' ) );
+
+            echo '<div class="no-properties" role="status" aria-live="polite">';
+            echo '<span class="no-properties__icon" aria-hidden="true">?</span>';
+            echo '<h3 class="no-properties__title">' . esc_html( $empty_state_title ) . '</h3>';
+            echo '<p class="no-properties__text">' . esc_html__( 'Prueba ajustando los filtros para ver mas opciones disponibles.', 'twentytwentyfive-child' ) . '</p>';
+
+            if ( $active_filters_count > 0 ) {
+              echo '<p class="no-properties__meta">' . sprintf( esc_html__( 'Filtros activos: %d', 'twentytwentyfive-child' ), (int) $active_filters_count ) . '</p>';
+            }
+
+            echo '<a class="btn btn--primary no-properties__action" href="' . esc_url( $reset_filters_url ) . '">';
+            echo esc_html__( 'Limpiar filtros y ver todo', 'twentytwentyfive-child' );
+            echo '</a>';
+            echo '</div>';
           }
         ?>
       </div>
@@ -259,14 +299,28 @@ get_header();
 <script>
 (function() {
   var sortSelect = document.getElementById('sort');
-  if (!sortSelect) return;
+  var clearFiltersBtn = document.getElementById('clear-filters-btn');
 
-  sortSelect.addEventListener('change', function() {
-    var url = new URL(window.location.href);
-    url.searchParams.set('sort', this.value);
-    url.searchParams.delete('paged');
-    window.location.href = url.toString();
-  });
+  if (sortSelect) {
+    sortSelect.addEventListener('change', function() {
+      var url = new URL(window.location.href);
+      url.searchParams.set('sort', this.value);
+      url.searchParams.delete('paged');
+      window.location.href = url.toString();
+    });
+  }
+
+  if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener('click', function() {
+      var url = new URL(window.location.href);
+      url.searchParams.delete('location');
+      url.searchParams.delete('price_min');
+      url.searchParams.delete('price_max');
+      url.searchParams.delete('property_type');
+      url.searchParams.delete('paged');
+      window.location.href = url.toString();
+    });
+  }
 })();
 </script>
 
