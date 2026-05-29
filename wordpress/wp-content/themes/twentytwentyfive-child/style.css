@@ -4541,6 +4541,32 @@ body.single .section--single-related .container {
   color: var(--color-text-secondary);
 }
 
+.property-map-actions {
+  margin-top: var(--space-3);
+}
+
+.property-map-open-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border-secondary);
+  background: #fff;
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.property-map-open-link:hover,
+.property-map-open-link:focus-visible {
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 18px rgba(29, 45, 68, 0.14);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
 .property-map-empty {
   display: flex;
   align-items: center;

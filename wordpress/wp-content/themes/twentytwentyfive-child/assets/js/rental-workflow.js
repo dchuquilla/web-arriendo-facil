@@ -1,10 +1,8 @@
 /**
  * rental-workflow.js
  *
- * Handles the public rental workflow UI on single accommodation pages:
- *   - Checks availability via af_get_accommodation_availability
- *   - Shows visit slots (af_get_visit_slots) and books one (af_book_visit_slot)
- *   - Falls back to interest queue (af_join_interest_queue) when unavailable
+ * Handles availability status on single accommodation pages.
+ * Booking/queue actions are handled in chatbot, not in-page forms.
  */
 (function () {
   'use strict';
@@ -79,6 +77,31 @@
     };
     badgeEl.className = 'af-booking-badge ' + ( map[ stateCode ] || 'af-booking-badge--private' );
     badgeEl.textContent = message || stateCode;
+  }
+  function showChatbotOnlyHint(availabilityData) {
+    if (!errorEl) { return; }
+
+    var canStart = availabilityData && availabilityData.can_start_flow;
+    var reason = availabilityData && availabilityData.message ? availabilityData.message : '';
+    var baseText = canStart
+      ? 'Para continuar, usa el chatbot (botón CHATBOT) y completa el proceso ahí.'
+      : 'Esta propiedad no está disponible por ahora. Revisa el chatbot para opciones y seguimiento.';
+
+    errorEl.className = 'af-booking-section';
+    errorEl.innerHTML = '<p style="margin:0 0 .5rem;">' + escHtml(reason || baseText) + '</p>' +
+      '<button type="button" id="af-open-chatbot-cta" class="btn btn--primary btn--full">Abrir chatbot</button>';
+    show(errorEl);
+
+    var cta = document.getElementById('af-open-chatbot-cta');
+    if (cta) {
+      cta.addEventListener('click', function () {
+        var toggleBtn = document.getElementById('af-chatbot-toggle');
+        if (toggleBtn) {
+          toggleBtn.click();
+          toggleBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    }
   }
   function post( data ) {
     var body = new FormData();
@@ -179,12 +202,11 @@
         var d = res.data;
         setBadge( d.state || d.status, d.message );
 
-        if ( d.can_start_flow ) {
-          return loadSlots();
-        } else {
-          showQueueSection( d.reason_code );
-          return null;
-        }
+        // Frontend decision: this page only shows status and sends user to chatbot.
+        hide( slotsSection );
+        hide( queueSection );
+        showChatbotOnlyHint(d);
+        return null;
       } )
       .catch( function () {
         hide( loadingEl );
@@ -195,7 +217,7 @@
       } );
   }
 
-  // ── 2. Load slots ─────────────────────────────────────────────────────────
+  // ── 2. Load slots (legacy, kept for compatibility) ──────────────────────
   function loadSlots() {
     show( loadingEl );
     return post( {
@@ -220,7 +242,7 @@
       } );
   }
 
-  // ── 3. Show queue section ─────────────────────────────────────────────────
+  // ── 3. Show queue section (legacy, kept for compatibility) ──────────────
   function showQueueSection( reasonCode ) {
     if ( queueSection ) {
       var hint = queueSection.querySelector( '.af-booking-hint' );
@@ -238,7 +260,7 @@
     }
   }
 
-  // ── 4. Book a visit slot ──────────────────────────────────────────────────
+  // ── 4. Book a visit slot (legacy, kept for compatibility) ───────────────
   if ( visitForm ) {
     visitForm.addEventListener( 'submit', function ( e ) {
       e.preventDefault();
@@ -294,7 +316,7 @@
     } );
   }
 
-  // ── 5. Join interest queue ────────────────────────────────────────────────
+  // ── 5. Join interest queue (legacy, kept for compatibility) ─────────────
   if ( queueForm ) {
     queueForm.addEventListener( 'submit', function ( e ) {
       e.preventDefault();

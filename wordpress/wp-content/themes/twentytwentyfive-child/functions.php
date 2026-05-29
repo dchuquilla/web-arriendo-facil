@@ -157,6 +157,30 @@ function twentytwentyfive_child_enqueue_assets() {
       true
     );
 
+    if ( is_page('search-results') ) {
+      wp_enqueue_style(
+        'leaflet-markercluster-css',
+        'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css',
+        array('leaflet-css'),
+        '1.5.3'
+      );
+
+      wp_enqueue_style(
+        'leaflet-markercluster-default-css',
+        'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css',
+        array('leaflet-markercluster-css'),
+        '1.5.3'
+      );
+
+      wp_enqueue_script(
+        'leaflet-markercluster-js',
+        'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js',
+        array('leaflet-js'),
+        '1.5.3',
+        true
+      );
+    }
+
     wp_enqueue_style(
       'twentytwentyfive-child-search-results',
       get_stylesheet_directory_uri() . '/assets/css/search-results.css',
@@ -167,7 +191,7 @@ function twentytwentyfive_child_enqueue_assets() {
     wp_enqueue_script(
       'twentytwentyfive-child-search-results',
       get_stylesheet_directory_uri() . '/assets/js/search-results-interactive.js',
-      array( 'leaflet-js' ),
+      is_page('search-results') ? array( 'leaflet-js', 'leaflet-markercluster-js' ) : array( 'leaflet-js' ),
       filemtime( get_stylesheet_directory() . '/assets/js/search-results-interactive.js' ),
       true
     );
@@ -381,69 +405,9 @@ function twentytwentyfive_child_enqueue_single_carousel() {
 add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_single_carousel', 15);
 
 /**
- * Enqueue rental workflow script (availability, visit slots, interest queue)
- * only on single accommodation pages.
+ * Rental workflow on single pages is intentionally disabled.
+ * All booking/queue process now runs through the chatbot flow only.
  */
-function twentytwentyfive_child_enqueue_rental_workflow() {
-  if ( ! is_singular( 'accommodation' ) ) {
-    return;
-  }
-
-  $js_path  = get_stylesheet_directory() . '/assets/js/rental-workflow.js';
-  $css_path = get_stylesheet_directory() . '/assets/css/rental-workflow.css';
-
-  if ( ! file_exists( $js_path ) ) {
-    return;
-  }
-
-  if ( file_exists( $css_path ) ) {
-    wp_enqueue_style(
-      'af-rental-workflow',
-      get_stylesheet_directory_uri() . '/assets/css/rental-workflow.css',
-      [ 'twentytwentyfive-child-style' ],
-      filemtime( $css_path )
-    );
-  }
-
-  wp_enqueue_script(
-    'af-rental-workflow',
-    get_stylesheet_directory_uri() . '/assets/js/rental-workflow.js',
-    [],
-    filemtime( $js_path ),
-    true
-  );
-
-  $post_id = get_the_ID();
-
-  wp_localize_script(
-    'af-rental-workflow',
-    'afWorkflow',
-    [
-      'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
-      'nonce'           => wp_create_nonce( 'af_guest_frontend_nonce' ),
-      'accommodationId' => (int) $post_id,
-      'i18n'            => [
-        'errorGeneric'    => __( 'No se pudo completar la operación. Intenta nuevamente.', 'twentytwentyfive-child' ),
-        'errorNetwork'    => __( 'Error de conexión. Recarga la página e intenta de nuevo.', 'twentytwentyfive-child' ),
-        'noSlots'         => __( 'No hay horarios de visita disponibles por ahora.', 'twentytwentyfive-child' ),
-        'spotsLeft'       => __( 'Disponible', 'twentytwentyfive-child' ),
-        'sending'         => __( 'Enviando…', 'twentytwentyfive-child' ),
-        'confirmVisit'    => __( 'Confirmar visita', 'twentytwentyfive-child' ),
-        'visitBooked'     => __( '¡Visita agendada! Te enviaremos un correo de confirmación.', 'twentytwentyfive-child' ),
-        'slotConflict'    => __( 'Este horario ya fue reservado. Por favor elige otro.', 'twentytwentyfive-child' ),
-        'fillRequired'    => __( 'Completa los campos obligatorios.', 'twentytwentyfive-child' ),
-        'joinQueue'       => __( 'Unirme a lista de espera', 'twentytwentyfive-child' ),
-        'queueJoined'     => __( '¡Listo! Te avisaremos cuando esta propiedad esté disponible.', 'twentytwentyfive-child' ),
-        'queueRented'     => __( 'Esta propiedad está actualmente rentada. Te avisamos cuando quede disponible.', 'twentytwentyfive-child' ),
-        'queueReserved'   => __( 'Esta propiedad tiene una reserva activa. Ingresa a la lista de espera.', 'twentytwentyfive-child' ),
-        'queuePrivate'    => __( 'Esta propiedad no está disponible públicamente en este momento.', 'twentytwentyfive-child' ),
-        'queueUnavailable'=> __( 'Propiedad no disponible. Únete a la lista de espera.', 'twentytwentyfive-child' ),
-        'queueNoSlots'    => __( 'No hay horarios de visita disponibles. Regístrate y te contactaremos.', 'twentytwentyfive-child' ),
-      ],
-    ]
-  );
-}
-add_action( 'wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_rental_workflow', 16 );
 
 /**
  * Menú principal (si el tema padre no lo registra o quieres controlarlo).
