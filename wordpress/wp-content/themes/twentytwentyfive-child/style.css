@@ -3911,18 +3911,6 @@ textarea:focus {
     var(--color-bg-soft);
   border: 1px solid rgba(125, 190, 82, 0.25);
   border-radius: var(--border-radius-lg);
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-}
-
-.no-properties.is-hiding {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.no-properties.is-hidden {
-  display: none;
 }
 
 .no-properties__icon {
@@ -5279,7 +5267,10 @@ body.single .section--single-related .container {
   }
 
   .hero {
-    background: #1d2d44 !important;
+    background-color: #1d2d44 !important;
+    background-image: url('assets/images/hero-bg.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
     color: #ffffff !important;
   }
 
