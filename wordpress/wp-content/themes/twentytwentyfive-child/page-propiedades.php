@@ -300,6 +300,7 @@ get_header();
 (function() {
   var sortSelect = document.getElementById('sort');
   var clearFiltersBtn = document.getElementById('clear-filters-btn');
+  var noPropertiesState = document.querySelector('.no-properties');
 
   if (sortSelect) {
     sortSelect.addEventListener('change', function() {
@@ -320,6 +321,16 @@ get_header();
       url.searchParams.delete('paged');
       window.location.href = url.toString();
     });
+  }
+
+  if (noPropertiesState) {
+    window.setTimeout(function() {
+      noPropertiesState.classList.add('is-hiding');
+    }, 6000);
+
+    window.setTimeout(function() {
+      noPropertiesState.classList.add('is-hidden');
+    }, 6700);
   }
 })();
 </script>
