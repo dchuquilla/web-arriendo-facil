@@ -92,7 +92,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
           </p>
 
           <div class="cta-row">
-            <a class="btn btn--primary btn--lg" href="<?php echo esc_url(home_url('/search-results')); ?>">
+            <a class="btn btn--primary btn--lg" href="<?php echo esc_url(home_url('/propiedades/')); ?>">
               <?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?>
               <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
