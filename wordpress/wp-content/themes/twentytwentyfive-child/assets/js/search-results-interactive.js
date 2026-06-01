@@ -458,9 +458,9 @@
 					icon: L.divIcon({
 						className: 'accommodation-marker accommodation-marker--bg',
 						html: '<div class="marker-core marker-core--bg" aria-hidden="true">🏠</div>',
-						iconSize: [42, 42],
-						iconAnchor: [21, 42],
-						popupAnchor: [0, -42],
+						iconSize: [56, 56],
+						iconAnchor: [28, 56],
+						popupAnchor: [0, -56],
 					}),
 				});
 
@@ -562,6 +562,11 @@
 				const lat = parseFloat(acc.latitude);
 				const lng = parseFloat(acc.longitude);
 				if (Number.isFinite(lat) && Number.isFinite(lng)) {
+					// Hide the blue background marker while this accommodation is shown as an active result.
+					if (this.backgroundMarkerLayer && this.allAccommodationMarkers[acc.id]) {
+						this.backgroundMarkerLayer.removeLayer(this.allAccommodationMarkers[acc.id]);
+					}
+
 					const marker = L.marker([lat, lng], {
 						icon: L.divIcon({
 							className: 'accommodation-marker',
@@ -709,6 +714,15 @@
 		},
 
 		clearAccommodationMarkers() {
+			// Restore blue background markers for accommodations that were temporarily hidden.
+			if (this.backgroundMarkerLayer) {
+				Object.keys(this.accommodationMarkers).forEach(id => {
+					if (this.allAccommodationMarkers[id]) {
+						this.backgroundMarkerLayer.addLayer(this.allAccommodationMarkers[id]);
+					}
+				});
+			}
+
 			if (this.markerLayer && typeof this.markerLayer.clearLayers === 'function') {
 				this.markerLayer.clearLayers();
 			} else {
