@@ -30,7 +30,7 @@
 <header class="site-header" role="banner" id="site-header">
   <div class="container header-inner">
     <a class="brand" href="<?php echo esc_url(home_url('/')); ?>">
-      <img src="<?php echo esc_url(get_stylesheet_directory_uri()) ?>/assets/images/arriendo-facil-logo-web-sq.png" alt="Arriendo Fácil" width="60" height="60">
+      <img src="<?php echo esc_url(get_stylesheet_directory_uri()) ?>/assets/favicon/favicon-96x96.png" alt="Arriendo Fácil" width="60" height="60" decoding="async" fetchpriority="high">
       <span><?php bloginfo('name'); ?></span>
     </a>
 
