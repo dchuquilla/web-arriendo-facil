@@ -107,6 +107,31 @@
 			}
 
 			this.map.addLayer(this.markerLayer);
+
+			// On mobile the CSS grid layout may not be fully resolved when Leaflet
+			// initialises, causing it to record a 0-size container and placing all
+			// markers outside the visible viewport.  A single rAF lets the browser
+			// finish painting the layout before we correct the map dimensions.
+			requestAnimationFrame(() => {
+				this.map.invalidateSize();
+			});
+
+			// Keep the map correctly sized whenever the container changes
+			// (device rotation, mobile browser chrome hiding/showing, etc.).
+			if (typeof ResizeObserver !== 'undefined') {
+				const ro = new ResizeObserver(() => {
+					this.map.invalidateSize();
+				});
+				ro.observe(this.elements.map);
+			} else {
+				// Fallback for older browsers that lack ResizeObserver.
+				window.addEventListener('orientationchange', () => {
+					setTimeout(() => this.map.invalidateSize(), 200);
+				});
+				window.addEventListener('resize', () => {
+					this.map.invalidateSize();
+				});
+			}
 		},
 
 		async setInitialMapCenter() {
@@ -433,9 +458,9 @@
 					icon: L.divIcon({
 						className: 'accommodation-marker accommodation-marker--bg',
 						html: '<div class="marker-core marker-core--bg" aria-hidden="true">🏠</div>',
-						iconSize: [32, 32],
-						iconAnchor: [16, 32],
-						popupAnchor: [0, -32],
+						iconSize: [42, 42],
+						iconAnchor: [21, 42],
+						popupAnchor: [0, -42],
 					}),
 				});
 
@@ -541,9 +566,9 @@
 						icon: L.divIcon({
 							className: 'accommodation-marker',
 							html: '<div class="marker-ping"></div><div class="marker-core" aria-hidden="true">🏠</div>',
-							iconSize: [44, 44],
-							iconAnchor: [22, 44],
-							popupAnchor: [0, -44],
+							iconSize: [56, 56],
+							iconAnchor: [28, 56],
+							popupAnchor: [0, -56],
 						}),
 					});
 
@@ -578,6 +603,11 @@
 		},
 
 		fitMapBounds(accommodations) {
+			// Guarantee Leaflet knows the real container size before fitting bounds.
+			// Without this, fitBounds() calculates pixel positions using a stale
+			// (potentially zero) size and markers land outside the visible area.
+			this.map.invalidateSize({ pan: false });
+
 			const bounds = L.latLngBounds();
 			let coordinateCount = 0;
 			accommodations.forEach(acc => {
