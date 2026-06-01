@@ -16,10 +16,10 @@ if ($q->have_posts()) {
   while ($q->have_posts()) { $q->the_post();
     $id = get_the_ID();
 
-    $img = get_the_post_thumbnail_url($id, 'af-card');
+    $thumb_id = get_post_thumbnail_id($id);
+    $img = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'af-card') : '';
     if (!$img) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
 
-    $thumb_id  = get_post_thumbnail_id($id);
     $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
     $img_alt   = $thumb_alt ? $thumb_alt : get_the_title();
 
@@ -33,6 +33,7 @@ if ($q->have_posts()) {
       'id'      => $id,
       'title'   => get_the_title(),
       'link'    => get_permalink(),
+      'thumb_id'=> $thumb_id,
       'image'   => $img,
       'alt'     => $img_alt,
       'excerpt' => get_the_excerpt(),
@@ -55,16 +56,17 @@ if ($q_residencias->have_posts()) {
   while ($q_residencias->have_posts()) { $q_residencias->the_post();
     $id = get_the_ID();
 
-    $img = get_the_post_thumbnail_url($id, 'af-card');
+    $thumb_id = get_post_thumbnail_id($id);
+    $img = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'af-card') : '';
     if (!$img) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
 
-    $thumb_id  = get_post_thumbnail_id($id);
     $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
     $img_alt   = $thumb_alt ? $thumb_alt : get_the_title();
     $residencias[] = [
       'id'    => $id,
       'title' => get_the_title(),
       'link'  => get_permalink(),
+      'thumb_id' => $thumb_id,
       'image' => esc_url_raw($img),
       'alt'   => esc_attr($img_alt),
     ];
@@ -82,7 +84,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
   <section class="hero" id="inicio">
     <div class="container">
       <div class="hero-grid">
-        <div class="hero-content" data-animate>
+        <div class="hero-content">
           <span class="badge"><?php esc_html_e('Encuentra tu lugar perfecto', 'twentytwentyfive-child'); ?></span>
           <h1 class="h1">
             <?php esc_html_e('Hospedajes verificados para ti', 'twentytwentyfive-child'); ?>
@@ -102,7 +104,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
           </div>
         </div>
 
-        <div class="hero-visual" data-animate>
+        <div class="hero-visual">
           <div class="hero-card" aria-label="<?php esc_attr_e('Búsqueda de propiedades disponibles', 'twentytwentyfive-child'); ?>">
             <div class="mock-header">
               <span class="badge"><?php esc_html_e('Búsqueda rápida', 'twentytwentyfive-child'); ?></span>
@@ -164,12 +166,30 @@ $total_accommodations = $accommodation_count->publish ?? 0;
               <div class="flip-card" data-flip-card>
                 <div class="flip-card__inner">
                   <div class="flip-card__front">
-                    <img
-                      src="<?php echo esc_url($post['image']); ?>"
-                      alt="<?php echo esc_attr($post['alt']); ?>"
-                      width="480" height="320"
-                      loading="lazy"
-                      decoding="async">
+                    <?php if (!empty($post['thumb_id'])) : ?>
+                      <?php echo wp_get_attachment_image(
+                        $post['thumb_id'],
+                        'af-card',
+                        false,
+                        [
+                          'alt' => $post['alt'],
+                          'loading' => $i === 0 ? 'eager' : 'lazy',
+                          'fetchpriority' => $i === 0 ? 'high' : 'auto',
+                          'decoding' => 'async',
+                          'sizes' => '(max-width: 600px) 92vw, (max-width: 900px) 48vw, 480px',
+                          'width' => '480',
+                          'height' => '320',
+                        ]
+                      ); ?>
+                    <?php else : ?>
+                      <img
+                        src="<?php echo esc_url($post['image']); ?>"
+                        alt="<?php echo esc_attr($post['alt']); ?>"
+                        width="480" height="320"
+                        loading="<?php echo $i === 0 ? 'eager' : 'lazy'; ?>"
+                        fetchpriority="<?php echo $i === 0 ? 'high' : 'auto'; ?>"
+                        decoding="async">
+                    <?php endif; ?>
                     <div class="flip-card__overlay">
                       <h3 class="flip-card__title"><?php echo esc_html($post['title']); ?></h3>
                     </div>
@@ -213,7 +233,23 @@ $total_accommodations = $accommodation_count->publish ?? 0;
           <div class="featured-strip" data-featured-strip>
             <?php foreach ($residencias as $item) : ?>
               <a class="featured-item" href="<?php echo esc_url($item['link']); ?>" aria-label="<?php echo esc_attr($item['title']); ?>">
-                <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>" width="480" height="320" loading="lazy" decoding="async">
+                <?php if (!empty($item['thumb_id'])) : ?>
+                  <?php echo wp_get_attachment_image(
+                    $item['thumb_id'],
+                    'af-card',
+                    false,
+                    [
+                      'alt' => $item['alt'],
+                      'loading' => 'lazy',
+                      'decoding' => 'async',
+                      'sizes' => '(max-width: 600px) 86vw, (max-width: 900px) 44vw, 320px',
+                      'width' => '480',
+                      'height' => '320',
+                    ]
+                  ); ?>
+                <?php else : ?>
+                  <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>" width="480" height="320" loading="lazy" decoding="async">
+                <?php endif; ?>
                 <div class="fi-title"><?php echo esc_html($item['title']); ?></div>
               </a>
             <?php endforeach; ?>

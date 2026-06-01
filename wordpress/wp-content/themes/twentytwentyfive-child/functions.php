@@ -35,14 +35,16 @@ function twentytwentyfive_child_enqueue_assets() {
     filemtime( get_stylesheet_directory() . '/design-tokens.css' )
   );
 
-  // Lightbox para bloques de galería (site-wide; no-op si no hay galerías)
-  wp_enqueue_script(
-    'twentytwentyfive-child-gallery-lightbox',
-    get_stylesheet_directory_uri() . '/assets/js/gallery-lightbox.js',
-    array(),
-    wp_get_theme()->get('Version'),
-    true
-  );
+  // Lightbox para bloques de galería (load only when singular content is likely to need it).
+  if ( is_singular() ) {
+    wp_enqueue_script(
+      'twentytwentyfive-child-gallery-lightbox',
+      get_stylesheet_directory_uri() . '/assets/js/gallery-lightbox.js',
+      array(),
+      wp_get_theme()->get('Version'),
+      true
+    );
+  }
 
   // Search bar (global)
   wp_enqueue_script(

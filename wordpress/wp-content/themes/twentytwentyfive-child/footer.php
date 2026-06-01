@@ -4,14 +4,26 @@
 // Simple scroll animation
 document.addEventListener('DOMContentLoaded', function() {
   const animatedElements = document.querySelectorAll('[data-animate]');
-  
+
+  const isMobile = window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const shouldAnimate = !isMobile && !prefersReducedMotion && 'IntersectionObserver' in window;
+
+  if (!shouldAnimate) {
+    animatedElements.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+
+  document.documentElement.classList.add('has-scroll-animations');
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
 
   animatedElements.forEach(el => observer.observe(el));
 });

@@ -2272,6 +2272,7 @@ body.is-lightbox-open {
   line-height: var(--line-height-relaxed);
   margin: 0;
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -3550,14 +3551,19 @@ textarea:focus {
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
-/* Scroll animations (add via JS) */
+/* Scroll animations (enabled via JS only when appropriate). */
 [data-animate] {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease-out;
+  opacity: 1;
+  transform: none;
 }
 
-[data-animate].is-visible {
+.has-scroll-animations [data-animate] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.has-scroll-animations [data-animate].is-visible {
   opacity: 1;
   transform: translateY(0);
 }
