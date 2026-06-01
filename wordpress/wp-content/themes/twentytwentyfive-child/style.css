@@ -528,6 +528,7 @@ hr.sep {
   letter-spacing: var(--letter-spacing-tight);
   color: var(--color-text-primary);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .brand img {
@@ -785,7 +786,7 @@ hr.sep {
 .nav {
   display: flex;
   align-items: center;
-  gap: var(--space-8);
+  gap: var(--space-5);
 }
 
 .nav a:not(.btn) {
@@ -813,14 +814,14 @@ hr.sep {
 
 /* CTA Button in nav (Buscar propiedades) */
 .nav .btn--primary {
-  margin-left: var(--space-6);
+  margin-left: var(--space-4);
 }
 
 /* WordPress menu (main) - no submenus in v1 */
 .nav .main-menu {
   display: flex;
   align-items: center;
-  gap: var(--space-8);
+  gap: var(--space-5);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -865,6 +866,13 @@ hr.sep {
 
 .nav-toggle.is-active span:nth-child(3) {
   transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Intermediate breakpoint: desktop nav visible but not enough room for search bar */
+@media (min-width: 900px) and (max-width: 1099px) {
+  .search-bar-wrapper {
+    display: none;
+  }
 }
 
 /* Mobile Navigation Breakpoint */
