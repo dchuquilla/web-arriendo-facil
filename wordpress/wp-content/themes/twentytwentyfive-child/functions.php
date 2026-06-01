@@ -217,6 +217,39 @@ function twentytwentyfive_child_enqueue_assets() {
 add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
 
 /**
+ * Adds defer/async attributes to non-critical scripts.
+ */
+function twentytwentyfive_child_optimize_script_loading( $tag, $handle, $src ) {
+  $defer_handles = array(
+    'twentytwentyfive-child-search-bar',
+    'twentytwentyfive-child-nav-prefetch',
+    'twentytwentyfive-child-cookie-wall',
+    'twentytwentyfive-child-home',
+    'twentytwentyfive-child-referral',
+    'twentytwentyfive-child-propiedades',
+    'twentytwentyfive-child-owner-registration',
+    'twentytwentyfive-child-gallery-lightbox',
+    'twentytwentyfive-child-single-carousel',
+    'af-chatbot-frontend',
+  );
+
+  $async_handles = array(
+    'twentytwentyfive-child-sw-register',
+  );
+
+  if ( in_array( $handle, $defer_handles, true ) ) {
+    return '<script src="' . esc_url( $src ) . '" defer></script>' . "\n";
+  }
+
+  if ( in_array( $handle, $async_handles, true ) ) {
+    return '<script src="' . esc_url( $src ) . '" async></script>' . "\n";
+  }
+
+  return $tag;
+}
+add_filter( 'script_loader_tag', 'twentytwentyfive_child_optimize_script_loading', 10, 3 );
+
+/**
  * Obtiene propiedades destacadas desde Posts (categoría: propiedades-destacadas)
  * Ajusta esto a CPT/ACF si tu proyecto lo requiere.
  */

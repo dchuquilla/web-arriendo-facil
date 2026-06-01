@@ -1,12 +1,29 @@
 (function () {
   'use strict';
 
-  var POLL_INTERVAL = 30000;
+  var BASE_POLL_INTERVAL = 90000;
+  var MAX_POLL_ATTEMPTS = 20;
   var apiUrl = (window.afPropiedades && window.afPropiedades.apiUrl) || '/wp-json/af/v1/accommodations/search';
   var currentFilters = (window.afPropiedades && window.afPropiedades.filters) || {};
   var baselineIds = [];
   var pollTimer = null;
   var initialized = false;
+  var pollAttempts = 0;
+  var inFlightController = null;
+
+  function getPollingInterval() {
+    var interval = BASE_POLL_INTERVAL;
+
+    if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+      interval = Math.max(interval, 120000);
+    }
+
+    if (navigator.connection && navigator.connection.saveData) {
+      interval = Math.max(interval, 180000);
+    }
+
+    return interval;
+  }
 
   function init() {
     fetchAllIds(function (ids) {
@@ -25,7 +42,7 @@
   }
 
   function fetchAllIds(callback) {
-    var body = { sort: 'newest', per_page: 100, page: 1 };
+    var body = { sort: 'newest', per_page: 60, page: 1 };
     if (currentFilters.location) body.location = currentFilters.location;
     if (currentFilters.price_min) body.price_min = parseFloat(currentFilters.price_min);
     if (currentFilters.price_max) body.price_max = parseFloat(currentFilters.price_max);
@@ -49,7 +66,9 @@
 
   function startPolling() {
     if (pollTimer) return;
-    pollTimer = setInterval(checkForUpdates, POLL_INTERVAL);
+    if (pollAttempts >= MAX_POLL_ATTEMPTS) return;
+
+    pollTimer = setInterval(checkForUpdates, getPollingInterval());
   }
 
   function stopPolling() {
@@ -60,7 +79,18 @@
   }
 
   function checkForUpdates() {
-    var body = { sort: 'newest', per_page: 100, page: 1 };
+    if (document.hidden || pollAttempts >= MAX_POLL_ATTEMPTS) {
+      stopPolling();
+      return;
+    }
+
+    if (inFlightController) {
+      inFlightController.abort();
+    }
+
+    inFlightController = new AbortController();
+
+    var body = { sort: 'newest', per_page: 30, page: 1 };
     if (currentFilters.location) body.location = currentFilters.location;
     if (currentFilters.price_min) body.price_min = parseFloat(currentFilters.price_min);
     if (currentFilters.price_max) body.price_max = parseFloat(currentFilters.price_max);
@@ -70,10 +100,13 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
+      signal: inFlightController.signal,
     })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (!data.success || !data.results) return;
+
+        pollAttempts += 1;
 
         var newItems = data.results.filter(function (item) {
           return baselineIds.indexOf(item.id) === -1;
@@ -86,7 +119,7 @@
           });
         }
       })
-      .catch(function () {});
+        .catch(function () {});
   }
 
   function appendNewCards(items) {
