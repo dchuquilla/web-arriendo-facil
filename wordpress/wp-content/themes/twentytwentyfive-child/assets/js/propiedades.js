@@ -2,7 +2,7 @@
   'use strict';
 
   var BASE_POLL_INTERVAL = 90000;
-  var MAX_POLL_ATTEMPTS = 20;
+  var MAX_POLL_ATTEMPTS = 1;
   var apiUrl = (window.afPropiedades && window.afPropiedades.apiUrl) || '/wp-json/af/v1/accommodations/search';
   var currentFilters = (window.afPropiedades && window.afPropiedades.filters) || {};
   var baselineIds = [];
@@ -12,17 +12,31 @@
   var inFlightController = null;
 
   function getPollingInterval() {
-    var interval = BASE_POLL_INTERVAL;
+    var interval = BASE_POLL_INTERVAL * 2;
 
     if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
       interval = Math.max(interval, 120000);
     }
 
     if (navigator.connection && navigator.connection.saveData) {
-      interval = Math.max(interval, 180000);
+      interval = Math.max(interval, 240000);
     }
 
     return interval;
+  }
+
+  function shouldPoll() {
+    var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+    if (document.hidden) {
+      return false;
+    }
+
+    if (conn && (conn.saveData || /2g/.test(conn.effectiveType || ''))) {
+      return false;
+    }
+
+    return true;
   }
 
   function init() {
@@ -67,19 +81,23 @@
   function startPolling() {
     if (pollTimer) return;
     if (pollAttempts >= MAX_POLL_ATTEMPTS) return;
+    if (!shouldPoll()) return;
 
-    pollTimer = setInterval(checkForUpdates, getPollingInterval());
+    pollTimer = window.setTimeout(function () {
+      pollTimer = null;
+      checkForUpdates();
+    }, getPollingInterval());
   }
 
   function stopPolling() {
     if (pollTimer) {
-      clearInterval(pollTimer);
+      clearTimeout(pollTimer);
       pollTimer = null;
     }
   }
 
   function checkForUpdates() {
-    if (document.hidden || pollAttempts >= MAX_POLL_ATTEMPTS) {
+    if (!shouldPoll() || pollAttempts >= MAX_POLL_ATTEMPTS) {
       stopPolling();
       return;
     }
@@ -119,7 +137,10 @@
           });
         }
       })
-        .catch(function () {});
+      .catch(function () {})
+      .finally(function () {
+        inFlightController = null;
+      });
   }
 
   function appendNewCards(items) {

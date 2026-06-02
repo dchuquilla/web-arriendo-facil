@@ -1,18 +1,7 @@
-const CACHE_NAME = 'arriendo-facil-v1';
-const urlsToCache = [
-  '/',
-  '/propiedades/',
-  '/contacto/',
-];
+const CACHE_NAME = 'arriendo-facil-static-v2';
+const ASSET_DESTINATIONS = new Set(['style', 'script', 'image', 'font']);
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache).catch(() => {
-        // Some URLs might fail, but we continue
-      });
-    })
-  );
   self.skipWaiting();
 });
 
@@ -35,67 +24,44 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Only handle same-origin requests
   if (url.origin !== location.origin) {
     return;
   }
 
-  // Skip POST requests and API calls
   if (request.method !== 'GET') {
     return;
   }
 
-  // Skip admin/wp-admin
-  if (url.pathname.includes('/wp-admin') || url.pathname.includes('/wp-login')) {
+  if (
+    request.mode === 'navigate' ||
+    url.pathname.includes('/wp-admin') ||
+    url.pathname.includes('/wp-login') ||
+    url.pathname.includes('/wp-json/') ||
+    url.search
+  ) {
     return;
   }
 
-  // Cache navigation requests (HTML pages)
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(request).then((response) => {
-        if (response) {
-          // Return cached, but update in background
-          fetch(request).then((freshResponse) => {
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, freshResponse.clone());
-            });
-          }).catch(() => {});
-          return response;
+  if (!ASSET_DESTINATIONS.has(request.destination) && !url.pathname.includes('/wp-content/')) {
+    return;
+  }
+
+  event.respondWith(
+    caches.match(request).then((response) => {
+      if (response) {
+        return response;
+      }
+
+      return fetch(request).then((freshResponse) => {
+        if (freshResponse && freshResponse.status === 200 && freshResponse.type === 'basic') {
+          const responseToCache = freshResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseToCache);
+          });
         }
 
-        return fetch(request).then((response) => {
-          // Cache successful responses
-          if (response && response.status === 200 && response.type === 'basic') {
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, responseToCache);
-            });
-          }
-          return response;
-        }).catch(() => {
-          // Return cached response if fetch fails
-          return caches.match(request);
-        });
-      })
-    );
-    return;
-  }
-
-  // Cache-first for assets (CSS, JS, images)
-  if (request.destination === 'style' || request.destination === 'script' || request.destination === 'image') {
-    event.respondWith(
-      caches.match(request).then((response) => {
-        return response || fetch(request).then((freshResponse) => {
-          if (freshResponse && freshResponse.status === 200) {
-            const responseToCache = freshResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, responseToCache);
-            });
-          }
-          return freshResponse;
-        });
-      })
-    );
-  }
+        return freshResponse;
+      });
+    })
+  );
 });
