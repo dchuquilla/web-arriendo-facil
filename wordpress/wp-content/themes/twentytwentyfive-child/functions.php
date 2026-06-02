@@ -55,6 +55,14 @@ function twentytwentyfive_child_enqueue_assets() {
     true
   );
 
+  wp_enqueue_script(
+    'twentytwentyfive-child-theme-ui',
+    get_stylesheet_directory_uri() . '/assets/js/theme-ui.js',
+    array(),
+    filemtime( get_stylesheet_directory() . '/assets/js/theme-ui.js' ),
+    true
+  );
+
   // Warm likely next pages (property detail and properties list) to improve perceived navigation speed.
   wp_enqueue_script(
     'twentytwentyfive-child-nav-prefetch',
@@ -224,6 +232,7 @@ add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
 function twentytwentyfive_child_optimize_script_loading( $tag, $handle, $src ) {
   $defer_handles = array(
     'twentytwentyfive-child-search-bar',
+    'twentytwentyfive-child-theme-ui',
     'twentytwentyfive-child-nav-prefetch',
     'twentytwentyfive-child-cookie-wall',
     'twentytwentyfive-child-home',
