@@ -34,6 +34,10 @@
 			health: true,
 			radius: 2,
 		},
+		resultsAbortController: null,
+		resultsDebounceId: null,
+		resultsCache: new Map(),
+		resultsCacheTtlMs: 45000,
 		mapAlertTimeoutId: null,
 
 		async init() {
@@ -264,12 +268,13 @@
 
 		onFilterChange() {
 			this.updateFilters();
-			this.loadResults();
+			this.scheduleResultsLoad();
 		},
 
 		onPoiFilterChange() {
 			this.updatePoiSettings();
-			this.loadResults();
+			this.clearPoiMarkers();
+			this.loadPoiMarkers();
 		},
 
 		onPoiRadiusChange() {
@@ -302,7 +307,66 @@
 			this.elements.propertyTypeSelect.value = '';
 			this.elements.amenityCheckboxes.forEach(cb => cb.checked = false);
 			this.updateFilters();
-			this.loadResults();
+			this.scheduleResultsLoad();
+		},
+
+		scheduleResultsLoad(delay = 160) {
+			if (this.resultsDebounceId) {
+				window.clearTimeout(this.resultsDebounceId);
+			}
+
+			this.resultsDebounceId = window.setTimeout(() => {
+				this.resultsDebounceId = null;
+				this.loadResults();
+			}, delay);
+		},
+
+		buildResultsCacheKey(params) {
+			return JSON.stringify({
+				location: params.location || '',
+				latitude: Number.isFinite(params.latitude) ? Number(params.latitude).toFixed(5) : null,
+				longitude: Number.isFinite(params.longitude) ? Number(params.longitude).toFixed(5) : null,
+				radius_km: params.radius_km,
+				price_min: params.price_min,
+				price_max: params.price_max,
+				bedrooms: params.bedrooms,
+				bathrooms: params.bathrooms,
+				property_type: params.property_type || '',
+				amenities: Array.isArray(params.amenities) ? params.amenities.slice().sort() : [],
+				sort: params.sort || 'relevance',
+			});
+		},
+
+		getCachedResults(cacheKey) {
+			const cached = this.resultsCache.get(cacheKey);
+			if (!cached) {
+				return null;
+			}
+
+			if ((Date.now() - cached.ts) > this.resultsCacheTtlMs) {
+				this.resultsCache.delete(cacheKey);
+				return null;
+			}
+
+			return cached.data;
+		},
+
+		setCachedResults(cacheKey, data) {
+			if (!data || typeof data !== 'object') {
+				return;
+			}
+
+			if (this.resultsCache.size > 24) {
+				const firstKey = this.resultsCache.keys().next().value;
+				if (firstKey) {
+					this.resultsCache.delete(firstKey);
+				}
+			}
+
+			this.resultsCache.set(cacheKey, {
+				ts: Date.now(),
+				data,
+			});
 		},
 
 		loadResults() {
@@ -318,16 +382,41 @@
 				delete params.longitude;
 			}
 
+			const cacheKey = this.buildResultsCacheKey(params);
+			const cached = this.getCachedResults(cacheKey);
+			if (cached) {
+				this.renderResults(cached);
+				return;
+			}
+
+			if (this.resultsAbortController) {
+				this.resultsAbortController.abort();
+			}
+
+			this.resultsAbortController = new AbortController();
+
 			fetch(`${window.location.origin}/wp-json/af/v1/accommodations/search`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(params),
+				signal: this.resultsAbortController.signal,
 			})
 				.then(response => response.json())
-				.then(data => this.renderResults(data))
-				.catch(error => console.error('Error loading results:', error));
+				.then(data => {
+					this.setCachedResults(cacheKey, data);
+					this.renderResults(data);
+				})
+				.catch(error => {
+					if (error && error.name === 'AbortError') {
+						return;
+					}
+					console.error('Error loading results:', error);
+				})
+				.finally(() => {
+					this.resultsAbortController = null;
+				});
 		},
 
 		getSearchLocation() {

@@ -10,6 +10,7 @@
 		autocompleteService: null,
 		placesService: null,
 		currentSuggestions: [],
+		googleLoadPromise: null,
 
 		init() {
 			this.cacheElements();
@@ -24,9 +25,20 @@
 		lazyInitGooglePlaces() {
 			if (this.autocompleteService) return;
 
+			if (window.google && window.google.maps && window.google.maps.places) {
+				this.autocompleteService = new google.maps.places.AutocompleteService();
+				this.placesService = new google.maps.places.PlacesService(document.createElement('div'));
+				return;
+			}
+
 			const apiKey = document.body.dataset.googlePlacesKey || null;
 			if (apiKey) {
-				this.initGooglePlaces(apiKey);
+				this.initGooglePlaces(apiKey).then(() => {
+					if (window.google && window.google.maps && window.google.maps.places) {
+						this.autocompleteService = new google.maps.places.AutocompleteService();
+						this.placesService = new google.maps.places.PlacesService(document.createElement('div'));
+					}
+				});
 			}
 		},
 
@@ -47,19 +59,42 @@
 		initGooglePlaces(apiKey) {
 			this.apiKey = apiKey;
 
-			const script = document.createElement('script');
-			script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-			script.async = true;
-			script.defer = true;
+			if (window.__afGooglePlacesReadyPromise) {
+				this.googleLoadPromise = window.__afGooglePlacesReadyPromise;
+				return this.googleLoadPromise;
+			}
 
-			script.onload = () => {
-				this.autocompleteService = new google.maps.places.AutocompleteService();
-				this.placesService = new google.maps.places.PlacesService(
-					document.createElement('div')
-				);
-			};
+			if (window.google && window.google.maps && window.google.maps.places) {
+				window.__afGooglePlacesReadyPromise = Promise.resolve();
+				this.googleLoadPromise = window.__afGooglePlacesReadyPromise;
+				return this.googleLoadPromise;
+			}
 
-			document.head.appendChild(script);
+			const existingScript = document.querySelector('script[data-af-google-places="1"]');
+			if (existingScript) {
+				window.__afGooglePlacesReadyPromise = new Promise((resolve, reject) => {
+					existingScript.addEventListener('load', () => resolve(), { once: true });
+					existingScript.addEventListener('error', (err) => reject(err), { once: true });
+				});
+				this.googleLoadPromise = window.__afGooglePlacesReadyPromise;
+				return this.googleLoadPromise;
+			}
+
+			window.__afGooglePlacesReadyPromise = new Promise((resolve, reject) => {
+				const script = document.createElement('script');
+				script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+				script.async = true;
+				script.defer = true;
+				script.setAttribute('data-af-google-places', '1');
+
+				script.onload = () => resolve();
+				script.onerror = (err) => reject(err);
+
+				document.head.appendChild(script);
+			});
+
+			this.googleLoadPromise = window.__afGooglePlacesReadyPromise;
+			return this.googleLoadPromise;
 		},
 
 		onSearchInput(e) {

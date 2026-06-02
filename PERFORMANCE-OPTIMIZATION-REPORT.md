@@ -269,3 +269,149 @@ Se corrigieron tres focos de alto impacto para moviles:
 Adicionalmente, se saco logica inline del layout global para volverla cacheable y menos costosa en ejecucion.
 
 El resultado esperado es una mejora sensible en uso de red, estabilidad del render y suavidad de navegacion, especialmente en dispositivos de gama baja y media.
+
+---
+
+# Fase 2: rendimiento en laptop y PC
+
+## Hallazgos desktop
+
+### 1. Filtros POI lanzaban peticion completa de alojamientos
+
+Problema:
+
+- En resultados de busqueda, activar/desactivar POIs (`transport`, `parks`, `shops`, `health`) disparaba `loadResults()`.
+- Esa accion no necesita refrescar listado de alojamientos; solo requiere redibujar marcadores POI.
+
+Impacto estimado:
+
+- Laptop gama media: alto
+- PC oficina: medio-alto
+- PC alta gama: medio
+
+### 2. Cambios de filtros sin debounce ni cancelacion fuerte
+
+Problema:
+
+- Cambios rapidos de filtros podian acumular fetches casi consecutivos.
+- Aunque el endpoint responde, el usuario percibe jitter en lista/mapa por resultados que compiten entre si.
+
+Impacto estimado:
+
+- Laptop gama media: medio-alto
+- PC oficina: medio
+- PC alta gama: bajo-medio
+
+### 3. Carga duplicada potencial del SDK de Google Places
+
+Problema:
+
+- `search-bar.js` y `hero-search.js` podian inyectar el SDK de Places por separado.
+- En desktop, donde se usa mas interaccion de formularios, esto genera sobrecosto de red/parseo.
+
+Impacto estimado:
+
+- Laptop gama media: medio
+- PC oficina: medio
+- PC alta gama: bajo
+
+### 4. Drag del carrusel con repintado por cada `mousemove`
+
+Problema:
+
+- El carrusel de home actualizaba transform en cada evento de mouse.
+- Sin `requestAnimationFrame`, el thread de render puede saturarse en equipos modestos.
+
+Impacto estimado:
+
+- Laptop gama media: medio
+- PC oficina: medio
+- PC alta gama: bajo
+
+## Correcciones implementadas en desktop
+
+### A. Eliminacion de peticiones innecesarias al cambiar POI
+
+Archivo:
+
+- `wordpress/wp-content/themes/twentytwentyfive-child/assets/js/search-results-interactive.js`
+
+Cambios:
+
+- `onPoiFilterChange()` ya no llama `loadResults()`.
+- Ahora solo actualiza settings POI, limpia marcadores y vuelve a cargar POIs.
+
+Impacto:
+
+- Reduccion alta de llamadas al endpoint principal durante uso intensivo del mapa en desktop.
+
+### B. Debounce + abort + cache corta para resultados
+
+Archivo:
+
+- `wordpress/wp-content/themes/twentytwentyfive-child/assets/js/search-results-interactive.js`
+
+Cambios:
+
+- Se agrego `scheduleResultsLoad()` con debounce.
+- Se agrego `AbortController` para cancelar solicitudes previas en vuelo.
+- Se agrego cache en memoria (TTL corto) por combinacion de filtros para evitar solicitudes repetidas inmediatas.
+
+Impacto:
+
+- Menos rafagas de red y menos re-render conflictivo en lista/mapa.
+- Mejora de fluidez percibida en laptops.
+
+### C. Carga compartida y perezosa de Google Places
+
+Archivos:
+
+- `wordpress/wp-content/themes/twentytwentyfive-child/assets/js/search-bar.js`
+- `wordpress/wp-content/themes/twentytwentyfive-child/assets/js/hero-search.js`
+
+Cambios:
+
+- Se unifico la promesa global `window.__afGooglePlacesReadyPromise`.
+- Se reutiliza un unico script del SDK (`data-af-google-places="1"`).
+- `hero-search` paso de carga temprana a inicializacion bajo demanda al escribir.
+
+Impacto:
+
+- Menor costo de red/parseo en sesiones desktop y mejor tiempo de interactividad inicial.
+
+### D. Reduccion de carga de CPU en carrusel desktop
+
+Archivo:
+
+- `wordpress/wp-content/themes/twentytwentyfive-child/assets/js/home.js`
+
+Cambios:
+
+- Actualizacion de drag con `requestAnimationFrame`.
+- Recalculo de dimensiones en `resize` amortiguado con `requestAnimationFrame`.
+
+Impacto:
+
+- Menor jank en arrastre y redimensionado.
+- Mejor estabilidad visual en equipos intermedios.
+
+## Nivel de impacto global (desktop)
+
+- Red/API: alto
+- CPU/UI thread: medio-alto
+- Estabilidad de experiencia: alto
+
+## Validacion de esta fase
+
+- Verificacion de sintaxis con `node --check` en:
+	- `search-results-interactive.js`
+	- `home.js`
+	- `search-bar.js`
+	- `hero-search.js`
+- Revision de errores del editor sobre archivos modificados: sin errores.
+
+## Proximo paso recomendado para desktop
+
+1. Medir Lighthouse Desktop + Performance panel de Chrome en home, search-results y propiedades.
+2. Convertir Google Fonts a self-host y limitar pesos cargados.
+3. Cachear/normalizar consultas de geocoding y Overpass con TTL por viewport.
