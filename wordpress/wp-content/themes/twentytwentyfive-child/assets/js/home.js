@@ -21,6 +21,8 @@
   var deltaX = 0;
   var isDragging = false;
   var isHorizontal = null;
+  var dragRafId = null;
+  var resizeRafId = null;
 
   function calculateDimensions() {
     var gap = parseFloat(getComputedStyle(track).gap) || 20;
@@ -49,6 +51,14 @@
       track.style.transition = 'none';
     }
     track.style.transform = 'translateX(' + (-(currentIndex * cardWidth) + deltaX) + 'px)';
+  }
+
+  function scheduleDragTransform() {
+    if (dragRafId) return;
+    dragRafId = window.requestAnimationFrame(function() {
+      dragRafId = null;
+      track.style.transform = 'translateX(' + (-(currentIndex * cardWidth) + deltaX) + 'px)';
+    });
   }
 
   function resetFlippedCards() {
@@ -146,7 +156,7 @@
   document.addEventListener('mousemove', function(e) {
     if (!isDragging || !isHorizontal) return;
     deltaX = e.clientX - startX;
-    track.style.transform = 'translateX(' + (-(currentIndex * cardWidth) + deltaX) + 'px)';
+    scheduleDragTransform();
   });
 
   document.addEventListener('mouseup', function() {
@@ -212,5 +222,11 @@
 
   // --- Init ---
   calculateDimensions();
-  window.addEventListener('resize', calculateDimensions);
+  window.addEventListener('resize', function() {
+    if (resizeRafId) return;
+    resizeRafId = window.requestAnimationFrame(function() {
+      resizeRafId = null;
+      calculateDimensions();
+    });
+  });
 })();
