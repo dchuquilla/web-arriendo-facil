@@ -182,10 +182,7 @@ get_header();
             while ($q->have_posts()) { $q->the_post();
               $id = get_the_ID();
               $thumb_id  = twentytwentyfive_child_get_property_thumbnail_id($id);
-              $img = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'af-card') : '';
-              if (!$img) {
-                $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg';
-              }
+              $img_html = '';
 
               $location_text = get_post_meta( $id, '_af_location_text', true );
               if ( ! $location_text ) {
@@ -204,10 +201,32 @@ get_header();
 
               $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
               $img_alt   = $thumb_alt ? $thumb_alt : get_the_title();
+
+              if ( $thumb_id ) {
+                $img_html = wp_get_attachment_image(
+                  $thumb_id,
+                  'medium_large',
+                  false,
+                  array(
+                    'alt' => $img_alt,
+                    'loading' => 'lazy',
+                    'decoding' => 'async',
+                    'sizes' => '(max-width: 900px) 100vw, (max-width: 1280px) 50vw, 33vw',
+                  )
+                );
+              }
+
+              if ( ! $img_html ) {
+                $img_html = sprintf(
+                  '<img src="%1$s" alt="%2$s" loading="lazy" decoding="async" width="640" height="427">',
+                  esc_url( get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg' ),
+                  esc_attr( $img_alt )
+                );
+              }
         ?>
           <a href="<?php echo esc_url(get_permalink()); ?>" class="property-card" data-animate>
             <div class="property-image">
-              <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($img_alt); ?>" loading="lazy">
+              <?php echo $img_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
               <span class="property-badge"><?php esc_html_e('Verificado', 'twentytwentyfive-child'); ?></span>
             </div>
             <div class="property-info">

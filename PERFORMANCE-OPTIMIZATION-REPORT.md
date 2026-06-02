@@ -415,3 +415,47 @@ Impacto:
 1. Medir Lighthouse Desktop + Performance panel de Chrome en home, search-results y propiedades.
 2. Convertir Google Fonts a self-host y limitar pesos cargados.
 3. Cachear/normalizar consultas de geocoding y Overpass con TTL por viewport.
+
+## Medicion ejecutada (desktop, Lighthouse)
+
+Archivos generados:
+
+- `reports/perf/desktop-home.json`
+- `reports/perf/desktop-propiedades.json`
+- `reports/perf/desktop-search-results.json`
+- `reports/perf/desktop-propiedades-after.json`
+- `reports/perf/desktop-search-results-after.json`
+- `reports/perf/desktop-propiedades-after2.json`
+
+### Baseline inicial
+
+- Home: score 57, FCP 3963 ms, LCP 4492 ms, TBT 104 ms, CLS 0.03, bytes 676314.
+- Propiedades: score 83, FCP 1367 ms, LCP 1387 ms, TBT 0 ms, CLS 0.03, bytes 2653655.
+- Search-results: score 78, FCP 945 ms, LCP 2094 ms, TBT 0 ms, CLS 0.07, bytes 1540685.
+
+### Hallazgo de medicion (causa principal)
+
+- La mayor carga de red en desktop estaba en imagenes de listados, no en JavaScript de bloqueo.
+- En `propiedades` se detectaron recursos de imagen > 600 KB a 900 KB por tarjeta.
+- En `search-results` tambien se detecto sobrepeso por imagen + llamadas externas de mapa/POI.
+
+### Correccion aplicada a partir de la medicion
+
+- API de busqueda cambiada para priorizar tamaños de imagen mas livianos (`af-card`, `medium_large`, `medium`, `large`) en:
+	- `wordpress/wp-content/plugins/arriendo-facil-main/includes/class-accommodation-search-api.php`
+- Render de tarjetas en `propiedades` migrado a imagen responsive con `wp_get_attachment_image(...)` y `sizes` en:
+	- `wordpress/wp-content/themes/twentytwentyfive-child/page-propiedades.php`
+
+### Resultado cuantificado post-cambio
+
+- Search-results (after vs baseline):
+	- bytes: 1540685 -> 1197143 (mejora aproximada: -22.3%).
+	- CLS: 0.07 -> 0.03 (mejora visual de estabilidad).
+
+- Propiedades (after2 vs baseline):
+	- bytes: 2653655 -> 731792 (mejora aproximada: -72.4%).
+
+### Nota de interpretacion
+
+- El score global de Lighthouse tuvo variabilidad fuerte entre corridas por condiciones de entorno/red y tiempo de respuesta del documento.
+- Por eso, para esta fase se tomo como indicador principal el payload total transferido y los cambios estructurales aplicados en codigo.
