@@ -89,6 +89,8 @@ get_header();
             $post_id = get_the_ID();
             $address = (string) get_post_meta($post_id, '_af_address', true);
             $monthly_rent = floatval(get_post_meta($post_id, '_af_monthly_rent', true));
+            $monthly_rent_raw = (string) get_post_meta($post_id, '_af_monthly_rent', true);
+            $status_raw = (string) get_post_meta($post_id, '_af_status', true);
             $amenities = get_post_meta($post_id, '_af_amenities', true);
             if (!is_array($amenities)) {
               $amenities = [];
@@ -157,10 +159,70 @@ get_header();
                   <?php
                     $content = get_the_content();
                     $content = preg_replace('/<!-- wp:gallery.*?<!-- \/wp:gallery -->/s', '', $content);
+                    $content = preg_replace(
+                      '/<section[^>]*class=["\'][^"\']*af-accommodation-details[^"\']*["\'][^>]*>.*?<\/section>/is',
+                      '',
+                      (string) $content
+                    );
                     echo apply_filters('the_content', $content);
                   ?>
                 </div>
               </div>
+
+              <?php
+                $status_key = sanitize_key($status_raw);
+                $status_labels = [
+                  'available' => __('Disponible', 'twentytwentyfive-child'),
+                  'reserved' => __('Reservado', 'twentytwentyfive-child'),
+                  'rented' => __('Arrendado', 'twentytwentyfive-child'),
+                  'private' => __('Privado', 'twentytwentyfive-child'),
+                  'inactive' => __('Inactivo', 'twentytwentyfive-child'),
+                  'maintenance' => __('En mantenimiento', 'twentytwentyfive-child'),
+                  'draft' => __('Borrador', 'twentytwentyfive-child'),
+                  'pending' => __('Pendiente', 'twentytwentyfive-child'),
+                ];
+                $display_status = $status_labels[$status_key] ?? $status_raw;
+
+                $details = [];
+                if ('' !== trim($address)) {
+                  $details[] = '<li><strong>' . esc_html__('Direccion:', 'twentytwentyfive-child') . '</strong> ' . esc_html($address) . '</li>';
+                }
+                if ($bedrooms > 0) {
+                  $details[] = '<li><strong>' . esc_html__('Dormitorios:', 'twentytwentyfive-child') . '</strong> ' . esc_html((string) $bedrooms) . '</li>';
+                }
+                if ($bathrooms > 0) {
+                  $details[] = '<li><strong>' . esc_html__('Banos:', 'twentytwentyfive-child') . '</strong> ' . esc_html((string) $bathrooms) . '</li>';
+                }
+
+                $monthly_rent_trimmed = trim($monthly_rent_raw);
+                $monthly_rent_normalized = str_replace(',', '.', (string) preg_replace('/[^0-9,.-]/', '', $monthly_rent_trimmed));
+                $show_monthly_rent = '' !== $monthly_rent_trimmed;
+
+                if ('' !== $monthly_rent_normalized && is_numeric($monthly_rent_normalized) && (float) $monthly_rent_normalized <= 0) {
+                  $show_monthly_rent = false;
+                }
+
+                if ($show_monthly_rent) {
+                  $monthly_rent_display = $monthly_rent_trimmed;
+                  if ('' !== $monthly_rent_normalized && is_numeric($monthly_rent_normalized)) {
+                    $monthly_rent_display = '$' . number_format_i18n((float) $monthly_rent_normalized, 0);
+                  }
+                  $details[] = '<li><strong>' . esc_html__('Renta mensual:', 'twentytwentyfive-child') . '</strong> ' . esc_html($monthly_rent_display) . '</li>';
+                }
+
+                if ('' !== trim($status_raw)) {
+                  $details[] = '<li><strong>' . esc_html__('Estado:', 'twentytwentyfive-child') . '</strong> ' . esc_html($display_status) . '</li>';
+                }
+              ?>
+
+              <?php if (!empty($details)) : ?>
+                <div class="property-section" style="margin-top: var(--space-6);">
+                  <h3 class="h3"><?php esc_html_e('Informacion del alojamiento', 'twentytwentyfive-child'); ?></h3>
+                  <ul class="property-info-list">
+                    <?php echo implode('', $details); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                  </ul>
+                </div>
+              <?php endif; ?>
 
               <!-- Stats Bar -->
               <div class="property-stats-bar">
