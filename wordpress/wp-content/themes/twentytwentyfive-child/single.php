@@ -164,7 +164,13 @@ get_header();
                       '',
                       (string) $content
                     );
-                    echo apply_filters('the_content', $content);
+                    $content = (string) apply_filters('the_content', $content);
+                    $content = preg_replace(
+                      '/<section[^>]*class=["\'][^"\']*af-accommodation-details[^"\']*["\'][^>]*>.*?<\/section>/is',
+                      '',
+                      $content
+                    );
+                    echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                   ?>
                 </div>
               </div>
