@@ -233,22 +233,6 @@ function twentytwentyfive_child_enqueue_assets() {
 }
 add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
 
-function twentytwentyfive_child_add_sri_attributes($html, $handle) {
-  $sri_hashes = array(
-    'leaflet-css'    => 'sha384-rSz1THQyBEaEVf3g/FrCME8L4Ij9Xc8d2ZlIhiSl8GcZVVIK9f6f6f6f6f6f6f6f6f',
-    'leaflet-js'     => 'sha384-XbtIKhZhxMuPsxS+Hl3ykV5g1qhPfqKB1LLdCuL4Hkq5PbGi5f5f5f5f5f5f5f5f5f',
-    'leaflet-markercluster-js' => 'sha384-gTI3VL5OSJL1J5Jh9VgsPO3VuEz5pI6nXl6i5SnhN5rU5f5f5f5f5f5f5f5f5f5f',
-  );
-
-  if (isset($sri_hashes[$handle])) {
-    $html = str_replace('src=', 'integrity="' . $sri_hashes[$handle] . '" crossorigin="anonymous" src=', $html);
-  }
-
-  return $html;
-}
-add_filter('script_loader_tag', 'twentytwentyfive_child_add_sri_attributes', 10, 2);
-add_filter('style_loader_tag', 'twentytwentyfive_child_add_sri_attributes', 10, 2);
-
 /**
  * Adds defer/async attributes to non-critical scripts.
  */
