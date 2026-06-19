@@ -51,18 +51,24 @@ get_header();
 
             <div class="form-group">
               <label for="property-type"><?php esc_html_e('Tipo de propiedad', 'twentytwentyfive-child'); ?></label>
+              <?php
+                $property_type = isset($_GET['property_type'])
+                  ? sanitize_text_field(wp_unslash($_GET['property_type']))
+                  : '';
+                $property_type = twentytwentyfive_child_validate_property_type($property_type);
+              ?>
               <select id="property-type" name="property_type">
                 <option value=""><?php esc_html_e('Todos', 'twentytwentyfive-child'); ?></option>
-                <option value="apartment" <?php selected($_GET['property_type'] ?? '', 'apartment'); ?>>
+                <option value="apartment" <?php selected($property_type, 'apartment'); ?>>
                   <?php esc_html_e('Apartamento', 'twentytwentyfive-child'); ?>
                 </option>
-                <option value="house" <?php selected($_GET['property_type'] ?? '', 'house'); ?>>
+                <option value="house" <?php selected($property_type, 'house'); ?>>
                   <?php esc_html_e('Casa', 'twentytwentyfive-child'); ?>
                 </option>
-                <option value="room" <?php selected($_GET['property_type'] ?? '', 'room'); ?>>
+                <option value="room" <?php selected($property_type, 'room'); ?>>
                   <?php esc_html_e('Habitación', 'twentytwentyfive-child'); ?>
                 </option>
-                <option value="studio" <?php selected($_GET['property_type'] ?? '', 'studio'); ?>>
+                <option value="studio" <?php selected($property_type, 'studio'); ?>>
                   <?php esc_html_e('Estudio', 'twentytwentyfive-child'); ?>
                 </option>
               </select>

@@ -65,6 +65,19 @@
 					this.currentFilters.longitude = parsedLng;
 				}
 			}
+
+			// Fallback to sessionStorage from search-bar
+			if (!this.currentFilters.latitude || !this.currentFilters.longitude) {
+				const stored = sessionStorage.getItem('searchLocation');
+				if (stored && Date.now() - JSON.parse(stored).timestamp < 600000) {
+					const data = JSON.parse(stored);
+					this.currentFilters.latitude = data.latitude;
+					this.currentFilters.longitude = data.longitude;
+					if (!this.currentFilters.location) {
+						this.currentFilters.location = data.location;
+					}
+				}
+			}
 		},
 
 		cacheElements() {

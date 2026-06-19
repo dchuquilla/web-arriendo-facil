@@ -178,20 +178,28 @@
 			}
 
 			this.currentSuggestions = suggestions;
+			const fragment = document.createDocumentFragment();
 
-			const html = suggestions.map((sug, idx) => `
-				<li data-index="${idx}">
-					<strong>${this.escapeHtml(sug.label)}</strong>
-					<small>${this.escapeHtml(sug.description)}</small>
-				</li>
-			`).join('');
+			suggestions.forEach((sug, idx) => {
+				const li = document.createElement('li');
+				li.dataset.index = idx;
 
-			this.elements.suggestionsList.innerHTML = html;
-			this.elements.suggestionsList.style.display = 'block';
+				const strong = document.createElement('strong');
+				strong.textContent = sug.label;
 
-			document.querySelectorAll('#search-suggestions li').forEach((li, idx) => {
+				const small = document.createElement('small');
+				small.textContent = sug.description;
+
+				li.appendChild(strong);
+				li.appendChild(small);
 				li.addEventListener('click', () => this.selectSuggestion(idx));
+
+				fragment.appendChild(li);
 			});
+
+			this.elements.suggestionsList.innerHTML = '';
+			this.elements.suggestionsList.appendChild(fragment);
+			this.elements.suggestionsList.style.display = 'block';
 		},
 
 		clearSuggestions() {
@@ -227,11 +235,12 @@
 				},
 				(place, status) => {
 					if (status === google.maps.places.PlacesServiceStatus.OK && place.geometry) {
-						window.searchLocation = {
+						sessionStorage.setItem('searchLocation', JSON.stringify({
 							location: this.elements.searchInput.value,
 							latitude: place.geometry.location.lat(),
 							longitude: place.geometry.location.lng(),
-						};
+							timestamp: Date.now(),
+						}));
 					}
 					this.performSearch();
 				}
@@ -254,11 +263,6 @@
 		},
 
 
-		escapeHtml(text) {
-			const div = document.createElement('div');
-			div.textContent = text;
-			return div.innerHTML;
-		},
 	};
 
 	if (document.readyState === 'loading') {

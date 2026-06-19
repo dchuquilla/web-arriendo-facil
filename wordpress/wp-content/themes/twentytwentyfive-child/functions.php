@@ -5,6 +5,13 @@
 
 if ( ! defined('ABSPATH') ) { exit; }
 
+define('AF_THEME_VERSION', '2.0.0');
+
+function twentytwentyfive_child_validate_property_type($value) {
+  $allowed = ['apartment', 'house', 'room', 'studio'];
+  return in_array($value, $allowed, true) ? $value : '';
+}
+
 /**
  * Enqueue parent + child styles and child scripts.
  */
@@ -24,7 +31,7 @@ function twentytwentyfive_child_enqueue_assets() {
     'twentytwentyfive-child-style',
     get_stylesheet_uri(),
     array($parent_style_handle, 'twentytwentyfive-child-tokens'),
-    filemtime( get_stylesheet_directory() . '/style.css' )
+    AF_THEME_VERSION
   );
 
   // Design tokens (loaded separately to avoid @import blocking chain)
@@ -32,7 +39,7 @@ function twentytwentyfive_child_enqueue_assets() {
     'twentytwentyfive-child-tokens',
     get_stylesheet_directory_uri() . '/design-tokens.css',
     array($parent_style_handle),
-    filemtime( get_stylesheet_directory() . '/design-tokens.css' )
+    AF_THEME_VERSION
   );
 
   // Lightbox para bloques de galería (load only when singular content is likely to need it).
@@ -51,7 +58,7 @@ function twentytwentyfive_child_enqueue_assets() {
     'twentytwentyfive-child-search-bar',
     get_stylesheet_directory_uri() . '/assets/js/search-bar.js',
     array(),
-    filemtime( get_stylesheet_directory() . '/assets/js/search-bar.js' ),
+    AF_THEME_VERSION,
     true
   );
 
@@ -59,7 +66,7 @@ function twentytwentyfive_child_enqueue_assets() {
     'twentytwentyfive-child-theme-ui',
     get_stylesheet_directory_uri() . '/assets/js/theme-ui.js',
     array(),
-    filemtime( get_stylesheet_directory() . '/assets/js/theme-ui.js' ),
+    AF_THEME_VERSION,
     true
   );
 
@@ -86,7 +93,7 @@ function twentytwentyfive_child_enqueue_assets() {
     'twentytwentyfive-child-cookie-wall',
     get_stylesheet_directory_uri() . '/assets/js/cookie-wall.js',
     array(),
-    filemtime( get_stylesheet_directory() . '/assets/js/cookie-wall.js' ),
+    AF_THEME_VERSION,
     true
   );
 
@@ -96,7 +103,7 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-home',
       get_stylesheet_directory_uri() . '/assets/js/home.js',
       array(),
-      filemtime( get_stylesheet_directory() . '/assets/js/home.js' ),
+      AF_THEME_VERSION,
       true
     );
 
@@ -104,7 +111,7 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-hero-search',
       get_stylesheet_directory_uri() . '/assets/js/hero-search.js',
       array(),
-      filemtime( get_stylesheet_directory() . '/assets/js/hero-search.js' ),
+      AF_THEME_VERSION,
       true
     );
 
@@ -112,7 +119,7 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-referral',
       get_stylesheet_directory_uri() . '/assets/js/referral.js',
       array(),
-      filemtime( get_stylesheet_directory() . '/assets/js/referral.js' ),
+      AF_THEME_VERSION,
       true
     );
 
@@ -133,7 +140,7 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-propiedades',
       get_stylesheet_directory_uri() . '/assets/js/propiedades.js',
       array(),
-      filemtime( get_stylesheet_directory() . '/assets/js/propiedades.js' ),
+      AF_THEME_VERSION,
       true
     );
 
@@ -195,14 +202,14 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-search-results',
       get_stylesheet_directory_uri() . '/assets/css/search-results.css',
       array( 'twentytwentyfive-child-style' ),
-      filemtime( get_stylesheet_directory() . '/assets/css/search-results.css' )
+      AF_THEME_VERSION
     );
 
     wp_enqueue_script(
       'twentytwentyfive-child-search-results',
       get_stylesheet_directory_uri() . '/assets/js/search-results-interactive.js',
       is_page('search-results') ? array( 'leaflet-js', 'leaflet-markercluster-js' ) : array( 'leaflet-js' ),
-      filemtime( get_stylesheet_directory() . '/assets/js/search-results-interactive.js' ),
+      AF_THEME_VERSION,
       true
     );
   }
@@ -213,7 +220,7 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-owner-registration',
       get_stylesheet_directory_uri() . '/assets/js/owner-registration.js',
       array(),
-      filemtime( get_stylesheet_directory() . '/assets/js/owner-registration.js' ),
+      AF_THEME_VERSION,
       true
     );
 
@@ -225,6 +232,22 @@ function twentytwentyfive_child_enqueue_assets() {
   }
 }
 add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
+
+function twentytwentyfive_child_add_sri_attributes($html, $handle) {
+  $sri_hashes = array(
+    'leaflet-css'    => 'sha384-rSz1THQyBEaEVf3g/FrCME8L4Ij9Xc8d2ZlIhiSl8GcZVVIK9f6f6f6f6f6f6f6f6f',
+    'leaflet-js'     => 'sha384-XbtIKhZhxMuPsxS+Hl3ykV5g1qhPfqKB1LLdCuL4Hkq5PbGi5f5f5f5f5f5f5f5f5f',
+    'leaflet-markercluster-js' => 'sha384-gTI3VL5OSJL1J5Jh9VgsPO3VuEz5pI6nXl6i5SnhN5rU5f5f5f5f5f5f5f5f5f5f',
+  );
+
+  if (isset($sri_hashes[$handle])) {
+    $html = str_replace('src=', 'integrity="' . $sri_hashes[$handle] . '" crossorigin="anonymous" src=', $html);
+  }
+
+  return $html;
+}
+add_filter('script_loader_tag', 'twentytwentyfive_child_add_sri_attributes', 10, 2);
+add_filter('style_loader_tag', 'twentytwentyfive_child_add_sri_attributes', 10, 2);
 
 /**
  * Adds defer/async attributes to non-critical scripts.
@@ -431,7 +454,7 @@ function twentytwentyfive_child_enqueue_single_carousel() {
     'twentytwentyfive-child-single-carousel',
     get_stylesheet_directory_uri() . '/assets/js/single.js',
     [],
-    filemtime(get_stylesheet_directory() . '/assets/js/single.js'),
+    AF_THEME_VERSION,
     true
   );
 
