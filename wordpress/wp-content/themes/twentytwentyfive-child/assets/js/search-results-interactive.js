@@ -477,8 +477,8 @@
 		updateResultsCount(count, total) {
 			this.elements.resultsCount.textContent =
 				count === 0
-					? 'No results found'
-					: `Showing ${count} of ${total} accommodations`;
+					? 'No se encontraron resultados'
+					: `Mostrando ${count} de ${total} inmuebles`;
 		},
 
 		renderResultsList(accommodations, fallbackAccommodations = []) {
@@ -506,7 +506,7 @@
 
 		buildAccommodationCardHtml(acc) {
 			const price = Number.isFinite(Number(acc.price)) ? Number(acc.price).toFixed(0) : '0';
-			const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'View Details';
+			const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'Ver detalles';
 			return `
 				<div class="accommodation-card" data-id="${acc.id}">
 					${acc.image_url ? `<div class="accommodation-image"><img src="${this.escapeHtml(acc.image_url)}" alt="${this.escapeHtml(acc.title)}" loading="lazy" /></div>` : ''}
@@ -550,7 +550,7 @@
 		async loadBackgroundMarkers() {
 			const accommodations = await this.fetchAllAccommodations();
 			accommodations.forEach(acc => {
-				const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'View Details';
+				const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'Ver detalles';
 				const lat = parseFloat(acc.latitude);
 				const lng = parseFloat(acc.longitude);
 				if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
@@ -660,7 +660,7 @@
 			let markerCount = 0;
 
 			accommodations.forEach(acc => {
-				const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'View Details';
+				const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'Ver detalles';
 				const lat = parseFloat(acc.latitude);
 				const lng = parseFloat(acc.longitude);
 				if (Number.isFinite(lat) && Number.isFinite(lng)) {
