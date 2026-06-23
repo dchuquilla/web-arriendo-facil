@@ -812,9 +812,20 @@ hr.sep {
   width: 100%;
 }
 
-/* CTA Button in nav (Buscar propiedades) */
-.nav .btn--primary {
+/* CTA buttons group in nav */
+.nav-ctas {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   margin-left: var(--space-4);
+  flex-shrink: 0;
+}
+
+/* Owner registration button — outline variant, slightly compact */
+.nav-btn-owner {
+  font-size: var(--font-size-sm);
+  padding: var(--button-padding-sm);
+  white-space: nowrap;
 }
 
 /* WordPress menu (main) - no submenus in v1 */
@@ -872,6 +883,12 @@ hr.sep {
 @media (min-width: 900px) and (max-width: 1099px) {
   .search-bar-wrapper {
     display: none;
+  }
+
+  /* Tighter nav at intermediate widths: compact both nav buttons */
+  .nav-ctas .btn {
+    font-size: var(--font-size-sm);
+    padding: var(--button-padding-sm);
   }
 }
 
@@ -933,11 +950,18 @@ hr.sep {
     display: none;
   }
 
-  .nav .btn--primary {
-    margin-left: 0;
+  .nav-ctas {
+    flex-direction: column;
     width: 100%;
-    text-align: center;
+    gap: var(--space-3);
+    margin-left: 0;
+  }
+
+  .nav-ctas .btn {
+    width: 100%;
     justify-content: center;
+    text-align: center;
+    margin-left: 0;
   }
 }
 
