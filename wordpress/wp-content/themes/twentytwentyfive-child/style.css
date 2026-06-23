@@ -42,6 +42,112 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Global loading screen */
+body.af-is-loading {
+  cursor: progress;
+}
+
+.af-loading-screen {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 10020;
+  transition: opacity 0.16s ease, visibility 0.16s ease;
+  contain: layout style paint;
+}
+
+.af-loading-screen.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.af-loading-screen__card {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  min-width: 184px;
+  background: #ffffff;
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5) var(--space-6);
+  box-shadow: var(--shadow-lg);
+}
+
+.af-loading-screen__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent-primary);
+  background: linear-gradient(180deg, #f3faef 0%, #e9f7df 100%);
+}
+
+.af-loading-screen__icon svg {
+  width: 34px;
+  height: 34px;
+  animation: af-loading-house-bob 0.9s ease-in-out infinite;
+  will-change: transform;
+}
+
+.af-loading-screen__text {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+@keyframes af-loading-house-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 600px) {
+  .af-loading-screen__card {
+    min-width: 164px;
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .af-loading-screen__icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .af-loading-screen__icon svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .af-loading-screen {
+    transition: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .af-loading-screen__icon svg {
+    animation: none;
+  }
+}
+
 a {
   color: var(--color-text-link);
   text-decoration: none;
