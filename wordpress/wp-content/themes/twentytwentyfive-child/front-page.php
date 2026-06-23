@@ -2,45 +2,130 @@
 if ( ! defined('ABSPATH') ) { exit; }
 get_header();
 
-$q = new WP_Query([
-  'post_type'      => 'post',
-  'posts_per_page' => 3,
-  'post_status'    => 'publish',
-  'category_name'  => 'propiedades-destacadas',
-  'orderby'        => 'date',
-  'order'          => 'DESC',
+$featured_posts = [];
+$featured_term_ids = [];
+
+$featured_terms = get_terms([
+  'taxonomy'   => 'post_tag',
+  'slug'       => [ 'destacada', 'featured' ],
+  'hide_empty' => false,
+  'fields'     => 'ids',
 ]);
 
-$featured_posts = [];
-if ($q->have_posts()) {
-  while ($q->have_posts()) { $q->the_post();
-    $id = get_the_ID();
+if ( ! is_wp_error( $featured_terms ) && ! empty( $featured_terms ) ) {
+  $featured_term_ids = array_map( 'absint', $featured_terms );
+}
 
-    $thumb_id = get_post_thumbnail_id($id);
-    $img = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'af-card') : '';
-    if (!$img) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
+$featured_ids = [];
 
-    $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
-    $img_alt   = $thumb_alt ? $thumb_alt : get_the_title();
+if ( ! empty( $featured_term_ids ) ) {
+  $tag_ids = get_posts([
+    'post_type'      => 'accommodation',
+    'post_status'    => 'publish',
+    'posts_per_page' => 12,
+    'fields'         => 'ids',
+    'orderby'        => 'date',
+    'order'          => 'DESC',
+    'tax_query'      => [
+      [
+        'taxonomy' => 'post_tag',
+        'field'    => 'term_id',
+        'terms'    => $featured_term_ids,
+      ],
+    ],
+  ]);
 
-    $tags = get_the_tags($id);
+  $meta_ids = get_posts([
+    'post_type'      => 'accommodation',
+    'post_status'    => 'publish',
+    'posts_per_page' => 12,
+    'fields'         => 'ids',
+    'orderby'        => 'date',
+    'order'          => 'DESC',
+    'meta_query'     => [
+      [
+        'key'     => '_af_is_featured',
+        'value'   => '1',
+        'compare' => '=',
+      ],
+    ],
+  ]);
+
+  $featured_ids = array_values(
+    array_unique(
+      array_map(
+        'absint',
+        array_merge( (array) $tag_ids, (array) $meta_ids )
+      )
+    )
+  );
+}
+
+$featured_query_args = [
+  'post_type'           => 'accommodation',
+  'posts_per_page'      => 12,
+  'post_status'         => 'publish',
+  'ignore_sticky_posts' => true,
+  'orderby'             => 'date',
+  'order'               => 'DESC',
+];
+
+if ( ! empty( $featured_ids ) ) {
+  $featured_query_args['post__in'] = array_slice( $featured_ids, 0, 12 );
+}
+
+$featured_posts_query = get_posts( $featured_query_args );
+
+if ( ! empty( $featured_posts_query ) ) {
+  foreach ( $featured_posts_query as $featured_post ) {
+    $id = (int) $featured_post->ID;
+
+    $thumb_id = get_post_thumbnail_id( $id );
+    $img = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'af-card' ) : '';
+    if ( ! $img ) { $img = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg'; }
+
+    $thumb_alt = $thumb_id ? get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) : '';
+    $img_alt   = $thumb_alt ? $thumb_alt : get_the_title( $id );
+
+    $tags = get_the_tags( $id );
     $tag_names = [];
-    if ($tags && !is_wp_error($tags)) {
-      foreach ($tags as $t) { $tag_names[] = $t->name; }
+    if ( $tags && ! is_wp_error( $tags ) ) {
+      foreach ( $tags as $tag ) { $tag_names[] = $tag->name; }
+    }
+
+    $property_type = (string) get_post_meta( $id, '_af_property_type', true );
+    $status = (string) get_post_meta( $id, '_af_status', true );
+    $city = (string) get_post_meta( $id, '_af_city', true );
+    $location_text = (string) get_post_meta( $id, '_af_location_text', true );
+    $address = (string) get_post_meta( $id, '_af_address', true );
+    $meta_excerpt = trim( implode( ' • ', array_filter( [ $address, $city, $location_text ] ) ) );
+    $raw_excerpt = (string) get_post_field( 'post_excerpt', $id );
+    if ( '' === trim( $raw_excerpt ) ) {
+      $raw_excerpt = (string) get_post_field( 'post_content', $id );
+    }
+    $excerpt = wp_trim_words( wp_strip_all_tags( $raw_excerpt ), 18, '…' );
+    if ( '' === trim( $excerpt ) ) {
+      $excerpt = $meta_excerpt;
+    }
+
+    if ( $property_type ) {
+      $tag_names[] = ucfirst( str_replace( '_', ' ', $property_type ) );
+    }
+    if ( $status ) {
+      $tag_names[] = ucfirst( str_replace( '_', ' ', $status ) );
     }
 
     $featured_posts[] = [
       'id'      => $id,
-      'title'   => get_the_title(),
-      'link'    => get_permalink(),
+      'title'   => get_the_title( $id ),
+      'link'    => get_permalink( $id ),
       'thumb_id'=> $thumb_id,
       'image'   => $img,
       'alt'     => $img_alt,
-      'excerpt' => get_the_excerpt(),
-      'tags'    => $tag_names,
+      'excerpt' => $excerpt,
+      'tags'    => array_values( array_unique( array_filter( $tag_names ) ) ),
     ];
   }
-  wp_reset_postdata();
 }
 
 $q_residencias = new WP_Query([
@@ -153,20 +238,20 @@ $total_accommodations = $accommodation_count->publish ?? 0;
   <!-- ========== PROPIEDADES DESTACADAS ========== -->
   <section class="section section--soft" id="arrendamiento">
     <div class="container">
-      <?php if ($featured_posts) : ?>
-        <div class="text-center" data-animate>
-          <span class="badge"><?php esc_html_e('Propiedades destacadas', 'twentytwentyfive-child'); ?></span>
-          <h2 class="h2"><?php esc_html_e('Hospedajes verificados y listos', 'twentytwentyfive-child'); ?></h2>
-          <p class="p mx-auto"><?php esc_html_e('Descubre propiedades de calidad seleccionadas para ti. Ubicación, comodidad y confianza garantizadas.', 'twentytwentyfive-child'); ?></p>
-        </div>
+      <div class="text-center" data-animate>
+        <span class="badge"><?php esc_html_e('Propiedades destacadas', 'twentytwentyfive-child'); ?></span>
+        <h2 class="h2"><?php esc_html_e('Hospedajes verificados y listos', 'twentytwentyfive-child'); ?></h2>
+        <p class="p mx-auto"><?php esc_html_e('Descubre propiedades de calidad seleccionadas para ti. Ubicación, comodidad y confianza garantizadas.', 'twentytwentyfive-child'); ?></p>
+      </div>
 
+      <?php if ( ! empty( $featured_posts ) ) : ?>
         <div class="flip-carousel" data-flip-carousel>
           <div class="flip-carousel__track" data-flip-track>
-            <?php foreach ($featured_posts as $i => $post) : ?>
+            <?php foreach ( $featured_posts as $i => $post ) : ?>
               <div class="flip-card" data-flip-card>
                 <div class="flip-card__inner">
                   <div class="flip-card__front">
-                    <?php if (!empty($post['thumb_id'])) : ?>
+                    <?php if ( ! empty( $post['thumb_id'] ) ) : ?>
                       <?php echo wp_get_attachment_image(
                         $post['thumb_id'],
                         'af-card',
@@ -183,15 +268,15 @@ $total_accommodations = $accommodation_count->publish ?? 0;
                       ); ?>
                     <?php else : ?>
                       <img
-                        src="<?php echo esc_url($post['image']); ?>"
-                        alt="<?php echo esc_attr($post['alt']); ?>"
+                        src="<?php echo esc_url( $post['image'] ); ?>"
+                        alt="<?php echo esc_attr( $post['alt'] ); ?>"
                         width="480" height="320"
                         loading="<?php echo $i === 0 ? 'eager' : 'lazy'; ?>"
                         fetchpriority="<?php echo $i === 0 ? 'high' : 'auto'; ?>"
                         decoding="async">
                     <?php endif; ?>
                     <div class="flip-card__overlay">
-                      <h3 class="flip-card__title"><?php echo esc_html($post['title']); ?></h3>
+                      <h3 class="flip-card__title"><?php echo esc_html( $post['title'] ); ?></h3>
                     </div>
                   </div>
                   <div class="flip-card__back">
@@ -199,18 +284,18 @@ $total_accommodations = $accommodation_count->publish ?? 0;
                       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
                     </button>
                     <div class="flip-card__back-content">
-                      <h3><?php echo esc_html($post['title']); ?></h3>
-                      <?php if (!empty($post['excerpt'])) : ?>
-                        <p class="flip-card__excerpt"><?php echo esc_html($post['excerpt']); ?></p>
+                      <h3><?php echo esc_html( $post['title'] ); ?></h3>
+                      <?php if ( ! empty( $post['excerpt'] ) ) : ?>
+                        <p class="flip-card__excerpt"><?php echo esc_html( $post['excerpt'] ); ?></p>
                       <?php endif; ?>
-                      <?php if (!empty($post['tags'])) : ?>
+                      <?php if ( ! empty( $post['tags'] ) ) : ?>
                         <div class="flip-card__badges">
-                          <?php foreach ($post['tags'] as $tag) : ?>
-                            <span class="badge badge--feature"><?php echo esc_html($tag); ?></span>
+                          <?php foreach ( $post['tags'] as $tag ) : ?>
+                            <span class="badge badge--feature"><?php echo esc_html( $tag ); ?></span>
                           <?php endforeach; ?>
                         </div>
                       <?php endif; ?>
-                      <a class="btn btn--primary" href="<?php echo esc_url($post['link']); ?>">
+                      <a class="btn btn--primary" href="<?php echo esc_url( $post['link'] ); ?>">
                         <?php esc_html_e('Ver detalles', 'twentytwentyfive-child'); ?>
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                       </a>
@@ -228,41 +313,32 @@ $total_accommodations = $accommodation_count->publish ?? 0;
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
           </button>
         </div>
+      <?php endif; ?>
 
-        <?php if (!empty($residencias)) : ?>
-          <div class="featured-strip" data-featured-strip>
-            <?php foreach ($residencias as $item) : ?>
-              <a class="featured-item" href="<?php echo esc_url($item['link']); ?>" aria-label="<?php echo esc_attr($item['title']); ?>">
-                <?php if (!empty($item['thumb_id'])) : ?>
-                  <?php echo wp_get_attachment_image(
-                    $item['thumb_id'],
-                    'af-card',
-                    false,
-                    [
-                      'alt' => $item['alt'],
-                      'loading' => 'lazy',
-                      'decoding' => 'async',
-                      'sizes' => '(max-width: 600px) 86vw, (max-width: 900px) 44vw, 320px',
-                      'width' => '480',
-                      'height' => '320',
-                    ]
-                  ); ?>
-                <?php else : ?>
-                  <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>" width="480" height="320" loading="lazy" decoding="async">
-                <?php endif; ?>
-                <div class="fi-title"><?php echo esc_html($item['title']); ?></div>
-              </a>
-            <?php endforeach; ?>
-          </div>
-        <?php endif; ?>
-      <?php else : ?>
-        <div class="showcase showcase--empty" data-home-showcase>
-          <div class="showcase-head">
-            <strong><?php esc_html_e('Propiedad destacada', 'twentytwentyfive-child'); ?></strong>
-          </div>
-          <div class="showcase-empty" role="status">
-            <?php esc_html_e('Aún no hay propiedades destacadas publicadas.', 'twentytwentyfive-child'); ?>
-          </div>
+      <?php if ( ! empty( $residencias ) ) : ?>
+        <div class="featured-strip" data-featured-strip>
+          <?php foreach ( $residencias as $item ) : ?>
+            <a class="featured-item" href="<?php echo esc_url( $item['link'] ); ?>" aria-label="<?php echo esc_attr( $item['title'] ); ?>">
+              <?php if ( ! empty( $item['thumb_id'] ) ) : ?>
+                <?php echo wp_get_attachment_image(
+                  $item['thumb_id'],
+                  'af-card',
+                  false,
+                  [
+                    'alt' => $item['alt'],
+                    'loading' => 'lazy',
+                    'decoding' => 'async',
+                    'sizes' => '(max-width: 600px) 86vw, (max-width: 900px) 44vw, 320px',
+                    'width' => '480',
+                    'height' => '320',
+                  ]
+                ); ?>
+              <?php else : ?>
+                <img src="<?php echo esc_url( $item['image'] ); ?>" alt="<?php echo esc_attr( $item['title'] ); ?>" width="480" height="320" loading="lazy" decoding="async">
+              <?php endif; ?>
+              <div class="fi-title"><?php echo esc_html( $item['title'] ); ?></div>
+            </a>
+          <?php endforeach; ?>
         </div>
       <?php endif; ?>
     </div>
