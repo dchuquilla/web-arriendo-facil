@@ -103,17 +103,6 @@ get_header();
               <p class="property-location">
                 📍 <?php echo $address ? esc_html($address) : esc_html_e('Ubicación no especificada', 'twentytwentyfive-child'); ?>
               </p>
-              <div class="af-reserve-actions">
-                <button
-                  type="button"
-                  class="btn btn--primary"
-                  data-af-reserve-trigger
-                  data-af-accommodation-id="<?php echo esc_attr((string) $post_id); ?>"
-                  data-af-accommodation-title="<?php echo esc_attr(get_the_title()); ?>"
-                >
-                  <?php esc_html_e('Reservar', 'twentytwentyfive-child'); ?>
-                </button>
-              </div>
             </div>
             <div class="property-header-price">
               <span class="price-label"><?php esc_html_e('Precio mensual', 'twentytwentyfive-child'); ?></span>
