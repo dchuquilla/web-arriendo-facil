@@ -230,13 +230,15 @@ get_header();
                 );
               }
         ?>
-          <a href="<?php echo esc_url(get_permalink()); ?>" class="property-card" data-animate>
+          <article class="property-card" data-animate>
             <div class="property-image">
-              <?php echo $img_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+              <a href="<?php echo esc_url(get_permalink()); ?>" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
+                <?php echo $img_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+              </a>
               <span class="property-badge"><?php esc_html_e('Verificado', 'twentytwentyfive-child'); ?></span>
             </div>
             <div class="property-info">
-              <h3 class="property-title"><?php the_title(); ?></h3>
+              <h3 class="property-title"><a href="<?php echo esc_url(get_permalink()); ?>"><?php the_title(); ?></a></h3>
               <p class="property-location">📍 <?php echo esc_html( $location_text ); ?></p>
               <p class="property-description-preview"><?php echo esc_html( $description ); ?></p>
               <div class="property-meta">
@@ -244,12 +246,23 @@ get_header();
                   <span class="price-label"><?php esc_html_e('Desde', 'twentytwentyfive-child'); ?></span>
                   <span class="price-value"><?php echo esc_html( $price_value ); ?><span class="price-period">/mes</span></span>
                 </div>
-                <span class="btn btn--small btn--outline" aria-hidden="true">
-                  <?php esc_html_e('Ver detalles', 'twentytwentyfive-child'); ?>
-                </span>
+                <div class="af-reserve-actions">
+                  <button
+                    type="button"
+                    class="btn btn--small btn--primary"
+                    data-af-reserve-trigger
+                    data-af-accommodation-id="<?php echo esc_attr( (string) $id ); ?>"
+                    data-af-accommodation-title="<?php echo esc_attr( get_the_title() ); ?>"
+                  >
+                    <?php esc_html_e('Reservar', 'twentytwentyfive-child'); ?>
+                  </button>
+                  <a href="<?php echo esc_url(get_permalink()); ?>" class="btn btn--small btn--outline">
+                    <?php esc_html_e('Ver detalles', 'twentytwentyfive-child'); ?>
+                  </a>
+                </div>
               </div>
             </div>
-          </a>
+          </article>
         <?php
             }
             wp_reset_postdata();
