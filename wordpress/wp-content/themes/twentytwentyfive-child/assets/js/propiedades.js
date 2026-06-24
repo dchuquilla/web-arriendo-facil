@@ -158,7 +158,8 @@
   }
 
   function createCard(item) {
-    var a = document.createElement('article');
+    var a = document.createElement('a');
+    a.href = item.url;
     a.className = 'property-card';
 
     var imgSrc = item.image_url || (window.afPropiedades && window.afPropiedades.placeholder) || '';
@@ -167,23 +168,18 @@
 
     a.innerHTML =
       '<div class="property-image">' +
-        '<a href="' + escHtml(item.url) + '" aria-label="' + escHtml(item.title) + '">' +
-          '<img src="' + escHtml(imgSrc) + '" alt="' + escHtml(item.title) + '" loading="lazy">' +
-        '</a>' +
+        '<img src="' + escHtml(imgSrc) + '" alt="' + escHtml(item.title) + '" loading="lazy">' +
         '<span class="property-badge">Verificado</span>' +
       '</div>' +
       '<div class="property-info">' +
-        '<h3 class="property-title"><a href="' + escHtml(item.url) + '">' + escHtml(item.title) + '</a></h3>' +
+        '<h3 class="property-title">' + escHtml(item.title) + '</h3>' +
         '<p class="property-location">\uD83D\uDCCD ' + escHtml(location) + '</p>' +
         '<div class="property-meta">' +
           '<div class="property-price">' +
             '<span class="price-label">Desde</span>' +
             '<span class="price-value">' + escHtml(price) + '<span class="price-period">/mes</span></span>' +
           '</div>' +
-          '<div class="af-reserve-actions">' +
-            '<button type="button" class="btn btn--small btn--primary" data-af-reserve-trigger data-af-accommodation-id="' + escHtml(String(item.id || '')) + '" data-af-accommodation-title="' + escHtml(item.title) + '">Reservar</button>' +
-            '<a href="' + escHtml(item.url) + '" class="btn btn--small btn--outline">Ver detalles</a>' +
-          '</div>' +
+          '<span class="btn btn--small btn--outline" aria-hidden="true">Ver detalles</span>' +
         '</div>' +
       '</div>';
 

@@ -507,7 +507,6 @@
 		buildAccommodationCardHtml(acc) {
 			const price = Number.isFinite(Number(acc.price)) ? Number(acc.price).toFixed(0) : '0';
 			const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'Ver detalles';
-			const reserveText = (window.i18n && window.i18n.reserve) ? window.i18n.reserve : 'Reservar';
 			return `
 				<div class="accommodation-card" data-id="${acc.id}">
 					${acc.image_url ? `<div class="accommodation-image"><img src="${this.escapeHtml(acc.image_url)}" alt="${this.escapeHtml(acc.title)}" loading="lazy" /></div>` : ''}
@@ -517,10 +516,7 @@
 						<span>${acc.bedrooms} 🛏️ ${acc.bathrooms} 🚿</span>
 						<span class="accommodation-price">$${price}</span>
 					</div>
-					<div class="af-reserve-actions">
-						<button type="button" class="button button-small" data-af-reserve-trigger data-af-accommodation-id="${acc.id}" data-af-accommodation-title="${this.escapeHtml(acc.title)}">${reserveText}</button>
-						<a href="${this.escapeHtml(acc.url)}" class="button button-small">${viewDetailsText}</a>
-					</div>
+					<a href="${this.escapeHtml(acc.url)}" class="button button-small">${viewDetailsText}</a>
 				</div>
 			`;
 		},
@@ -530,7 +526,7 @@
 			// Add click handlers for cards
 			document.querySelectorAll('.accommodation-card').forEach(card => {
 				card.addEventListener('click', (e) => {
-					if (e.target.closest('a') || e.target.closest('[data-af-reserve-trigger]')) return;
+					if (e.target.closest('a')) return;
 					const id = card.dataset.id;
 					const link = card.querySelector('a.button');
 					if (link) {

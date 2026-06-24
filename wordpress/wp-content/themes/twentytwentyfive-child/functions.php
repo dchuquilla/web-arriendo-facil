@@ -70,30 +70,6 @@ function twentytwentyfive_child_enqueue_assets() {
     true
   );
 
-  wp_enqueue_script(
-    'twentytwentyfive-child-reservation-intent',
-    get_stylesheet_directory_uri() . '/assets/js/reservation-intent.js',
-    array(),
-    AF_THEME_VERSION,
-    true
-  );
-
-  wp_localize_script('twentytwentyfive-child-reservation-intent', 'afReservationIntent', array(
-    'ajaxUrl' => admin_url('admin-ajax.php'),
-    'nonce'   => wp_create_nonce('af_guest_frontend_nonce'),
-    'i18n'    => array(
-      'title'    => __('Reserva tu visita', 'twentytwentyfive-child'),
-      'subtitle' => __('Comparte tus datos para continuar.', 'twentytwentyfive-child'),
-      'required' => __('Nombre y correo son obligatorios.', 'twentytwentyfive-child'),
-      'sending'  => __('Enviando...', 'twentytwentyfive-child'),
-      'submit'   => __('Confirmar reserva', 'twentytwentyfive-child'),
-      'success'  => __('Solicitud registrada correctamente.', 'twentytwentyfive-child'),
-      'conflict' => __('El horario ya no esta disponible. Elige otro horario o envia una solicitud sin horario.', 'twentytwentyfive-child'),
-      'network'  => __('Error de red. Intenta nuevamente.', 'twentytwentyfive-child'),
-      'error'    => __('No se pudo registrar tu reserva.', 'twentytwentyfive-child'),
-    ),
-  ));
-
   // Warm likely next pages (property detail and properties list) to improve perceived navigation speed.
   wp_enqueue_script(
     'twentytwentyfive-child-nav-prefetch',
@@ -254,31 +230,6 @@ function twentytwentyfive_child_enqueue_assets() {
       'restNonce' => wp_create_nonce( 'wp_rest' ),
     ));
   }
-
-  if ( is_page( 'completar-perfil-arriendo' ) ) {
-    wp_enqueue_style(
-      'twentytwentyfive-child-legal-onboarding',
-      get_stylesheet_directory_uri() . '/assets/css/legal-onboarding.css',
-      array( 'twentytwentyfive-child-style' ),
-      AF_THEME_VERSION
-    );
-
-    wp_enqueue_script(
-      'twentytwentyfive-child-legal-onboarding',
-      get_stylesheet_directory_uri() . '/assets/js/legal-onboarding.js',
-      array(),
-      AF_THEME_VERSION,
-      true
-    );
-
-    wp_localize_script('twentytwentyfive-child-legal-onboarding', 'afGuestProfile', array(
-      'ajaxUrl' => admin_url('admin-ajax.php'),
-      'i18n'    => array(
-        'sending' => __('Enviando...', 'twentytwentyfive-child'),
-        'submit'  => __('Enviar perfil legal', 'twentytwentyfive-child'),
-      ),
-    ));
-  }
 }
 add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
 
@@ -297,8 +248,6 @@ function twentytwentyfive_child_optimize_script_loading( $tag, $handle, $src ) {
     'twentytwentyfive-child-owner-registration',
     'twentytwentyfive-child-gallery-lightbox',
     'twentytwentyfive-child-single-carousel',
-    'twentytwentyfive-child-reservation-intent',
-    'twentytwentyfive-child-legal-onboarding',
     'af-chatbot-frontend',
   );
 
@@ -317,74 +266,6 @@ function twentytwentyfive_child_optimize_script_loading( $tag, $handle, $src ) {
   return $tag;
 }
 add_filter( 'script_loader_tag', 'twentytwentyfive_child_optimize_script_loading', 10, 3 );
-
-/**
- * Print global reservation modal for the one-step quick booking flow.
- */
-function twentytwentyfive_child_print_reservation_modal() {
-  ?>
-  <div id="af-reservation-modal" class="af-reservation-modal" aria-hidden="true">
-    <div id="af-reservation-modal-backdrop" class="af-reservation-modal__backdrop" data-af-reserve-close></div>
-    <div class="af-reservation-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="af-reservation-modal-title" aria-describedby="af-reservation-modal-subtitle">
-      <button type="button" class="af-reservation-modal__close" data-af-reserve-close aria-label="<?php esc_attr_e('Cerrar', 'twentytwentyfive-child'); ?>">×</button>
-      <div class="af-reservation-modal__header">
-        <p class="af-reservation-modal__eyebrow"><?php esc_html_e('Paso 1 de 2', 'twentytwentyfive-child'); ?></p>
-        <h2 id="af-reservation-modal-title"><?php esc_html_e('Reserva tu visita', 'twentytwentyfive-child'); ?></h2>
-        <p id="af-reservation-modal-accommodation" class="af-reservation-modal__accommodation"><?php esc_html_e('Alojamiento: -', 'twentytwentyfive-child'); ?></p>
-        <p id="af-reservation-modal-subtitle" class="af-reservation-modal__subtitle"><?php esc_html_e('Completa solo los datos esenciales.', 'twentytwentyfive-child'); ?></p>
-      </div>
-
-      <form id="af-reservation-form" class="af-reservation-modal__form">
-        <input type="hidden" id="af-reservation-accommodation-id" name="accommodation_id" value="">
-        <input type="hidden" id="af-reservation-slot-id" name="slot_id" value="">
-
-        <div class="af-reservation-modal__field">
-          <label for="af-res-guest-name"><?php esc_html_e('Nombre', 'twentytwentyfive-child'); ?> *</label>
-          <input type="text" id="af-res-guest-name" name="guest_name" required>
-        </div>
-        <div class="af-reservation-modal__field">
-          <label for="af-res-guest-email"><?php esc_html_e('Correo', 'twentytwentyfive-child'); ?> *</label>
-          <input type="email" id="af-res-guest-email" name="guest_email" required>
-        </div>
-        <div class="af-reservation-modal__field">
-          <label for="af-res-guest-phone"><?php esc_html_e('Telefono (recomendado)', 'twentytwentyfive-child'); ?></label>
-          <input type="tel" id="af-res-guest-phone" name="guest_phone" inputmode="tel" pattern="[0-9]{7,15}">
-        </div>
-
-        <details class="af-reservation-modal__optional">
-          <summary><?php esc_html_e('No tienes horario? agrega preferencia', 'twentytwentyfive-child'); ?></summary>
-          <div class="af-reservation-modal__optional-grid">
-            <div class="af-reservation-modal__field">
-              <label for="af-res-preferred-date"><?php esc_html_e('Fecha preferida', 'twentytwentyfive-child'); ?></label>
-              <input type="date" id="af-res-preferred-date" name="preferred_date">
-            </div>
-            <div class="af-reservation-modal__field">
-              <label for="af-res-preferred-time"><?php esc_html_e('Hora preferida', 'twentytwentyfive-child'); ?></label>
-              <input type="time" id="af-res-preferred-time" name="preferred_time">
-            </div>
-          </div>
-        </details>
-
-        <div class="af-reservation-modal__field">
-          <label for="af-res-notes"><?php esc_html_e('Notas (opcional)', 'twentytwentyfive-child'); ?></label>
-          <textarea id="af-res-notes" name="notes" rows="3"></textarea>
-        </div>
-
-        <p id="af-reservation-status" class="af-reservation-status" hidden></p>
-
-        <button id="af-reservation-submit" type="submit" class="btn btn--primary btn--full">
-          <?php esc_html_e('Confirmar reserva', 'twentytwentyfive-child'); ?>
-        </button>
-
-        <p class="af-reservation-modal__footnote">
-          <?php esc_html_e('Tu informacion se usa solo para coordinar la visita y el onboarding legal posterior.', 'twentytwentyfive-child'); ?>
-        </p>
-      </form>
-    </div>
-  </div>
-  <?php
-}
-add_action( 'wp_footer', 'twentytwentyfive_child_print_reservation_modal', 40 );
 
 /**
  * Obtiene propiedades destacadas desde Posts (categoría: propiedades-destacadas)
