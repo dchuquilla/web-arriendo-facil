@@ -84,24 +84,13 @@
     var canStart = availabilityData && availabilityData.can_start_flow;
     var reason = availabilityData && availabilityData.message ? availabilityData.message : '';
     var baseText = canStart
-      ? 'Para continuar, usa el chatbot (botón CHATBOT) y completa el proceso ahí.'
-      : 'Esta propiedad no está disponible por ahora. Revisa el chatbot para opciones y seguimiento.';
+      ? 'Puedes reservar tu visita en un paso rápido. Completa tus datos y te confirmaremos por correo.'
+      : 'Esta propiedad tiene disponibilidad limitada. Puedes registrar tu intención de visita.';
 
     errorEl.className = 'af-booking-section';
     errorEl.innerHTML = '<p style="margin:0 0 .5rem;">' + escHtml(reason || baseText) + '</p>' +
-      '<button type="button" id="af-open-chatbot-cta" class="btn btn--primary btn--full">Abrir chatbot</button>';
+      '<button type="button" class="btn btn--primary btn--full" data-af-reserve-trigger data-af-accommodation-id="' + escHtml(String(accommodationId)) + '" data-af-accommodation-title="' + escHtml(document.title || '') + '">Reservar</button>';
     show(errorEl);
-
-    var cta = document.getElementById('af-open-chatbot-cta');
-    if (cta) {
-      cta.addEventListener('click', function () {
-        var toggleBtn = document.getElementById('af-chatbot-toggle');
-        if (toggleBtn) {
-          toggleBtn.click();
-          toggleBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      });
-    }
   }
   function post( data ) {
     var body = new FormData();
