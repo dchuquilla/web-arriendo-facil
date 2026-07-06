@@ -505,12 +505,24 @@
 		},
 
 		buildAccommodationCardHtml(acc) {
+			const labels = window.afSearchResultsI18n || window.i18n || {};
+			const isOccupied = this.isOccupiedAccommodation(acc);
 			const price = Number.isFinite(Number(acc.price)) ? Number(acc.price).toFixed(0) : '0';
-			const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'Ver detalles';
-			const reserveText = (window.i18n && window.i18n.reserve) ? window.i18n.reserve : 'Reservar';
+			const viewDetailsText = labels.viewDetails || 'Ver detalles';
+			const reserveText = labels.reserve || 'Reservar';
+			const occupiedText = labels.occupiedUnavailable || 'NO DISPONIBLE - OCUPADA';
+			const cardClasses = isOccupied
+				? 'accommodation-card af-featured-accommodation--occupied af-occupied-accommodation--occupied'
+				: 'accommodation-card';
+			const occupiedOverlay = isOccupied
+				? '<div class="af-occupied-overlay"><span class="af-occupied-badge">Ocupada</span></div>'
+				: '';
+			const actionsHtml = isOccupied
+				? `<button type="button" class="button button-small" disabled aria-disabled="true">${this.escapeHtml(occupiedText)}</button>`
+				: `<button type="button" class="button button-small" data-af-reserve-trigger data-af-accommodation-id="${acc.id}" data-af-accommodation-title="${this.escapeHtml(acc.title)}" data-af-is-occupied="0">${reserveText}</button>`;
 			return `
-				<div class="accommodation-card" data-id="${acc.id}">
-					${acc.image_url ? `<div class="accommodation-image"><img src="${this.escapeHtml(acc.image_url)}" alt="${this.escapeHtml(acc.title)}" loading="lazy" /></div>` : ''}
+				<div class="${cardClasses}" data-id="${acc.id}">
+					${acc.image_url ? `<div class="accommodation-image"><img src="${this.escapeHtml(acc.image_url)}" alt="${this.escapeHtml(acc.title)}" loading="lazy" />${occupiedOverlay}</div>` : ''}
 					<h4 class="accommodation-title">${this.escapeHtml(acc.title)}</h4>
 					<p class="accommodation-location">${this.escapeHtml(acc.location)}</p>
 					<div class="accommodation-meta">
@@ -518,11 +530,17 @@
 						<span class="accommodation-price">$${price}</span>
 					</div>
 					<div class="af-reserve-actions">
-						<button type="button" class="button button-small" data-af-reserve-trigger data-af-accommodation-id="${acc.id}" data-af-accommodation-title="${this.escapeHtml(acc.title)}">${reserveText}</button>
+						${actionsHtml}
 						<a href="${this.escapeHtml(acc.url)}" class="button button-small">${viewDetailsText}</a>
 					</div>
 				</div>
 			`;
+		},
+
+		isOccupiedAccommodation(acc) {
+			if (!acc || typeof acc !== 'object') return false;
+			const value = acc.is_occupied;
+			return value === true || value === 1 || value === '1' || value === 'true';
 		},
 
 		bindAccommodationCardClicks() {
@@ -554,7 +572,8 @@
 		async loadBackgroundMarkers() {
 			const accommodations = await this.fetchAllAccommodations();
 			accommodations.forEach(acc => {
-				const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'Ver detalles';
+				const labels = window.afSearchResultsI18n || window.i18n || {};
+				const viewDetailsText = labels.viewDetails || 'Ver detalles';
 				const lat = parseFloat(acc.latitude);
 				const lng = parseFloat(acc.longitude);
 				if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;

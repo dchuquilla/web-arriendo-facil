@@ -110,6 +110,21 @@ function twentytwentyfive_child_enqueue_assets() {
 
   // Quick reservation modal (only where reserve triggers exist).
   if ( twentytwentyfive_child_should_load_reservation_modal() ) {
+    $occupied_style_deps = array( 'twentytwentyfive-child-style' );
+
+    // Occupied-state overlay/badge styles are registered by the plugin.
+    if ( wp_style_is( 'af-occupied-badge-style', 'registered' ) ) {
+      wp_enqueue_style( 'af-occupied-badge-style' );
+      $occupied_style_deps[] = 'af-occupied-badge-style';
+    }
+
+    wp_enqueue_style(
+      'twentytwentyfive-child-occupied-ui',
+      get_stylesheet_directory_uri() . '/assets/css/occupied-ui.css',
+      $occupied_style_deps,
+      twentytwentyfive_child_asset_version( 'assets/css/occupied-ui.css' )
+    );
+
     wp_enqueue_style(
       'twentytwentyfive-child-reservation-modal',
       get_stylesheet_directory_uri() . '/assets/css/reservation-modal.css',
@@ -136,6 +151,7 @@ function twentytwentyfive_child_enqueue_assets() {
         'submit'   => __( 'Confirmar reserva', 'twentytwentyfive-child' ),
         'success'  => __( 'Solicitud registrada correctamente.', 'twentytwentyfive-child' ),
         'conflict' => __( 'El horario ya no está disponible. Elige otro o envía una solicitud sin horario.', 'twentytwentyfive-child' ),
+        'occupiedBlocked' => __( 'Esta acomodación está ocupada. No se pueden enviar solicitudes en este momento.', 'twentytwentyfive-child' ),
         'network'  => __( 'Error de red. Intenta nuevamente.', 'twentytwentyfive-child' ),
         'error'    => __( 'No se pudo registrar tu reserva.', 'twentytwentyfive-child' ),
       ),
@@ -256,6 +272,16 @@ function twentytwentyfive_child_enqueue_assets() {
       is_page('search-results') ? array( 'leaflet-js', 'leaflet-markercluster-js' ) : array( 'leaflet-js' ),
       AF_THEME_VERSION,
       true
+    );
+
+    wp_localize_script(
+      'twentytwentyfive-child-search-results',
+      'afSearchResultsI18n',
+      array(
+        'viewDetails' => __( 'Ver detalles', 'twentytwentyfive-child' ),
+        'reserve' => __( 'Reservar', 'twentytwentyfive-child' ),
+        'occupiedUnavailable' => __( 'NO DISPONIBLE - OCUPADA', 'twentytwentyfive-child' ),
+      )
     );
   }
 

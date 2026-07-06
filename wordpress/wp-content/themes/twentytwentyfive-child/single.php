@@ -91,11 +91,17 @@ get_header();
             $monthly_rent = floatval(get_post_meta($post_id, '_af_monthly_rent', true));
             $monthly_rent_raw = (string) get_post_meta($post_id, '_af_monthly_rent', true);
             $status_raw = (string) get_post_meta($post_id, '_af_status', true);
+            $is_occupied = '1' === (string) get_post_meta($post_id, '_af_is_occupied', true);
             $amenities = get_post_meta($post_id, '_af_amenities', true);
             if (!is_array($amenities)) {
               $amenities = [];
             }
           ?>
+          <?php if ($is_occupied) : ?>
+            <div class="af-occupied-alert" role="alert" aria-live="polite">
+              <?php esc_html_e('Esta acomodación está ocupada', 'twentytwentyfive-child'); ?>
+            </div>
+          <?php endif; ?>
           <!-- Title & Price -->
           <div class="property-header">
             <div>
@@ -104,15 +110,27 @@ get_header();
                 📍 <?php echo $address ? esc_html($address) : esc_html_e('Ubicación no especificada', 'twentytwentyfive-child'); ?>
               </p>
               <div class="af-reserve-actions">
-                <button
-                  type="button"
-                  class="btn btn--primary"
-                  data-af-reserve-trigger
-                  data-af-accommodation-id="<?php echo esc_attr((string) $post_id); ?>"
-                  data-af-accommodation-title="<?php echo esc_attr(get_the_title()); ?>"
-                >
-                  <?php esc_html_e('Reservar', 'twentytwentyfive-child'); ?>
-                </button>
+                <?php if ($is_occupied) : ?>
+                  <button
+                    type="button"
+                    class="btn btn--primary"
+                    disabled
+                    aria-disabled="true"
+                  >
+                    <?php esc_html_e('NO DISPONIBLE - OCUPADA', 'twentytwentyfive-child'); ?>
+                  </button>
+                <?php else : ?>
+                  <button
+                    type="button"
+                    class="btn btn--primary"
+                    data-af-reserve-trigger
+                    data-af-accommodation-id="<?php echo esc_attr((string) $post_id); ?>"
+                    data-af-accommodation-title="<?php echo esc_attr(get_the_title()); ?>"
+                    data-af-is-occupied="0"
+                  >
+                    <?php esc_html_e('Reservar', 'twentytwentyfive-child'); ?>
+                  </button>
+                <?php endif; ?>
               </div>
             </div>
             <div class="property-header-price">
@@ -198,7 +216,9 @@ get_header();
                   'draft' => __('Borrador', 'twentytwentyfive-child'),
                   'pending' => __('Pendiente', 'twentytwentyfive-child'),
                 ];
-                $display_status = $status_labels[$status_key] ?? $status_raw;
+                $display_status = $is_occupied
+                  ? __('Ocupada', 'twentytwentyfive-child')
+                  : ($status_labels[$status_key] ?? $status_raw);
 
                 $details = [];
                 if ('' !== trim($address)) {
@@ -227,7 +247,7 @@ get_header();
                   $details[] = '<li><strong>' . esc_html__('Renta mensual:', 'twentytwentyfive-child') . '</strong> ' . esc_html($monthly_rent_display) . '</li>';
                 }
 
-                if ('' !== trim($status_raw)) {
+                if ($is_occupied || '' !== trim($status_raw)) {
                   $details[] = '<li><strong>' . esc_html__('Estado:', 'twentytwentyfive-child') . '</strong> ' . esc_html($display_status) . '</li>';
                 }
               ?>
@@ -483,6 +503,8 @@ get_header();
                 continue;
               }
 
+              $is_related_occupied = '1' === (string) get_post_meta($id, '_af_is_occupied', true);
+
               $thumb_id = twentytwentyfive_child_get_property_thumbnail_id($id);
               $img = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'af-card') : '';
               if (!$img) {
@@ -498,9 +520,14 @@ get_header();
               $price_display = $related_rent > 0 ? '$' . number_format_i18n($related_rent, 0) : esc_html__('Consultar', 'twentytwentyfive-child');
               $related_title = get_the_title($id);
         ?>
-          <a href="<?php echo esc_url($permalink); ?>" class="property-card" data-animate>
+          <a href="<?php echo esc_url($permalink); ?>" class="property-card<?php echo $is_related_occupied ? ' af-featured-accommodation--occupied af-occupied-accommodation--occupied' : ''; ?>" data-animate>
             <div class="property-image">
               <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($related_title); ?>" loading="lazy">
+              <?php if ($is_related_occupied) : ?>
+                <div class="af-occupied-overlay">
+                  <span class="af-occupied-badge"><?php esc_html_e('Ocupada', 'twentytwentyfive-child'); ?></span>
+                </div>
+              <?php endif; ?>
               <span class="property-badge"><?php esc_html_e('Verificado', 'twentytwentyfive-child'); ?></span>
             </div>
             <div class="property-info">

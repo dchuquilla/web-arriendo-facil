@@ -159,17 +159,30 @@
 
   function createCard(item) {
     var a = document.createElement('article');
-    a.className = 'property-card';
+    var isOccupied = isOccupiedAccommodation(item);
+    a.className = 'property-card' + (isOccupied ? ' af-featured-accommodation--occupied af-occupied-accommodation--occupied' : '');
 
     var imgSrc = item.image_url || (window.afPropiedades && window.afPropiedades.placeholder) || '';
     var location = item.location || 'Ubicación no especificada';
     var price = item.price > 0 ? '$' + Math.round(item.price).toLocaleString('es-EC') : 'Consultar';
+
+    var imageOverlayHtml = isOccupied
+      ? '<div class="af-occupied-overlay"><span class="af-occupied-badge">Ocupada</span></div>'
+      : '';
+
+    var actionsHtml = isOccupied
+      ? '<div class="af-reserve-actions"><button type="button" class="btn btn--small btn--primary" disabled aria-disabled="true">NO DISPONIBLE - OCUPADA</button></div>'
+      : '<div class="af-reserve-actions">' +
+          '<button type="button" class="btn btn--small btn--primary" data-af-reserve-trigger data-af-accommodation-id="' + escHtml(String(item.id || '')) + '" data-af-accommodation-title="' + escHtml(item.title) + '" data-af-is-occupied="0">Reservar</button>' +
+          '<a href="' + escHtml(item.url) + '" class="btn btn--small btn--outline">Ver detalles</a>' +
+        '</div>';
 
     a.innerHTML =
       '<div class="property-image">' +
         '<a href="' + escHtml(item.url) + '" aria-label="' + escHtml(item.title) + '">' +
           '<img src="' + escHtml(imgSrc) + '" alt="' + escHtml(item.title) + '" loading="lazy">' +
         '</a>' +
+        imageOverlayHtml +
         '<span class="property-badge">Verificado</span>' +
       '</div>' +
       '<div class="property-info">' +
@@ -180,14 +193,17 @@
             '<span class="price-label">Desde</span>' +
             '<span class="price-value">' + escHtml(price) + '<span class="price-period">/mes</span></span>' +
           '</div>' +
-          '<div class="af-reserve-actions">' +
-            '<button type="button" class="btn btn--small btn--primary" data-af-reserve-trigger data-af-accommodation-id="' + escHtml(String(item.id || '')) + '" data-af-accommodation-title="' + escHtml(item.title) + '">Reservar</button>' +
-            '<a href="' + escHtml(item.url) + '" class="btn btn--small btn--outline">Ver detalles</a>' +
-          '</div>' +
+          actionsHtml +
         '</div>' +
       '</div>';
 
     return a;
+  }
+
+  function isOccupiedAccommodation(item) {
+    if (!item || typeof item !== 'object') return false;
+    var value = item.is_occupied;
+    return value === true || value === 1 || value === '1' || value === 'true';
   }
 
   function escHtml(str) {

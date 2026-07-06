@@ -205,6 +205,8 @@ get_header();
                 $description = wp_trim_words( wp_strip_all_tags( get_the_content() ), 22, '...' );
               }
 
+              $is_occupied = '1' === (string) get_post_meta( $id, '_af_is_occupied', true );
+
               $thumb_alt = $thumb_id ? get_post_meta($thumb_id, '_wp_attachment_image_alt', true) : '';
               $img_alt   = $thumb_alt ? $thumb_alt : get_the_title();
 
@@ -230,11 +232,16 @@ get_header();
                 );
               }
         ?>
-          <article class="property-card" data-animate>
+          <article class="property-card<?php echo $is_occupied ? ' af-featured-accommodation--occupied af-occupied-accommodation--occupied' : ''; ?>" data-animate>
             <div class="property-image">
               <a href="<?php echo esc_url(get_permalink()); ?>" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
                 <?php echo $img_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
               </a>
+              <?php if ( $is_occupied ) : ?>
+                <div class="af-occupied-overlay">
+                  <span class="af-occupied-badge"><?php esc_html_e('Ocupada', 'twentytwentyfive-child'); ?></span>
+                </div>
+              <?php endif; ?>
               <span class="property-badge"><?php esc_html_e('Verificado', 'twentytwentyfive-child'); ?></span>
             </div>
             <div class="property-info">
@@ -247,15 +254,27 @@ get_header();
                   <span class="price-value"><?php echo esc_html( $price_value ); ?><span class="price-period">/mes</span></span>
                 </div>
                 <div class="af-reserve-actions">
-                  <button
-                    type="button"
-                    class="btn btn--small btn--primary"
-                    data-af-reserve-trigger
-                    data-af-accommodation-id="<?php echo esc_attr( (string) get_the_ID() ); ?>"
-                    data-af-accommodation-title="<?php echo esc_attr( get_the_title() ); ?>"
-                  >
-                    <?php esc_html_e('Reservar', 'twentytwentyfive-child'); ?>
-                  </button>
+                  <?php if ( $is_occupied ) : ?>
+                    <button
+                      type="button"
+                      class="btn btn--small btn--primary"
+                      disabled
+                      aria-disabled="true"
+                    >
+                      <?php esc_html_e('NO DISPONIBLE - OCUPADA', 'twentytwentyfive-child'); ?>
+                    </button>
+                  <?php else : ?>
+                    <button
+                      type="button"
+                      class="btn btn--small btn--primary"
+                      data-af-reserve-trigger
+                      data-af-accommodation-id="<?php echo esc_attr( (string) get_the_ID() ); ?>"
+                      data-af-accommodation-title="<?php echo esc_attr( get_the_title() ); ?>"
+                      data-af-is-occupied="0"
+                    >
+                      <?php esc_html_e('Reservar', 'twentytwentyfive-child'); ?>
+                    </button>
+                  <?php endif; ?>
                   <a href="<?php echo esc_url(get_permalink()); ?>" class="btn btn--small btn--outline">
                     <?php esc_html_e('Ver detalles', 'twentytwentyfive-child'); ?>
                   </a>
