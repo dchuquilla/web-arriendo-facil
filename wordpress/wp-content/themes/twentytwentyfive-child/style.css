@@ -805,8 +805,8 @@ hr.sep {
 
 /* Search Bar (Header) */
 .search-bar-wrapper {
-  flex: 0 1 320px;
-  max-width: 320px;
+  flex: 0 1 260px;
+  max-width: 260px;
   min-width: 180px;
   position: relative;
   display: flex;
@@ -904,7 +904,7 @@ hr.sep {
 .nav {
   display: flex;
   flex: 1 1 auto;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-end;
   min-width: 0;
@@ -939,7 +939,7 @@ hr.sep {
 .nav-ctas {
   display: flex;
   flex: 0 1 auto;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-end;
   align-items: center;
   gap: var(--space-2);
@@ -970,7 +970,7 @@ hr.sep {
 .nav .main-menu {
   display: flex;
   flex: 1 1 auto;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-end;
   align-items: center;
   min-width: 0;
@@ -1021,34 +1021,29 @@ hr.sep {
   transform: translateY(-6px) rotate(-45deg);
 }
 
-/* Desktop adaptive layout for production-sized menus:
-   keep nav + CTAs in first row and move search to second row to avoid overlap. */
-@media (min-width: 900px) and (max-width: 1800px) {
+/* Large desktop: keep search inline with nav in one row. */
+@media (min-width: 1400px) and (max-width: 1800px) {
   .header-inner {
-    flex-wrap: wrap;
-    row-gap: 10px;
-  }
-
-  .brand {
-    order: 1;
+    flex-wrap: nowrap;
+    row-gap: 0;
   }
 
   .nav {
-    order: 2;
     flex: 1 1 auto;
     gap: 8px 12px;
+    flex-wrap: nowrap;
   }
 
   .nav .main-menu {
     gap: 6px 12px;
+    flex-wrap: nowrap;
   }
 
   .search-bar-wrapper {
-    order: 3;
     display: flex;
-    flex: 1 1 100%;
-    max-width: none;
-    min-width: 0;
+    flex: 0 1 220px;
+    max-width: 220px;
+    min-width: 140px;
   }
 
   .nav-ctas .btn {
@@ -1069,8 +1064,32 @@ hr.sep {
   }
 }
 
+/* Medium desktop: hide header search to keep nav + CTAs in a single clean row. */
+@media (min-width: 992px) and (max-width: 1399px) {
+  .search-bar-wrapper {
+    display: none;
+  }
+
+  .nav {
+    gap: 8px 10px;
+  }
+
+  .nav .main-menu {
+    gap: 6px 10px;
+  }
+
+  .nav a:not(.btn) {
+    font-size: 13px;
+  }
+
+  .nav-ctas .btn {
+    font-size: var(--font-size-sm);
+    padding: var(--button-padding-sm);
+  }
+}
+
 /* Mobile Navigation Breakpoint */
-@media (max-width: 899px) {
+@media (max-width: 991px) {
   .header-inner {
     gap: var(--space-4);
   }
