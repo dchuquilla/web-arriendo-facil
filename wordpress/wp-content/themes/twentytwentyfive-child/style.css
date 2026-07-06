@@ -611,6 +611,16 @@ hr.sep {
   transition: all var(--transition);
 }
 
+.site-header .container {
+  width: min(1520px, calc(100% - var(--space-8)));
+}
+
+@media (max-width: 600px) {
+  .site-header .container {
+    width: calc(100% - var(--space-4));
+  }
+}
+
 .site-header.scrolled {
   box-shadow: var(--shadow-sm);
 }
@@ -620,7 +630,7 @@ hr.sep {
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
-  gap: var(--space-6);
+  gap: clamp(12px, 1.4vw, var(--space-6));
   padding: var(--space-4) 0;
 }
 
@@ -795,9 +805,9 @@ hr.sep {
 
 /* Search Bar (Header) */
 .search-bar-wrapper {
-  flex: 1;
-  max-width: 400px;
-  min-width: 0;
+  flex: 0 1 320px;
+  max-width: 320px;
+  min-width: 180px;
   position: relative;
   display: flex;
   align-items: center;
@@ -893,16 +903,18 @@ hr.sep {
 /* Navigation */
 .nav {
   display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   min-width: 0;
   margin-left: auto;
-  gap: var(--space-5);
+  gap: 8px 14px;
 }
 
 .nav a:not(.btn) {
   color: var(--color-text-primary);
-  font-size: var(--font-size-base);
+  font-size: clamp(13px, 0.84vw, var(--font-size-base));
   font-weight: var(--font-weight-medium);
   position: relative;
   white-space: nowrap;
@@ -926,9 +938,12 @@ hr.sep {
 /* CTA buttons group in nav */
 .nav-ctas {
   display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
   gap: var(--space-2);
-  margin-left: var(--space-4);
+  margin-left: 0;
   flex-shrink: 0;
 }
 
@@ -938,17 +953,28 @@ hr.sep {
 
 /* Owner registration button — outline variant, slightly compact */
 .nav-btn-owner {
-  font-size: var(--font-size-sm);
-  padding: var(--button-padding-sm);
+  font-size: 13px;
+  line-height: 1.15;
+  padding: 8px 10px;
+  gap: 6px;
   white-space: nowrap;
+}
+
+.nav-btn-owner svg {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
 }
 
 /* WordPress menu (main) - no submenus in v1 */
 .nav .main-menu {
   display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
   min-width: 0;
-  gap: var(--space-5);
+  gap: 8px 16px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -995,43 +1021,51 @@ hr.sep {
   transform: translateY(-6px) rotate(-45deg);
 }
 
-/* Intermediate breakpoint: desktop nav visible but not enough room for search bar */
-@media (min-width: 900px) and (max-width: 1249px) {
-  .search-bar-wrapper {
-    display: none;
+/* Desktop adaptive layout for production-sized menus:
+   keep nav + CTAs in first row and move search to second row to avoid overlap. */
+@media (min-width: 900px) and (max-width: 1800px) {
+  .header-inner {
+    flex-wrap: wrap;
+    row-gap: 10px;
   }
 
-  /* Tighter nav at intermediate widths: compact both nav buttons */
-  .nav-ctas .btn {
-    font-size: var(--font-size-sm);
-    padding: var(--button-padding-sm);
-  }
-}
-
-@media (min-width: 1250px) and (max-width: 1420px) {
-  .search-bar-wrapper {
-    max-width: 300px;
+  .brand {
+    order: 1;
   }
 
   .nav {
-    gap: var(--space-4);
+    order: 2;
+    flex: 1 1 auto;
+    gap: 8px 12px;
   }
 
   .nav .main-menu {
-    gap: var(--space-3);
+    gap: 6px 12px;
   }
 
-  .nav a:not(.btn) {
-    font-size: var(--font-size-sm);
-  }
-
-  .nav-ctas {
-    margin-left: var(--space-3);
+  .search-bar-wrapper {
+    order: 3;
+    display: flex;
+    flex: 1 1 100%;
+    max-width: none;
+    min-width: 0;
   }
 
   .nav-ctas .btn {
-    padding: var(--button-padding-sm);
     font-size: var(--font-size-sm);
+    padding: var(--button-padding-sm);
+  }
+
+  .nav-btn-owner {
+    font-size: 12px;
+    padding: 7px 9px;
+    gap: 5px;
+  }
+
+  .nav-btn-owner svg {
+    width: 12px;
+    height: 12px;
+    flex-basis: 12px;
   }
 }
 
