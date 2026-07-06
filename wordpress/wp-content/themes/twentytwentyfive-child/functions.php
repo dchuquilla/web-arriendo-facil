@@ -7,6 +7,15 @@ if ( ! defined('ABSPATH') ) { exit; }
 
 define('AF_THEME_VERSION', '2.0.1');
 
+function twentytwentyfive_child_asset_version( $relative_path ) {
+  $absolute_path = get_stylesheet_directory() . '/' . ltrim( $relative_path, '/' );
+  return file_exists( $absolute_path ) ? (string) filemtime( $absolute_path ) : AF_THEME_VERSION;
+}
+
+function twentytwentyfive_child_should_load_reservation_modal() {
+  return is_page( 'propiedades' ) || is_page( 'search-results' ) || is_singular( 'accommodation' );
+}
+
 function twentytwentyfive_child_validate_property_type($value) {
   $allowed = ['apartment', 'house', 'room', 'studio'];
   return in_array($value, $allowed, true) ? $value : '';
@@ -17,6 +26,8 @@ function twentytwentyfive_child_validate_property_type($value) {
  */
 function twentytwentyfive_child_enqueue_assets() {
   $parent_style_handle = 'parent-style';
+  $child_style_ver = twentytwentyfive_child_asset_version( 'style.css' );
+  $tokens_style_ver = twentytwentyfive_child_asset_version( 'design-tokens.css' );
 
   // Parent style (si el padre lo expone por style.css)
   wp_enqueue_style(
@@ -31,7 +42,7 @@ function twentytwentyfive_child_enqueue_assets() {
     'twentytwentyfive-child-style',
     get_stylesheet_uri(),
     array($parent_style_handle, 'twentytwentyfive-child-tokens'),
-    AF_THEME_VERSION
+    $child_style_ver
   );
 
   // Design tokens (loaded separately to avoid @import blocking chain)
@@ -39,7 +50,7 @@ function twentytwentyfive_child_enqueue_assets() {
     'twentytwentyfive-child-tokens',
     get_stylesheet_directory_uri() . '/design-tokens.css',
     array($parent_style_handle),
-    AF_THEME_VERSION
+    $tokens_style_ver
   );
 
   // Lightbox para bloques de galería (load only when singular content is likely to need it).
@@ -97,37 +108,39 @@ function twentytwentyfive_child_enqueue_assets() {
     true
   );
 
-  // Quick reservation modal (global: every page can host the modal + triggers)
-  wp_enqueue_style(
-    'twentytwentyfive-child-reservation-modal',
-    get_stylesheet_directory_uri() . '/assets/css/reservation-modal.css',
-    array( 'twentytwentyfive-child-style' ),
-    AF_THEME_VERSION
-  );
+  // Quick reservation modal (only where reserve triggers exist).
+  if ( twentytwentyfive_child_should_load_reservation_modal() ) {
+    wp_enqueue_style(
+      'twentytwentyfive-child-reservation-modal',
+      get_stylesheet_directory_uri() . '/assets/css/reservation-modal.css',
+      array( 'twentytwentyfive-child-style' ),
+      twentytwentyfive_child_asset_version( 'assets/css/reservation-modal.css' )
+    );
 
-  wp_enqueue_script(
-    'twentytwentyfive-child-reservation-intent',
-    get_stylesheet_directory_uri() . '/assets/js/reservation-intent.js',
-    array(),
-    AF_THEME_VERSION,
-    true
-  );
+    wp_enqueue_script(
+      'twentytwentyfive-child-reservation-intent',
+      get_stylesheet_directory_uri() . '/assets/js/reservation-intent.js',
+      array(),
+      AF_THEME_VERSION,
+      true
+    );
 
-  wp_localize_script( 'twentytwentyfive-child-reservation-intent', 'afReservationIntent', array(
-    'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-    'nonce'   => wp_create_nonce( 'af_guest_frontend_nonce' ),
-    'i18n'    => array(
-      'title'    => __( 'Reserva tu visita', 'twentytwentyfive-child' ),
-      'subtitle' => __( 'Comparte tus datos para continuar.', 'twentytwentyfive-child' ),
-      'required' => __( 'Nombre y correo son obligatorios.', 'twentytwentyfive-child' ),
-      'sending'  => __( 'Enviando...', 'twentytwentyfive-child' ),
-      'submit'   => __( 'Confirmar reserva', 'twentytwentyfive-child' ),
-      'success'  => __( 'Solicitud registrada correctamente.', 'twentytwentyfive-child' ),
-      'conflict' => __( 'El horario ya no está disponible. Elige otro o envía una solicitud sin horario.', 'twentytwentyfive-child' ),
-      'network'  => __( 'Error de red. Intenta nuevamente.', 'twentytwentyfive-child' ),
-      'error'    => __( 'No se pudo registrar tu reserva.', 'twentytwentyfive-child' ),
-    ),
-  ) );
+    wp_localize_script( 'twentytwentyfive-child-reservation-intent', 'afReservationIntent', array(
+      'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+      'nonce'   => wp_create_nonce( 'af_guest_frontend_nonce' ),
+      'i18n'    => array(
+        'title'    => __( 'Reserva tu visita', 'twentytwentyfive-child' ),
+        'subtitle' => __( 'Comparte tus datos para continuar.', 'twentytwentyfive-child' ),
+        'required' => __( 'Nombre y correo son obligatorios.', 'twentytwentyfive-child' ),
+        'sending'  => __( 'Enviando...', 'twentytwentyfive-child' ),
+        'submit'   => __( 'Confirmar reserva', 'twentytwentyfive-child' ),
+        'success'  => __( 'Solicitud registrada correctamente.', 'twentytwentyfive-child' ),
+        'conflict' => __( 'El horario ya no está disponible. Elige otro o envía una solicitud sin horario.', 'twentytwentyfive-child' ),
+        'network'  => __( 'Error de red. Intenta nuevamente.', 'twentytwentyfive-child' ),
+        'error'    => __( 'No se pudo registrar tu reserva.', 'twentytwentyfive-child' ),
+      ),
+    ) );
+  }
 
   // JS para el carrusel solo en homepage
   if ( is_front_page() ) {
@@ -348,7 +361,7 @@ add_filter( 'script_loader_tag', 'twentytwentyfive_child_optimize_script_loading
  */
 function twentytwentyfive_child_print_reservation_modal() {
   static $printed = false;
-  if ( $printed ) {
+  if ( $printed || ! twentytwentyfive_child_should_load_reservation_modal() ) {
     return;
   }
   $printed = true;
