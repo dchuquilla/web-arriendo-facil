@@ -619,6 +619,7 @@ hr.sep {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: nowrap;
   gap: var(--space-6);
   padding: var(--space-4) 0;
 }
@@ -796,6 +797,7 @@ hr.sep {
 .search-bar-wrapper {
   flex: 1;
   max-width: 400px;
+  min-width: 0;
   position: relative;
   display: flex;
   align-items: center;
@@ -892,6 +894,9 @@ hr.sep {
 .nav {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  margin-left: auto;
   gap: var(--space-5);
 }
 
@@ -927,6 +932,10 @@ hr.sep {
   flex-shrink: 0;
 }
 
+.nav-ctas .btn {
+  flex-shrink: 0;
+}
+
 /* Owner registration button — outline variant, slightly compact */
 .nav-btn-owner {
   font-size: var(--font-size-sm);
@@ -938,6 +947,7 @@ hr.sep {
 .nav .main-menu {
   display: flex;
   align-items: center;
+  min-width: 0;
   gap: var(--space-5);
   list-style: none;
   margin: 0;
@@ -986,7 +996,7 @@ hr.sep {
 }
 
 /* Intermediate breakpoint: desktop nav visible but not enough room for search bar */
-@media (min-width: 900px) and (max-width: 1099px) {
+@media (min-width: 900px) and (max-width: 1249px) {
   .search-bar-wrapper {
     display: none;
   }
@@ -995,6 +1005,33 @@ hr.sep {
   .nav-ctas .btn {
     font-size: var(--font-size-sm);
     padding: var(--button-padding-sm);
+  }
+}
+
+@media (min-width: 1250px) and (max-width: 1420px) {
+  .search-bar-wrapper {
+    max-width: 300px;
+  }
+
+  .nav {
+    gap: var(--space-4);
+  }
+
+  .nav .main-menu {
+    gap: var(--space-3);
+  }
+
+  .nav a:not(.btn) {
+    font-size: var(--font-size-sm);
+  }
+
+  .nav-ctas {
+    margin-left: var(--space-3);
+  }
+
+  .nav-ctas .btn {
+    padding: var(--button-padding-sm);
+    font-size: var(--font-size-sm);
   }
 }
 

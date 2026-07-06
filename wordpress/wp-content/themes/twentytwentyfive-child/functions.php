@@ -265,6 +265,9 @@ function twentytwentyfive_child_enqueue_assets() {
 
   // Legal onboarding page (public, accessed via secure token link)
   if ( is_page( 'completar-perfil-arriendo' ) ) {
+    $legal_onboarding_js_path = get_stylesheet_directory() . '/assets/js/legal-onboarding.js';
+    $legal_onboarding_js_ver  = file_exists( $legal_onboarding_js_path ) ? (string) filemtime( $legal_onboarding_js_path ) : AF_THEME_VERSION;
+
     wp_enqueue_style(
       'twentytwentyfive-child-legal-onboarding',
       get_stylesheet_directory_uri() . '/assets/css/legal-onboarding.css',
@@ -276,15 +279,29 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-legal-onboarding',
       get_stylesheet_directory_uri() . '/assets/js/legal-onboarding.js',
       array(),
-      AF_THEME_VERSION,
+      $legal_onboarding_js_ver,
       true
     );
 
     wp_localize_script( 'twentytwentyfive-child-legal-onboarding', 'afGuestProfile', array(
       'ajaxUrl' => admin_url( 'admin-ajax.php' ),
       'i18n'    => array(
-        'sending' => __( 'Enviando...', 'twentytwentyfive-child' ),
-        'submit'  => __( 'Enviar perfil legal', 'twentytwentyfive-child' ),
+        'sending'           => __( 'Enviando...', 'twentytwentyfive-child' ),
+        'sendingStep1'      => __( 'Enviando datos...', 'twentytwentyfive-child' ),
+        'sendingStep2'      => __( 'Estamos generando tu contrato, esto puede tardar unos minutos.', 'twentytwentyfive-child' ),
+        'submit'            => __( 'Enviar perfil legal', 'twentytwentyfive-child' ),
+        'cancel'            => __( 'Cancelar envio', 'twentytwentyfive-child' ),
+        'validatingLink'    => __( 'Validando enlace seguro...', 'twentytwentyfive-child' ),
+        'timeout'           => __( 'La solicitud tardo demasiado, intentalo nuevamente.', 'twentytwentyfive-child' ),
+        'manualCancel'      => __( 'Cancelaste el envio. Puedes revisar tus datos y volver a intentarlo.', 'twentytwentyfive-child' ),
+        'networkError'      => __( 'Error de red al enviar el perfil legal.', 'twentytwentyfive-child' ),
+        'error400'          => __( 'Revisa los datos ingresados e intenta nuevamente.', 'twentytwentyfive-child' ),
+        'error403'          => __( 'Tu sesion expiro, recarga la pagina.', 'twentytwentyfive-child' ),
+        'error413'          => __( 'Los archivos son demasiado grandes. Reduce su tamano e intenta nuevamente.', 'twentytwentyfive-child' ),
+        'error500'          => __( 'Tuvimos un problema en el servidor. Intentalo nuevamente.', 'twentytwentyfive-child' ),
+        'errorGeneric'      => __( 'No se pudo completar la solicitud en este momento.', 'twentytwentyfive-child' ),
+        'success'           => __( 'Perfil legal enviado correctamente.', 'twentytwentyfive-child' ),
+        'contractGenerated' => __( 'Contrato generado correctamente.', 'twentytwentyfive-child' ),
       ),
     ) );
   }

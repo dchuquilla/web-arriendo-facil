@@ -34,63 +34,23 @@ get_header();
           </div>
 
           <div class="af-guest-profile-field">
-            <label for="af-gp-rental-years"><?php esc_html_e('Años de arriendo', 'twentytwentyfive-child'); ?> *</label>
-            <input type="number" id="af-gp-rental-years" name="rental_years" min="1" max="20" required>
-          </div>
-
-          <div class="af-guest-profile-field">
             <label for="af-gp-name"><?php esc_html_e('Nombre', 'twentytwentyfive-child'); ?></label>
             <input type="text" id="af-gp-name" name="name">
           </div>
 
           <div class="af-guest-profile-field">
             <label for="af-gp-phone"><?php esc_html_e('Teléfono (10 dígitos)', 'twentytwentyfive-child'); ?></label>
-            <input type="tel" id="af-gp-phone" name="phone" inputmode="numeric" pattern="[0-9]{10}" maxlength="10">
+            <input type="tel" id="af-gp-phone" name="phone" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required>
           </div>
 
           <div class="af-guest-profile-field">
             <label for="af-gp-id-number"><?php esc_html_e('Cédula (10 dígitos)', 'twentytwentyfive-child'); ?></label>
-            <input type="text" id="af-gp-id-number" name="id_number" inputmode="numeric" pattern="[0-9]{10}" maxlength="10">
+            <input type="text" id="af-gp-id-number" name="id_number" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required>
           </div>
 
           <div class="af-guest-profile-field">
-            <label for="af-gp-mascotas"><?php esc_html_e('Mascotas', 'twentytwentyfive-child'); ?></label>
-            <input type="text" id="af-gp-mascotas" name="mascotas" placeholder="Ej: 1 perro pequeño">
-          </div>
-
-          <div class="af-guest-profile-field is-full">
-            <label for="af-gp-personas"><?php esc_html_e('Personas que vivirán', 'twentytwentyfive-child'); ?></label>
-            <textarea id="af-gp-personas" name="personas_viviran"></textarea>
-          </div>
-
-          <div class="af-guest-profile-field is-full">
-            <label for="af-gp-guarantee"><?php esc_html_e('Garantía / respaldo', 'twentytwentyfive-child'); ?></label>
-            <textarea id="af-gp-guarantee" name="guarantee_text"></textarea>
-          </div>
-
-          <div class="af-guest-profile-field">
-            <label for="af-gp-ref1-name"><?php esc_html_e('Referencia 1 - Nombre', 'twentytwentyfive-child'); ?></label>
-            <input type="text" id="af-gp-ref1-name" name="reference_1_name">
-          </div>
-
-          <div class="af-guest-profile-field">
-            <label for="af-gp-ref1-phone"><?php esc_html_e('Referencia 1 - Teléfono', 'twentytwentyfive-child'); ?></label>
-            <input type="tel" id="af-gp-ref1-phone" name="reference_1_phone" inputmode="numeric" pattern="[0-9]{10}" maxlength="10">
-          </div>
-
-          <div class="af-guest-profile-field">
-            <label for="af-gp-ref2-name"><?php esc_html_e('Referencia 2 - Nombre', 'twentytwentyfive-child'); ?></label>
-            <input type="text" id="af-gp-ref2-name" name="reference_2_name">
-          </div>
-
-          <div class="af-guest-profile-field">
-            <label for="af-gp-ref2-phone"><?php esc_html_e('Referencia 2 - Teléfono', 'twentytwentyfive-child'); ?></label>
-            <input type="tel" id="af-gp-ref2-phone" name="reference_2_phone" inputmode="numeric" pattern="[0-9]{10}" maxlength="10">
-          </div>
-
-          <div class="af-guest-profile-field">
-            <label for="af-gp-doc-garantia"><?php esc_html_e('PDF garantía/alícuota', 'twentytwentyfive-child'); ?></label>
-            <input type="file" id="af-gp-doc-garantia" name="guest_garantia_alicuota_pdf" accept="application/pdf">
+            <label for="af-gp-personas"><?php esc_html_e('Personas que vivirán en la propiedad', 'twentytwentyfive-child'); ?></label>
+            <input type="number" id="af-gp-personas" name="personas_viviran" min="1" max="20" inputmode="numeric">
           </div>
 
           <div class="af-guest-profile-field">
