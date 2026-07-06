@@ -9,7 +9,7 @@ if ('serviceWorker' in navigator) {
 
     var register = function () {
       navigator.serviceWorker.register('/wp-content/themes/twentytwentyfive-child/assets/js/service-worker.js', {
-        scope: '/'
+        scope: '/wp-content/themes/twentytwentyfive-child/assets/js/'
       }).catch(() => {});
     };
 
