@@ -28,6 +28,7 @@
     var titleEl = document.getElementById('af-reservation-modal-title');
     var accommodationEl = document.getElementById('af-reservation-modal-accommodation');
     var subtitleEl = document.getElementById('af-reservation-modal-subtitle');
+    var currentAccommodationOccupied = false;
 
     if (!modal || !form || !submitBtn || !accommodationField) {
       // Modal markup missing — bail silently. Buttons will fall back to native link if any.
@@ -63,9 +64,31 @@
         : (i18n.submit || 'Confirmar reserva');
     }
 
+    function isOccupiedValue(value) {
+      return value === true || value === 1 || value === '1' || value === 'true';
+    }
+
+    function isAccommodationOccupiedById(accommodationId) {
+      if (!accommodationId) return false;
+      var triggers = document.querySelectorAll('[data-af-reserve-trigger][data-af-accommodation-id="' + String(accommodationId) + '"]');
+      for (var i = 0; i < triggers.length; i += 1) {
+        if (isOccupiedValue(triggers[i].getAttribute('data-af-is-occupied'))) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     function openModal(trigger) {
       var accommodationId = parseInt(trigger.getAttribute('data-af-accommodation-id') || '0', 10);
       if (!accommodationId) return;
+
+      var occupiedContainer = trigger.closest('.af-featured-accommodation--occupied, .af-occupied-accommodation--occupied');
+      currentAccommodationOccupied = isOccupiedValue(trigger.getAttribute('data-af-is-occupied')) || !!occupiedContainer;
+      if (currentAccommodationOccupied) {
+        showStatus(i18n.occupiedBlocked || 'Esta acomodación está ocupada. No se pueden enviar solicitudes en este momento.', true);
+        return;
+      }
 
       lastFocused = trigger;
       hideStatus();
@@ -73,6 +96,7 @@
       form.reset();
 
       accommodationField.value = String(accommodationId);
+      accommodationField.setAttribute('data-af-is-occupied', currentAccommodationOccupied ? '1' : '0');
       slotField.value = trigger.getAttribute('data-af-slot-id') || '';
 
       var title = trigger.getAttribute('data-af-accommodation-title') || '';
@@ -97,6 +121,7 @@
       body.classList.remove('af-modal-open');
       hideStatus();
       setLoading(false);
+      currentAccommodationOccupied = false;
 
       if (lastFocused && typeof lastFocused.focus === 'function') {
         try { lastFocused.focus(); } catch (e) { /* noop */ }
@@ -144,6 +169,14 @@
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       hideStatus();
+
+      var accommodationId = parseInt(accommodationField.value || '0', 10);
+      var occupiedByField = isOccupiedValue(accommodationField.getAttribute('data-af-is-occupied'));
+      var occupiedByLookup = isAccommodationOccupiedById(accommodationId);
+      if (currentAccommodationOccupied || occupiedByField || occupiedByLookup) {
+        showStatus(i18n.occupiedBlocked || 'Esta acomodación está ocupada. No se pueden enviar solicitudes en este momento.', true);
+        return;
+      }
 
       var name = (form.elements.guest_name.value || '').trim();
       var email = (form.elements.guest_email.value || '').trim();

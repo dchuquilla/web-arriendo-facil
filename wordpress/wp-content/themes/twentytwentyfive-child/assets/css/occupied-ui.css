@@ -1,0 +1,108 @@
+/* Occupied state UI overrides for child theme.
+ * Goal: keep occupied cards visible while matching site tone and reducing visual harshness.
+ */
+
+.af-featured-accommodation--occupied,
+.af-occupied-accommodation--occupied {
+  position: relative;
+  border: 1px solid #e9d9cb;
+  box-shadow: 0 10px 24px rgba(29, 45, 68, 0.08);
+}
+
+.af-featured-accommodation--occupied .property-image img,
+.af-occupied-accommodation--occupied .property-image img,
+.af-featured-accommodation--occupied .accommodation-image img,
+.af-occupied-accommodation--occupied .accommodation-image img {
+  filter: grayscale(16%) saturate(0.9) contrast(0.98);
+}
+
+.af-occupied-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 12px;
+  background: linear-gradient(180deg, rgba(29, 45, 68, 0.42) 0%, rgba(29, 45, 68, 0.15) 62%, rgba(29, 45, 68, 0.04) 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.af-occupied-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(187, 59, 30, 0.2);
+  background: rgba(255, 246, 243, 0.95);
+  color: #a53b2a;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px rgba(29, 45, 68, 0.15);
+}
+
+.af-featured-accommodation--occupied .property-badge,
+.af-occupied-accommodation--occupied .property-badge {
+  background: rgba(29, 45, 68, 0.88);
+  color: #f6f9ff;
+}
+
+.af-featured-accommodation--occupied .price-value,
+.af-occupied-accommodation--occupied .price-value,
+.accommodation-card.af-featured-accommodation--occupied .accommodation-price {
+  color: #6a7688;
+}
+
+.af-featured-accommodation--occupied .property-title,
+.af-occupied-accommodation--occupied .property-title,
+.accommodation-card.af-featured-accommodation--occupied .accommodation-title {
+  color: #29364b;
+}
+
+.af-featured-accommodation--occupied .af-reserve-actions .btn[disabled],
+.af-occupied-accommodation--occupied .af-reserve-actions .btn[disabled],
+.accommodation-card.af-featured-accommodation--occupied .af-reserve-actions .button[disabled],
+.af-reserve-actions .btn[disabled],
+.af-reserve-actions .button[disabled] {
+  background: #f3f5f8;
+  color: #5e6a7c;
+  border: 1px solid #d7dee8;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.af-featured-accommodation--occupied .af-reserve-actions .btn[disabled]:hover,
+.af-occupied-accommodation--occupied .af-reserve-actions .btn[disabled]:hover,
+.accommodation-card.af-featured-accommodation--occupied .af-reserve-actions .button[disabled]:hover,
+.af-reserve-actions .btn[disabled]:hover,
+.af-reserve-actions .button[disabled]:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.af-occupied-alert {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #eedccf;
+  background: linear-gradient(90deg, rgba(255, 247, 241, 0.95) 0%, rgba(255, 251, 247, 0.95) 100%);
+  color: #7d3f2f;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .af-occupied-overlay {
+    padding: 10px;
+  }
+
+  .af-occupied-badge {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+}
