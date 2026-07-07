@@ -38,6 +38,7 @@
 		resultsDebounceId: null,
 		resultsCache: new Map(),
 		resultsCacheTtlMs: 45000,
+		resultsFetchTimeoutMs: 12000,
 		mapAlertTimeoutId: null,
 
 		async init() {
@@ -407,6 +408,10 @@
 			}
 
 			this.resultsAbortController = new AbortController();
+			const controller = this.resultsAbortController;
+			const timeoutId = window.setTimeout(() => {
+				controller.abort();
+			}, this.resultsFetchTimeoutMs);
 
 			fetch(`${window.location.origin}/wp-json/af/v1/accommodations/search`, {
 				method: 'POST',
@@ -414,7 +419,7 @@
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(params),
-				signal: this.resultsAbortController.signal,
+				signal: controller.signal,
 			})
 				.then(response => response.json())
 				.then(data => {
@@ -426,9 +431,16 @@
 						return;
 					}
 					console.error('Error loading results:', error);
+					this.showMapAlert('La búsqueda tardó demasiado. Intenta de nuevo.', 4000);
+					if (this.elements.resultsCount) {
+						this.elements.resultsCount.textContent = 'No se pudieron cargar los resultados.';
+					}
 				})
 				.finally(() => {
-					this.resultsAbortController = null;
+					window.clearTimeout(timeoutId);
+					if (this.resultsAbortController === controller) {
+						this.resultsAbortController = null;
+					}
 				});
 		},
 
@@ -633,13 +645,22 @@
 					page: 1,
 				};
 
-				const response = await fetch(`${window.location.origin}/wp-json/af/v1/accommodations/search`, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(payload),
-				});
+				const controller = new AbortController();
+				const timeoutId = window.setTimeout(() => controller.abort(), this.resultsFetchTimeoutMs);
+
+				let response;
+				try {
+					response = await fetch(`${window.location.origin}/wp-json/af/v1/accommodations/search`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(payload),
+						signal: controller.signal,
+					});
+				} finally {
+					window.clearTimeout(timeoutId);
+				}
 
 				if (!response.ok) {
 					return [];

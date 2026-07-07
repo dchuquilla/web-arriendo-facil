@@ -10,8 +10,11 @@
     var lastShownAt = 0;
     var minVisibleMs = 220;
     var watchdogMs = 8000;
+    var maxVisibleMs = 15000;
     var pendingAsyncRequests = 0;
     var pendingTap = null;
+    var lastPointerType = '';
+    var lastPointerMoved = false;
 
     if (!loader || !document.body) {
       return;
@@ -51,9 +54,24 @@
     function armWatchdog() {
       clearWatchdog();
       watchdogTimer = window.setTimeout(function () {
+        watchdogTimer = null;
+
+        // Hard cap: overlay must never stay longer than maxVisibleMs, even if
+        // some in-flight fetch is stuck. Prevents infinite loading on flaky
+        // mobile connections where /wp-json/af/v1/accommodations/search stalls.
+        if (Date.now() - lastShownAt >= maxVisibleMs) {
+          pendingAsyncRequests = 0;
+          hideNow();
+          return;
+        }
+
         if (pendingAsyncRequests === 0) {
           hideNow();
+          return;
         }
+
+        // Requests still pending but we're under the hard cap: try again later.
+        armWatchdog();
       }, watchdogMs);
     }
 
@@ -344,6 +362,9 @@
     document.addEventListener('pointerdown', function (event) {
       var link = event.target && event.target.closest ? event.target.closest('a') : null;
 
+      lastPointerType = event.pointerType || '';
+      lastPointerMoved = false;
+
       if (!link || shouldIgnoreLink(link, event)) {
         pendingTap = null;
         return;
@@ -369,6 +390,7 @@
       // Any meaningful movement means the user is scrolling, not tapping.
       if (dx > 10 || dy > 10) {
         pendingTap = null;
+        lastPointerMoved = true;
       }
     }, true);
 
@@ -390,7 +412,17 @@
         return;
       }
 
+      // Touch users often produce a stray click at the end of a scroll gesture.
+      // If the last pointer input moved past the tap threshold, treat it as a
+      // scroll and skip the overlay — otherwise the loader gets stuck.
+      if (lastPointerType && lastPointerType !== 'mouse' && lastPointerMoved) {
+        pendingTap = null;
+        lastPointerMoved = false;
+        return;
+      }
+
       pendingTap = null;
+      lastPointerMoved = false;
       showNow('Cargando...');
     }, true);
 
