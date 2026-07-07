@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arriendo-facil-static-v2';
+const CACHE_NAME = 'arriendo-facil-static-v3';
 const ASSET_DESTINATIONS = new Set(['style', 'script', 'image', 'font']);
 
 self.addEventListener('install', (event) => {

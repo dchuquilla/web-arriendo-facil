@@ -5,7 +5,7 @@
 
 if ( ! defined('ABSPATH') ) { exit; }
 
-define('AF_THEME_VERSION', '2.0.1');
+define('AF_THEME_VERSION', '2.0.2');
 
 function twentytwentyfive_child_asset_version( $relative_path ) {
   $absolute_path = get_stylesheet_directory() . '/' . ltrim( $relative_path, '/' );
