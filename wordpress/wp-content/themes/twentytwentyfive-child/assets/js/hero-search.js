@@ -178,15 +178,29 @@
 					return;
 				}
 
+				let settled = false;
+				const finish = value => {
+					if (settled) return;
+					settled = true;
+					resolve(value);
+				};
+
+				// Hard cap so mobile devices with weak GPS never block navigation.
+				const hardTimeout = window.setTimeout(() => finish(null), 1500);
+
 				navigator.geolocation.getCurrentPosition(
 					position => {
-						resolve({
+						window.clearTimeout(hardTimeout);
+						finish({
 							latitude: position.coords.latitude,
 							longitude: position.coords.longitude,
 						});
 					},
-					() => resolve(null),
-					{ enableHighAccuracy: true, timeout: 6000, maximumAge: 300000 }
+					() => {
+						window.clearTimeout(hardTimeout);
+						finish(null);
+					},
+					{ enableHighAccuracy: false, timeout: 1500, maximumAge: 300000 }
 				);
 			});
 		},

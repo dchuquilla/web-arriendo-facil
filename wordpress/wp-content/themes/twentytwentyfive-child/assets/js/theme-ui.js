@@ -6,9 +6,12 @@
     var textEl = loader ? loader.querySelector('.af-loading-screen__text') : null;
     var showTimer = null;
     var hideTimer = null;
+    var watchdogTimer = null;
     var lastShownAt = 0;
     var minVisibleMs = 220;
+    var watchdogMs = 8000;
     var pendingAsyncRequests = 0;
+    var pendingTap = null;
 
     if (!loader || !document.body) {
       return;
@@ -38,6 +41,22 @@
       }
     }
 
+    function clearWatchdog() {
+      if (watchdogTimer) {
+        window.clearTimeout(watchdogTimer);
+        watchdogTimer = null;
+      }
+    }
+
+    function armWatchdog() {
+      clearWatchdog();
+      watchdogTimer = window.setTimeout(function () {
+        if (pendingAsyncRequests === 0) {
+          hideNow();
+        }
+      }, watchdogMs);
+    }
+
     function showNow(nextText) {
       clearHideTimer();
 
@@ -46,6 +65,7 @@
       }
 
       if (loader.classList.contains('is-visible')) {
+        armWatchdog();
         return;
       }
 
@@ -57,10 +77,13 @@
       window.requestAnimationFrame(function () {
         loader.classList.add('is-visible');
       });
+
+      armWatchdog();
     }
 
     function hideNow() {
       clearShowTimer();
+      clearWatchdog();
       loader.classList.remove('is-visible');
       loader.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('af-is-loading');
@@ -307,31 +330,67 @@
       hideNow();
     });
 
-    window.addEventListener('beforeunload', function () {
-      showNow('Cargando...');
+    window.addEventListener('pagehide', function () {
+      hideNow();
     });
 
     installFetchTracking();
     installXhrTracking();
 
+    function clearPendingTap() {
+      pendingTap = null;
+    }
+
     document.addEventListener('pointerdown', function (event) {
       var link = event.target && event.target.closest ? event.target.closest('a') : null;
 
       if (!link || shouldIgnoreLink(link, event)) {
+        pendingTap = null;
         return;
       }
 
-      // Show as early as possible so the loader paints before navigation starts.
-      showNow('Cargando...');
+      // Arm the tap; only show loader on real click, not on scroll gestures.
+      pendingTap = {
+        link: link,
+        x: event.clientX,
+        y: event.clientY,
+        pointerId: event.pointerId,
+      };
+    }, true);
+
+    document.addEventListener('pointermove', function (event) {
+      if (!pendingTap || pendingTap.pointerId !== event.pointerId) {
+        return;
+      }
+
+      var dx = Math.abs(event.clientX - pendingTap.x);
+      var dy = Math.abs(event.clientY - pendingTap.y);
+
+      // Any meaningful movement means the user is scrolling, not tapping.
+      if (dx > 10 || dy > 10) {
+        pendingTap = null;
+      }
+    }, true);
+
+    document.addEventListener('pointercancel', clearPendingTap, true);
+    document.addEventListener('pointerup', function (event) {
+      // Reset if this pointer never became a click within a short window.
+      window.setTimeout(function () {
+        if (pendingTap && pendingTap.pointerId === event.pointerId) {
+          pendingTap = null;
+        }
+      }, 400);
     }, true);
 
     document.addEventListener('click', function (event) {
       var link = event.target && event.target.closest ? event.target.closest('a') : null;
 
       if (!link || shouldIgnoreLink(link, event)) {
+        pendingTap = null;
         return;
       }
 
+      pendingTap = null;
       showNow('Cargando...');
     }, true);
 
