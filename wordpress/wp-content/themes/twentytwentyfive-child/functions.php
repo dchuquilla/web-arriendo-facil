@@ -434,11 +434,6 @@ function twentytwentyfive_child_print_reservation_modal() {
           </div>
         </details>
 
-        <div class="af-reservation-modal__field">
-          <label for="af-res-notes"><?php esc_html_e( 'Notas (opcional)', 'twentytwentyfive-child' ); ?></label>
-          <textarea id="af-res-notes" name="notes" rows="3"></textarea>
-        </div>
-
         <p id="af-reservation-status" class="af-reservation-status" hidden></p>
 
         <button id="af-reservation-submit" type="submit" class="btn btn--primary btn--full">
@@ -542,11 +537,43 @@ function twentytwentyfive_child_get_accommodation_gallery_images($post_id) {
   $images = [];
   $post = get_post($post_id);
 
-  if (!$post || !$post->post_content) {
+  if (!$post) {
     return [];
   }
 
-  // Primero intentar extraer imágenes de bloque de galería WP
+  // Primero: leer galería desde meta _af_gallery (backend wizard)
+  $gallery_ids = get_post_meta($post_id, '_af_gallery', true);
+  if (is_array($gallery_ids) && !empty($gallery_ids)) {
+    foreach ($gallery_ids as $attachment_id) {
+      $attachment_id = absint($attachment_id);
+      if (!$attachment_id) {
+        continue;
+      }
+
+      $full_url  = wp_get_attachment_image_src($attachment_id, 'af-banner');
+      $thumb_url = wp_get_attachment_image_src($attachment_id, 'af-thumbnail');
+
+      if ($full_url && $thumb_url) {
+        $images[] = [
+          'id'        => $attachment_id,
+          'url'       => $full_url[0],
+          'url_small' => $thumb_url[0],
+          'alt'       => get_post_meta($attachment_id, '_wp_attachment_image_alt', true),
+        ];
+      }
+    }
+
+    if (!empty($images)) {
+      return $images;
+    }
+  }
+
+  if (!$post->post_content) {
+    // Continuar al fallback de attachments abajo
+    $post->post_content = '';
+  }
+
+  // Segundo: intentar extraer imágenes de bloque de galería WP
   if (has_block('gallery', $post)) {
     $pattern = '/<img[^>]+src=[\'"]([^\'"]+)[\'"][^>]*(?:data-id=[\'"]([^\'"]+)[\'"])?/';
     if (preg_match_all($pattern, $post->post_content, $matches)) {

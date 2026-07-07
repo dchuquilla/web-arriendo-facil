@@ -275,6 +275,7 @@
       var rentalStartDate = getFieldValue('rental_start_date');
       var phone = getFieldValue('phone');
       var idNumber = getFieldValue('id_number');
+      var name = String(getFieldValue('name') || '').trim();
       var personasEl = (form && form.elements && typeof form.elements.namedItem === 'function')
         ? form.elements.namedItem('personas_viviran')
         : null;
@@ -288,6 +289,20 @@
       if (!/^\d{10}$/.test(phone)) return 'El teléfono debe tener exactamente 10 dígitos.';
       if (!idNumber) return 'La cédula es obligatoria.';
       if (!/^\d{10}$/.test(idNumber)) return 'La cédula debe tener exactamente 10 dígitos.';
+
+      if (!name) return 'El nombre completo es obligatorio.';
+      if (name.length < 5 || name.length > 80) return 'El nombre debe tener entre 5 y 80 caracteres.';
+      if (!/^[A-Za-zÀ-ÿÑñ]+(?:\s+[A-Za-zÀ-ÿÑñ]+)+$/.test(name)) {
+        return 'Ingresa nombres y apellidos completos, solo letras (mínimo dos palabras).';
+      }
+      var blocked = ['mierda','puta','puto','carajo','maldito','maldita','estupido','estupida','idiota','pendejo','pendeja','marica','coño','cabron','cabrón','joder','gilipollas','fuck','shit','bitch','asshole','damn'];
+      var nameLower = name.toLowerCase();
+      for (var i = 0; i < blocked.length; i++) {
+        if (nameLower.indexOf(blocked[i]) !== -1) {
+          return 'El nombre contiene lenguaje no permitido.';
+        }
+      }
+
       if (personasRaw !== '' && (isNaN(personas) || personas < 1 || personas > 20)) return 'Personas que vivirán debe ser un número entre 1 y 20.';
       return '';
     }
@@ -410,13 +425,41 @@
         if (documents > 0) message += ' Documentos subidos: ' + documents + '.';
         showStatus(message, false);
         setLoading(false);
-        form.reset();
-        setFieldValue('selector', selector);
-        setFieldValue('token', token);
-        form.setAttribute('hidden', 'hidden');
-        if (contextEl) {
-          contextEl.setAttribute('hidden', 'hidden');
+
+        // Task 7: Cerrar formulario y evitar reenvío/inspección tras éxito.
+        try {
+          // Vaciar campos sensibles antes de remover el DOM.
+          Array.prototype.forEach.call(form.querySelectorAll('input, textarea, select'), function (el) {
+            if (el.type === 'file') {
+              el.value = '';
+            } else {
+              el.value = '';
+            }
+          });
+          // Remover completamente el formulario del DOM.
+          if (form.parentNode) {
+            form.parentNode.removeChild(form);
+          }
+        } catch (e) { /* noop */ }
+
+        if (contextEl && contextEl.parentNode) {
+          contextEl.parentNode.removeChild(contextEl);
         }
+
+        // Limpiar tokens de la URL para prevenir reuso.
+        try {
+          if (window.history && typeof window.history.replaceState === 'function') {
+            var cleanUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+          }
+        } catch (e) { /* noop */ }
+
+        // Prevenir volver atrás con caché del navegador.
+        window.addEventListener('pageshow', function (evt) {
+          if (evt.persisted) {
+            window.location.reload();
+          }
+        });
       }).catch(function (error) {
         if (isTimeoutError(error)) {
           showStatus(i18n.timeout || 'La solicitud tardo demasiado, intentalo nuevamente.', true);

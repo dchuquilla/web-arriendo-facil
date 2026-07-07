@@ -132,19 +132,12 @@ get_header();
           </div>
         </div>
 
-        <!-- Step 3: Observaciones y Documentos -->
+        <!-- Step 3: Documentos -->
         <div class="af-wizard__panel" data-panel="3">
-          <h2><?php esc_html_e( 'Observaciones y Documentos', 'twentytwentyfive-child' ); ?></h2>
-          <p class="af-wizard__subtitle"><?php esc_html_e( 'Agrega observaciones y sube los documentos necesarios.', 'twentytwentyfive-child' ); ?></p>
+          <h2><?php esc_html_e( 'Documentos', 'twentytwentyfive-child' ); ?></h2>
+          <p class="af-wizard__subtitle"><?php esc_html_e( 'Sube los documentos necesarios.', 'twentytwentyfive-child' ); ?></p>
 
           <div class="af-form-grid">
-            <div class="af-form-group af-form-group--full">
-              <label for="af-observations"><?php esc_html_e( 'Observaciones', 'twentytwentyfive-child' ); ?> *</label>
-              <textarea id="af-observations" name="observations" rows="4" maxlength="1000" required
-                placeholder="<?php esc_attr_e( 'Describe brevemente tu propiedad o requerimientos especiales...', 'twentytwentyfive-child' ); ?>"></textarea>
-              <span class="af-form-error" hidden></span>
-            </div>
-
             <div class="af-form-group af-form-group--full">
               <label for="af-doc-servicios"><?php esc_html_e( 'Servicios básicos del lugar (PDF)', 'twentytwentyfive-child' ); ?></label>
               <div class="af-file-upload">
