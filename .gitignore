@@ -60,3 +60,9 @@ wordpress/wp-content/plugins/arriendo-facil-main
 .claude
 .playwright-mcp
 wordpress/wp-content/themes/twentytwentyfive-child.zip
+
+# Sensitive billing certificates and access-control files
+wordpress/wp-content/af-certs/
+wordpress/wp-content/af-certs/**
+wordpress/wp-content/af-certs/**/.htaccess
+wordpress/wp-content/af-certs/**/cert_*

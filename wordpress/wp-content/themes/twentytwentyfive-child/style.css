@@ -4266,6 +4266,58 @@ textarea:focus {
   }
 }
 
+/* Intermediate breakpoint for tablets/small laptops */
+@media (max-width: 1024px) and (min-width: 901px) {
+  .properties-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-5);
+  }
+
+  .search-inputs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .properties-hero--listing {
+    padding: var(--space-8) 0 var(--space-7);
+  }
+}
+
+@media (max-width: 480px) {
+  .properties-hero h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .search-form {
+    padding: var(--space-4);
+  }
+
+  .property-card {
+    border-radius: var(--radius-md);
+  }
+
+  .property-card img,
+  .property-card__image img {
+    height: auto;
+    max-height: 220px;
+    object-fit: cover;
+  }
+
+  .property-content,
+  .property-card__content {
+    padding: var(--space-4);
+  }
+
+  .sort-controls {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .sort-controls select,
+  .sort-controls .btn {
+    width: 100%;
+  }
+}
+
 /* ========================================
    PROPERTY DETAIL PAGE
    ======================================== */

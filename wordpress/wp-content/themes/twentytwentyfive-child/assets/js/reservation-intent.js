@@ -201,7 +201,6 @@
         guest_phone: phone,
         preferred_date: form.elements.preferred_date.value,
         preferred_time: form.elements.preferred_time.value,
-        notes: form.elements.notes.value,
       }).then(function (result) {
         setLoading(false);
 

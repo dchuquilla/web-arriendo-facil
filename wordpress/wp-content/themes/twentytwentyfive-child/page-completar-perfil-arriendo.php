@@ -34,8 +34,12 @@ get_header();
           </div>
 
           <div class="af-guest-profile-field">
-            <label for="af-gp-name"><?php esc_html_e('Nombre', 'twentytwentyfive-child'); ?></label>
-            <input type="text" id="af-gp-name" name="name">
+            <label for="af-gp-name"><?php esc_html_e('Nombre completo (nombres y apellidos)', 'twentytwentyfive-child'); ?> *</label>
+            <input type="text" id="af-gp-name" name="name" required
+              pattern="^[A-Za-zÀ-ÿÑñ]{2,}(?:\s+[A-Za-zÀ-ÿÑñ]{2,}){1,}$"
+              minlength="5" maxlength="80" autocomplete="name"
+              title="<?php esc_attr_e('Ingresa nombres y apellidos completos, solo letras (mínimo 2 palabras).', 'twentytwentyfive-child'); ?>">
+            <small class="af-guest-profile-hint"><?php esc_html_e('Solo letras. Mínimo nombre y apellido.', 'twentytwentyfive-child'); ?></small>
           </div>
 
           <div class="af-guest-profile-field">
@@ -51,6 +55,11 @@ get_header();
           <div class="af-guest-profile-field">
             <label for="af-gp-personas"><?php esc_html_e('Personas que vivirán en la propiedad', 'twentytwentyfive-child'); ?></label>
             <input type="number" id="af-gp-personas" name="personas_viviran" min="1" max="20" inputmode="numeric">
+          </div>
+
+          <div class="af-guest-profile-field">
+            <label for="af-gp-rental-years"><?php esc_html_e('Años de arriendo', 'twentytwentyfive-child'); ?> *</label>
+            <input type="number" id="af-gp-rental-years" name="rental_years" min="1" max="20" value="1" inputmode="numeric" required>
           </div>
 
           <div class="af-guest-profile-field">

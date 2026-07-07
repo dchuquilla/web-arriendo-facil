@@ -321,7 +321,6 @@
       { label: 'Número Documento', id: 'af-id-number' },
       { label: 'Nombre del Cliente', id: 'af-client-name' },
       { label: 'Email', id: 'af-email' },
-      { label: 'Observaciones', id: 'af-observations' },
     ];
 
     var html = '<dl class="af-summary-list">';
@@ -376,7 +375,7 @@
     formData.append('nonce', nonce);
 
     var textFields = ['id_type', 'id_number', 'client_name', 'email',
-      'has_legal_agent', 'observations'];
+      'has_legal_agent'];
 
     textFields.forEach(function (name) {
       var el = wizard.querySelector('[name="' + name + '"]');
