@@ -64,6 +64,10 @@ body.af-is-loading {
   contain: layout style paint;
 }
 
+.af-loading-screen[hidden] {
+  display: none !important;
+}
+
 .af-loading-screen.is-visible {
   opacity: 1;
   visibility: visible;
