@@ -5,10 +5,19 @@
 (function() {
 	'use strict';
 
+	const SEARCH_LIMITS = Object.freeze({
+		min: 2,
+		max: 100,
+	});
+
+	const FRIENDLY_SEARCH_ERROR = 'No se pudo procesar la búsqueda. Intenta nuevamente.';
+
 	const HeroSearch = {
 		apiKey: null,
 		autocompleteService: null,
 		currentSuggestions: [],
+		activeRequestId: 0,
+		inputDebounceTimer: null,
 
 		init() {
 			this.cacheElements();
@@ -38,6 +47,40 @@
 					this.clearSuggestions();
 				}
 			});
+		},
+
+		sanitizeQuery(raw) {
+			if (typeof raw !== 'string') {
+				return '';
+			}
+
+			return raw
+				.replace(/[\u0000-\u001F\u007F]/g, '')
+				.replace(/[<>`]/g, '')
+				.replace(/\s+/g, ' ')
+				.trim()
+				.slice(0, SEARCH_LIMITS.max);
+		},
+
+		debounceSuggestions(query) {
+			if (this.inputDebounceTimer) {
+				window.clearTimeout(this.inputDebounceTimer);
+			}
+
+			this.inputDebounceTimer = window.setTimeout(() => {
+				this.fetchSuggestions(query);
+			}, 180);
+		},
+
+		fetchSuggestions(query) {
+			this.ensureGooglePlacesReady();
+
+			if (this.autocompleteService) {
+				this.getGooglePlacesSuggestions(query);
+				return;
+			}
+
+			this.getLocalSuggestions(query);
 		},
 
 		initGooglePlaces(apiKey) {
@@ -102,19 +145,22 @@
 		},
 
 		onSearchInput(e) {
-			const value = e.target.value.trim();
+			try {
+				const value = this.sanitizeQuery(e.target.value);
 
-			if (!value || value.length < 2) {
+				if (e.target.value !== value) {
+					e.target.value = value;
+				}
+
+				if (!value || value.length < SEARCH_LIMITS.min) {
+					this.clearSuggestions();
+					return;
+				}
+
+				this.debounceSuggestions(value);
+			} catch (_err) {
 				this.clearSuggestions();
-				return;
-			}
-
-			this.ensureGooglePlacesReady();
-
-			if (this.autocompleteService) {
-				this.getGooglePlacesSuggestions(value);
-			} else {
-				this.getLocalSuggestions(value);
+				this.setInputError(true);
 			}
 		},
 
@@ -150,20 +196,30 @@
 				return;
 			}
 
+			const requestId = ++this.activeRequestId;
+
 			this.autocompleteService.getPlacePredictions(
 				{
 					input: query,
 					componentRestrictions: { country: 'ec' },
 				},
 				(predictions, status) => {
+					if (requestId !== this.activeRequestId) {
+						return;
+					}
+
 					if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
 						this.renderSuggestions(
 							predictions.map(p => ({
-								label: p.main_text,
-								description: p.description,
+								label: this.sanitizeQuery(p.main_text),
+								description: this.sanitizeQuery(p.description),
 							}))
 						);
+						this.setInputError(false);
+						return;
 					}
+
+					this.clearSuggestions();
 				}
 			);
 		},
@@ -200,26 +256,40 @@
 			}
 
 			this.currentSuggestions = suggestions;
+			this.elements.suggestionsList.textContent = '';
 
-			const html = suggestions.map((sug, idx) => `
-				<li data-index="${idx}">
-					<strong>${this.escapeHtml(sug.label)}</strong>
-					<small>${this.escapeHtml(sug.description)}</small>
-				</li>
-			`).join('');
+			const fragment = document.createDocumentFragment();
+			suggestions.forEach((sug, idx) => {
+				const li = document.createElement('li');
+				li.dataset.index = String(idx);
+				li.setAttribute('role', 'option');
+				li.id = `hero-search-option-${idx}`;
 
-			this.elements.suggestionsList.innerHTML = html;
-			this.elements.suggestionsList.style.display = suggestions.length > 0 ? 'block' : 'none';
+				const strong = document.createElement('strong');
+				strong.textContent = this.sanitizeQuery(sug.label);
 
-			document.querySelectorAll('#hero-search-suggestions li').forEach((li, idx) => {
+				const small = document.createElement('small');
+				small.textContent = this.sanitizeQuery(sug.description);
+
+				li.appendChild(strong);
+				li.appendChild(small);
 				li.addEventListener('click', () => this.selectSuggestion(idx));
+				fragment.appendChild(li);
 			});
+
+			this.elements.suggestionsList.appendChild(fragment);
+			const hasSuggestions = suggestions.length > 0;
+			this.elements.suggestionsList.style.display = hasSuggestions ? 'block' : 'none';
+			this.elements.searchInput.setAttribute('aria-expanded', hasSuggestions ? 'true' : 'false');
 		},
 
 		clearSuggestions() {
 			if (this.elements.suggestionsList) {
 				this.elements.suggestionsList.style.display = 'none';
-				this.elements.suggestionsList.innerHTML = '';
+				this.elements.suggestionsList.textContent = '';
+			}
+			if (this.elements.searchInput) {
+				this.elements.searchInput.setAttribute('aria-expanded', 'false');
 			}
 			this.currentSuggestions = [];
 		},
@@ -234,22 +304,42 @@
 		},
 
 		async performSearch() {
-			const location = this.elements.searchInput.value.trim();
-			if (!location) {
+			try {
+				const location = this.sanitizeQuery(this.elements.searchInput.value);
+				if (!location || location.length < SEARCH_LIMITS.min) {
+					this.setInputError(true);
+					return;
+				}
+
+				this.setInputError(false);
+				this.elements.searchInput.value = location;
+
+				const params = new URLSearchParams({
+					location: location,
+				});
+
+				const userLocation = await this.getUserLocation();
+				if (userLocation) {
+					params.set('latitude', String(userLocation.latitude));
+					params.set('longitude', String(userLocation.longitude));
+				}
+
+				const targetUrl = new URL('/search-results', window.location.origin);
+				targetUrl.search = params.toString();
+				window.location.assign(targetUrl.toString());
+			} catch (_err) {
+				this.setInputError(true);
+				if (window.alert) {
+					window.alert(FRIENDLY_SEARCH_ERROR);
+				}
+			}
+		},
+
+		setInputError(hasError) {
+			if (!this.elements.searchInput) {
 				return;
 			}
-
-			const params = new URLSearchParams({
-				location: location,
-			});
-
-			const userLocation = await this.getUserLocation();
-			if (userLocation) {
-				params.set('latitude', userLocation.latitude);
-				params.set('longitude', userLocation.longitude);
-			}
-
-			window.location.href = `/search-results?${params.toString()}`;
+			this.elements.searchInput.setAttribute('aria-invalid', hasError ? 'true' : 'false');
 		},
 
 		escapeHtml(text) {

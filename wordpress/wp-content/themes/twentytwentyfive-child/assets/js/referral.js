@@ -1,6 +1,14 @@
 (function () {
   'use strict';
 
+  var NAME_LIMITS = Object.freeze({
+    min: 2,
+    max: 60,
+  });
+
+  var NAME_ALLOWED_PATTERN = /^[A-Za-z\u00C0-\u017F' .-]{2,60}$/;
+  var FRIENDLY_FATAL_ERROR = 'No se pudo validar el formulario. Recarga la página e inténtalo nuevamente.';
+
   var WHATSAPP_NUMBER = '';
   if (window.afReferral && window.afReferral.whatsapp) {
     WHATSAPP_NUMBER = window.afReferral.whatsapp.replace('+', '');
@@ -13,6 +21,10 @@
   var errorEl = document.getElementById('referral-name-error');
 
   if (!referralBtn || !nameInput) return;
+
+  var isFatalState = false;
+  var lastErrorMsg = '';
+  var lastBtnEnabled = null;
 
   var PROFANITY_LIST = [
     'puta', 'mierda', 'hijo de', 'cabron', 'cabrón', 'pendejo',
@@ -80,17 +92,53 @@
     /http[s]?:\/\//i
   ];
 
-  function sanitizeName(raw) {
-    return raw.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-'\.]/g, '').trim();
+  function debounce(fn, wait) {
+    var timer = null;
+    return function () {
+      var args = arguments;
+      var context = this;
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+      timer = window.setTimeout(function () {
+        fn.apply(context, args);
+      }, wait);
+    };
   }
 
-  function validateName(name) {
-    if (!name || name.length < 2) {
+  function sanitizePreflight(raw) {
+    if (typeof raw !== 'string') {
+      return '';
+    }
+
+    return raw
+      .replace(/[\u0000-\u001F\u007F]/g, '')
+      .replace(/[<>`]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, NAME_LIMITS.max);
+  }
+
+  function sanitizeName(raw) {
+    return sanitizePreflight(raw)
+      .replace(/[^A-Za-z\u00C0-\u017F\s\-'.]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function validateName(rawName) {
+    var name = sanitizeName(rawName);
+
+    if (!name || name.length < NAME_LIMITS.min) {
       return 'Ingresa tu nombre (mínimo 2 caracteres).';
     }
 
-    if (name.length > 60) {
+    if (name.length > NAME_LIMITS.max) {
       return 'El nombre es demasiado largo (máximo 60 caracteres).';
+    }
+
+    if (!NAME_ALLOWED_PATTERN.test(name)) {
+      return 'El nombre contiene caracteres no permitidos.';
     }
 
     if (containsProfanity(name)) {
@@ -111,15 +159,56 @@
   }
 
   function showError(msg) {
+    if (!errorEl) {
+      return;
+    }
+    if (lastErrorMsg === msg && !errorEl.hidden) {
+      return;
+    }
+    lastErrorMsg = msg;
     errorEl.textContent = msg;
     errorEl.hidden = false;
-    nameInput.style.borderColor = '#e53e3e';
+    nameInput.classList.add('is-invalid');
+    nameInput.setAttribute('aria-invalid', 'true');
   }
 
   function clearError() {
+    if (!errorEl) {
+      return;
+    }
+    if (errorEl.hidden && !lastErrorMsg) {
+      return;
+    }
     errorEl.hidden = true;
     errorEl.textContent = '';
-    nameInput.style.borderColor = '';
+    lastErrorMsg = '';
+    nameInput.classList.remove('is-invalid');
+    nameInput.setAttribute('aria-invalid', 'false');
+  }
+
+  function setButtonEnabled(enabled) {
+    if (lastBtnEnabled === enabled) {
+      return;
+    }
+    lastBtnEnabled = enabled;
+    if (enabled) {
+      referralBtn.classList.remove('is-disabled');
+      referralBtn.removeAttribute('aria-disabled');
+      referralBtn.removeAttribute('tabindex');
+      return;
+    }
+    referralBtn.classList.add('is-disabled');
+    referralBtn.setAttribute('aria-disabled', 'true');
+    referralBtn.setAttribute('tabindex', '-1');
+  }
+
+  function lockUi(message) {
+    isFatalState = true;
+    setButtonEnabled(false);
+    nameInput.setAttribute('aria-invalid', 'true');
+    if (message) {
+      showError(message);
+    }
   }
 
   function buildWhatsAppUrl(name) {
@@ -132,64 +221,109 @@
     return 'https://wa.me/?text=' + encoded;
   }
 
-  function initReferralButton() {
-    referralBtn.classList.add('is-disabled');
-    referralBtn.setAttribute('aria-disabled', 'true');
-    referralBtn.setAttribute('tabindex', '-1');
+  function computeValidationState(rawValue) {
+    var cleanName = sanitizeName(rawValue);
+    var validationError = validateName(cleanName);
+    return {
+      cleanName: cleanName,
+      isValid: !validationError,
+      error: validationError,
+    };
+  }
 
-    referralBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-
-      if (referralBtn.classList.contains('is-disabled')) {
-        nameInput.focus();
+  var debouncedValidateInput = debounce(function () {
+    try {
+      if (isFatalState) {
         return;
       }
 
-      var rawValue = nameInput.value;
-      var cleanName = sanitizeName(rawValue);
-      var validationError = validateName(cleanName);
-
-      if (validationError) {
-        showError(validationError);
-        nameInput.focus();
+      var state = computeValidationState(nameInput.value);
+      if (state.error) {
+        clearError();
+        setButtonEnabled(false);
         return;
       }
 
-      clearError();
-
-      var url = buildWhatsAppUrl(cleanName);
-
-      if (window.gtag) {
-        gtag('event', 'referral_whatsapp_click', {
-          'event_category': 'engagement',
-          'event_label': 'referral_program'
-        });
-      }
-
-      window.open(url, '_blank', 'noopener,noreferrer');
-
-      nameInput.value = '';
-      referralBtn.classList.add('is-disabled');
-      referralBtn.setAttribute('aria-disabled', 'true');
-      referralBtn.setAttribute('tabindex', '-1');
-    });
-
-    nameInput.addEventListener('input', function() {
       if (!errorEl.hidden) {
         clearError();
       }
 
-      var clean = sanitizeName(this.value);
-      var isValid = clean.length >= 2 && !validateName(clean);
+      if (nameInput.value !== state.cleanName) {
+        nameInput.value = state.cleanName;
+      }
 
-      if (isValid) {
-        referralBtn.classList.remove('is-disabled');
-        referralBtn.removeAttribute('aria-disabled');
-        referralBtn.removeAttribute('tabindex');
-      } else {
-        referralBtn.classList.add('is-disabled');
-        referralBtn.setAttribute('aria-disabled', 'true');
-        referralBtn.setAttribute('tabindex', '-1');
+      setButtonEnabled(state.isValid);
+    } catch (err) {
+      lockUi(FRIENDLY_FATAL_ERROR);
+      if (window.console && typeof window.console.error === 'function') {
+        window.console.error('Referral validation error', err);
+      }
+    }
+  }, 120);
+
+  function initReferralButton() {
+    setButtonEnabled(false);
+
+    referralBtn.addEventListener('click', function(e) {
+      try {
+        e.preventDefault();
+
+        if (isFatalState || referralBtn.classList.contains('is-disabled')) {
+          nameInput.focus();
+          return;
+        }
+
+        var state = computeValidationState(nameInput.value);
+        if (!state.isValid) {
+          showError(state.error || 'Ingresa un nombre válido.');
+          setButtonEnabled(false);
+          nameInput.focus();
+          return;
+        }
+
+        clearError();
+        var url = buildWhatsAppUrl(state.cleanName);
+
+        if (window.gtag) {
+          gtag('event', 'referral_whatsapp_click', {
+            'event_category': 'engagement',
+            'event_label': 'referral_program'
+          });
+        }
+
+        window.open(url, '_blank', 'noopener,noreferrer');
+
+        nameInput.value = '';
+        setButtonEnabled(false);
+      } catch (err) {
+        lockUi(FRIENDLY_FATAL_ERROR);
+        if (window.console && typeof window.console.error === 'function') {
+          window.console.error('Referral submit error', err);
+        }
+      }
+    });
+
+    nameInput.addEventListener('input', function() {
+      debouncedValidateInput();
+    });
+
+    nameInput.addEventListener('blur', function() {
+      if (isFatalState) {
+        return;
+      }
+
+      try {
+        var state = computeValidationState(nameInput.value);
+        if (!state.isValid) {
+          showError(state.error || 'Ingresa un nombre válido.');
+          setButtonEnabled(false);
+          return;
+        }
+
+        nameInput.value = state.cleanName;
+        clearError();
+      } catch (err) {
+        lockUi(FRIENDLY_FATAL_ERROR);
       }
     });
   }
@@ -215,8 +349,15 @@
   }
 
   function init() {
-    initReferralButton();
-    initScrollAnimations();
+    try {
+      initReferralButton();
+      initScrollAnimations();
+    } catch (err) {
+      lockUi(FRIENDLY_FATAL_ERROR);
+      if (window.console && typeof window.console.error === 'function') {
+        window.console.error('Referral init error', err);
+      }
+    }
   }
 
   if (document.readyState === 'loading') {
