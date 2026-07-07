@@ -193,8 +193,13 @@
           throw error;
         }
 
-        if (shouldTrack && fetchPromise && typeof fetchPromise.finally === 'function') {
-          fetchPromise.finally(endAsyncRequest);
+        if (shouldTrack && fetchPromise) {
+          if (typeof fetchPromise.finally === 'function') {
+            fetchPromise.finally(endAsyncRequest);
+          } else {
+            // Older mobile browsers may not implement Promise.finally.
+            Promise.resolve(fetchPromise).then(endAsyncRequest, endAsyncRequest);
+          }
         }
 
         return fetchPromise;
