@@ -202,8 +202,14 @@ $total_accommodations = $accommodation_count->publish ?? 0;
                   id="hero-search-input"
                   class="hero-search-input"
                   placeholder="<?php esc_attr_e('¿Dónde quieres vivir?', 'twentytwentyfive-child'); ?>"
-                  autocomplete="off" />
-                <ul id="hero-search-suggestions" class="hero-search-suggestions"></ul>
+                  autocomplete="off"
+                  maxlength="100"
+                  inputmode="text"
+                  aria-controls="hero-search-suggestions"
+                  aria-autocomplete="list"
+                  aria-expanded="false"
+                  aria-invalid="false" />
+                <ul id="hero-search-suggestions" class="hero-search-suggestions" role="listbox" aria-label="<?php esc_attr_e('Sugerencias de ubicación', 'twentytwentyfive-child'); ?>"></ul>
                 <button id="hero-search-btn" class="hero-search-btn" aria-label="<?php esc_attr_e('Buscar', 'twentytwentyfive-child'); ?>">
                   <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                 </button>
@@ -596,6 +602,11 @@ $total_accommodations = $accommodation_count->publish ?? 0;
                 class="referral-name-input"
                 placeholder="<?php esc_attr_e('Ej: Juan Pérez', 'twentytwentyfive-child'); ?>"
                 maxlength="60"
+                minlength="2"
+                pattern="[A-Za-zÁÉÍÓÚáéíóúÑñÜü' .-]{2,60}"
+                inputmode="text"
+                aria-invalid="false"
+                aria-describedby="referral-name-error"
                 autocomplete="off"
               >
               <a
@@ -610,7 +621,7 @@ $total_accommodations = $accommodation_count->publish ?? 0;
                 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
-            <p class="referral-name-error" id="referral-name-error" hidden></p>
+            <p class="referral-name-error" id="referral-name-error" role="alert" aria-live="polite" hidden></p>
           </div>
 
           <div class="referral-social-proof">

@@ -3101,6 +3101,56 @@ select[aria-invalid="false"] {
   color: var(--color-text-secondary);
 }
 
+.referral-name-form {
+  width: 100%;
+  max-width: 560px;
+}
+
+.referral-name-label {
+  display: inline-block;
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.referral-name-row {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.referral-name-input {
+  flex: 1 1 220px;
+  min-height: 48px;
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--color-text-primary);
+  padding: 0 var(--space-4);
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.referral-name-input:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 3px rgba(125, 190, 82, 0.18);
+}
+
+.referral-name-input.is-invalid {
+  border-color: #d92d20;
+  box-shadow: 0 0 0 3px rgba(217, 45, 32, 0.16);
+}
+
+.referral-name-error {
+  margin: var(--space-2) 0 0;
+  color: #b42318;
+  font-size: var(--font-size-sm);
+  line-height: 1.35;
+}
+
 .referral-btn {
   display: inline-flex;
   align-items: center;
