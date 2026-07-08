@@ -178,30 +178,50 @@
 					return;
 				}
 
-				let settled = false;
-				const finish = value => {
-					if (settled) return;
-					settled = true;
-					resolve(value);
+				const finish = value => resolve(value);
+
+				const fetchPosition = (timeoutMs) => {
+					let settled = false;
+					const done = value => {
+						if (settled) return;
+						settled = true;
+						finish(value);
+					};
+
+					const hardTimeout = window.setTimeout(() => done(null), timeoutMs);
+
+					navigator.geolocation.getCurrentPosition(
+						position => {
+							window.clearTimeout(hardTimeout);
+							done({
+								latitude: position.coords.latitude,
+								longitude: position.coords.longitude,
+							});
+						},
+						() => {
+							window.clearTimeout(hardTimeout);
+							done(null);
+						},
+						{ enableHighAccuracy: false, timeout: timeoutMs, maximumAge: 300000 }
+					);
 				};
 
-				// Hard cap so mobile devices with weak GPS never block navigation.
-				const hardTimeout = window.setTimeout(() => finish(null), 1500);
+				// If permission was already granted, GPS resolves fast — worth a short wait.
+				// If it's still 'prompt', skip immediately: waiting would let the OS prompt
+				// appear only to be dismissed by the imminent navigation.
+				if (navigator.permissions && navigator.permissions.query) {
+					navigator.permissions.query({ name: 'geolocation' }).then(status => {
+						if (status.state === 'granted') {
+							fetchPosition(1500);
+						} else {
+							finish(null);
+						}
+					}).catch(() => finish(null));
+					return;
+				}
 
-				navigator.geolocation.getCurrentPosition(
-					position => {
-						window.clearTimeout(hardTimeout);
-						finish({
-							latitude: position.coords.latitude,
-							longitude: position.coords.longitude,
-						});
-					},
-					() => {
-						window.clearTimeout(hardTimeout);
-						finish(null);
-					},
-					{ enableHighAccuracy: false, timeout: 1500, maximumAge: 300000 }
-				);
+				// Older browsers without Permissions API: skip to avoid killing prompt on nav.
+				finish(null);
 			});
 		},
 
