@@ -172,7 +172,7 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-hero-search',
       get_stylesheet_directory_uri() . '/assets/js/hero-search.js',
       array(),
-      AF_THEME_VERSION,
+      twentytwentyfive_child_asset_version( 'assets/js/hero-search.js' ),
       true
     );
 
