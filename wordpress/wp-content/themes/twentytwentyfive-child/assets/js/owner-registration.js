@@ -427,6 +427,9 @@
       }
     });
 
+    // Backward/forward compatibility: backend stores observations as empty string.
+    formData.append('message', '');
+
     var hasAgent = wizard.querySelector('input[name="has_legal_agent"]:checked');
     if (hasAgent && hasAgent.value === 'yes') {
       var legalTextFields = ['legal_agent_name', 'legal_agent_id_type',
@@ -458,17 +461,44 @@
       body: formData,
       credentials: 'same-origin',
     })
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
+      .then(function (r) {
+        return r.text().then(function (text) {
+          var data = {};
+          if (text) {
+            try {
+              data = JSON.parse(text);
+            } catch (e) {
+              data = {};
+            }
+          }
+          return { ok: r.ok, status: r.status, data: data };
+        });
+      })
+      .then(function (response) {
+        var data = response.data || {};
+
         if (data.success) {
+          if (data.warning || data.activation_email_sent === false) {
+            showResult('success', data.message || 'Registro guardado. El correo de activación será reenviado por soporte.');
+            return;
+          }
+
           showResult('success', data.message || 'Registro exitoso. Revisa tu correo electrónico para activar tu cuenta.');
         } else {
-          showResult('error', data.message || 'Ocurrió un error al enviar tu solicitud.');
+          showResult('error', data.message || mapHttpError(response.status));
         }
       })
       .catch(function () {
         showResult('error', 'Error de conexión. Verifica tu internet e intenta de nuevo.');
       });
+  }
+
+  function mapHttpError(status) {
+    if (status === 400) return 'Revisa los datos ingresados e intenta nuevamente.';
+    if (status === 403) return 'Tu sesión expiró. Recarga la página e intenta nuevamente.';
+    if (status === 409) return 'Este correo ya está registrado.';
+    if (status === 429) return 'Demasiados intentos. Espera unos minutos e intenta nuevamente.';
+    return 'Ocurrió un error al enviar tu solicitud.';
   }
 
   function showResult(type, message) {
