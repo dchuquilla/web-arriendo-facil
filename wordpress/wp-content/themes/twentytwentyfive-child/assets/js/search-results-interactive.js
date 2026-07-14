@@ -105,8 +105,9 @@
 
 			this.map = L.map('map').setView([this.defaultCenter.lat, this.defaultCenter.lng], 12);
 
-			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-				attribution: '© OpenStreetMap contributors',
+			L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+				attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
+				subdomains: 'abcd',
 				maxZoom: 19,
 			}).addTo(this.map);
 
@@ -584,11 +585,9 @@
 		async loadBackgroundMarkers() {
 			const accommodations = await this.fetchAllAccommodations();
 			accommodations.forEach(acc => {
-				const labels = window.afSearchResultsI18n || window.i18n || {};
-				const viewDetailsText = labels.viewDetails || 'Ver detalles';
 				const lat = parseFloat(acc.latitude);
 				const lng = parseFloat(acc.longitude);
-				if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+				if (!Number.isFinite(lat) || !Number.isFinite(lng) || (lat === 0 && lng === 0)) return;
 				if (this.allAccommodationMarkers[acc.id]) return;
 
 				const marker = L.marker([lat, lng], {
@@ -707,7 +706,7 @@
 				const viewDetailsText = (window.i18n && window.i18n.viewDetails) ? window.i18n.viewDetails : 'Ver detalles';
 				const lat = parseFloat(acc.latitude);
 				const lng = parseFloat(acc.longitude);
-				if (Number.isFinite(lat) && Number.isFinite(lng)) {
+				if (Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0)) {
 					// Hide the blue background marker while this accommodation is shown as an active result.
 					if (this.backgroundMarkerLayer && this.allAccommodationMarkers[acc.id]) {
 						this.backgroundMarkerLayer.removeLayer(this.allAccommodationMarkers[acc.id]);
@@ -764,7 +763,7 @@
 			accommodations.forEach(acc => {
 				const lat = parseFloat(acc.latitude);
 				const lng = parseFloat(acc.longitude);
-				if (Number.isFinite(lat) && Number.isFinite(lng)) {
+				if (Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0)) {
 					bounds.extend([lat, lng]);
 					coordinateCount += 1;
 				}
