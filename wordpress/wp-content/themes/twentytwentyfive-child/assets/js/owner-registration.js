@@ -30,6 +30,7 @@
     initFileUploads();
     initLegalAgentToggle();
     initModals();
+    initDocumentNormalize();
     updateNav();
   }
 
@@ -95,6 +96,43 @@
           fieldsContainer.hidden = true;
         }
       });
+    });
+  }
+
+  /**
+   * Dynamically apply uppercase normalization to document number fields
+   * when the selected document type is 'pasaporte'.
+   * For cedula/ruc (numeric), no transform is applied.
+   */
+  function initDocumentNormalize() {
+    var pairs = [
+      { typeEl: document.getElementById('af-id-type'), numEl: document.getElementById('af-id-number') },
+      { typeEl: document.getElementById('af-legal-id-type'), numEl: document.getElementById('af-legal-id-number') },
+    ];
+
+    pairs.forEach(function (pair) {
+      if (!pair.typeEl || !pair.numEl) return;
+
+      function applyDocNormalize() {
+        var docType = pair.typeEl.value;
+        if (docType === 'pasaporte') {
+          pair.numEl.setAttribute('data-normalize', 'document-upper');
+          pair.numEl.style.textTransform = 'uppercase';
+          pair.numEl.style.letterSpacing = '0.06em';
+        } else {
+          pair.numEl.removeAttribute('data-normalize');
+          pair.numEl.style.textTransform = '';
+          pair.numEl.style.letterSpacing = '';
+          // Normalize existing value to digits only on blur for cedula/ruc
+          pair.numEl.onblur = function () {
+            this.value = this.value.replace(/\D/g, '');
+          };
+        }
+      }
+
+      pair.typeEl.addEventListener('change', applyDocNormalize);
+      // Apply on init for the default selection
+      applyDocNormalize();
     });
   }
 

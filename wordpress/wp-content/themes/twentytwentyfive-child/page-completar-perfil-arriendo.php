@@ -36,6 +36,7 @@ get_header();
           <div class="af-guest-profile-field">
             <label for="af-gp-name"><?php esc_html_e('Nombre completo (nombres y apellidos)', 'twentytwentyfive-child'); ?> *</label>
             <input type="text" id="af-gp-name" name="name" required
+              data-normalize="name"
               pattern="^[A-Za-zÀ-ÿÑñ]{2,}(?:\s+[A-Za-zÀ-ÿÑñ]{2,}){1,}$"
               minlength="5" maxlength="80" autocomplete="name"
               title="<?php esc_attr_e('Ingresa nombres y apellidos completos, solo letras (mínimo 2 palabras).', 'twentytwentyfive-child'); ?>">

@@ -401,6 +401,18 @@ get_header();
                 'compare' => '!=',
               ],
             ],
+            [
+              'relation' => 'OR',
+              [
+                'key' => '_af_is_occupied',
+                'compare' => 'NOT EXISTS',
+              ],
+              [
+                'key' => '_af_is_occupied',
+                'value' => '1',
+                'compare' => '!=',
+              ],
+            ],
           ];
 
           $primary_meta_query = $base_meta_query;

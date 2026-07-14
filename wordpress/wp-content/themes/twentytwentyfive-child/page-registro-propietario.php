@@ -53,6 +53,7 @@ get_header();
             <div class="af-form-group af-form-group--full">
               <label for="af-client-name"><?php esc_html_e( 'Nombre del Cliente', 'twentytwentyfive-child' ); ?> *</label>
               <input type="text" id="af-client-name" name="client_name" maxlength="120" autocomplete="name" required
+                data-normalize="name"
                 placeholder="<?php esc_attr_e( 'Nombres y Apellidos', 'twentytwentyfive-child' ); ?>">
               <span class="af-form-error" hidden></span>
             </div>
@@ -60,6 +61,7 @@ get_header();
             <div class="af-form-group af-form-group--full">
               <label for="af-email"><?php esc_html_e( 'Email del Propietario', 'twentytwentyfive-child' ); ?> *</label>
               <input type="email" id="af-email" name="email" maxlength="100" autocomplete="email" required
+                data-normalize="email"
                 placeholder="<?php esc_attr_e( 'correo@ejemplo.com', 'twentytwentyfive-child' ); ?>">
               <p class="af-form-help"><?php esc_html_e( 'Las instrucciones de activación se enviarán únicamente a este correo.', 'twentytwentyfive-child' ); ?></p>
               <span class="af-form-error" hidden></span>
@@ -92,6 +94,7 @@ get_header();
                 <div class="af-form-group af-form-group--full">
                   <label for="af-legal-name"><?php esc_html_e( 'Nombre del Representante', 'twentytwentyfive-child' ); ?></label>
                   <input type="text" id="af-legal-name" name="legal_agent_name" maxlength="120"
+                    data-normalize="name"
                     placeholder="<?php esc_attr_e( 'Nombre completo del representante legal', 'twentytwentyfive-child' ); ?>">
                   <span class="af-form-error" hidden></span>
                 </div>
@@ -123,6 +126,7 @@ get_header();
                 <div class="af-form-group">
                   <label for="af-legal-email"><?php esc_html_e( 'Email', 'twentytwentyfive-child' ); ?></label>
                   <input type="email" id="af-legal-email" name="legal_agent_email" maxlength="100"
+                    data-normalize="email"
                     placeholder="<?php esc_attr_e( 'correo@ejemplo.com', 'twentytwentyfive-child' ); ?>">
                   <span class="af-form-error" hidden></span>
                 </div>

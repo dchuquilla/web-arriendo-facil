@@ -5,7 +5,7 @@
 
 if ( ! defined('ABSPATH') ) { exit; }
 
-define('AF_THEME_VERSION', '2.0.3');
+define('AF_THEME_VERSION', '2.0.4');
 
 function twentytwentyfive_child_asset_version( $relative_path ) {
   $absolute_path = get_stylesheet_directory() . '/' . ltrim( $relative_path, '/' );
@@ -63,6 +63,22 @@ function twentytwentyfive_child_enqueue_assets() {
       true
     );
   }
+
+  // Form normalize styles + JS (global – applies to all pages with data-normalize inputs)
+  wp_enqueue_style(
+    'twentytwentyfive-child-form-normalize',
+    get_stylesheet_directory_uri() . '/assets/css/form-normalize.css',
+    array( 'twentytwentyfive-child-style' ),
+    twentytwentyfive_child_asset_version( 'assets/css/form-normalize.css' )
+  );
+
+  wp_enqueue_script(
+    'twentytwentyfive-child-input-normalizer',
+    get_stylesheet_directory_uri() . '/assets/js/input-normalizer.js',
+    array(),
+    twentytwentyfive_child_asset_version( 'assets/js/input-normalizer.js' ),
+    true
+  );
 
   // Search bar (global)
   wp_enqueue_script(
@@ -270,7 +286,7 @@ function twentytwentyfive_child_enqueue_assets() {
       'twentytwentyfive-child-search-results',
       get_stylesheet_directory_uri() . '/assets/js/search-results-interactive.js',
       is_page('search-results') ? array( 'leaflet-js', 'leaflet-markercluster-js' ) : array( 'leaflet-js' ),
-      AF_THEME_VERSION,
+      twentytwentyfive_child_asset_version( 'assets/js/search-results-interactive.js' ),
       true
     );
 
@@ -409,11 +425,13 @@ function twentytwentyfive_child_print_reservation_modal() {
 
         <div class="af-reservation-modal__field">
           <label for="af-res-guest-name"><?php esc_html_e( 'Nombre', 'twentytwentyfive-child' ); ?> *</label>
-          <input type="text" id="af-res-guest-name" name="guest_name" required autocomplete="name">
+          <input type="text" id="af-res-guest-name" name="guest_name" required autocomplete="name"
+            data-normalize="name">
         </div>
         <div class="af-reservation-modal__field">
           <label for="af-res-guest-email"><?php esc_html_e( 'Correo', 'twentytwentyfive-child' ); ?> *</label>
-          <input type="email" id="af-res-guest-email" name="guest_email" required autocomplete="email">
+          <input type="email" id="af-res-guest-email" name="guest_email" required autocomplete="email"
+            data-normalize="email">
         </div>
         <div class="af-reservation-modal__field">
           <label for="af-res-guest-phone"><?php esc_html_e( 'Teléfono (recomendado)', 'twentytwentyfive-child' ); ?></label>
@@ -653,7 +671,7 @@ function twentytwentyfive_child_enqueue_single_carousel() {
     'twentytwentyfive-child-single-carousel',
     get_stylesheet_directory_uri() . '/assets/js/single.js',
     [],
-    AF_THEME_VERSION,
+    twentytwentyfive_child_asset_version( 'assets/js/single.js' ),
     true
   );
 

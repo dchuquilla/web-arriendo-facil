@@ -1,0 +1,32 @@
+/**
+ * Form Normalize – text-transform visual hints per field type.
+ *
+ * These rules give the user a visual clue about the expected format
+ * WITHOUT breaking the mobile keyboard (no autocapitalize override needed).
+ * The actual normalization is applied by JS on blur / input events.
+ *
+ * @package Arriendo_Facil
+ */
+
+/* ── Proper names & addresses: visually capitalize each word ─────────────── */
+input[data-normalize="name"],
+input[data-normalize="address"] {
+  text-transform: capitalize;
+}
+
+/* ── Passport / document fields: visual uppercase ────────────────────────── */
+input[data-normalize="document-upper"] {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Email fields: visual lowercase ─────────────────────────────────────── */
+input[data-normalize="email"] {
+  text-transform: lowercase;
+}
+
+/*
+ * NOTE: Cédula / RUC (numeric only) and free-text fields (descriptions,
+ * comments) intentionally have no text-transform override — the user
+ * types digits or free prose without visual interference.
+ */
