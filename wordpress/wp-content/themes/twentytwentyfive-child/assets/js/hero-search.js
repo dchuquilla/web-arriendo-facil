@@ -49,17 +49,27 @@
 			});
 		},
 
-		sanitizeQuery(raw) {
+		sanitizeQuery(raw, options = {}) {
+			const shouldTrim = options.trim !== false;
+
 			if (typeof raw !== 'string') {
 				return '';
 			}
 
-			return raw
+			let cleaned = raw
 				.replace(/[\u0000-\u001F\u007F]/g, '')
 				.replace(/[<>`]/g, '')
 				.replace(/\s+/g, ' ')
-				.trim()
 				.slice(0, SEARCH_LIMITS.max);
+
+			if (shouldTrim) {
+				cleaned = cleaned.trim();
+			} else {
+				// Preserve in-progress spacing between words while avoiding leading whitespace.
+				cleaned = cleaned.replace(/^\s+/, '');
+			}
+
+			return cleaned;
 		},
 
 		debounceSuggestions(query) {
@@ -146,7 +156,7 @@
 
 		onSearchInput(e) {
 			try {
-				const value = this.sanitizeQuery(e.target.value);
+				const value = this.sanitizeQuery(e.target.value, { trim: false });
 
 				if (e.target.value !== value) {
 					e.target.value = value;
