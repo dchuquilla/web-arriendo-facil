@@ -38,9 +38,11 @@ function twentytwentyfive_child_enqueue_assets() {
   );
 
   // Child style (con cache busting basado en modificación del archivo)
+  // Usar versión minificada en production, original en desarrollo
+  $style_file = defined('WP_DEBUG') && WP_DEBUG ? 'style.css' : 'style.min.css';
   wp_enqueue_style(
     'twentytwentyfive-child-style',
-    get_stylesheet_uri(),
+    get_stylesheet_directory_uri() . '/' . $style_file,
     array($parent_style_handle, 'twentytwentyfive-child-tokens'),
     $child_style_ver
   );
@@ -749,6 +751,28 @@ function twentytwentyfive_child_get_property_thumbnail_id( $post_id ) {
 }
 
 /**
+ * Add native lazy-loading to images (except LCP candidates)
+ */
+function twentytwentyfive_child_add_lazy_loading( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
+  // Skip if already has loading attribute
+  if ( strpos( $html, 'loading=' ) !== false ) {
+    return $html;
+  }
+
+  // Don't lazy-load if this is LCP candidate (first featured image on single page)
+  if ( is_singular( 'accommodation' ) && $post_id === get_the_ID() && $post_thumbnail_id ) {
+    if ( get_post_thumbnail_id( get_the_ID() ) === $post_thumbnail_id ) {
+      return $html;
+    }
+  }
+
+  // Add loading="lazy"
+  $html = str_replace( '<img ', '<img loading="lazy" ', $html );
+  return $html;
+}
+add_filter( 'wp_get_attachment_image', 'twentytwentyfive_child_add_lazy_loading', 10, 5 );
+
+/**
  * Remove 'Residencias' menu item from navigation
  */
 function twentytwentyfive_child_remove_residencias_menu_item( $items, $args ) {
@@ -764,21 +788,23 @@ function twentytwentyfive_child_remove_residencias_menu_item( $items, $args ) {
 add_filter( 'wp_nav_menu_objects', 'twentytwentyfive_child_remove_residencias_menu_item', 10, 2 );
 
 /**
- * Agregar cache headers para mejor rendimiento
+ * Agregar cache headers optimizados para mejor rendimiento
  */
 function twentytwentyfive_child_add_cache_headers() {
   if (is_user_logged_in()) {
     return;
   }
 
-  if (is_front_page() || is_page('search-results')) {
-    header('Cache-Control: public, max-age=3600');
+  if (is_front_page()) {
+    header('Cache-Control: public, max-age=86400, s-maxage=86400, stale-while-revalidate=259200');
+  } elseif (is_page('search-results')) {
+    header('Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600');
   } elseif (is_page('propiedades')) {
-    header('Cache-Control: public, max-age=60');
+    header('Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600');
   } elseif (is_singular('accommodation')) {
-    header('Cache-Control: public, max-age=7200');
+    header('Cache-Control: public, max-age=86400, s-maxage=86400, stale-while-revalidate=259200');
   } else {
-    header('Cache-Control: public, max-age=1800');
+    header('Cache-Control: public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
   }
 }
 add_action('send_headers', 'twentytwentyfive_child_add_cache_headers');
