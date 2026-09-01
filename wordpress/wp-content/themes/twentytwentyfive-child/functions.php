@@ -13,6 +13,9 @@ function twentytwentyfive_child_asset_version( $relative_path ) {
 }
 
 function twentytwentyfive_child_should_load_reservation_modal() {
+  if ( ! ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) ) {
+    return false;
+  }
   return is_page( 'propiedades' ) || is_page( 'search-results' ) || is_singular( 'accommodation' );
 }
 
@@ -177,7 +180,7 @@ function twentytwentyfive_child_enqueue_assets() {
   }
 
   // JS para el carrusel solo en homepage
-  if ( is_front_page() ) {
+  if ( is_front_page() && defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) {
     wp_enqueue_script(
       'twentytwentyfive-child-home',
       get_stylesheet_directory_uri() . '/assets/js/home.js',
@@ -214,7 +217,7 @@ function twentytwentyfive_child_enqueue_assets() {
   }
 
   // Real-time polling for properties page
-  if ( is_page('propiedades') ) {
+  if ( is_page('propiedades') && defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) {
     wp_enqueue_script(
       'twentytwentyfive-child-propiedades',
       get_stylesheet_directory_uri() . '/assets/js/propiedades.js',
@@ -237,7 +240,7 @@ function twentytwentyfive_child_enqueue_assets() {
   }
 
   // Leaflet.js y estilos para página de búsqueda
-  if ( is_page('search-results') || is_singular('accommodation') ) {
+  if ( ( is_page('search-results') || is_singular('accommodation') ) && defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) {
     wp_enqueue_style(
       'leaflet-css',
       'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css',

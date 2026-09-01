@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 576" preserveAspectRatio="xMidYMid slice">
+  <rect width="1024" height="576" fill="#f2f2f2"/>
+  <rect x="50" y="50" width="924" height="476" fill="#ffffff" stroke="#e0e0e0" stroke-width="2" rx="8"/>
+
+  <!-- Header -->
+  <rect x="70" y="70" width="884" height="60" fill="#f8f9fa" rx="4"/>
+  <rect x="90" y="90" width="120" height="20" fill="#1d2d44" rx="3"/>
+  <rect x="790" y="85" width="80" height="30" fill="#7dbe52" rx="4"/>
+
+  <!-- Sidebar chart -->
+  <rect x="70" y="150" width="200" height="320" fill="#f8f9fa" rx="4"/>
+  <rect x="90" y="170" width="160" height="10" fill="#7dbe52" opacity="0.3" rx="2"/>
+  <rect x="90" y="190" width="140" height="10" fill="#7dbe52" opacity="0.5" rx="2"/>
+  <rect x="90" y="210" width="160" height="10" fill="#7dbe52" opacity="0.8" rx="2"/>
+  <rect x="90" y="230" width="150" height="10" fill="#7dbe52" rx="2"/>
+
+  <!-- Main content area -->
+  <g opacity="0.5">
+    <rect x="300" y="150" width="594" height="200" fill="#f8f9fa" rx="4"/>
+    <rect x="320" y="170" width="200" height="12" fill="#1d2d44" rx="2"/>
+    <rect x="320" y="195" width="400" height="8" fill="#9e9e9e" rx="2"/>
+    <rect x="320" y="213" width="350" height="8" fill="#9e9e9e" rx="2"/>
+    <rect x="320" y="231" width="300" height="8" fill="#9e9e9e" rx="2"/>
+
+    <rect x="320" y="270" width="100" height="60" fill="#ffffff" stroke="#e0e0e0" stroke-width="1" rx="4"/>
+    <rect x="440" y="270" width="100" height="60" fill="#ffffff" stroke="#e0e0e0" stroke-width="1" rx="4"/>
+    <rect x="560" y="270" width="100" height="60" fill="#ffffff" stroke="#e0e0e0" stroke-width="1" rx="4"/>
+    <rect x="680" y="270" width="150" height="60" fill="#ffffff" stroke="#e0e0e0" stroke-width="1" rx="4"/>
+  </g>
+
+  <!-- Table -->
+  <rect x="300" y="370" width="594" height="90" fill="#ffffff" rx="4"/>
+  <line x1="300" y1="395" x2="894" y2="395" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="300" y1="420" x2="894" y2="420" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="300" y1="445" x2="894" y2="445" stroke="#e0e0e0" stroke-width="1"/>
+
+  <!-- Labels -->
+  <text x="512" y="530" font-family="Arial, sans-serif" font-size="16" fill="#1d2d44" text-anchor="middle" font-weight="bold">Dashboard de Gestión</text>
+  <text x="512" y="555" font-family="Arial, sans-serif" font-size="12" fill="#9e9e9e" text-anchor="middle">Control en tiempo real de propiedades</text>
+</svg>

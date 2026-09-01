@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 576" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fce4ec;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8bbd0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="576" fill="url(#grad3)"/>
+
+  <!-- Icon -->
+  <circle cx="512" cy="200" r="80" fill="#e91e63" opacity="0.9"/>
+  <text x="512" y="220" font-family="Arial, sans-serif" font-size="80" fill="#ffffff" text-anchor="middle">📚</text>
+
+  <!-- Text -->
+  <text x="512" y="340" font-family="Arial, sans-serif" font-size="28" fill="#1d2d44" text-anchor="middle" font-weight="bold">Guía Completa</text>
+  <text x="512" y="375" font-family="Arial, sans-serif" font-size="18" fill="#c2185b" text-anchor="middle">Servicios Básicos</text>
+  <text x="512" y="450" font-family="Arial, sans-serif" font-size="14" fill="#666666" text-anchor="middle">Normativa, distribución y mejores prácticas</text>
+  <text x="512" y="480" font-family="Arial, sans-serif" font-size="14" fill="#666666" text-anchor="middle">específicas para Ecuador</text>
+</svg>

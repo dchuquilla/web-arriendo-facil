@@ -5,6 +5,12 @@
  * @package twentytwentyfive-child
  */
 
+// Módulo oculto en Fase 1 — reactivar con AF_LEGACY_MODULES = true.
+if ( ! ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) ) {
+	wp_safe_redirect( home_url( '/' ) );
+	exit;
+}
+
 get_header();
 ?>
 

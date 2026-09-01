@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 576" preserveAspectRatio="xMidYMid slice">
+  <rect width="1024" height="576" fill="#f8f9fa"/>
+
+  <!-- Central circle/diagram -->
+  <circle cx="512" cy="288" r="200" fill="#ffffff" stroke="#7dbe52" stroke-width="2"/>
+  <text x="512" y="295" font-family="Arial, sans-serif" font-size="18" fill="#7dbe52" text-anchor="middle" font-weight="bold">Sistema</text>
+  <text x="512" y="320" font-family="Arial, sans-serif" font-size="14" fill="#7dbe52" text-anchor="middle">Centralizado</text>
+
+  <!-- Connected circles -->
+  <circle cx="250" cy="150" r="60" fill="#e8f5e9" stroke="#7dbe52" stroke-width="2"/>
+  <text x="250" y="160" font-family="Arial, sans-serif" font-size="12" fill="#1d2d44" text-anchor="middle" font-weight="bold">Cuotas</text>
+
+  <circle cx="774" cy="150" r="60" fill="#e8f5e9" stroke="#7dbe52" stroke-width="2"/>
+  <text x="774" y="160" font-family="Arial, sans-serif" font-size="12" fill="#1d2d44" text-anchor="middle" font-weight="bold">Servicios</text>
+
+  <circle cx="150" cy="350" r="60" fill="#e8f5e9" stroke="#7dbe52" stroke-width="2"/>
+  <text x="150" y="360" font-family="Arial, sans-serif" font-size="12" fill="#1d2d44" text-anchor="middle" font-weight="bold">Alícuotas</text>
+
+  <circle cx="874" cy="350" r="60" fill="#e8f5e9" stroke="#7dbe52" stroke-width="2"/>
+  <text x="874" y="360" font-family="Arial, sans-serif" font-size="12" fill="#1d2d44" text-anchor="middle" font-weight="bold">Pagos</text>
+
+  <!-- Connection lines -->
+  <line x1="300" y1="195" x2="450" y2="260" stroke="#7dbe52" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="724" y1="195" x2="574" y2="260" stroke="#7dbe52" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="200" y1="320" x2="380" y2="310" stroke="#7dbe52" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="824" y1="320" x2="644" y2="310" stroke="#7dbe52" stroke-width="2" stroke-dasharray="5,5"/>
+
+  <!-- Title -->
+  <text x="512" y="500" font-family="Arial, sans-serif" font-size="16" fill="#1d2d44" text-anchor="middle" font-weight="bold">Arquitectura Integrada</text>
+  <text x="512" y="525" font-family="Arial, sans-serif" font-size="12" fill="#9e9e9e" text-anchor="middle">Todos los módulos conectados y sincronizados</text>
+</svg>
