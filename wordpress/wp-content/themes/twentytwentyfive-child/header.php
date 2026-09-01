@@ -42,63 +42,31 @@
 
 <header class="site-header" role="banner" id="site-header">
   <div class="container header-inner">
-    <a class="brand" href="<?php echo esc_url(home_url('/')); ?>">
-      <img src="<?php echo esc_url(get_stylesheet_directory_uri()) ?>/assets/favicon/favicon-96x96.png" alt="Arriendo Fácil" width="60" height="60" decoding="async" fetchpriority="high">
+    <!-- Logo/Brand -->
+    <a class="brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('Arriendo Fácil - Inicio', 'twentytwentyfive-child'); ?>">
+      <img src="<?php echo esc_url(get_stylesheet_directory_uri()) ?>/assets/favicon/favicon-96x96.png" alt="Arriendo Fácil" width="48" height="48" decoding="async" fetchpriority="high">
       <span><?php bloginfo('name'); ?></span>
     </a>
 
-    <div class="search-bar-wrapper">
-      <input
-        type="text"
-        id="search-bar-input"
-        class="search-bar-input"
-        placeholder="<?php esc_attr_e('Busca por ubicación...', 'twentytwentyfive-child'); ?>"
-        autocomplete="off" />
-      <ul id="search-suggestions" class="search-suggestions"></ul>
-      <button id="search-bar-btn" class="search-bar-btn" aria-label="<?php esc_attr_e('Buscar', 'twentytwentyfive-child'); ?>">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      </button>
-    </div>
-
-    <button class="nav-toggle" aria-label="<?php esc_attr_e('Menú', 'twentytwentyfive-child'); ?>" aria-expanded="false">
+    <!-- Hamburger Menu Toggle (mobile only) -->
+    <button class="nav-toggle" id="nav-toggle" aria-label="<?php esc_attr_e('Abrir menú', 'twentytwentyfive-child'); ?>" aria-expanded="false" aria-controls="main-nav">
       <span></span>
       <span></span>
       <span></span>
     </button>
 
-    <nav class="nav" aria-label="<?php esc_attr_e('Navegación principal', 'twentytwentyfive-child'); ?>">
-      <?php
-        if ( has_nav_menu('primary') ) {
-          wp_nav_menu(array(
-            'menu_class' => 'main-menu',
-            'theme_location' => 'primary',
-            'container' => false,
-            'depth' => 1,
-            'fallback_cb' => false
-          ));
-        } else {
-          // Simplified fallback navigation (4 items: Logo handled separately, + 3 nav items + CTA)
-          $nav_links = array(
-            array('Cómo funciona', '#como-funciona'),
-            array('Contacto', '#contacto'),
-          );
-          foreach ($nav_links as $link) {
-            echo '<a href="' . esc_url($link[1]) . '">' . esc_html($link[0]) . '</a>';
-          }
-        }
-      ?>
-      <div class="nav-ctas">
-        <?php if ( ! is_page('registro-propietario') ) : ?>
-        <a class="btn btn--outline nav-btn-owner" href="<?php echo esc_url(home_url('/registro-propietario/')); ?>">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-          <?php esc_html_e('Registrarme como propietario', 'twentytwentyfive-child'); ?>
-        </a>
-        <?php endif; ?>
-        <a class="btn btn--primary" href="<?php echo esc_url(home_url('/propiedades/')); ?>">
-          <?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?>
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
+    <!-- Main Navigation -->
+    <nav class="nav" id="main-nav" aria-label="<?php esc_attr_e('Navegación principal', 'twentytwentyfive-child'); ?>">
+      <ul class="nav-menu">
+        <li><a href="<?php echo esc_url(home_url('/')); ?>" class="nav-link"><?php esc_html_e('Inicio', 'twentytwentyfive-child'); ?></a></li>
+        <li><a href="<?php echo esc_url(home_url('/blog')); ?>" class="nav-link"><?php esc_html_e('Blog', 'twentytwentyfive-child'); ?></a></li>
+        <li><a href="#contacto" class="nav-link"><?php esc_html_e('Contacto', 'twentytwentyfive-child'); ?></a></li>
+      </ul>
+
+      <!-- CTA Button in Nav -->
+      <a href="#contacto" class="btn btn--primary nav-cta">
+        <?php esc_html_e('Solicitar Demo', 'twentytwentyfive-child'); ?>
+      </a>
     </nav>
   </div>
 </header>
