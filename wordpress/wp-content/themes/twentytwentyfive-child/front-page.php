@@ -25,7 +25,7 @@ get_header();
             <span class="text-gradient"><?php esc_html_e( 'propiedades profesionalmente', 'twentytwentyfive-child' ); ?></span>
           </h1>
           <p class="p">
-            <?php esc_html_e( 'El arriendo ya está en la mesa. Nosotros gestionamos lo difícil: cuotas, alícuotas, servicios y cobranzas. Tú enfócate en crecer.', 'twentytwentyfive-child' ); ?>
+            <?php esc_html_e( 'El arriendo ya está en la mesa. Nosotros centralizamos el canon de arriendo, las alícuotas y los servicios básicos. Tú enfócate en crecer.', 'twentytwentyfive-child' ); ?>
           </p>
 
           <div class="cta-row">
@@ -48,7 +48,7 @@ get_header();
               <div class="mock-stat-grid">
                 <div class="mock-stat">
                   <div class="mock-stat-icon">📊</div>
-                  <div class="mock-stat-label"><?php esc_html_e( 'Cuotas', 'twentytwentyfive-child' ); ?></div>
+                  <div class="mock-stat-label"><?php esc_html_e( 'Canon de arriendo', 'twentytwentyfive-child' ); ?></div>
                   <div class="mock-stat-value">$12,450</div>
                 </div>
                 <div class="mock-stat">
@@ -78,7 +78,7 @@ get_header();
       <div class="beneficios-propietarios__header">
         <span class="badge"><?php esc_html_e( 'La operación que duele', 'twentytwentyfive-child' ); ?></span>
         <h2 class="h2"><?php esc_html_e( 'Deja que nosotros manejemos la gestión', 'twentytwentyfive-child' ); ?></h2>
-        <p class="p"><?php esc_html_e( 'Las cuotas y servicios son complicados. Tú solo recibes dinero limpio, transparente y cada mes.', 'twentytwentyfive-child' ); ?></p>
+        <p class="p"><?php esc_html_e( 'El canon de arriendo y los servicios básicos son complicados de llevar. Tú solo recibes dinero limpio, transparente y cada mes.', 'twentytwentyfive-child' ); ?></p>
       </div>
 
       <!-- Benefits en 2x2 grid -->
@@ -116,7 +116,7 @@ get_header();
       <div class="grid-4">
         <div class="card">
           <div class="card__icon">⚠️</div>
-          <h3><?php esc_html_e( 'Cuotas en Excel, pagos perdidos', 'twentytwentyfive-child' ); ?></h3>
+          <h3><?php esc_html_e( 'Canon de arriendo en Excel, pagos perdidos', 'twentytwentyfive-child' ); ?></h3>
           <p><?php esc_html_e( 'Archivos dispersos, sin control real de quién pagó qué.', 'twentytwentyfive-child' ); ?></p>
         </div>
         <div class="card">
@@ -147,7 +147,7 @@ get_header();
           <div class="solucion__point">
             <div class="solucion__checkmark">✓</div>
             <div>
-              <h3><?php esc_html_e( 'Cuotas Centralizadas', 'twentytwentyfive-child' ); ?></h3>
+              <h3><?php esc_html_e( 'Canon de arriendo centralizado', 'twentytwentyfive-child' ); ?></h3>
               <p><?php esc_html_e( 'Todo el dinero en un lugar, reportes en tiempo real, historial completo.', 'twentytwentyfive-child' ); ?></p>
             </div>
           </div>
@@ -191,7 +191,7 @@ get_header();
       <div class="grid-4">
         <div class="card card--feature">
           <div class="card__icon-large">📊</div>
-          <h3><?php esc_html_e( 'Control de Cuotas', 'twentytwentyfive-child' ); ?></h3>
+          <h3><?php esc_html_e( 'Canon de arriendo centralizado', 'twentytwentyfive-child' ); ?></h3>
           <p><?php esc_html_e( 'Ingresos, calendario de pagos, reportes históricos detallados y proyecciones.', 'twentytwentyfive-child' ); ?></p>
           <a href="#" class="card__link"><?php esc_html_e( 'Más info →', 'twentytwentyfive-child' ); ?></a>
         </div>

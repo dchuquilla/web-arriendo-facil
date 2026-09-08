@@ -9,7 +9,13 @@
           <span><?php bloginfo('name'); ?></span>
         </div>
         <p class="footer-desc">
-          <?php esc_html_e('Encuentra tu próximo hogar en segundos. Propiedades verificadas, propietarios confiables, proceso transparente. Bienvenido a Arriendo Fácil.', 'twentytwentyfive-child'); ?>
+          <?php
+          if ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) {
+            esc_html_e('Encuentra tu próximo hogar en segundos. Propiedades verificadas, propietarios confiables, proceso transparente. Bienvenido a Arriendo Fácil.', 'twentytwentyfive-child');
+          } else {
+            esc_html_e('Gestión profesional de arriendos en Ecuador. Cuotas, alícuotas, servicios básicos y control de pagos en un solo lugar.', 'twentytwentyfive-child');
+          }
+          ?>
         </p>
         <p class="footer-contact-info" style="margin-top: var(--space-3); font-size: 0.85rem; color: var(--color-text-secondary);">
           📍 Quito, Pichincha, Ecuador<br>
@@ -35,13 +41,23 @@
       </div>
 
       <div class="footer-col">
-        <h4><?php esc_html_e('Para Renters', 'twentytwentyfive-child'); ?></h4>
-        <div class="footer-links">
-          <a href="<?php echo esc_url(home_url('/propiedades/')); ?>"><?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?></a>
-          <a href="#como-funciona"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a>
-          <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Contacto y soporte', 'twentytwentyfive-child'); ?></a>
-          <a href="<?php echo esc_url(home_url('/contacto/#faq')); ?>"><?php esc_html_e('Preguntas frecuentes', 'twentytwentyfive-child'); ?></a>
-        </div>
+        <?php if ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) : ?>
+          <h4><?php esc_html_e('Para Renters', 'twentytwentyfive-child'); ?></h4>
+          <div class="footer-links">
+            <a href="<?php echo esc_url(home_url('/propiedades/')); ?>"><?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?></a>
+            <a href="#como-funciona"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a>
+            <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Contacto y soporte', 'twentytwentyfive-child'); ?></a>
+            <a href="<?php echo esc_url(home_url('/contacto/#faq')); ?>"><?php esc_html_e('Preguntas frecuentes', 'twentytwentyfive-child'); ?></a>
+          </div>
+        <?php else : ?>
+          <h4><?php esc_html_e('Plataforma', 'twentytwentyfive-child'); ?></h4>
+          <div class="footer-links">
+            <a href="#como-funciona"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a>
+            <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Solicitar demo', 'twentytwentyfive-child'); ?></a>
+            <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Contacto y soporte', 'twentytwentyfive-child'); ?></a>
+            <a href="<?php echo esc_url(home_url('/contacto/#faq')); ?>"><?php esc_html_e('Preguntas frecuentes', 'twentytwentyfive-child'); ?></a>
+          </div>
+        <?php endif; ?>
       </div>
 
       <div class="footer-col">
@@ -66,7 +82,7 @@
       </div>
     </div>
 
-    <?php if ( ! is_page( 'registro-propietario' ) ) : ?>
+    <?php if ( ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) && ! is_page( 'registro-propietario' ) ) : ?>
     <!-- CTA Registro Propietario -->
     <div class="footer-cta-owner">
       <div class="footer-cta-owner__content">

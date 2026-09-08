@@ -7,6 +7,13 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+// Autoservicio de propietarios: en el modelo de administración las altas son internas.
+if ( ! ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) ) {
+	wp_safe_redirect( home_url( '/contacto/' ) );
+	exit;
+}
+
 get_header();
 ?>
 
