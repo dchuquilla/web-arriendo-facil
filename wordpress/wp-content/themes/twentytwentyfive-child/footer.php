@@ -5,7 +5,7 @@
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <span class="logo-box notranslate" translate="no">AF</span>
+          <img class="logo-img" src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-web-sq.png" alt="" width="44" height="44" />
           <span><?php bloginfo('name'); ?></span>
         </div>
         <p class="footer-desc">
@@ -53,7 +53,7 @@
           <h4><?php esc_html_e('Plataforma', 'twentytwentyfive-child'); ?></h4>
           <div class="footer-links">
             <a href="#como-funciona"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a>
-            <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Solicitar demo', 'twentytwentyfive-child'); ?></a>
+            <a href="<?php echo esc_url( af_demo_preview_url() ); ?>"><?php esc_html_e('Ver demo', 'twentytwentyfive-child'); ?></a>
             <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Contacto y soporte', 'twentytwentyfive-child'); ?></a>
             <a href="<?php echo esc_url(home_url('/contacto/#faq')); ?>"><?php esc_html_e('Preguntas frecuentes', 'twentytwentyfive-child'); ?></a>
           </div>
