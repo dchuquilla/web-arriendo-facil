@@ -44,8 +44,8 @@
   <div class="container header-inner">
     <!-- Logo/Brand -->
     <a class="brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('Arriendo Fácil - Inicio', 'twentytwentyfive-child'); ?>">
-      <img src="<?php echo esc_url(get_stylesheet_directory_uri()) ?>/assets/favicon/favicon-96x96.png" alt="Arriendo Fácil" width="48" height="48" decoding="async" fetchpriority="high">
-      <span><?php bloginfo('name'); ?></span>
+      <img class="brand-logo-img" src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-web-sq.png" alt="" width="40" height="40" />
+      <span class="brand-word">Arriendo<em>Fácil</em></span>
     </a>
 
     <!-- Hamburger Menu Toggle (mobile only) -->
@@ -58,14 +58,14 @@
     <!-- Main Navigation -->
     <nav class="nav" id="main-nav" aria-label="<?php esc_attr_e('Navegación principal', 'twentytwentyfive-child'); ?>">
       <ul class="nav-menu">
-        <li><a href="<?php echo esc_url(home_url('/')); ?>" class="nav-link"><?php esc_html_e('Inicio', 'twentytwentyfive-child'); ?></a></li>
-        <li><a href="<?php echo esc_url(home_url('/blog')); ?>" class="nav-link"><?php esc_html_e('Blog', 'twentytwentyfive-child'); ?></a></li>
+        <li><a href="#servicios" class="nav-link"><?php esc_html_e('Servicios', 'twentytwentyfive-child'); ?></a></li>
+        <li><a href="#como-funciona" class="nav-link"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a></li>
         <li><a href="#contacto" class="nav-link"><?php esc_html_e('Contacto', 'twentytwentyfive-child'); ?></a></li>
       </ul>
 
-      <!-- CTA Button in Nav -->
-      <a href="#contacto" class="btn btn--primary nav-cta">
-        <?php esc_html_e('Solicitar Demo', 'twentytwentyfive-child'); ?>
+<!-- CTA Button in Nav -->
+      <a href="<?php echo esc_url( af_demo_preview_url() ); ?>" class="btn btn--primary nav-cta">
+        <?php esc_html_e( 'Solicita tu demo', 'twentytwentyfive-child' ); ?>
       </a>
     </nav>
   </div>

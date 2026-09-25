@@ -7,6 +7,8 @@ if ( ! defined('ABSPATH') ) { exit; }
 
 define('AF_THEME_VERSION', '2.0.4');
 
+require_once dirname(__FILE__) . '/inc/af-services.php';
+
 function twentytwentyfive_child_asset_version( $relative_path ) {
   $absolute_path = get_stylesheet_directory() . '/' . ltrim( $relative_path, '/' );
   return file_exists( $absolute_path ) ? (string) filemtime( $absolute_path ) : AF_THEME_VERSION;
@@ -23,6 +25,15 @@ function twentytwentyfive_child_validate_property_type($value) {
   $allowed = ['apartment', 'house', 'room', 'studio'];
   return in_array($value, $allowed, true) ? $value : '';
 }
+
+/**
+ * Toggle for the Arriendo Fácil admin dashboard shell (wp-admin sidebar for
+ * the "Administrador de Propiedades" role). The shell itself lives in the
+ * plugin (arriendo-facil/admin/class-admin.php), not here, so it keeps
+ * working in wp-admin even if this public-facing theme is swapped later.
+ * This just wires the on/off switch from the theme layer, as requested.
+ */
+add_filter( 'af_admin_shell_enabled', '__return_true' );
 
 /**
  * Enqueue parent + child styles and child scripts.
@@ -101,6 +112,38 @@ function twentytwentyfive_child_enqueue_assets() {
     AF_THEME_VERSION,
     true
   );
+
+  // Flip-card landing component (only on the front page).
+  if ( is_front_page() ) {
+    wp_enqueue_script(
+      'twentytwentyfive-child-pms-flip',
+      get_stylesheet_directory_uri() . '/assets/js/pms-flip.js',
+      array(),
+      twentytwentyfive_child_asset_version( 'assets/js/pms-flip.js' ),
+      true
+    );
+  }
+
+  // Página de detalle de servicio ("Toca para ver más").
+  if ( is_page_template( 'page-detalle-servicio.php' ) ) {
+    wp_enqueue_style(
+      'twentytwentyfive-child-service-detail',
+      get_stylesheet_directory_uri() . '/assets/css/service-detail.css',
+      array( 'twentytwentyfive-child-style', 'twentytwentyfive-child-tokens' ),
+      twentytwentyfive_child_asset_version( 'assets/css/service-detail.css' )
+    );
+  }
+
+  // Chart.js para los gráficos de la vista previa del panel (demo pública).
+  if ( is_page( 'ver-demo' ) ) {
+    wp_enqueue_script(
+      'chart-js',
+      'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
+      array(),
+      '4.4.4',
+      true
+    );
+  }
 
   // Warm likely next pages (property detail and properties list) to improve perceived navigation speed.
   wp_enqueue_script(
@@ -364,6 +407,63 @@ function twentytwentyfive_child_enqueue_assets() {
         'contractGenerated' => __( 'Contrato generado correctamente.', 'twentytwentyfive-child' ),
       ),
     ) );
+  }
+
+  // Registro de administrador (form publico en /solicitar-demo/).
+  if ( is_page( 'solicitar-demo' ) ) {
+    wp_enqueue_style(
+      'twentytwentyfive-child-admin-signup',
+      get_stylesheet_directory_uri() . '/assets/css/admin-signup.css',
+      array( 'twentytwentyfive-child-style', 'twentytwentyfive-child-tokens' ),
+      twentytwentyfive_child_asset_version( 'assets/css/admin-signup.css' )
+    );
+  }
+
+  // Vista previa publica del panel (read-only replica + modal).
+  if ( is_page( 'ver-demo' ) ) {
+    $demo_css_deps = array( 'twentytwentyfive-child-style' );
+
+    // Reuse the plugin shell design system so the demo looks like the real panel.
+    if ( defined( 'ARRIENDO_FACIL_PLUGIN_URL' ) && ARRIENDO_FACIL_PLUGIN_URL ) {
+      $plugin_url = untrailingslashit( ARRIENDO_FACIL_PLUGIN_URL );
+      $plugin_dir = defined( 'ARRIENDO_FACIL_PLUGIN_DIR' ) ? untrailingslashit( ARRIENDO_FACIL_PLUGIN_DIR ) : '';
+
+      $shell_assets = array(
+        'af-demo-tokens'    => array( 'assets/css/af-tokens.css', array() ),
+        'af-demo-shell'     => array( 'assets/css/af-shell.css', array( 'af-demo-tokens' ) ),
+        'af-demo-forms'     => array( 'assets/css/af-forms.css', array( 'af-demo-shell' ) ),
+        'af-demo-dashboard' => array( 'assets/css/af-dashboard.css', array( 'af-demo-shell' ) ),
+      );
+      foreach ( $shell_assets as $handle => $asset ) {
+        $version = ( $plugin_dir && file_exists( $plugin_dir . '/' . $asset[0] ) )
+          ? (string) filemtime( $plugin_dir . '/' . $asset[0] )
+          : ( defined( 'ARRIENDO_FACIL_VERSION' ) ? ARRIENDO_FACIL_VERSION : '1.0.0' );
+        wp_enqueue_style(
+          $handle,
+          $plugin_url . '/' . $asset[0],
+          $asset[1],
+          $version
+        );
+        if ( 'af-demo-shell' === $handle ) {
+          $demo_css_deps[] = 'af-demo-shell';
+        }
+      }
+    }
+
+    wp_enqueue_style(
+      'twentytwentyfive-child-demo-preview',
+      get_stylesheet_directory_uri() . '/assets/css/demo-preview.css',
+      $demo_css_deps,
+      twentytwentyfive_child_asset_version( 'assets/css/demo-preview.css' )
+    );
+
+    wp_enqueue_script(
+      'twentytwentyfive-child-demo-preview',
+      get_stylesheet_directory_uri() . '/assets/js/demo-preview.js',
+      array(),
+      twentytwentyfive_child_asset_version( 'assets/js/demo-preview.js' ),
+      true
+    );
   }
 }
 add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
@@ -935,6 +1035,13 @@ function af_seo_meta_tags() {
     $description = wp_trim_words( get_the_excerpt() ?: get_the_content(), 25, '...' );
     $description = $description ?: 'Propiedad verificada en arriendo en Ecuador. Ver detalles, fotos, ubicación y precio.';
     $canonical   = get_permalink();
+  } elseif ( is_page_template( 'page-detalle-servicio.php' ) ) {
+    $service = af_service_config( get_post_field( 'post_name', get_the_ID() ) );
+    if ( $service ) {
+      $title       = $service['title'] . ' — Arriendo Fácil';
+      $description = $service['tagline'];
+      $canonical   = get_permalink();
+    }
   } else {
     $title       = get_the_title() . ' — Arriendo Fácil';
     $description = 'Arriendo Fácil: plataforma de arriendos verificados en Ecuador.';
@@ -1249,6 +1356,117 @@ class AF_Accommodation_Sitemap_Provider extends WP_Sitemaps_Provider {
 }
 
 /**
+ * Ensure the "solicitar-demo" page exists (self-healing) using the plugin
+ * shortcode template, so frontend CTAs never point to a dead URL.
+ */
+function af_ensure_demo_signup_page() {
+  $page = get_page_by_path( 'solicitar-demo' );
+
+  if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+    return $page->ID;
+  }
+
+  $id = wp_insert_post(
+    array(
+      'post_type'    => 'page',
+      'post_status'  => 'publish',
+      'post_title'   => 'Crea tu cuenta',
+      'post_name'    => 'solicitar-demo',
+      'post_content' => '',
+      'page_template' => 'page-solicitar-demo.php',
+    )
+  );
+
+  return is_wp_error( $id ) ? 0 : (int) $id;
+}
+add_action( 'init', 'af_ensure_demo_signup_page' );
+
+/**
+ * Canonical URL for the demo registration flow.
+ */
+function af_demo_signup_url() {
+  $page = get_page_by_path( 'solicitar-demo' );
+  if ( $page instanceof WP_Post ) {
+    return get_permalink( $page->ID );
+  }
+
+  return home_url( '/solicitar-demo/' );
+}
+
+/**
+ * Ensure the public "ver-demo" page exists (self-healing), where the
+ * read-only dashboard replica renders for the demo flow.
+ */
+function af_ensure_demo_preview_page() {
+  $page = get_page_by_path( 'ver-demo' );
+
+  if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+    return $page->ID;
+  }
+
+  $id = wp_insert_post(
+    array(
+      'post_type'     => 'page',
+      'post_status'   => 'publish',
+      'post_title'    => 'Ver demo — Panel de Arriendo Fácil',
+      'post_name'     => 'ver-demo',
+      'post_content'  => '',
+      'page_template' => 'page-ver-demo.php',
+    )
+  );
+
+  return is_wp_error( $id ) ? 0 : (int) $id;
+}
+add_action( 'init', 'af_ensure_demo_preview_page' );
+
+/**
+ * Ensure the "Toca para ver más" detail pages exist (self-healing).
+ * Una página por servicio, usando el template page-detalle-servicio.php.
+ */
+function af_ensure_service_pages() {
+  foreach ( af_services_config() as $slug => $service ) {
+    $page = get_page_by_path( $slug );
+
+    if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+      if ( $page->post_title !== $service['title'] ) {
+        wp_update_post(
+          array(
+            'ID'         => $page->ID,
+            'post_title' => $service['title'],
+            'post_name'  => $slug,
+          )
+        );
+      }
+      continue;
+    }
+
+    wp_insert_post(
+      array(
+        'post_type'     => 'page',
+        'post_status'   => 'publish',
+        'post_title'    => $service['title'],
+        'post_name'     => $slug,
+        'post_content'  => '',
+        'page_template' => 'page-detalle-servicio.php',
+      )
+    );
+  }
+}
+add_action( 'init', 'af_ensure_service_pages' );
+
+/**
+ * Canonical URL for the public dashboard demo (read-only replica).
+ */
+function af_demo_preview_url() {
+  $page = get_page_by_path( 'ver-demo' );
+  if ( $page instanceof WP_Post ) {
+    return get_permalink( $page->ID );
+  }
+
+  return home_url( '/ver-demo/' );
+}
+
+/**
  * Add static pages to the WordPress sitemap with higher priority.
  */
 function af_sitemap_add_static_pages( $url_list, $post_type, $page_num ) {
@@ -1256,7 +1474,8 @@ function af_sitemap_add_static_pages( $url_list, $post_type, $page_num ) {
     return $url_list;
   }
 
-  $priority_pages = array('propiedades', 'contacto', 'search-results', 'registro-propietario');
+  $priority_pages = array('propiedades', 'contacto', 'search-results', 'registro-propietario', 'solicitar-demo', 'ver-demo');
+  $priority_pages = array_merge( $priority_pages, array_keys( af_services_config() ) );
   foreach ( $priority_pages as $slug ) {
     $page = get_page_by_path($slug);
     if ( $page ) {

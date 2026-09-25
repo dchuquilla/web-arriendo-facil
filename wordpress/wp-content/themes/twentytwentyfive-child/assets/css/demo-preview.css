@@ -1,0 +1,256 @@
+/**
+ * Arriendo Fácil — Vista previa pública del panel (modo demo).
+ * Complementa af-tokens.css + af-shell.css (plugin) en front-end.
+ * Provee: fondo, contenedor, ribbon de demo, modal de invito a cuenta
+ * y micro-ajustes para que el panel se vea igual que en wp-admin.
+ */
+
+body.af-demo-preview-body,
+.af-demo-preview-body {
+  background: #f3f4f6;
+}
+
+/* ── Contenedor del panel demo ─────────────────────────────────── */
+.af-demo-wrap {
+  max-width: var(--af-page-max, 1440px);
+  margin: 0 auto;
+  padding: var(--af-space-4, 16px) var(--af-space-6, 24px) var(--af-space-12, 48px);
+}
+
+/* ── Ribbon "vista previa" ─────────────────────────────────────── */
+.af-demo-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: var(--af-space-4, 16px) var(--af-space-5, 20px);
+  margin: var(--af-space-4, 16px) 0 var(--af-space-5, 20px);
+  background: linear-gradient(135deg, var(--af-primary-700, #007058), var(--af-primary-600, #00926f) 48%, var(--af-primary-400, #3dbba0));
+  color: #fff;
+  border-radius: var(--af-radius-lg, 14px);
+  box-shadow: var(--af-shadow-md, 0 8px 20px rgba(16, 24, 40, 0.12));
+}
+
+.af-demo-ribbon__text strong {
+  display: block;
+  font-size: var(--af-text-base, 16px);
+  margin-bottom: 2px;
+}
+
+.af-demo-ribbon__text span {
+  font-size: var(--af-text-sm, 14px);
+  opacity: 0.9;
+}
+
+.af-demo-ribbon__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #fff;
+  color: var(--af-primary-700, #007058);
+  font-weight: 700;
+  font-size: var(--af-text-sm, 14px);
+  border-radius: var(--af-radius-md, 10px);
+  text-decoration: none;
+  box-shadow: var(--af-shadow-sm, 0 2px 6px rgba(16, 24, 40, 0.12));
+  transition: transform var(--af-motion-fast, 120ms), box-shadow var(--af-motion-fast, 120ms);
+}
+
+.af-demo-ribbon__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--af-shadow-md, 0 8px 20px rgba(16, 24, 40, 0.18));
+}
+
+/* El shell dentro del front end no tiene el margen de wp-admin */
+.af-demo-wrap .af-shell .af-page-header {
+  padding-top: var(--af-space-2, 8px);
+}
+
+/* ── Modal invito a crear cuenta ───────────────────────────────── */
+.af-demo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100010;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.af-demo-modal.is-open {
+  display: flex;
+}
+
+.af-demo-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.af-demo-modal__dialog {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+  width: min(480px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: af-demo-modal-in 0.2s ease-out;
+}
+
+@keyframes af-demo-modal-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+.af-demo-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--af-gray-500, #7a7870);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.af-demo-modal__close:hover {
+  background: var(--af-gray-100, #eeede8);
+  color: var(--af-gray-900, #1b1a16);
+}
+
+.af-demo-modal__art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 24px 8px;
+  color: var(--af-primary-500, #00a884);
+}
+
+.af-demo-modal__body {
+  padding: 12px 28px 28px;
+  text-align: center;
+}
+
+.af-demo-modal__eyebrow {
+  margin: 0 0 6px;
+  font-size: var(--af-text-xs, 12px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--af-primary-600, #00926f);
+}
+
+.af-demo-modal__title {
+  margin: 0 0 10px;
+  font-size: var(--af-text-xl, 24px);
+  line-height: var(--af-leading-tight, 1.2);
+  color: var(--af-gray-900, #1b1a16);
+}
+
+.af-demo-modal__subtitle {
+  margin: 0 0 22px;
+  color: var(--af-gray-500, #7a7870);
+  font-size: var(--af-text-base, 16px);
+  line-height: var(--af-leading-normal, 1.5);
+}
+
+.af-demo-modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.af-demo-modal__primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 46px;
+  background: var(--af-primary-500, #00a884);
+  color: #fff;
+  font-weight: 600;
+  font-size: var(--af-text-base, 16px);
+  border-radius: var(--af-radius-md, 10px);
+  text-decoration: none;
+  box-shadow: var(--af-shadow-md, 0 8px 20px rgba(16, 24, 40, 0.14));
+  transition: background var(--af-motion-fast, 120ms), transform var(--af-motion-fast, 120ms);
+}
+
+.af-demo-modal__primary:hover {
+  background: var(--af-primary-600, #00926f);
+  transform: translateY(-1px);
+}
+
+.af-demo-modal__ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border: 1px solid var(--af-gray-200, #e2e1db);
+  background: #fff;
+  color: var(--af-gray-700, #3f3e37);
+  font-weight: 600;
+  font-size: var(--af-text-sm, 14px);
+  border-radius: var(--af-radius-md, 10px);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--af-motion-fast, 120ms);
+}
+
+.af-demo-modal__ghost:hover {
+  background: var(--af-gray-50, #f7f7f5);
+}
+
+.af-demo-modal__fineprint {
+  position: static;
+  margin: 0;
+  padding: 0;
+  font-size: var(--af-text-xs, 12px);
+  color: var(--af-gray-400, #a8a69e);
+  line-height: var(--af-leading-normal, 1.5);
+}
+
+/* ── Restablecer botones que reutilizan estilos de fila/enlace ──── */
+.af-demo-btn {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+}
+
+.af-demo-btn:focus-visible {
+  outline: 2px solid var(--af-primary-500, #00a884);
+  outline-offset: 2px;
+}
+
+.af-demo-preview-body {
+  background: #f3f4f6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .af-demo-modal__dialog { animation: none; }
+  .af-demo-ribbon__cta,
+  .af-demo-modal__primary { transition: none; transform: none; }
+}
+
+@media (max-width: 640px) {
+  .af-demo-wrap {
+    padding: var(--af-space-3, 12px) var(--af-space-3, 12px) var(--af-space-8, 32px);
+  }
+}
