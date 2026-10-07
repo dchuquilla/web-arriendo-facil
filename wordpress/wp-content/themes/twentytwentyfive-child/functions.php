@@ -7,6 +7,12 @@ if ( ! defined('ABSPATH') ) { exit; }
 
 define('AF_THEME_VERSION', '2.0.4');
 
+// === SECURITY LAYER (load first) ===
+require_once dirname(__FILE__) . '/inc/af-security-headers.php';
+require_once dirname(__FILE__) . '/inc/af-input-validation.php';
+require_once dirname(__FILE__) . '/inc/af-rest-security.php';
+require_once dirname(__FILE__) . '/inc/af-gdpr-compliance.php';
+
 require_once dirname(__FILE__) . '/inc/af-services.php';
 
 function twentytwentyfive_child_asset_version( $relative_path ) {
