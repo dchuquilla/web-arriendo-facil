@@ -48,6 +48,9 @@
 #/wordpress/wp-content/themes
 
 .DS_Store
+
+# Security - Git history backups (remediation)
+.git.backup/
 /wordpress/.DS_Store
 /wordpress/wp-content/.DS_Store
 /wordpress/wp-content/themes/.DS_Store
