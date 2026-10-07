@@ -21,7 +21,7 @@ get_header();
           <?php esc_html_e( 'Nosotros la operamos.', 'twentytwentyfive-child' ); ?>
         </h1>
         <p class="pms-hero__sub">
-          <?php esc_html_e( 'Cobramos, facturamos y cuidamos tu propiedad. Tú solo recibes el pago.', 'twentytwentyfive-child' ); ?>
+          <?php esc_html_e( 'Facturamos, damos mantenimiento y controlamos los pagos de tu propiedad. Tú solo recibes tu liquidación.', 'twentytwentyfive-child' ); ?>
         </p>
 
         <div class="pms-hero__ctas">
@@ -59,8 +59,8 @@ get_header();
     <div class="container">
       <div class="pms-section__header">
         <span class="pms-eyebrow"><?php esc_html_e( 'Por qué somos tu mejor opción', 'twentytwentyfive-child' ); ?></span>
-        <h2 class="h2"><?php esc_html_e( 'Cobras sin perseguir pagos', 'twentytwentyfive-child' ); ?></h2>
-        <p><?php esc_html_e( 'Desde el día uno nosotros operamos tu arriendo para que tú solo revises y cobres.', 'twentytwentyfive-child' ); ?></p>
+        <h2 class="h2"><?php esc_html_e( 'Facturación en regla, propiedad cuidada', 'twentytwentyfive-child' ); ?></h2>
+        <p><?php esc_html_e( 'Desde el día uno nosotros facturamos, damos mantenimiento y operamos tu arriendo para que tú solo revises tus reportes.', 'twentytwentyfive-child' ); ?></p>
       </div>
 
       <div class="af-svc-grid af-svc-grid--why">
@@ -120,7 +120,7 @@ get_header();
           <span class="pms-step__icon" aria-hidden="true">⚙️</span>
           <div class="pms-step__num">2</div>
           <h3><?php esc_html_e( 'Nosotros operamos', 'twentytwentyfive-child' ); ?></h3>
-          <p><?php esc_html_e( 'Facturamos, cobramos, calculamos servicios y coordinamos el mantenimiento sin que intervengas.', 'twentytwentyfive-child' ); ?></p>
+          <p><?php esc_html_e( 'Emitimos facturas electrónicas, calculamos servicios, controlamos pagos y coordinamos el mantenimiento sin que intervengas.', 'twentytwentyfive-child' ); ?></p>
         </div>
         <div class="pms-step pms-step--green">
           <span class="pms-step__icon" aria-hidden="true">💸</span>
@@ -137,7 +137,7 @@ get_header();
     <div class="container">
       <div class="pms-cta__content">
         <span class="pms-eyebrow pms-eyebrow--light"><?php esc_html_e( 'Pruébalo sin compromiso', 'twentytwentyfive-child' ); ?></span>
-        <h2><?php esc_html_e( '¿Listo para cobrar sin perseguir?', 'twentytwentyfive-child' ); ?></h2>
+        <h2><?php esc_html_e( '¿Listo para despreocuparte de tu arriendo?', 'twentytwentyfive-child' ); ?></h2>
         <p><?php esc_html_e( 'Agenda una demo y descubre cómo Arriendo Fácil se encarga de todo desde el primer mes.', 'twentytwentyfive-child' ); ?></p>
         <div class="pms-cta__buttons">
           <a href="<?php echo esc_url( af_demo_preview_url() ); ?>" class="btn btn--primary btn--lg">
