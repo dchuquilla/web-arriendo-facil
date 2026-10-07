@@ -1,0 +1,22 @@
+# BEGIN Arriendo Facil (security hardening)
+# Bloquea los registros de depuracion de WordPress: incluyen SQL, rutas
+# absolutas del servidor y datos internos de la aplicacion.
+<IfModule mod_authz_core.c>
+	<FilesMatch "\.log$">
+		Require all denied
+	</FilesMatch>
+	<FilesMatch "\.af-backup$">
+		Require all denied
+	</FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+	<FilesMatch "\.log$">
+		Order deny,allow
+		Deny from all
+	</FilesMatch>
+	<FilesMatch "\.af-backup$">
+		Order deny,allow
+		Deny from all
+	</FilesMatch>
+</IfModule>
+# END Arriendo Facil (security hardening)

@@ -34,15 +34,18 @@ get_header();
         </div>
 
         <div class="pms-hero__stats">
-          <div class="pms-hero__stat">
+          <div class="pms-hero__stat pms-hero__stat--green">
+            <span class="pms-hero__stat-icon" aria-hidden="true">🏠</span>
             <div class="pms-hero__stat-num">+2,500</div>
             <div class="pms-hero__stat-label"><?php esc_html_e( 'propiedades activas', 'twentytwentyfive-child' ); ?></div>
           </div>
-          <div class="pms-hero__stat">
+          <div class="pms-hero__stat pms-hero__stat--blue">
+            <span class="pms-hero__stat-icon" aria-hidden="true">💰</span>
             <div class="pms-hero__stat-num">99.7%</div>
             <div class="pms-hero__stat-label"><?php esc_html_e( 'tasa de recaudo', 'twentytwentyfive-child' ); ?></div>
           </div>
-          <div class="pms-hero__stat">
+          <div class="pms-hero__stat pms-hero__stat--amber">
+            <span class="pms-hero__stat-icon" aria-hidden="true">⚡</span>
             <div class="pms-hero__stat-num">&lt; 5 min</div>
             <div class="pms-hero__stat-label"><?php esc_html_e( 'liquidación mensual', 'twentytwentyfive-child' ); ?></div>
           </div>
@@ -107,17 +110,20 @@ get_header();
       </div>
 
       <div class="pms-steps">
-        <div class="pms-step">
+        <div class="pms-step pms-step--blue">
+          <span class="pms-step__icon" aria-hidden="true">📤</span>
           <div class="pms-step__num">1</div>
           <h3><?php esc_html_e( 'Sube tu inmueble', 'twentytwentyfive-child' ); ?></h3>
           <p><?php esc_html_e( 'Carga el contrato y los datos de la propiedad. Nosotros armamos todo tu perfil en minutos.', 'twentytwentyfive-child' ); ?></p>
         </div>
-        <div class="pms-step">
+        <div class="pms-step pms-step--violet">
+          <span class="pms-step__icon" aria-hidden="true">⚙️</span>
           <div class="pms-step__num">2</div>
           <h3><?php esc_html_e( 'Nosotros operamos', 'twentytwentyfive-child' ); ?></h3>
           <p><?php esc_html_e( 'Facturamos, cobramos, calculamos servicios y coordinamos el mantenimiento sin que intervengas.', 'twentytwentyfive-child' ); ?></p>
         </div>
-        <div class="pms-step">
+        <div class="pms-step pms-step--green">
+          <span class="pms-step__icon" aria-hidden="true">💸</span>
           <div class="pms-step__num">3</div>
           <h3><?php esc_html_e( 'Recibes tu dinero', 'twentytwentyfive-child' ); ?></h3>
           <p><?php esc_html_e( 'Cada mes te transferimos tu saldo limpio con un reporte claro, detallado y puntual.', 'twentytwentyfive-child' ); ?></p>
