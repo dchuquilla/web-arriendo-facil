@@ -61,8 +61,8 @@ class AF_Security_Headers {
             // Default fallback
             "default-src 'self'",
 
-            // Scripts: self + CDN (adjust CDNs as needed)
-            "script-src 'self' 'unsafe-inline' cdnjs.cloudflare.com cdn.jsdelivr.net charts.google.com $domain",
+            // Scripts: self + CDN + YouTube IFrame API (videos de servicios)
+            "script-src 'self' 'unsafe-inline' cdnjs.cloudflare.com cdn.jsdelivr.net charts.google.com www.youtube.com $domain",
 
             // Styles: self + inline (needed for WordPress)
             "style-src 'self' 'unsafe-inline' fonts.googleapis.com cdnjs.cloudflare.com $domain",
@@ -76,7 +76,8 @@ class AF_Security_Headers {
             // AJAX/Fetch: self only
             "connect-src 'self' $domain",
 
-            // Frames: none (prevents embedding this site in iframes)
+            // Frames: embeber YouTube (videos de servicios) + no embeber este sitio
+            "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
             "frame-ancestors 'none'",
 
             // Forms: self only

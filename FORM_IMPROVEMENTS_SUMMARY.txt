@@ -216,3 +216,31 @@ NOTA: Todos los cambios son reversibles y modulares. El archivo
   (carpeta temporal de trabajo)
 
 ═══════════════════════════════════════════════════════════════════════════════
+
+═══════════════════════════════════════════════════════════════════════════════
+            VIDEO "REPORTES MENSUALES" SIN SUGERENCIAS (2026-10-08)
+═══════════════════════════════════════════════════════════════════════════════
+
+  Video: https://youtu.be/FJ95RtN4W24 → sección de Reportes mensuales.
+
+  SIN SUGERENCIAS AL TERMINAR:
+    1) rel=0 → YouTube sólo sugiere videos del mismo canal.
+    2) Overlay propio al final (IFrame API, estado ENDED):
+       pantalla "Fin del video" + botón "↻ Ver de nuevo" que tapa
+       completamente el reproductor. Nunca se ven las sugerencias.
+
+  Notas técnicas:
+    - enablejsapi=1 en el iframe (sin esto la API no queda lista).
+    - El gestor de cookies (Complianz) deja el iframe en about:blank hasta
+      aceptar: el JS espera con MutationObserver y crea el reproductor después.
+    - El script sólo se carga en páginas de detalle con video configurado.
+    - CSP: frame-src + script-src de YouTube añadidos (por si se activa).
+
+  Para añadir otro video: 'video_id' => 'ID' en la config del servicio.
+
+  Verificado: reproducción, fin → overlay, repetir, páginas sin video,
+  0 errores. php -l OK.
+
+  Capturas: video-playing.png, video-end.png
+
+═══════════════════════════════════════════════════════════════════════════════

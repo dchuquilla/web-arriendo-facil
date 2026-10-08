@@ -162,6 +162,7 @@ function af_services_config() {
 			'icon'        => '📊',
 			'accent'      => 'blue',
 			'video_label' => 'Video: cómo se ven tus reportes mensuales',
+			'video_id'    => 'FJ95RtN4W24',
 			'que'         => array(
 				'title' => '¿Qué hace el sistema?',
 				'intro' => 'El Panel concentra toda tu operación en una sola pantalla:',
@@ -514,8 +515,17 @@ function af_service_config( $slug ) {
  * Se puede definir por opción (af_video_COBROIT...) o filtrando "af_service_video_id".
  */
 function af_service_video_id( $slug ) {
-	$option = get_option( 'af_service_video_' . $slug, '' );
-	return (string) apply_filters( 'af_service_video_id', $option, $slug );
+	$id = (string) get_option( 'af_service_video_' . $slug, '' );
+
+	// Fallback: el ID definido en la configuración del servicio.
+	if ( ! $id ) {
+		$config = af_service_config( $slug );
+		if ( $config && ! empty( $config['video_id'] ) ) {
+			$id = (string) $config['video_id'];
+		}
+	}
+
+	return (string) apply_filters( 'af_service_video_id', $id, $slug );
 }
 
 /**
@@ -523,13 +533,18 @@ function af_service_video_id( $slug ) {
  */
 function af_service_video_html( $svc ) {
 	$video_id = af_service_video_id( $svc['slug'] );
-	$label    = isset( $svc['video_label'] ) ? $svc['video_label'] : ( $svc['title'] . ' — video explicativo' );
-	$icon     = isset( $svc['icon'] ) ? $svc['icon'] : '▶';
+	$label = isset( $svc['video_label'] ) ? $svc['video_label'] : ( $svc['title'] . ' — video explicativo' );
+	$icon  = isset( $svc['icon'] ) ? $svc['icon'] : '▶';
 
-	$markup = '<div class="af-video af-video--' . esc_attr( $svc['accent'] ) . '">';
+	$markup = '<div class="af-video af-video--' . esc_attr( $svc['accent'] ) . '" data-video-key="' . esc_attr( $svc['slug'] ) . '">';
 
 	if ( $video_id ) {
-		$markup .= '<iframe class="af-video__embed" src="https://www.youtube-nocookie.com/embed/' . esc_attr( $video_id ) . '" title="' . esc_attr( $label ) . '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+		// rel=0 → sólo sugerencias del mismo canal; el overlay tapa el fin del video.
+		$markup .= '<iframe class="af-video__embed" data-video-id="' . esc_attr( $video_id ) . '" src="https://www.youtube-nocookie.com/embed/' . esc_attr( $video_id ) . '?rel=0&modestbranding=1&iv_load_policy=3&enablejsapi=1" title="' . esc_attr( $label ) . '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+		$markup .= '<div class="af-video__ended" hidden>';
+		$markup .= '<span class="af-video__ended-title">Fin del video</span>';
+		$markup .= '<button type="button" class="af-video__replay" data-af-replay><span aria-hidden="true">↻</span> Ver de nuevo</button>';
+		$markup .= '</div>';
 	} else {
 		$markup .= '<div class="af-video__placeholder" role="img" aria-label="' . esc_attr( $label ) . '">';
 		$markup .= '<span class="af-video__icon" aria-hidden="true">' . esc_html( $icon ) . '</span>';

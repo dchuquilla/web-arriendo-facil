@@ -138,6 +138,20 @@ function twentytwentyfive_child_enqueue_assets() {
       array( 'twentytwentyfive-child-style', 'twentytwentyfive-child-tokens' ),
       twentytwentyfive_child_asset_version( 'assets/css/service-detail.css' )
     );
+
+    // Overlay de fin de video (evita las sugerencias de YouTube).
+    // Sólo si el servicio tiene video configurado.
+    $af_slug       = get_query_var( 'pagename' );
+    $af_has_video  = $af_slug && function_exists( 'af_service_video_id' ) && af_service_video_id( $af_slug );
+    if ( $af_has_video ) {
+      wp_enqueue_script(
+        'twentytwentyfive-child-service-video',
+        get_stylesheet_directory_uri() . '/assets/js/service-video.js',
+        array(),
+        twentytwentyfive_child_asset_version( 'assets/js/service-video.js' ),
+        true
+      );
+    }
   }
 
   // Warm likely next pages (property detail and properties list) to improve perceived navigation speed.

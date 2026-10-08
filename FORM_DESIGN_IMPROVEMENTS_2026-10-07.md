@@ -439,3 +439,54 @@ Sin referencias restantes a `page-ver-demo`, `demo-preview` ni `af_ensure_demo_p
 ## Pendiente (preexistente, no relacionado)
 - `/contacto/` devuelve **404** (no existe la página; footer y otros enlaces
   apuntan a `home_url('/contacto/')`). Requiere crear la página o redirigirla.
+
+---
+
+# Video "Reportes mensuales" sin sugerencias de YouTube — 2026-10-08 (ronda 4)
+
+Petición: subir el video https://youtu.be/FJ95RtN4W24 a la sección de
+**Reportes mensuales** y evitar que al terminar aparezcan las sugerencias de YouTube.
+
+## Respuesta a la duda
+Sí se puede. Dos medidas combinadas:
+1. `rel=0` → YouTube sólo sugiere videos del **mismo canal**.
+2. **Overlay propio** al terminar: con la IFrame API detectamos el estado `ENDED`
+   y tapamos el reproductor con una pantalla propia ("Fin del video" +
+   botón **↻ Ver de nuevo**). El usuario nunca ve las sugerencias.
+   Como respaldo (si falla la API), queda el iframe normal con `rel=0`.
+
+## Cambios
+- `inc/af-services.php`
+  - `'video_id' => 'FJ95RtN4W24'` en la config de `reportes-mensuales`.
+  - `af_service_video_id()` ahora cae al ID de la config del servicio si no hay
+    opción `af_service_video_<slug>`.
+  - iframe: `?rel=0&modestbranding=1&iv_load_policy=3&enablejsapi=1`
+    (`enablejsapi=1` es obligatorio para que la API quede lista) + `data-video-id`.
+  - Markup nuevo: `.af-video__ended` (overlay) con botón de repetir.
+- **Nuevo** `assets/js/service-video.js`: carga la IFrame API, crea el
+  reproductor cuando el iframe ya apunta a YouTube (Complianz lo bloquea con
+  `about:blank` hasta aceptar cookies), observa cambios con `MutationObserver`,
+  y muestra/oculta el overlay según `onStateChange`.
+- `functions.php`: el script sólo se encola en páginas de detalle de servicio
+  **con** video configurado (las demás no cargan YouTube).
+- `assets/css/service-detail.css`: estilos del overlay y del botón repetir
+  (regla base `.af-video iframe` por si la API recrea el elemento).
+- `inc/af-security-headers.php`: CSP con `frame-src` para YouTube y
+  `script-src` con `www.youtube.com` (por si se activa la cabecera).
+
+## Verificación (Playwright, 1440px)
+| Comprobación | Resultado |
+|---|---|
+| iframe | `youtube-nocookie.com/embed/FJ95RtN4W24?...&enablejsapi=1` |
+| API lista | `getPlayerState` disponible tras aceptar cookies |
+| Reproducción | estado 1 (playing), duración 34 s |
+| Fin del video | estado 0 (ENDED) → overlay visible (`display:flex`, z-index 3) |
+| Botón repetir | overlay oculto + estado 1 (vuelve a reproducir) |
+| Páginas sin video | sin `service-video.js`, placeholder normal |
+| Errores de consola | ninguno (sólo CORS de fuente preexistente en localhost) |
+
+Capturas: `video-playing.png`, `video-end.png` (carpeta temporal de trabajo).
+
+## Cómo añadir más videos
+Añadir `'video_id' => 'XXXXXXXXXXX'` a la config del servicio en
+`inc/af-services.php` (o guardar la opción `af_service_video_<slug>` en BD).
