@@ -4,6 +4,9 @@
  * Página pública que conecta el botón "Solicita tu demo" con el flujo de
  * auto-registro del plugin (shortcode [af_property_admin_signup]).
  *
+ * Layout: panel de marca (izquierda) + tarjeta de formulario (derecha),
+ * en un contenedor amplio para aprovechar el ancho de pantalla.
+ *
  * @package Arriendo_Facil
  */
 
@@ -12,67 +15,107 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 get_header();
 ?>
 
-<style>
-  .af-signup-split { display:grid; grid-template-columns:1fr minmax(380px,440px); gap:48px; align-items:start; padding:56px 0 80px; }
-  .af-signup-split__brand { position:sticky; top:100px; }
-  .af-signup-split__eyebrow { display:inline-block; padding:5px 12px; background:rgba(125,190,82,0.08); color:var(--color-accent-primary,#7dbe52); border-radius:999px; font-size:var(--font-size-xs,12px); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px; }
-  .af-signup-split__title { margin:0 0 14px; font-size:var(--font-size-3xl,32px); line-height:1.15; letter-spacing:-0.02em; color:var(--color-text-primary,#1d2d44); }
-  .af-signup-split__subtitle { margin:0 0 32px; color:var(--color-text-secondary,#9e9e9e); font-size:var(--font-size-lg,20px); line-height:1.55; max-width:520px; }
-  .af-signup-split__steps { list-style:none; margin:0 0 32px; padding:0; display:flex; flex-direction:column; gap:18px; }
-  .af-signup-split__steps li { display:flex; align-items:flex-start; gap:14px; font-size:var(--font-size-base,16px); color:var(--color-text-primary,#1d2d44); line-height:1.5; }
-  .af-signup-split__steps li strong { color:var(--color-accent-primary,#7dbe52); }
-  .af-signup-split__step-num { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; flex:0 0 auto; margin-top:1px; border-radius:50%; background:rgba(125,190,82,0.1); color:var(--color-accent-primary,#7dbe52); font-size:var(--font-size-sm,14px); font-weight:700; }
-  .af-signup-split__note { margin:0; font-size:var(--font-size-sm,14px); color:var(--color-text-secondary,#9e9e9e); line-height:1.6; }
-  .af-signup-split__card { background:#fff; border-radius:var(--border-radius-xl,20px); box-shadow:0 8px 32px rgba(29,45,68,0.12); padding:36px 32px 32px; }
-  .af-signup-split__faq { margin-top:16px; text-align:center; font-size:var(--font-size-sm,14px); }
-  .af-signup-split__faq a { color:var(--color-text-secondary,#9e9e9e); text-decoration:none; border-bottom:1px dashed var(--color-border-primary,rgba(29,45,68,0.12)); transition:color 150ms; }
-  .af-signup-split__faq a:hover { color:var(--color-accent-primary,#7dbe52); border-color:var(--color-accent-primary,#7dbe52); }
-  @media (max-width:860px){
-    .af-signup-split { grid-template-columns:1fr; gap:0; padding:32px 0 56px; }
-    .af-signup-split__brand { position:static; margin-bottom:28px; }
-    .af-signup-split__card { border-radius:var(--border-radius-lg,16px); padding:24px 20px 20px; }
-  }
-</style>
+<main id="main-content" class="af-demo-page">
+  <div class="af-demo-shell">
 
-<main id="main-content" class="section">
-  <div class="container container--narrow">
+    <div class="af-demo-grid">
 
-    <div class="af-signup-split">
+      <!-- ── Panel de marca ─────────────────────────────────────── -->
+      <aside class="af-demo-intro">
+        <div class="af-demo-intro__block af-demo-intro__block--top">
+          <span class="af-demo-eyebrow"><?php esc_html_e( 'Demo guiada · sin costo', 'twentytwentyfive-child' ); ?></span>
+          <h1 class="af-demo-title"><?php esc_html_e( 'Crea tu cuenta y comienza a gestionar', 'twentytwentyfive-child' ); ?></h1>
+          <p class="af-demo-lead"><?php esc_html_e( 'Regístrate en un minuto, verifica tu correo y entra a un panel con datos de ejemplo listos para explorar. No se solicita tarjeta de crédito.', 'twentytwentyfive-child' ); ?></p>
+        </div>
 
-      <div class="af-signup-split__brand">
-        <span class="af-signup-split__eyebrow"><?php esc_html_e( 'Arriendo Fácil', 'twentytwentyfive-child' ); ?></span>
-        <h1 class="af-signup-split__title"><?php esc_html_e( 'Crea tu cuenta y comienza a gestionar', 'twentytwentyfive-child' ); ?></h1>
-        <p class="af-signup-split__subtitle"><?php esc_html_e( 'Regístrate en un minuto. Recibirás un correo de verificación y luego podrás acceder a tu panel de administración con datos de ejemplo listos para explorar.', 'twentytwentyfive-child' ); ?></p>
-
-        <ol class="af-signup-split__steps">
+        <ol class="af-demo-steps">
           <li>
-            <span class="af-signup-split__step-num">1</span>
-            <span><?php esc_html_e( 'Completa tu nombre, correo y una contraseña segura.', 'twentytwentyfive-child' ); ?></span>
+            <span class="af-demo-steps__num" aria-hidden="true">1</span>
+            <span class="af-demo-steps__txt">
+              <strong><?php esc_html_e( 'Completa el formulario', 'twentytwentyfive-child' ); ?></strong>
+              <span class="af-demo-steps__desc"><?php esc_html_e( 'Empresa, contacto e identificación.', 'twentytwentyfive-child' ); ?></span>
+            </span>
           </li>
           <li>
-            <span class="af-signup-split__step-num">2</span>
-            <span><?php esc_html_e( '<strong>Verifica tu correo</strong> haciendo clic en el enlace que te enviaremos.', 'twentytwentyfive-child' ); ?></span>
+            <span class="af-demo-steps__num" aria-hidden="true">2</span>
+            <span class="af-demo-steps__txt">
+              <strong><?php esc_html_e( 'Verifica tu correo', 'twentytwentyfive-child' ); ?></strong>
+              <span class="af-demo-steps__desc"><?php esc_html_e( 'Haz clic en el enlace que te enviamos.', 'twentytwentyfive-child' ); ?></span>
+            </span>
           </li>
           <li>
-            <span class="af-signup-split__step-num">3</span>
-            <span><?php esc_html_e( 'Entra al sistema interno y prueba cobros, contratos, mantenimiento e inquilinos.', 'twentytwentyfive-child' ); ?></span>
+            <span class="af-demo-steps__num" aria-hidden="true">3</span>
+            <span class="af-demo-steps__txt">
+              <strong><?php esc_html_e( 'Explora el panel', 'twentytwentyfive-child' ); ?></strong>
+              <span class="af-demo-steps__desc"><?php esc_html_e( 'Entra con datos de ejemplo ya cargados.', 'twentytwentyfive-child' ); ?></span>
+            </span>
           </li>
         </ol>
 
-        <p class="af-signup-split__note">
-          <?php esc_html_e( 'Sin tarjeta. Datos de ejemplo: no se transfiere ningún dato real a tu cuenta hasta que publiques una propiedad.', 'twentytwentyfive-child' ); ?>
-        </p>
-      </div>
+        <div class="af-demo-intro__block">
+          <span class="af-demo-includes__title"><?php esc_html_e( 'Tu demo incluye', 'twentytwentyfive-child' ); ?></span>
+          <ul class="af-demo-includes">
+            <li>
+              <span class="af-demo-includes__name"><?php esc_html_e( 'Cobros y alícuotas', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-includes__desc"><?php esc_html_e( 'Emite cobros y revisa pagos pendientes.', 'twentytwentyfive-child' ); ?></span>
+            </li>
+            <li>
+              <span class="af-demo-includes__name"><?php esc_html_e( 'Contratos y documentos', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-includes__desc"><?php esc_html_e( 'Guarda contratos e identificaciones firmadas.', 'twentytwentyfive-child' ); ?></span>
+            </li>
+            <li>
+              <span class="af-demo-includes__name"><?php esc_html_e( 'Mantenimiento', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-includes__desc"><?php esc_html_e( 'Registra solicitudes y da seguimiento a su resolución.', 'twentytwentyfive-child' ); ?></span>
+            </li>
+            <li>
+              <span class="af-demo-includes__name"><?php esc_html_e( 'Inquilinos', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-includes__desc"><?php esc_html_e( 'Historial de inquilinos, avisos y comunicación.', 'twentytwentyfive-child' ); ?></span>
+            </li>
+          </ul>
+        </div>
 
-      <div class="af-signup-split__card">
+        <div class="af-demo-note">
+          <span class="af-demo-note__icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </span>
+          <p class="af-demo-note__txt">
+            <strong><?php esc_html_e( 'Sin compromiso.', 'twentytwentyfive-child' ); ?></strong>
+            <?php esc_html_e( 'Te acompañamos por chat y correo durante toda la prueba, sin pagos ni renovaciones automáticas.', 'twentytwentyfive-child' ); ?>
+          </p>
+        </div>
+
+        <div class="af-demo-intro__foot">
+          <div class="af-demo-stats">
+            <div class="af-demo-stats__item">
+              <b>+2.500</b>
+              <span><?php esc_html_e( 'propiedades activas', 'twentytwentyfive-child' ); ?></span>
+            </div>
+            <div class="af-demo-stats__item">
+              <b>99,7%</b>
+              <span><?php esc_html_e( 'tasa de recaudo', 'twentytwentyfive-child' ); ?></span>
+            </div>
+            <div class="af-demo-stats__item">
+              <b>&lt; 5 min</b>
+              <span><?php esc_html_e( 'liquidación mensual', 'twentytwentyfive-child' ); ?></span>
+            </div>
+          </div>
+          <p class="af-demo-help">
+            <?php esc_html_e( '¿Tienes dudas? Escríbenos y te acompañamos.', 'twentytwentyfive-child' ); ?>
+            <a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>"><?php esc_html_e( 'Habla con nosotros', 'twentytwentyfive-child' ); ?> &rarr;</a>
+          </p>
+
+          <p class="af-demo-help af-demo-help--faq">
+            <a href="<?php echo esc_url( home_url( '/contacto/#faq' ) ); ?>"><?php esc_html_e( 'Tengo dudas antes de empezar — ver preguntas frecuentes', 'twentytwentyfive-child' ); ?></a>
+          </p>
+        </div>
+      </aside>
+
+      <!-- ── Tarjeta de formulario ──────────────────────────────── -->
+      <div class="af-demo-card">
         <?php echo do_shortcode( '[af_property_admin_signup]' ); ?>
       </div>
 
     </div>
-
-    <p class="af-signup-split__faq">
-      <a href="<?php echo esc_url( home_url( '/contacto/#faq' ) ); ?>"><?php esc_html_e( 'Tengo dudas antes de empezar — ver preguntas frecuentes', 'twentytwentyfive-child' ); ?></a>
-    </p>
 
   </div>
 </main>

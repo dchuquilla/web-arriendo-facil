@@ -423,6 +423,12 @@ function twentytwentyfive_child_enqueue_assets() {
       array( 'twentytwentyfive-child-style', 'twentytwentyfive-child-tokens' ),
       twentytwentyfive_child_asset_version( 'assets/css/admin-signup.css' )
     );
+    wp_enqueue_style(
+      'twentytwentyfive-child-solicitar-demo',
+      get_stylesheet_directory_uri() . '/assets/css/solicitar-demo.css',
+      array( 'twentytwentyfive-child-admin-signup' ),
+      twentytwentyfive_child_asset_version( 'assets/css/solicitar-demo.css' )
+    );
   }
 
   // Vista previa publica del panel (read-only replica + modal).
