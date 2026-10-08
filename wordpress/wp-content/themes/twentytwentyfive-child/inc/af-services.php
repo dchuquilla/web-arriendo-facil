@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * El slug de cada uno coincide con la URL de su página de detalle.
  */
 function af_services_config() {
-	$demo_url = function_exists( 'af_demo_preview_url' ) ? af_demo_preview_url() : home_url( '/solicitar-demo/' );
+	$demo_url = function_exists( 'af_signup_url' ) ? af_signup_url() : home_url( '/registro/' );
 
 	return array(
 		'facturacion-electronica' => array(
@@ -360,13 +360,13 @@ function af_services_config() {
 			'eyebrow'     => 'Alertas tempranas',
 			'card_title'  => 'Control de pagos',
 			'card_desc'   => 'Cobros del mes, semáforo de pagos y días de mora.',
-			'tagline'     => 'En Cobranza de inmuebles ves cada cargo del mes, registras los pagos y detectamos los atrasos desde el primer día.',
+			'tagline'     => 'En el control de pagos ves cada cargo del mes, registras los pagos y detectamos los atrasos desde el primer día.',
 			'icon'        => '⏰',
 			'accent'      => 'amber',
 			'video_label' => 'Video: alertas tempranas de cobro y pagos',
 			'que'         => array(
 				'title' => '¿Qué hace el sistema?',
-				'intro' => 'La sección Cobranza de inmuebles centraliza lo que se debe y lo que se pagó:',
+				'intro' => 'El control de pagos centraliza lo que se debe y lo que se pagó:',
 				'items' => array(
 					'Emite cada mes el cargo de canon y alícuota de forma automática.',
 					'Registra cada pago con monto, fecha y referencia.',
@@ -383,7 +383,7 @@ function af_services_config() {
 					),
 					array(
 						'title' => 'Se registra el pago',
-						'text'  => 'Monto, fecha y referencia quedan asentados en la cobranza.',
+						'text'  => 'Monto, fecha y referencia quedan asentados en el control de pagos.',
 					),
 					array(
 						'title' => 'Detectamos el atraso',

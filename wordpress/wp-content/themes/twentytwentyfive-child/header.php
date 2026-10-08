@@ -64,8 +64,8 @@
       </ul>
 
 <!-- CTA Button in Nav -->
-      <a href="<?php echo esc_url( af_demo_preview_url() ); ?>" class="btn btn--primary nav-cta">
-        <?php esc_html_e( 'Solicita tu demo', 'twentytwentyfive-child' ); ?>
+      <a href="<?php echo esc_url( af_signup_url() ); ?>" class="btn btn--primary nav-cta">
+        <?php esc_html_e( 'Crear mi cuenta', 'twentytwentyfive-child' ); ?>
       </a>
     </nav>
   </div>

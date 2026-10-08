@@ -1,7 +1,7 @@
 <?php
 /**
- * Template Name: Solicitar Demo (Registro Administrador)
- * Página pública que conecta el botón "Solicita tu demo" con el flujo de
+ * Template Name: Registro de Administrador
+ * Página pública de registro: conecta los botones "Crear mi cuenta" con el flujo de
  * auto-registro del plugin (shortcode [af_property_admin_signup]).
  *
  * Layout: panel de marca (izquierda) + tarjeta de formulario (derecha),
@@ -23,9 +23,9 @@ get_header();
       <!-- ── Panel de marca ─────────────────────────────────────── -->
       <aside class="af-demo-intro">
         <div class="af-demo-intro__block af-demo-intro__block--top">
-          <span class="af-demo-eyebrow"><?php esc_html_e( 'Demo guiada · sin costo', 'twentytwentyfive-child' ); ?></span>
+          <span class="af-demo-eyebrow"><?php esc_html_e( 'Para gestores de propiedades', 'twentytwentyfive-child' ); ?></span>
           <h1 class="af-demo-title"><?php esc_html_e( 'Crea tu cuenta y comienza a gestionar', 'twentytwentyfive-child' ); ?></h1>
-          <p class="af-demo-lead"><?php esc_html_e( 'Regístrate en un minuto, verifica tu correo y entra a un panel con datos de ejemplo listos para explorar. No se solicita tarjeta de crédito.', 'twentytwentyfive-child' ); ?></p>
+          <p class="af-demo-lead"><?php esc_html_e( 'Regístrate en un minuto, verifica tu correo y entra a tu panel con datos de ejemplo para conocer el sistema.', 'twentytwentyfive-child' ); ?></p>
         </div>
 
         <ol class="af-demo-steps">
@@ -33,7 +33,7 @@ get_header();
             <span class="af-demo-steps__num" aria-hidden="true">1</span>
             <span class="af-demo-steps__txt">
               <strong><?php esc_html_e( 'Completa el formulario', 'twentytwentyfive-child' ); ?></strong>
-              <span class="af-demo-steps__desc"><?php esc_html_e( 'Empresa, contacto e identificación.', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-steps__desc"><?php esc_html_e( 'Empresa o gestor, contacto e identificación.', 'twentytwentyfive-child' ); ?></span>
             </span>
           </li>
           <li>
@@ -46,30 +46,30 @@ get_header();
           <li>
             <span class="af-demo-steps__num" aria-hidden="true">3</span>
             <span class="af-demo-steps__txt">
-              <strong><?php esc_html_e( 'Explora el panel', 'twentytwentyfive-child' ); ?></strong>
-              <span class="af-demo-steps__desc"><?php esc_html_e( 'Entra con datos de ejemplo ya cargados.', 'twentytwentyfive-child' ); ?></span>
+              <strong><?php esc_html_e( 'Entra a tu panel', 'twentytwentyfive-child' ); ?></strong>
+              <span class="af-demo-steps__desc"><?php esc_html_e( 'Con datos de ejemplo para recorrerlo y luego cargar tu cartera.', 'twentytwentyfive-child' ); ?></span>
             </span>
           </li>
         </ol>
 
         <div class="af-demo-intro__block">
-          <span class="af-demo-includes__title"><?php esc_html_e( 'Tu demo incluye', 'twentytwentyfive-child' ); ?></span>
+          <span class="af-demo-includes__title"><?php esc_html_e( 'Qué puedes gestionar', 'twentytwentyfive-child' ); ?></span>
           <ul class="af-demo-includes">
             <li>
-              <span class="af-demo-includes__name"><?php esc_html_e( 'Cobros y alícuotas', 'twentytwentyfive-child' ); ?></span>
-              <span class="af-demo-includes__desc"><?php esc_html_e( 'Emite cobros y revisa pagos pendientes.', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-includes__name"><?php esc_html_e( 'Control de pagos y facturación', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-includes__desc"><?php esc_html_e( 'Cargos mensuales, pagos de servicios y facturación electrónica SRI.', 'twentytwentyfive-child' ); ?></span>
             </li>
             <li>
               <span class="af-demo-includes__name"><?php esc_html_e( 'Contratos y documentos', 'twentytwentyfive-child' ); ?></span>
-              <span class="af-demo-includes__desc"><?php esc_html_e( 'Guarda contratos e identificaciones firmadas.', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-includes__desc"><?php esc_html_e( 'Contratos desde plantilla, notarización y vencimientos.', 'twentytwentyfive-child' ); ?></span>
             </li>
             <li>
               <span class="af-demo-includes__name"><?php esc_html_e( 'Mantenimiento', 'twentytwentyfive-child' ); ?></span>
-              <span class="af-demo-includes__desc"><?php esc_html_e( 'Registra solicitudes y da seguimiento a su resolución.', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-includes__desc"><?php esc_html_e( 'Incidencias con proveedores, prioridad y costos.', 'twentytwentyfive-child' ); ?></span>
             </li>
             <li>
               <span class="af-demo-includes__name"><?php esc_html_e( 'Inquilinos', 'twentytwentyfive-child' ); ?></span>
-              <span class="af-demo-includes__desc"><?php esc_html_e( 'Historial de inquilinos, avisos y comunicación.', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-includes__desc"><?php esc_html_e( 'Ficha del inquilino y verificación de sus documentos.', 'twentytwentyfive-child' ); ?></span>
             </li>
           </ul>
         </div>
@@ -80,23 +80,23 @@ get_header();
           </span>
           <p class="af-demo-note__txt">
             <strong><?php esc_html_e( 'Sin compromiso.', 'twentytwentyfive-child' ); ?></strong>
-            <?php esc_html_e( 'Te acompañamos por chat y correo durante toda la prueba, sin pagos ni renovaciones automáticas.', 'twentytwentyfive-child' ); ?>
+            <?php esc_html_e( 'Te acompañamos por correo y chat durante tus primeros pasos.', 'twentytwentyfive-child' ); ?>
           </p>
         </div>
 
         <div class="af-demo-intro__foot">
           <div class="af-demo-stats">
             <div class="af-demo-stats__item">
-              <b>+2.500</b>
-              <span><?php esc_html_e( 'propiedades activas', 'twentytwentyfive-child' ); ?></span>
+              <b>1 panel</b>
+              <span><?php esc_html_e( 'para toda tu cartera', 'twentytwentyfive-child' ); ?></span>
             </div>
             <div class="af-demo-stats__item">
-              <b>99,7%</b>
-              <span><?php esc_html_e( 'tasa de recaudo', 'twentytwentyfive-child' ); ?></span>
+              <b>SRI</b>
+              <span><?php esc_html_e( 'facturación electrónica', 'twentytwentyfive-child' ); ?></span>
             </div>
             <div class="af-demo-stats__item">
-              <b>&lt; 5 min</b>
-              <span><?php esc_html_e( 'liquidación mensual', 'twentytwentyfive-child' ); ?></span>
+              <b>Día 1</b>
+              <span><?php esc_html_e( 'detección de mora', 'twentytwentyfive-child' ); ?></span>
             </div>
           </div>
           <p class="af-demo-help">

@@ -60,7 +60,7 @@ get_header();
               <label for="subject"><?php esc_html_e('Asunto', 'twentytwentyfive-child'); ?> *</label>
               <select id="subject" name="subject" required>
                 <option value=""><?php esc_html_e('Selecciona un asunto', 'twentytwentyfive-child'); ?></option>
-                <option value="property_question"><?php esc_html_e('Pregunta sobre una propiedad', 'twentytwentyfive-child'); ?></option>
+                <option value="property_question"><?php esc_html_e('Quiero conocer el sistema', 'twentytwentyfive-child'); ?></option>
                 <option value="general_question"><?php esc_html_e('Pregunta general', 'twentytwentyfive-child'); ?></option>
                 <option value="support"><?php esc_html_e('Soporte técnico', 'twentytwentyfive-child'); ?></option>
                 <option value="feedback"><?php esc_html_e('Comentarios o sugerencias', 'twentytwentyfive-child'); ?></option>
@@ -162,9 +162,9 @@ get_header();
   <section class="section section--soft">
     <div class="container text-center">
       <h2 class="h2"><?php esc_html_e('¿Listo para comenzar?', 'twentytwentyfive-child'); ?></h2>
-      <p class="p mx-auto"><?php esc_html_e('Explora nuestro catálogo de propiedades verificadas y encuentra tu próximo hogar hoy.', 'twentytwentyfive-child'); ?></p>
-      <a href="<?php echo esc_url(home_url('/propiedades')); ?>" class="btn btn--primary btn--lg" style="margin-top: var(--space-8);">
-        <?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?>
+      <p class="p mx-auto"><?php esc_html_e('Explora cómo Arriendo Fácil te ayuda a controlar pagos, facturación, contratos y mantenimiento en un solo panel.', 'twentytwentyfive-child'); ?></p>
+      <a href="<?php echo esc_url( af_signup_url() ); ?>" class="btn btn--primary btn--lg" style="margin-top: var(--space-8);">
+        <?php esc_html_e('Crear mi cuenta', 'twentytwentyfive-child'); ?>
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>

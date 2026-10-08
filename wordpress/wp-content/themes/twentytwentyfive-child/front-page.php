@@ -15,39 +15,39 @@ get_header();
   <section class="pms-hero" id="inicio">
     <div class="container">
       <div class="pms-hero__content">
-        <span class="pms-eyebrow pms-eyebrow--light"><?php esc_html_e( 'Administración de arriendos sin complicaciones', 'twentytwentyfive-child' ); ?></span>
+        <span class="pms-eyebrow pms-eyebrow--light"><?php esc_html_e( 'Software para gestores de propiedades', 'twentytwentyfive-child' ); ?></span>
         <h1>
-          <?php esc_html_e( 'Ya está arrendada.', 'twentytwentyfive-child' ); ?><br>
-          <?php esc_html_e( 'Nosotros la operamos.', 'twentytwentyfive-child' ); ?>
+          <?php esc_html_e( 'Gestiona más propiedades.', 'twentytwentyfive-child' ); ?><br>
+          <?php esc_html_e( 'Con menos esfuerzo.', 'twentytwentyfive-child' ); ?>
         </h1>
         <p class="pms-hero__sub">
-          <?php esc_html_e( 'Facturamos, damos mantenimiento y controlamos los pagos de tu propiedad. Tú solo recibes tu liquidación.', 'twentytwentyfive-child' ); ?>
+          <?php esc_html_e( 'Facturación SRI, control de pagos y mantenimiento en un solo panel.', 'twentytwentyfive-child' ); ?>
         </p>
 
         <div class="pms-hero__ctas">
-          <a class="btn btn--primary btn--lg" href="#como-funciona">
-            <?php esc_html_e( 'Conoce cómo funciona', 'twentytwentyfive-child' ); ?>
+          <a class="btn btn--primary btn--lg" href="<?php echo esc_url( af_signup_url() ); ?>">
+            <?php esc_html_e( 'Crear mi cuenta', 'twentytwentyfive-child' ); ?>
           </a>
-          <a class="pms-hero__link" href="<?php echo esc_url( af_demo_preview_url() ); ?>">
-            <?php esc_html_e( 'Solicita tu demo →', 'twentytwentyfive-child' ); ?>
+          <a class="pms-hero__link" href="#como-funciona">
+            <?php esc_html_e( 'Conoce cómo funciona →', 'twentytwentyfive-child' ); ?>
           </a>
         </div>
 
         <div class="pms-hero__stats">
           <div class="pms-hero__stat pms-hero__stat--green">
             <span class="pms-hero__stat-icon" aria-hidden="true">🏠</span>
-            <div class="pms-hero__stat-num">+2,500</div>
-            <div class="pms-hero__stat-label"><?php esc_html_e( 'propiedades activas', 'twentytwentyfive-child' ); ?></div>
+            <div class="pms-hero__stat-num">1 panel</div>
+            <div class="pms-hero__stat-label"><?php esc_html_e( 'para toda tu cartera', 'twentytwentyfive-child' ); ?></div>
           </div>
           <div class="pms-hero__stat pms-hero__stat--blue">
             <span class="pms-hero__stat-icon" aria-hidden="true">💰</span>
-            <div class="pms-hero__stat-num">99.7%</div>
-            <div class="pms-hero__stat-label"><?php esc_html_e( 'tasa de recaudo', 'twentytwentyfive-child' ); ?></div>
+            <div class="pms-hero__stat-num">SRI</div>
+            <div class="pms-hero__stat-label"><?php esc_html_e( 'facturación electrónica integrada', 'twentytwentyfive-child' ); ?></div>
           </div>
           <div class="pms-hero__stat pms-hero__stat--amber">
             <span class="pms-hero__stat-icon" aria-hidden="true">⚡</span>
-            <div class="pms-hero__stat-num">&lt; 5 min</div>
-            <div class="pms-hero__stat-label"><?php esc_html_e( 'liquidación mensual', 'twentytwentyfive-child' ); ?></div>
+            <div class="pms-hero__stat-num">Día 1</div>
+            <div class="pms-hero__stat-label"><?php esc_html_e( 'detección automática de mora', 'twentytwentyfive-child' ); ?></div>
           </div>
         </div>
       </div>
@@ -58,9 +58,9 @@ get_header();
   <section id="servicios" class="pms-section" data-animate>
     <div class="container">
       <div class="pms-section__header">
-        <span class="pms-eyebrow"><?php esc_html_e( 'Por qué somos tu mejor opción', 'twentytwentyfive-child' ); ?></span>
+        <span class="pms-eyebrow"><?php esc_html_e( 'Todo lo que necesita un gestor de propiedades', 'twentytwentyfive-child' ); ?></span>
         <h2 class="h2"><?php esc_html_e( 'Facturación en regla, propiedad cuidada', 'twentytwentyfive-child' ); ?></h2>
-        <p><?php esc_html_e( 'Desde el día uno nosotros facturamos, damos mantenimiento y operamos tu arriendo para que tú solo revises tus reportes.', 'twentytwentyfive-child' ); ?></p>
+        <p><?php esc_html_e( 'Una plataforma para facturar, dar seguimiento a contratos y mantener tu cartera al día.', 'twentytwentyfive-child' ); ?></p>
       </div>
 
       <div class="af-svc-grid af-svc-grid--why">
@@ -83,7 +83,7 @@ get_header();
   <section class="pms-section pms-section--muted" data-animate>
     <div class="container">
       <div class="pms-section__header">
-        <span class="pms-eyebrow"><?php esc_html_e( 'Lo que hacemos por ti', 'twentytwentyfive-child' ); ?></span>
+        <span class="pms-eyebrow"><?php esc_html_e( 'Lo que automatiza el sistema', 'twentytwentyfive-child' ); ?></span>
         <h2 class="h2"><?php esc_html_e( 'Así funciona por dentro', 'twentytwentyfive-child' ); ?></h2>
       </div>
 
@@ -105,28 +105,28 @@ get_header();
     <div class="container">
       <div class="pms-section__header">
         <span class="pms-eyebrow"><?php esc_html_e( 'Cómo funciona', 'twentytwentyfive-child' ); ?></span>
-        <h2 class="h2"><?php esc_html_e( 'Empiezas hoy. Cobras este mes.', 'twentytwentyfive-child' ); ?></h2>
-        <p><?php esc_html_e( 'Tres pasos simples para despreocuparte de la gestión y dedicarte a lo que importa.', 'twentytwentyfive-child' ); ?></p>
+        <h2 class="h2"><?php esc_html_e( 'Empieza hoy. Gestiona todo desde un panel.', 'twentytwentyfive-child' ); ?></h2>
+        <p><?php esc_html_e( 'Tres pasos para ordenar tu operación.', 'twentytwentyfive-child' ); ?></p>
       </div>
 
       <div class="pms-steps">
         <div class="pms-step pms-step--blue">
           <span class="pms-step__icon" aria-hidden="true">📤</span>
           <div class="pms-step__num">1</div>
-          <h3><?php esc_html_e( 'Sube tu inmueble', 'twentytwentyfive-child' ); ?></h3>
-          <p><?php esc_html_e( 'Carga el contrato y los datos de la propiedad. Nosotros armamos todo tu perfil en minutos.', 'twentytwentyfive-child' ); ?></p>
+          <h3><?php esc_html_e( 'Crea tu cuenta', 'twentytwentyfive-child' ); ?></h3>
+          <p><?php esc_html_e( 'Regístrate y verifica tu correo. Tu espacio de trabajo queda listo en minutos.', 'twentytwentyfive-child' ); ?></p>
         </div>
         <div class="pms-step pms-step--violet">
           <span class="pms-step__icon" aria-hidden="true">⚙️</span>
           <div class="pms-step__num">2</div>
-          <h3><?php esc_html_e( 'Nosotros operamos', 'twentytwentyfive-child' ); ?></h3>
-          <p><?php esc_html_e( 'Emitimos facturas electrónicas, calculamos servicios, controlamos pagos y coordinamos el mantenimiento sin que intervengas.', 'twentytwentyfive-child' ); ?></p>
+          <h3><?php esc_html_e( 'Carga tu cartera', 'twentytwentyfive-child' ); ?></h3>
+          <p><?php esc_html_e( 'Registra edificios, propiedades, inquilinos y contratos.', 'twentytwentyfive-child' ); ?></p>
         </div>
         <div class="pms-step pms-step--green">
           <span class="pms-step__icon" aria-hidden="true">💸</span>
           <div class="pms-step__num">3</div>
-          <h3><?php esc_html_e( 'Recibes tu dinero', 'twentytwentyfive-child' ); ?></h3>
-          <p><?php esc_html_e( 'Cada mes te transferimos tu saldo limpio con un reporte claro, detallado y puntual.', 'twentytwentyfive-child' ); ?></p>
+          <h3><?php esc_html_e( 'Gestiona con el sistema', 'twentytwentyfive-child' ); ?></h3>
+          <p><?php esc_html_e( 'Facturación SRI, control de pagos, mantenimiento y liquidaciones desde un solo panel.', 'twentytwentyfive-child' ); ?></p>
         </div>
       </div>
     </div>
@@ -136,12 +136,12 @@ get_header();
   <section class="pms-cta" id="contacto" data-animate>
     <div class="container">
       <div class="pms-cta__content">
-        <span class="pms-eyebrow pms-eyebrow--light"><?php esc_html_e( 'Pruébalo sin compromiso', 'twentytwentyfive-child' ); ?></span>
-        <h2><?php esc_html_e( '¿Listo para despreocuparte de tu arriendo?', 'twentytwentyfive-child' ); ?></h2>
-        <p><?php esc_html_e( 'Agenda una demo y descubre cómo Arriendo Fácil se encarga de todo desde el primer mes.', 'twentytwentyfive-child' ); ?></p>
+        <span class="pms-eyebrow pms-eyebrow--light"><?php esc_html_e( 'Crea tu cuenta en minutos', 'twentytwentyfive-child' ); ?></span>
+        <h2><?php esc_html_e( '¿Listo para gestionar tus propiedades con menos esfuerzo?', 'twentytwentyfive-child' ); ?></h2>
+        <p><?php esc_html_e( 'Regístrate, verifica tu correo y empieza a organizar tu cartera hoy.', 'twentytwentyfive-child' ); ?></p>
         <div class="pms-cta__buttons">
-          <a href="<?php echo esc_url( af_demo_preview_url() ); ?>" class="btn btn--primary btn--lg">
-            <?php esc_html_e( 'Solicita tu demo', 'twentytwentyfive-child' ); ?>
+          <a href="<?php echo esc_url( af_signup_url() ); ?>" class="btn btn--primary btn--lg">
+            <?php esc_html_e( 'Crear mi cuenta', 'twentytwentyfive-child' ); ?>
           </a>
           <a href="#como-funciona" class="pms-cta__link">
             <?php esc_html_e( 'Ver cómo funciona →', 'twentytwentyfive-child' ); ?>
@@ -153,19 +153,4 @@ get_header();
 
 </main>
 
-<?php
-/**
- * ========== LEGACY MODULES (OCULTOS - No eliminar) ==========
- *
- * Contenido anterior preservado para reactivación futura.
- * Descomenta la definición de AF_LEGACY_MODULES en functions.php para mostrar.
- */
-if ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) :
-?>
-  <main id="main-content-legacy" class="af-landing-legacy" style="display:none;">
-    <!-- Contenido original de landing page para inquilinos/propietarios -->
-    <!-- Este contenido está oculto pero preservado -->
-  </main>
-<?php
-endif;
-get_footer();
+<?php get_footer();

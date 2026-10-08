@@ -24,7 +24,7 @@ if ( ! $service ) {
 	$slug   = $service['slug'];
 }
 
-$demo_url  = isset( $service['cta'] ) ? $service['cta'] : af_demo_preview_url();
+$demo_url  = isset( $service['cta'] ) ? $service['cta'] : af_signup_url();
 $back_href = home_url( '/#servicios' );
 $pages     = array_values( $services );
 $index     = array_search( $slug, array_column( $pages, 'slug' ), true );
@@ -50,7 +50,7 @@ $accent    = $service['accent'];
 					<p><?php echo esc_html( $service['tagline'] ); ?></p>
 					<div class="af-detail-hero__actions">
 						<a class="btn btn--primary btn--lg" href="<?php echo esc_url( $demo_url ); ?>">
-							<?php esc_html_e( 'Solicita tu demo', 'twentytwentyfive-child' ); ?>
+							<?php esc_html_e( 'Crear mi cuenta', 'twentytwentyfive-child' ); ?>
 						</a>
 						<a class="af-detail-hero__secondary" href="#af-detalle-como">
 							<?php esc_html_e( 'Ver el paso a paso ↓', 'twentytwentyfive-child' ); ?>
@@ -175,11 +175,11 @@ $accent    = $service['accent'];
 	<section class="af-detail-cta">
 		<div class="container">
 			<div class="af-detail-cta__inner">
-				<span class="af-detail-eyebrow af-detail-eyebrow--light"><?php esc_html_e( 'Pruébalo sin compromiso', 'twentytwentyfive-child' ); ?></span>
-				<h2><?php esc_html_e( '¿Listo para cobrar sin perseguir?', 'twentytwentyfive-child' ); ?></h2>
-				<p><?php esc_html_e( 'Agenda una demo y descubre cómo Arriendo Fácil se encarga de todo.', 'twentytwentyfive-child' ); ?></p>
+				<span class="af-detail-eyebrow af-detail-eyebrow--light"><?php esc_html_e( 'Crea tu cuenta en minutos', 'twentytwentyfive-child' ); ?></span>
+				<h2><?php esc_html_e( '¿Listo para gestionar tus propiedades con menos esfuerzo?', 'twentytwentyfive-child' ); ?></h2>
+				<p><?php esc_html_e( 'Regístrate y descubre cómo Arriendo Fácil simplifica tu gestión.', 'twentytwentyfive-child' ); ?></p>
 				<a class="btn btn--primary btn--lg" href="<?php echo esc_url( $demo_url ); ?>">
-					<?php esc_html_e( 'Solicita tu demo', 'twentytwentyfive-child' ); ?>
+					<?php esc_html_e( 'Crear mi cuenta', 'twentytwentyfive-child' ); ?>
 				</a>
 			</div>
 		</div>

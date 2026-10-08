@@ -10,11 +10,7 @@
         </div>
         <p class="footer-desc">
           <?php
-          if ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) {
-            esc_html_e('Encuentra tu próximo hogar en segundos. Propiedades verificadas, propietarios confiables, proceso transparente. Bienvenido a Arriendo Fácil.', 'twentytwentyfive-child');
-          } else {
-            esc_html_e('Gestión profesional de arriendos en Ecuador. Cuotas, alícuotas, servicios básicos y control de pagos en un solo lugar.', 'twentytwentyfive-child');
-          }
+          esc_html_e('Software para gestores de propiedades en Ecuador. Control de pagos, facturación electrónica SRI, contratos, servicios y mantenimiento en un solo panel.', 'twentytwentyfive-child');
           ?>
         </p>
         <p class="footer-contact-info" style="margin-top: var(--space-3); font-size: 0.85rem; color: var(--color-text-secondary);">
@@ -41,31 +37,22 @@
       </div>
 
       <div class="footer-col">
-        <?php if ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) : ?>
-          <h4><?php esc_html_e('Para Renters', 'twentytwentyfive-child'); ?></h4>
-          <div class="footer-links">
-            <a href="<?php echo esc_url(home_url('/propiedades/')); ?>"><?php esc_html_e('Buscar propiedades', 'twentytwentyfive-child'); ?></a>
-            <a href="#como-funciona"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a>
-            <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Contacto y soporte', 'twentytwentyfive-child'); ?></a>
-            <a href="<?php echo esc_url(home_url('/contacto/#faq')); ?>"><?php esc_html_e('Preguntas frecuentes', 'twentytwentyfive-child'); ?></a>
-          </div>
-        <?php else : ?>
           <h4><?php esc_html_e('Plataforma', 'twentytwentyfive-child'); ?></h4>
           <div class="footer-links">
             <a href="#como-funciona"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a>
-            <a href="<?php echo esc_url( af_demo_preview_url() ); ?>"><?php esc_html_e('Solicitar demo', 'twentytwentyfive-child'); ?></a>
+            <a href="<?php echo esc_url( af_signup_url() ); ?>"><?php esc_html_e('Crear cuenta', 'twentytwentyfive-child'); ?></a>
             <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Contacto y soporte', 'twentytwentyfive-child'); ?></a>
             <a href="<?php echo esc_url(home_url('/contacto/#faq')); ?>"><?php esc_html_e('Preguntas frecuentes', 'twentytwentyfive-child'); ?></a>
           </div>
-        <?php endif; ?>
       </div>
 
       <div class="footer-col">
         <h4><?php esc_html_e('Sobre nosotros', 'twentytwentyfive-child'); ?></h4>
         <div class="footer-links">
           <a href="<?php echo esc_url(home_url('/quienes-somos/')); ?>"><?php esc_html_e('Acerca de Arriendo Fácil', 'twentytwentyfive-child'); ?></a>
+          <?php /* Blog oculto por ahora; reactivar cuando exista contenido:
           <a href="<?php echo esc_url(home_url('/blog/')); ?>"><?php esc_html_e('Blog y recursos', 'twentytwentyfive-child'); ?></a>
-          <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Trabaja con nosotros', 'twentytwentyfive-child'); ?></a>
+          */ ?>
           <a href="<?php echo esc_url(wp_login_url()); ?>" class="footer-owner-link">
             <?php esc_html_e('Iniciar sesión', 'twentytwentyfive-child'); ?>
           </a>
@@ -81,22 +68,6 @@
         </div>
       </div>
     </div>
-
-    <?php if ( ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) && ! is_page( 'registro-propietario' ) ) : ?>
-    <!-- CTA Registro Propietario -->
-    <div class="footer-cta-owner">
-      <div class="footer-cta-owner__content">
-        <div class="footer-cta-owner__text">
-          <h4><?php esc_html_e('¿Eres propietario?', 'twentytwentyfive-child'); ?></h4>
-          <p><?php esc_html_e('Regístrate como propietario y accede a nuestra plataforma de gestión profesional. Te ayudamos a administrar tus arriendos de forma segura y eficiente.', 'twentytwentyfive-child'); ?></p>
-        </div>
-        <a href="<?php echo esc_url(home_url('/registro-propietario/')); ?>" class="btn btn--accent footer-cta-owner__btn">
-          <?php esc_html_e('Registrarme como propietario', 'twentytwentyfive-child'); ?>
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-    <?php endif; ?>
 
     <div class="footer-bottom">
       <p>© <?php echo esc_html(date('Y')); ?> <?php bloginfo('name'); ?>. <?php esc_html_e('Todos los derechos reservados.', 'twentytwentyfive-child'); ?></p>

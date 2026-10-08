@@ -20,13 +20,6 @@ function twentytwentyfive_child_asset_version( $relative_path ) {
   return file_exists( $absolute_path ) ? (string) filemtime( $absolute_path ) : AF_THEME_VERSION;
 }
 
-function twentytwentyfive_child_should_load_reservation_modal() {
-  if ( ! ( defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) ) {
-    return false;
-  }
-  return is_page( 'propiedades' ) || is_page( 'search-results' ) || is_singular( 'accommodation' );
-}
-
 function twentytwentyfive_child_validate_property_type($value) {
   $allowed = ['apartment', 'house', 'room', 'studio'];
   return in_array($value, $allowed, true) ? $value : '';
@@ -102,15 +95,6 @@ function twentytwentyfive_child_enqueue_assets() {
     true
   );
 
-  // Search bar (global)
-  wp_enqueue_script(
-    'twentytwentyfive-child-search-bar',
-    get_stylesheet_directory_uri() . '/assets/js/search-bar.js',
-    array(),
-    AF_THEME_VERSION,
-    true
-  );
-
   wp_enqueue_script(
     'twentytwentyfive-child-theme-ui',
     get_stylesheet_directory_uri() . '/assets/js/theme-ui.js',
@@ -181,200 +165,6 @@ function twentytwentyfive_child_enqueue_assets() {
     true
   );
 
-  // Quick reservation modal (only where reserve triggers exist).
-  if ( twentytwentyfive_child_should_load_reservation_modal() ) {
-    $occupied_style_deps = array( 'twentytwentyfive-child-style' );
-
-    // Occupied-state overlay/badge styles are registered by the plugin.
-    if ( wp_style_is( 'af-occupied-badge-style', 'registered' ) ) {
-      wp_enqueue_style( 'af-occupied-badge-style' );
-      $occupied_style_deps[] = 'af-occupied-badge-style';
-    }
-
-    wp_enqueue_style(
-      'twentytwentyfive-child-occupied-ui',
-      get_stylesheet_directory_uri() . '/assets/css/occupied-ui.css',
-      $occupied_style_deps,
-      twentytwentyfive_child_asset_version( 'assets/css/occupied-ui.css' )
-    );
-
-    wp_enqueue_style(
-      'twentytwentyfive-child-reservation-modal',
-      get_stylesheet_directory_uri() . '/assets/css/reservation-modal.css',
-      array( 'twentytwentyfive-child-style' ),
-      twentytwentyfive_child_asset_version( 'assets/css/reservation-modal.css' )
-    );
-
-    wp_enqueue_script(
-      'twentytwentyfive-child-reservation-intent',
-      get_stylesheet_directory_uri() . '/assets/js/reservation-intent.js',
-      array(),
-      AF_THEME_VERSION,
-      true
-    );
-
-    wp_localize_script( 'twentytwentyfive-child-reservation-intent', 'afReservationIntent', array(
-      'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-      'nonce'   => wp_create_nonce( 'af_guest_frontend_nonce' ),
-      'i18n'    => array(
-        'title'    => __( 'Reserva tu visita', 'twentytwentyfive-child' ),
-        'subtitle' => __( 'Comparte tus datos para continuar.', 'twentytwentyfive-child' ),
-        'required' => __( 'Nombre y correo son obligatorios.', 'twentytwentyfive-child' ),
-        'sending'  => __( 'Enviando...', 'twentytwentyfive-child' ),
-        'submit'   => __( 'Confirmar reserva', 'twentytwentyfive-child' ),
-        'success'  => __( 'Solicitud registrada correctamente.', 'twentytwentyfive-child' ),
-        'conflict' => __( 'El horario ya no está disponible. Elige otro o envía una solicitud sin horario.', 'twentytwentyfive-child' ),
-        'occupiedBlocked' => __( 'Esta acomodación está ocupada. No se pueden enviar solicitudes en este momento.', 'twentytwentyfive-child' ),
-        'network'  => __( 'Error de red. Intenta nuevamente.', 'twentytwentyfive-child' ),
-        'error'    => __( 'No se pudo registrar tu reserva.', 'twentytwentyfive-child' ),
-      ),
-    ) );
-  }
-
-  // JS para el carrusel solo en homepage
-  if ( is_front_page() && defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) {
-    wp_enqueue_script(
-      'twentytwentyfive-child-home',
-      get_stylesheet_directory_uri() . '/assets/js/home.js',
-      array(),
-      AF_THEME_VERSION,
-      true
-    );
-
-    wp_enqueue_script(
-      'twentytwentyfive-child-hero-search',
-      get_stylesheet_directory_uri() . '/assets/js/hero-search.js',
-      array(),
-      twentytwentyfive_child_asset_version( 'assets/js/hero-search.js' ),
-      true
-    );
-
-    wp_enqueue_script(
-      'twentytwentyfive-child-referral',
-      get_stylesheet_directory_uri() . '/assets/js/referral.js',
-      array(),
-      AF_THEME_VERSION,
-      true
-    );
-
-    wp_localize_script('twentytwentyfive-child-referral', 'afReferral', array(
-      'whatsapp' => get_option( 'af_whatsapp_number', '' ),
-    ));
-
-    // Data para el carrusel (propiedades destacadas)
-    $properties = twentytwentyfive_child_get_featured_properties_payload();
-    wp_localize_script('twentytwentyfive-child-home', 'twentytwentyfive_HOME', array(
-      'properties' => $properties,
-    ));
-  }
-
-  // Real-time polling for properties page
-  if ( is_page('propiedades') && defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) {
-    wp_enqueue_script(
-      'twentytwentyfive-child-propiedades',
-      get_stylesheet_directory_uri() . '/assets/js/propiedades.js',
-      array(),
-      AF_THEME_VERSION,
-      true
-    );
-
-    wp_localize_script('twentytwentyfive-child-propiedades', 'afPropiedades', array(
-      'apiUrl'      => esc_url_raw( rest_url( 'af/v1/accommodations/search' ) ),
-      'placeholder' => get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-full-placeholder.jpg',
-      'filters'     => array(
-        'location'      => isset( $_GET['location'] ) ? sanitize_text_field( wp_unslash( $_GET['location'] ) ) : '',
-        'price_min'     => isset( $_GET['price_min'] ) ? sanitize_text_field( wp_unslash( $_GET['price_min'] ) ) : '',
-        'price_max'     => isset( $_GET['price_max'] ) ? sanitize_text_field( wp_unslash( $_GET['price_max'] ) ) : '',
-        'property_type' => isset( $_GET['property_type'] ) ? sanitize_text_field( wp_unslash( $_GET['property_type'] ) ) : '',
-        'sort'          => isset( $_GET['sort'] ) ? sanitize_text_field( wp_unslash( $_GET['sort'] ) ) : 'newest',
-      ),
-    ));
-  }
-
-  // Leaflet.js y estilos para página de búsqueda
-  if ( ( is_page('search-results') || is_singular('accommodation') ) && defined( 'AF_LEGACY_MODULES' ) && AF_LEGACY_MODULES ) {
-    wp_enqueue_style(
-      'leaflet-css',
-      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css',
-      array(),
-      '1.9.4'
-    );
-
-    wp_enqueue_script(
-      'leaflet-js',
-      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js',
-      array(),
-      '1.9.4',
-      true
-    );
-
-    if ( is_page('search-results') ) {
-      wp_enqueue_style(
-        'leaflet-markercluster-css',
-        'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css',
-        array('leaflet-css'),
-        '1.5.3'
-      );
-
-      wp_enqueue_style(
-        'leaflet-markercluster-default-css',
-        'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css',
-        array('leaflet-markercluster-css'),
-        '1.5.3'
-      );
-
-      wp_enqueue_script(
-        'leaflet-markercluster-js',
-        'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js',
-        array('leaflet-js'),
-        '1.5.3',
-        true
-      );
-    }
-
-    wp_enqueue_style(
-      'twentytwentyfive-child-search-results',
-      get_stylesheet_directory_uri() . '/assets/css/search-results.css',
-      array( 'twentytwentyfive-child-style' ),
-      AF_THEME_VERSION
-    );
-
-    wp_enqueue_script(
-      'twentytwentyfive-child-search-results',
-      get_stylesheet_directory_uri() . '/assets/js/search-results-interactive.js',
-      is_page('search-results') ? array( 'leaflet-js', 'leaflet-markercluster-js' ) : array( 'leaflet-js' ),
-      twentytwentyfive_child_asset_version( 'assets/js/search-results-interactive.js' ),
-      true
-    );
-
-    wp_localize_script(
-      'twentytwentyfive-child-search-results',
-      'afSearchResultsI18n',
-      array(
-        'viewDetails' => __( 'Ver detalles', 'twentytwentyfive-child' ),
-        'reserve' => __( 'Reservar', 'twentytwentyfive-child' ),
-        'occupiedUnavailable' => __( 'NO DISPONIBLE - OCUPADA', 'twentytwentyfive-child' ),
-      )
-    );
-  }
-
-  // Owner registration wizard
-  if ( is_page( 'registro-propietario' ) ) {
-    wp_enqueue_script(
-      'twentytwentyfive-child-owner-registration',
-      get_stylesheet_directory_uri() . '/assets/js/owner-registration.js',
-      array(),
-      AF_THEME_VERSION,
-      true
-    );
-
-    wp_localize_script('twentytwentyfive-child-owner-registration', 'afOwnerRegister', array(
-      'endpoint'  => esc_url_raw( rest_url( 'af/v1/owner-register' ) ),
-      'nonce'     => wp_create_nonce( 'af_owner_register' ),
-      'restNonce' => wp_create_nonce( 'wp_rest' ),
-    ));
-  }
-
   // Legal onboarding page (public, accessed via secure token link)
   if ( is_page( 'completar-perfil-arriendo' ) ) {
     $legal_onboarding_js_path = get_stylesheet_directory() . '/assets/js/legal-onboarding.js';
@@ -418,8 +208,18 @@ function twentytwentyfive_child_enqueue_assets() {
     ) );
   }
 
-  // Registro de administrador (form publico en /solicitar-demo/).
-  if ( is_page( 'solicitar-demo' ) ) {
+  // Registro de administrador (form publico en /registro/).
+  // Quiénes somos.
+  if ( is_page_template( 'page-quienes-somos.php' ) ) {
+    wp_enqueue_style(
+      'twentytwentyfive-child-quienes-somos',
+      get_stylesheet_directory_uri() . '/assets/css/quienes-somos.css',
+      array( 'twentytwentyfive-child-style', 'twentytwentyfive-child-tokens' ),
+      twentytwentyfive_child_asset_version( 'assets/css/quienes-somos.css' )
+    );
+  }
+
+  if ( is_page( 'registro' ) ) {
     wp_enqueue_style(
       'twentytwentyfive-child-admin-signup',
       get_stylesheet_directory_uri() . '/assets/css/admin-signup.css',
@@ -427,10 +227,10 @@ function twentytwentyfive_child_enqueue_assets() {
       twentytwentyfive_child_asset_version( 'assets/css/admin-signup.css' )
     );
     wp_enqueue_style(
-      'twentytwentyfive-child-solicitar-demo',
-      get_stylesheet_directory_uri() . '/assets/css/solicitar-demo.css',
+      'twentytwentyfive-child-registro',
+      get_stylesheet_directory_uri() . '/assets/css/registro.css',
       array( 'twentytwentyfive-child-admin-signup' ),
-      twentytwentyfive_child_asset_version( 'assets/css/solicitar-demo.css' )
+      twentytwentyfive_child_asset_version( 'assets/css/registro.css' )
     );
   }
 
@@ -443,16 +243,10 @@ add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
  */
 function twentytwentyfive_child_optimize_script_loading( $tag, $handle, $src ) {
   $defer_handles = array(
-    'twentytwentyfive-child-search-bar',
     'twentytwentyfive-child-theme-ui',
     'twentytwentyfive-child-nav-prefetch',
     'twentytwentyfive-child-cookie-wall',
-    'twentytwentyfive-child-home',
-    'twentytwentyfive-child-referral',
-    'twentytwentyfive-child-propiedades',
-    'twentytwentyfive-child-owner-registration',
     'twentytwentyfive-child-gallery-lightbox',
-    'twentytwentyfive-child-single-carousel',
     'af-chatbot-frontend',
   );
 
@@ -471,152 +265,6 @@ function twentytwentyfive_child_optimize_script_loading( $tag, $handle, $src ) {
   return $tag;
 }
 add_filter( 'script_loader_tag', 'twentytwentyfive_child_optimize_script_loading', 10, 3 );
-
-/**
- * Print the global quick-reservation modal once per request.
- * Kept in the footer so all triggers across the site can open it.
- */
-function twentytwentyfive_child_print_reservation_modal() {
-  static $printed = false;
-  if ( $printed || ! twentytwentyfive_child_should_load_reservation_modal() ) {
-    return;
-  }
-  $printed = true;
-  ?>
-  <div id="af-reservation-modal" class="af-reservation-modal" aria-hidden="true">
-    <div class="af-reservation-modal__backdrop" data-af-reserve-close></div>
-    <div class="af-reservation-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="af-reservation-modal-title" aria-describedby="af-reservation-modal-subtitle">
-      <button type="button" class="af-reservation-modal__close" data-af-reserve-close aria-label="<?php esc_attr_e( 'Cerrar', 'twentytwentyfive-child' ); ?>">&times;</button>
-      <div class="af-reservation-modal__header">
-        <p class="af-reservation-modal__eyebrow"><?php esc_html_e( 'Paso 1 de 2', 'twentytwentyfive-child' ); ?></p>
-        <h2 id="af-reservation-modal-title"><?php esc_html_e( 'Reserva tu visita', 'twentytwentyfive-child' ); ?></h2>
-        <p id="af-reservation-modal-accommodation" class="af-reservation-modal__accommodation"><?php esc_html_e( 'Alojamiento: -', 'twentytwentyfive-child' ); ?></p>
-        <p id="af-reservation-modal-subtitle" class="af-reservation-modal__subtitle"><?php esc_html_e( 'Completa solo los datos esenciales.', 'twentytwentyfive-child' ); ?></p>
-      </div>
-
-      <form id="af-reservation-form" class="af-reservation-modal__form" novalidate>
-        <input type="hidden" id="af-reservation-accommodation-id" name="accommodation_id" value="">
-        <input type="hidden" id="af-reservation-slot-id" name="slot_id" value="">
-
-        <div class="af-reservation-modal__field">
-          <label for="af-res-guest-name"><?php esc_html_e( 'Nombre', 'twentytwentyfive-child' ); ?> *</label>
-          <input type="text" id="af-res-guest-name" name="guest_name" required autocomplete="name"
-            data-normalize="name">
-        </div>
-        <div class="af-reservation-modal__field">
-          <label for="af-res-guest-email"><?php esc_html_e( 'Correo', 'twentytwentyfive-child' ); ?> *</label>
-          <input type="email" id="af-res-guest-email" name="guest_email" required autocomplete="email"
-            data-normalize="email">
-        </div>
-        <div class="af-reservation-modal__field">
-          <label for="af-res-guest-phone"><?php esc_html_e( 'Teléfono (recomendado)', 'twentytwentyfive-child' ); ?></label>
-          <input type="tel" id="af-res-guest-phone" name="guest_phone" inputmode="tel" autocomplete="tel">
-        </div>
-
-        <details class="af-reservation-modal__optional">
-          <summary><?php esc_html_e( '¿No tienes horario? Agrega preferencia', 'twentytwentyfive-child' ); ?></summary>
-          <div class="af-reservation-modal__optional-grid">
-            <div class="af-reservation-modal__field">
-              <label for="af-res-preferred-date"><?php esc_html_e( 'Fecha preferida', 'twentytwentyfive-child' ); ?></label>
-              <input type="date" id="af-res-preferred-date" name="preferred_date">
-            </div>
-            <div class="af-reservation-modal__field">
-              <label for="af-res-preferred-time"><?php esc_html_e( 'Hora preferida', 'twentytwentyfive-child' ); ?></label>
-              <input type="time" id="af-res-preferred-time" name="preferred_time">
-            </div>
-          </div>
-        </details>
-
-        <p id="af-reservation-status" class="af-reservation-status" hidden></p>
-
-        <button id="af-reservation-submit" type="submit" class="btn btn--primary btn--full">
-          <?php esc_html_e( 'Confirmar reserva', 'twentytwentyfive-child' ); ?>
-        </button>
-
-        <p class="af-reservation-modal__footnote">
-          <?php esc_html_e( 'Tu información se usa solo para coordinar la visita y el onboarding legal posterior.', 'twentytwentyfive-child' ); ?>
-        </p>
-      </form>
-    </div>
-  </div>
-  <?php
-}
-add_action( 'wp_footer', 'twentytwentyfive_child_print_reservation_modal', 40 );
-
-/**
- * Obtiene propiedades destacadas desde Posts (categoría: propiedades-destacadas)
- * Ajusta esto a CPT/ACF si tu proyecto lo requiere.
- */
-function twentytwentyfive_child_get_featured_properties_payload() {
-  $cache_key = 'af_featured_properties';
-  $payload = wp_cache_get($cache_key);
-
-  if ($payload !== false) {
-    return $payload;
-  }
-
-  $payload = array();
-
-  $q = new WP_Query(array(
-    'post_type'      => 'post',
-    'posts_per_page' => 6,
-    'post_status'    => 'publish',
-    'ignore_sticky_posts' => true,
-    'category_name'  => 'propiedades-destacadas',
-  ));
-
-  if ( $q->have_posts() ) {
-    while ( $q->have_posts() ) {
-      $q->the_post();
-
-      $img = get_the_post_thumbnail_url(get_the_ID(), 'af-card');
-      if ( ! $img ) {
-        $gallery = twentytwentyfive_child_get_accommodation_gallery_images(get_the_ID());
-        if ( ! empty($gallery) && ! empty($gallery[0]['id']) ) {
-          $img = wp_get_attachment_image_url($gallery[0]['id'], 'af-card');
-        }
-      }
-      if ( ! $img ) {
-        $img = get_stylesheet_directory_uri() . '/assets/img/placeholder.jpg';
-      }
-
-      // Campos opcionales por meta (si luego quieres mapearlos desde ACF)
-      $location = get_post_meta(get_the_ID(), 'property_location', true);
-      $price    = get_post_meta(get_the_ID(), 'property_price_per_night', true);
-
-      $payload[] = array(
-        'id'       => get_the_ID(),
-        'title'    => get_the_title(),
-        'permalink'=> get_permalink(),
-        'image'    => esc_url_raw($img),
-        'location' => $location ? $location : 'Ubicación por definir',
-        'price'    => $price ? $price : '$xx por noche',
-        'badges'   => array('Limpieza incluida', 'Mantenimiento 24/7', 'Gestión completa'),
-      );
-    }
-    wp_reset_postdata();
-  }
-
-  // Fallback si no hay posts en la categoría
-  if ( empty($payload) ) {
-    $placeholder = get_stylesheet_directory_uri() . '/assets/img/placeholder.jpg';
-    for ($i=1; $i<=3; $i++){
-      $payload[] = array(
-        'id' => 0,
-        'title' => 'Propiedad Destacada #' . $i,
-        'permalink' => '#',
-        'image' => esc_url_raw($placeholder),
-        'location' => 'Quito / Guayaquil',
-        'price' => '$xx por noche',
-        'badges' => array('Limpieza incluida', 'Mantenimiento 24/7', 'Gestión completa'),
-      );
-    }
-  }
-
-  wp_cache_set($cache_key, $payload, '', 3600);
-
-  return $payload;
-}
 
 /**
  * Obtiene imágenes del post para carousel desde galería WP o attachments.
@@ -734,34 +382,6 @@ function twentytwentyfive_child_get_accommodation_gallery_images($post_id) {
   return $images;
 }
 
-/**
- * Enqueue carousel script only on single accommodation pages.
- */
-function twentytwentyfive_child_enqueue_single_carousel() {
-  if (!is_singular('accommodation')) {
-    return;
-  }
-
-  wp_enqueue_script(
-    'twentytwentyfive-child-single-carousel',
-    get_stylesheet_directory_uri() . '/assets/js/single.js',
-    [],
-    twentytwentyfive_child_asset_version( 'assets/js/single.js' ),
-    true
-  );
-
-  $post_id = get_the_ID();
-  $gallery_images = twentytwentyfive_child_get_accommodation_gallery_images($post_id);
-
-  wp_localize_script(
-    'twentytwentyfive-child-single-carousel',
-    'singleCarouselData',
-    [
-      'images' => $gallery_images,
-    ]
-  );
-}
-add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_single_carousel', 15);
 
 /**
  * Rental workflow on single pages is intentionally disabled.
@@ -870,12 +490,6 @@ function twentytwentyfive_child_add_cache_headers() {
 
   if (is_front_page()) {
     header('Cache-Control: public, max-age=86400, s-maxage=86400, stale-while-revalidate=259200');
-  } elseif (is_page('search-results')) {
-    header('Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600');
-  } elseif (is_page('propiedades')) {
-    header('Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600');
-  } elseif (is_singular('accommodation')) {
-    header('Cache-Control: public, max-age=86400, s-maxage=86400, stale-while-revalidate=259200');
   } else {
     header('Cache-Control: public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
   }
@@ -981,30 +595,21 @@ function af_seo_meta_tags() {
   $logo_url  = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web-sq.png';
 
   if ( is_front_page() ) {
-    $title       = 'Arriendo Fácil — Hospedajes verificados para ti';
-    $description = 'Encuentra arriendos verificados en Quito y Ecuador. Apartamentos, casas y habitaciones con propietarios validados. Proceso rápido, precios claros y soporte 24/7.';
+    $title       = 'Arriendo Fácil — Software para gestores de propiedades en Ecuador';
+    $description = 'Control de pagos, facturación electrónica SRI, contratos, pagos de servicios y mantenimiento en un solo panel para gestores y administradores de propiedades en Ecuador.';
     $canonical   = $site_url;
-  } elseif ( is_page('propiedades') ) {
-    $title       = 'Propiedades en arriendo en Quito — Arriendo Fácil';
-    $description = 'Explora propiedades verificadas en arriendo en Quito y Ecuador. Filtra por ubicación, precio y tipo. Todas inspeccionadas y con propietarios validados.';
-    $canonical   = home_url('/propiedades/');
   } elseif ( is_page('contacto') ) {
-    $title       = 'Contacto — Arriendo Fácil | Soporte 24/7 en Ecuador';
-    $description = 'Contáctanos para resolver tus dudas sobre arriendo en Ecuador. Atención por email y respuesta en menos de 24 horas.';
+    $title       = 'Contacto — Arriendo Fácil | Soporte en Ecuador';
+    $description = 'Contáctanos para conocer el sistema de gestión de propiedades de Arriendo Fácil. Atención por email y respuesta en menos de 24 horas hábiles.';
     $canonical   = home_url('/contacto/');
-  } elseif ( is_page('search-results') ) {
-    $title       = 'Buscar propiedades en arriendo — Arriendo Fácil';
-    $description = 'Busca propiedades en arriendo por ubicación con mapa interactivo. Filtra por precio, tipo de propiedad y amenities en Quito y Ecuador.';
-    $canonical   = home_url('/search-results/');
-  } elseif ( is_page('registro-propietario') ) {
-    $title       = 'Registrar propiedad — Arriendo Fácil para Propietarios';
-    $description = 'Registra tu propiedad en Arriendo Fácil. Gestión profesional de arriendos en Ecuador con verificación, soporte legal y máxima ocupación.';
-    $canonical   = home_url('/registro-propietario/');
-  } elseif ( is_singular('accommodation') ) {
-    $title       = get_the_title() . ' — Arriendo en ' . get_post_meta(get_the_ID(), '_af_address', true);
-    $description = wp_trim_words( get_the_excerpt() ?: get_the_content(), 25, '...' );
-    $description = $description ?: 'Propiedad verificada en arriendo en Ecuador. Ver detalles, fotos, ubicación y precio.';
-    $canonical   = get_permalink();
+  } elseif ( is_page('quienes-somos') ) {
+    $title       = 'Quiénes somos — Arriendo Fácil';
+    $description = 'Sistema de gestión creado en Ecuador para gestores de propiedades: facturación SRI, control de pagos, contratos y mantenimiento en un solo panel.';
+    $canonical   = home_url('/quienes-somos/');
+  } elseif ( is_page('registro') ) {
+    $title       = 'Crear cuenta — Arriendo Fácil para gestores de propiedades';
+    $description = 'Regístrate, verifica tu correo y empieza a gestionar tu cartera: control de pagos, facturación SRI, contratos y mantenimiento.';
+    $canonical   = home_url('/registro/');
   } elseif ( is_page_template( 'page-detalle-servicio.php' ) ) {
     $service = af_service_config( get_post_field( 'post_name', get_the_ID() ) );
     if ( $service ) {
@@ -1014,7 +619,7 @@ function af_seo_meta_tags() {
     }
   } else {
     $title       = get_the_title() . ' — Arriendo Fácil';
-    $description = 'Arriendo Fácil: plataforma de arriendos verificados en Ecuador.';
+    $description = 'Arriendo Fácil: software de gestión de propiedades para administradores en Ecuador.';
     $canonical   = get_permalink() ?: $site_url;
   }
 
@@ -1086,14 +691,6 @@ function af_schema_organization() {
         'url'            => home_url('/'),
         'publisher'      => array( '@id' => home_url('/#organization') ),
         'inLanguage'     => 'es',
-        'potentialAction' => array(
-          '@type'       => 'SearchAction',
-          'target'      => array(
-            '@type'        => 'EntryPoint',
-            'urlTemplate'  => home_url('/propiedades/?location={search_term_string}'),
-          ),
-          'query-input' => 'required name=search_term_string',
-        ),
       ),
     ),
   );
@@ -1103,7 +700,7 @@ function af_schema_organization() {
 add_action( 'wp_head', 'af_schema_organization', 2 );
 
 /**
- * JSON-LD Schema: RealEstateAgent (homepage and contact page).
+ * JSON-LD Schema: SoftwareApplication (homepage and contact page).
  */
 function af_schema_local_business() {
   if ( ! is_front_page() && ! is_page('contacto') ) {
@@ -1111,140 +708,22 @@ function af_schema_local_business() {
   }
 
   $schema = array(
-    '@context' => 'https://schema.org',
-    '@type'    => 'RealEstateAgent',
-    '@id'      => home_url('/#business'),
-    'name'     => 'Arriendo Fácil',
-    'url'      => home_url('/'),
-    'image'    => get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web-sq.png',
-    'email'    => 'arriendofacilnet@gmail.com',
-    'address'  => array(
-      '@type'           => 'PostalAddress',
-      'addressLocality' => 'Quito',
-      'addressRegion'   => 'Pichincha',
-      'addressCountry'  => 'EC',
-    ),
-    'geo' => array(
-      '@type'     => 'GeoCoordinates',
-      'latitude'  => -0.18065,
-      'longitude' => -78.46784,
-    ),
-    'areaServed' => array(
-      array( '@type' => 'City', 'name' => 'Quito' ),
-      array( '@type' => 'City', 'name' => 'Guayaquil' ),
-      array( '@type' => 'City', 'name' => 'Cuenca' ),
-    ),
-    'openingHoursSpecification' => array(
-      '@type'     => 'OpeningHoursSpecification',
-      'dayOfWeek' => array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'),
-      'opens'     => '00:00',
-      'closes'    => '23:59',
-    ),
-    'priceRange'     => '$$',
-    'currenciesAccepted' => 'USD',
-    'paymentAccepted'    => 'Cash, Credit Card, Bank Transfer',
+    '@context'            => 'https://schema.org',
+    '@type'               => 'SoftwareApplication',
+    '@id'                 => home_url('/#software'),
+    'name'                => 'Arriendo Fácil',
+    'url'                 => home_url('/'),
+    'applicationCategory' => 'BusinessApplication',
+    'operatingSystem'     => 'Web',
+    'description'         => 'Software para gestores de propiedades: control de pagos, facturación electrónica SRI, contratos, pagos de servicios, mantenimiento e inquilinos.',
+    'inLanguage'          => 'es',
+    'areaServed'          => 'EC',
+    'publisher'           => array( '@id' => home_url('/#organization') ),
   );
 
   echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
 }
 add_action( 'wp_head', 'af_schema_local_business', 3 );
-
-/**
- * JSON-LD Schema: RealEstateListing for individual property pages.
- */
-function af_schema_property_listing() {
-  if ( ! is_singular('accommodation') ) {
-    return;
-  }
-
-  $post_id       = get_the_ID();
-  $title         = get_the_title();
-  $description   = wp_trim_words( get_the_content(), 50, '...' );
-  $address       = get_post_meta($post_id, '_af_address', true);
-  $monthly_rent  = floatval(get_post_meta($post_id, '_af_monthly_rent', true));
-  $latitude      = floatval(get_post_meta($post_id, '_af_latitude', true));
-  $longitude     = floatval(get_post_meta($post_id, '_af_longitude', true));
-  $bedrooms      = (int) get_post_meta($post_id, '_af_bedrooms', true);
-  $bathrooms     = (int) get_post_meta($post_id, '_af_bathrooms', true);
-  $square_meters = floatval(get_post_meta($post_id, '_af_square_meters', true));
-  $property_type = get_post_meta($post_id, '_af_property_type', true);
-  $amenities     = get_post_meta($post_id, '_af_amenities', true);
-
-  $thumb_id = get_post_thumbnail_id($post_id);
-  $image    = $thumb_id ? wp_get_attachment_image_url($thumb_id, 'large') : '';
-
-  $type_map = array(
-    'apartamento' => 'Apartment',
-    'casa'        => 'SingleFamilyResidence',
-    'habitacion'  => 'Room',
-    'estudio'     => 'Apartment',
-  );
-  $schema_type = isset($type_map[$property_type]) ? $type_map[$property_type] : 'Accommodation';
-
-  $schema = array(
-    '@context'    => 'https://schema.org',
-    '@type'       => array('RealEstateListing', $schema_type),
-    '@id'         => get_permalink() . '#listing',
-    'name'        => $title,
-    'description' => $description,
-    'url'         => get_permalink(),
-    'datePosted'  => get_the_date('c'),
-  );
-
-  if ( $image ) {
-    $schema['image'] = $image;
-  }
-
-  if ( $address ) {
-    $schema['address'] = array(
-      '@type'           => 'PostalAddress',
-      'streetAddress'   => $address,
-      'addressLocality' => 'Quito',
-      'addressRegion'   => 'Pichincha',
-      'addressCountry'  => 'EC',
-    );
-  }
-
-  if ( $latitude && $longitude ) {
-    $schema['geo'] = array(
-      '@type'     => 'GeoCoordinates',
-      'latitude'  => $latitude,
-      'longitude' => $longitude,
-    );
-  }
-
-  if ( $monthly_rent > 0 ) {
-    $schema['offers'] = array(
-      '@type'         => 'Offer',
-      'price'         => $monthly_rent,
-      'priceCurrency' => 'USD',
-      'availability'  => 'https://schema.org/InStock',
-      'priceValidUntil' => date('Y-12-31'),
-    );
-  }
-
-  if ( $bedrooms > 0 ) {
-    $schema['numberOfBedrooms'] = $bedrooms;
-  }
-  if ( $bathrooms > 0 ) {
-    $schema['numberOfBathroomsTotal'] = $bathrooms;
-  }
-  if ( $square_meters > 0 ) {
-    $schema['floorSize'] = array(
-      '@type'    => 'QuantitativeValue',
-      'value'    => $square_meters,
-      'unitCode' => 'MTK',
-    );
-  }
-  if ( is_array($amenities) && ! empty($amenities) ) {
-    $schema['amenityFeature'] = array_map(function($a) {
-      return array( '@type' => 'LocationFeatureSpecification', 'name' => $a, 'value' => true );
-    }, $amenities);
-  }
-
-  echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
-}
-add_action( 'wp_head', 'af_schema_property_listing', 4 );
 
 /**
  * JSON-LD Schema: BreadcrumbList for inner pages.
@@ -1258,13 +737,8 @@ function af_schema_breadcrumbs() {
     array( '@type' => 'ListItem', 'position' => 1, 'name' => 'Inicio', 'item' => home_url('/') ),
   );
 
-  if ( is_page('propiedades') ) {
-    $items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Propiedades' );
-  } elseif ( is_page('contacto') ) {
+  if ( is_page('contacto') ) {
     $items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Contacto' );
-  } elseif ( is_singular('accommodation') ) {
-    $items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Propiedades', 'item' => home_url('/propiedades/') );
-    $items[] = array( '@type' => 'ListItem', 'position' => 3, 'name' => get_the_title() );
   } else {
     $items[] = array( '@type' => 'ListItem', 'position' => 2, 'name' => get_the_title() );
   }
@@ -1280,60 +754,28 @@ function af_schema_breadcrumbs() {
 add_action( 'wp_head', 'af_schema_breadcrumbs', 5 );
 
 /**
- * Register custom XML sitemap provider for accommodations.
- */
-function af_register_sitemap_provider() {
-  $provider = new AF_Accommodation_Sitemap_Provider();
-  wp_register_sitemap_provider( 'af-accommodations', $provider );
-}
-add_action( 'init', 'af_register_sitemap_provider' );
-
-class AF_Accommodation_Sitemap_Provider extends WP_Sitemaps_Provider {
-  public function __construct() {
-    $this->name        = 'af-accommodations';
-    $this->object_type = 'accommodation';
-  }
-
-  public function get_url_list( $page_num, $object_subtype = '' ) {
-    $args = array(
-      'post_type'      => 'accommodation',
-      'post_status'    => 'publish',
-      'posts_per_page' => 2000,
-      'paged'          => $page_num,
-      'orderby'        => 'modified',
-      'order'          => 'DESC',
-      'fields'         => 'ids',
-    );
-
-    $query = new WP_Query($args);
-    $urls  = array();
-
-    foreach ( $query->posts as $post_id ) {
-      $urls[] = array(
-        'loc'     => get_permalink($post_id),
-        'lastmod' => get_post_modified_time('Y-m-d\TH:i:sP', true, $post_id),
-      );
-    }
-
-    return $urls;
-  }
-
-  public function get_max_num_pages( $object_subtype = '' ) {
-    $count = wp_count_posts('accommodation');
-    $total = $count->publish ?? 0;
-    return (int) ceil( $total / 2000 );
-  }
-}
-
-/**
- * Ensure the "solicitar-demo" page exists (self-healing) using the plugin
+ * Ensure the "registro" page exists (self-healing) using the plugin
  * shortcode template, so frontend CTAs never point to a dead URL.
  */
-function af_ensure_demo_signup_page() {
-  $page = get_page_by_path( 'solicitar-demo' );
+function af_ensure_signup_page() {
+  $page = get_page_by_path( 'registro' );
 
   if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
     return $page->ID;
+  }
+
+  // Migra la página antigua /solicitar-demo/ conservando su ID.
+  $legacy = get_page_by_path( 'solicitar-demo' );
+  if ( $legacy instanceof WP_Post ) {
+    wp_update_post(
+      array(
+        'ID'            => $legacy->ID,
+        'post_name'     => 'registro',
+        'post_status'   => 'publish',
+        'page_template' => 'page-registro.php',
+      )
+    );
+    return $legacy->ID;
   }
 
   $id = wp_insert_post(
@@ -1341,26 +783,75 @@ function af_ensure_demo_signup_page() {
       'post_type'    => 'page',
       'post_status'  => 'publish',
       'post_title'   => 'Crea tu cuenta',
-      'post_name'    => 'solicitar-demo',
+      'post_name'    => 'registro',
       'post_content' => '',
-      'page_template' => 'page-solicitar-demo.php',
+      'page_template' => 'page-registro.php',
     )
   );
 
   return is_wp_error( $id ) ? 0 : (int) $id;
 }
-add_action( 'init', 'af_ensure_demo_signup_page' );
+add_action( 'init', 'af_ensure_signup_page' );
 
 /**
- * Canonical URL for the demo registration flow.
+ * Asegura /quienes-somos/ como página con su plantilla (convierte la entrada antigua del mismo slug).
  */
-function af_demo_signup_url() {
-  $page = get_page_by_path( 'solicitar-demo' );
+function af_ensure_about_page() {
+  $page = get_page_by_path( 'quienes-somos' );
+
+  if ( $page instanceof WP_Post ) {
+    if ( 'page-quienes-somos.php' !== get_page_template_slug( $page->ID ) ) {
+      update_post_meta( $page->ID, '_wp_page_template', 'page-quienes-somos.php' );
+    }
+    return;
+  }
+
+  $old_posts = get_posts(
+    array(
+      'name'           => 'quienes-somos',
+      'post_type'      => 'post',
+      'post_status'    => 'any',
+      'posts_per_page' => 1,
+    )
+  );
+
+  if ( $old_posts ) {
+    wp_update_post(
+      array(
+        'ID'            => $old_posts[0]->ID,
+        'post_type'     => 'page',
+        'post_status'   => 'publish',
+        'comment_status' => 'closed',
+        'page_template' => 'page-quienes-somos.php',
+      )
+    );
+    return;
+  }
+
+  wp_insert_post(
+    array(
+      'post_type'      => 'page',
+      'post_status'    => 'publish',
+      'post_title'     => 'Quiénes somos',
+      'post_name'      => 'quienes-somos',
+      'post_content'   => '',
+      'comment_status' => 'closed',
+      'page_template'  => 'page-quienes-somos.php',
+    )
+  );
+}
+add_action( 'init', 'af_ensure_about_page' );
+
+/**
+ * Canonical URL of the administrator registration page.
+ */
+function af_signup_url() {
+  $page = get_page_by_path( 'registro' );
   if ( $page instanceof WP_Post ) {
     return get_permalink( $page->ID );
   }
 
-  return home_url( '/solicitar-demo/' );
+  return home_url( '/registro/' );
 }
 
 
@@ -1400,29 +891,27 @@ function af_ensure_service_pages() {
 add_action( 'init', 'af_ensure_service_pages' );
 
 /**
- * Canonical URL de la demo: la página con el formulario de registro.
- * La antigua pantalla /ver-demo/ redirige aquí (af_redirect_ver_demo).
+ * Redirige URLs retiradas: /ver-demo/ y /solicitar-demo/ → /registro/; módulos legacy → inicio.
  */
-function af_demo_preview_url() {
-  return af_demo_signup_url();
-}
-
-/**
- * /ver-demo/ → /solicitar-demo/ (301) para enlaces viejos y marcadores.
- */
-function af_redirect_ver_demo() {
+function af_redirect_legacy_signup_urls() {
   if ( is_admin() || wp_doing_ajax() || wp_doing_cron() ) {
     return;
   }
 
   $path = (string) wp_parse_url( add_query_arg( array() ), PHP_URL_PATH );
 
-  if ( preg_match( '#/ver-demo/?$#i', $path ) ) {
-    wp_safe_redirect( af_demo_signup_url(), 301 );
+  if ( preg_match( '#/(ver-demo|solicitar-demo)/?$#i', $path ) ) {
+    wp_safe_redirect( af_signup_url(), 301 );
+    exit;
+  }
+
+  // Módulos públicos retirados (catálogo, búsqueda, registro de propietario/inquilino).
+  if ( is_singular( 'accommodation' ) || preg_match( '#/(propiedades|search-results|registro-propietario|registro-inquilino)/?$#i', $path ) ) {
+    wp_safe_redirect( home_url( '/' ), 301 );
     exit;
   }
 }
-add_action( 'template_redirect', 'af_redirect_ver_demo', 1 );
+add_action( 'template_redirect', 'af_redirect_legacy_signup_urls', 1 );
 
 /**
  * Add static pages to the WordPress sitemap with higher priority.
@@ -1432,7 +921,7 @@ function af_sitemap_add_static_pages( $url_list, $post_type, $page_num ) {
     return $url_list;
   }
 
-  $priority_pages = array('propiedades', 'contacto', 'search-results', 'registro-propietario', 'solicitar-demo');
+  $priority_pages = array('contacto', 'registro', 'quienes-somos');
   $priority_pages = array_merge( $priority_pages, array_keys( af_services_config() ) );
   foreach ( $priority_pages as $slug ) {
     $page = get_page_by_path($slug);
@@ -1496,21 +985,20 @@ function af_llms_txt_template_redirect() {
   header( 'Cache-Control: public, max-age=86400' );
 
   echo "# Arriendo Fácil\n\n";
-  echo "> Arriendo Fácil es una plataforma de arrendamiento verificado en Ecuador, con sede en Quito.\n";
-  echo "> Conecta arrendatarios con propiedades residenciales verificadas en ciudades ecuatorianas.\n";
-  echo "> Fundada para simplificar el proceso de arrendamiento con seguridad, transparencia y soporte 24/7.\n\n";
+  echo "> Arriendo Fácil es un sistema de gestión para gestores y administradores de propiedades en Ecuador, con sede en Quito.\n";
+  echo "> Centraliza el control de pagos, facturación electrónica SRI, contratos, pagos de servicios, mantenimiento e inquilinos en un solo panel.\n\n";
   echo "## Páginas principales\n\n";
-  echo "- [Inicio](" . home_url('/') . "): Descripción general del servicio de arriendo verificado\n";
-  echo "- [Propiedades](" . home_url('/propiedades/') . "): Catálogo de propiedades disponibles en arriendo\n";
-  echo "- [Búsqueda con mapa](" . home_url('/search-results/') . "): Búsqueda por ubicación con mapa interactivo\n";
-  echo "- [Contacto](" . home_url('/contacto/') . "): Información de contacto y soporte al cliente\n";
-  echo "- [Registro de propietario](" . home_url('/registro-propietario/') . "): Registro para propietarios\n\n";
-  echo "## Servicios\n\n";
-  echo "- Búsqueda y filtrado de propiedades por ubicación, precio y tipo en Ecuador\n";
-  echo "- Verificación de propiedades e inspección de seguridad\n";
-  echo "- Gestión de contratos de arrendamiento\n";
-  echo "- Soporte al arrendatario y mediación en conflictos\n";
-  echo "- Asesoría legal en contratación de arriendo\n\n";
+  echo "- [Inicio](" . home_url('/') . "): Descripción general del sistema\n";
+  echo "- [Crear cuenta](" . af_signup_url() . "): Registro de gestores de propiedades\n";
+  echo "- [Contacto](" . home_url('/contacto/') . "): Información de contacto y soporte\n\n";
+  echo "## Funciones\n\n";
+  echo "- Facturación electrónica SRI\n";
+  echo "- Mantenimiento e incidencias con proveedores\n";
+  echo "- Panel de control con semáforo de cobros y ocupación\n";
+  echo "- Contratos con notarización y alertas de vencimiento\n";
+  echo "- Pagos de servicios por consumo (medidores)\n";
+  echo "- Control de pagos: seguimiento de cargos y mora\n";
+  echo "- Inquilinos: verificación de documentos y score de pago\n\n";
   echo "## Contacto\n\n";
   echo "- Email: arriendofacilnet@gmail.com\n";
   echo "- Ubicación: Quito, Pichincha, Ecuador\n";
