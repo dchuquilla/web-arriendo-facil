@@ -29,7 +29,7 @@ get_header();
             <?php esc_html_e( 'Conoce cómo funciona', 'twentytwentyfive-child' ); ?>
           </a>
           <a class="pms-hero__link" href="<?php echo esc_url( af_demo_preview_url() ); ?>">
-            <?php esc_html_e( 'Ver demo →', 'twentytwentyfive-child' ); ?>
+            <?php esc_html_e( 'Solicita tu demo →', 'twentytwentyfive-child' ); ?>
           </a>
         </div>
 

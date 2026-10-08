@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * El slug de cada uno coincide con la URL de su página de detalle.
  */
 function af_services_config() {
-	$demo_url = function_exists( 'af_demo_preview_url' ) ? af_demo_preview_url() : home_url( '/ver-demo/' );
+	$demo_url = function_exists( 'af_demo_preview_url' ) ? af_demo_preview_url() : home_url( '/solicitar-demo/' );
 
 	return array(
 		'facturacion-electronica' => array(

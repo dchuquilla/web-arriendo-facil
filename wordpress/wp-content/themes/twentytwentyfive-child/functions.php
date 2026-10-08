@@ -140,17 +140,6 @@ function twentytwentyfive_child_enqueue_assets() {
     );
   }
 
-  // Chart.js para los gráficos de la vista previa del panel (demo pública).
-  if ( is_page( 'ver-demo' ) ) {
-    wp_enqueue_script(
-      'chart-js',
-      'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
-      array(),
-      '4.4.4',
-      true
-    );
-  }
-
   // Warm likely next pages (property detail and properties list) to improve perceived navigation speed.
   wp_enqueue_script(
     'twentytwentyfive-child-nav-prefetch',
@@ -431,53 +420,8 @@ function twentytwentyfive_child_enqueue_assets() {
     );
   }
 
-  // Vista previa publica del panel (read-only replica + modal).
-  if ( is_page( 'ver-demo' ) ) {
-    $demo_css_deps = array( 'twentytwentyfive-child-style' );
-
-    // Reuse the plugin shell design system so the demo looks like the real panel.
-    if ( defined( 'ARRIENDO_FACIL_PLUGIN_URL' ) && ARRIENDO_FACIL_PLUGIN_URL ) {
-      $plugin_url = untrailingslashit( ARRIENDO_FACIL_PLUGIN_URL );
-      $plugin_dir = defined( 'ARRIENDO_FACIL_PLUGIN_DIR' ) ? untrailingslashit( ARRIENDO_FACIL_PLUGIN_DIR ) : '';
-
-      $shell_assets = array(
-        'af-demo-tokens'    => array( 'assets/css/af-tokens.css', array() ),
-        'af-demo-shell'     => array( 'assets/css/af-shell.css', array( 'af-demo-tokens' ) ),
-        'af-demo-forms'     => array( 'assets/css/af-forms.css', array( 'af-demo-shell' ) ),
-        'af-demo-dashboard' => array( 'assets/css/af-dashboard.css', array( 'af-demo-shell' ) ),
-      );
-      foreach ( $shell_assets as $handle => $asset ) {
-        $version = ( $plugin_dir && file_exists( $plugin_dir . '/' . $asset[0] ) )
-          ? (string) filemtime( $plugin_dir . '/' . $asset[0] )
-          : ( defined( 'ARRIENDO_FACIL_VERSION' ) ? ARRIENDO_FACIL_VERSION : '1.0.0' );
-        wp_enqueue_style(
-          $handle,
-          $plugin_url . '/' . $asset[0],
-          $asset[1],
-          $version
-        );
-        if ( 'af-demo-shell' === $handle ) {
-          $demo_css_deps[] = 'af-demo-shell';
-        }
-      }
-    }
-
-    wp_enqueue_style(
-      'twentytwentyfive-child-demo-preview',
-      get_stylesheet_directory_uri() . '/assets/css/demo-preview.css',
-      $demo_css_deps,
-      twentytwentyfive_child_asset_version( 'assets/css/demo-preview.css' )
-    );
-
-    wp_enqueue_script(
-      'twentytwentyfive-child-demo-preview',
-      get_stylesheet_directory_uri() . '/assets/js/demo-preview.js',
-      array(),
-      twentytwentyfive_child_asset_version( 'assets/js/demo-preview.js' ),
-      true
-    );
-  }
 }
+
 add_action('wp_enqueue_scripts', 'twentytwentyfive_child_enqueue_assets', 20);
 
 /**
@@ -1405,31 +1349,6 @@ function af_demo_signup_url() {
   return home_url( '/solicitar-demo/' );
 }
 
-/**
- * Ensure the public "ver-demo" page exists (self-healing), where the
- * read-only dashboard replica renders for the demo flow.
- */
-function af_ensure_demo_preview_page() {
-  $page = get_page_by_path( 'ver-demo' );
-
-  if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
-    return $page->ID;
-  }
-
-  $id = wp_insert_post(
-    array(
-      'post_type'     => 'page',
-      'post_status'   => 'publish',
-      'post_title'    => 'Ver demo — Panel de Arriendo Fácil',
-      'post_name'     => 'ver-demo',
-      'post_content'  => '',
-      'page_template' => 'page-ver-demo.php',
-    )
-  );
-
-  return is_wp_error( $id ) ? 0 : (int) $id;
-}
-add_action( 'init', 'af_ensure_demo_preview_page' );
 
 /**
  * Ensure the "Toca para ver más" detail pages exist (self-healing).
@@ -1467,16 +1386,29 @@ function af_ensure_service_pages() {
 add_action( 'init', 'af_ensure_service_pages' );
 
 /**
- * Canonical URL for the public dashboard demo (read-only replica).
+ * Canonical URL de la demo: la página con el formulario de registro.
+ * La antigua pantalla /ver-demo/ redirige aquí (af_redirect_ver_demo).
  */
 function af_demo_preview_url() {
-  $page = get_page_by_path( 'ver-demo' );
-  if ( $page instanceof WP_Post ) {
-    return get_permalink( $page->ID );
+  return af_demo_signup_url();
+}
+
+/**
+ * /ver-demo/ → /solicitar-demo/ (301) para enlaces viejos y marcadores.
+ */
+function af_redirect_ver_demo() {
+  if ( is_admin() || wp_doing_ajax() || wp_doing_cron() ) {
+    return;
   }
 
-  return home_url( '/ver-demo/' );
+  $path = (string) wp_parse_url( add_query_arg( array() ), PHP_URL_PATH );
+
+  if ( preg_match( '#/ver-demo/?$#i', $path ) ) {
+    wp_safe_redirect( af_demo_signup_url(), 301 );
+    exit;
+  }
 }
+add_action( 'template_redirect', 'af_redirect_ver_demo', 1 );
 
 /**
  * Add static pages to the WordPress sitemap with higher priority.
@@ -1486,7 +1418,7 @@ function af_sitemap_add_static_pages( $url_list, $post_type, $page_num ) {
     return $url_list;
   }
 
-  $priority_pages = array('propiedades', 'contacto', 'search-results', 'registro-propietario', 'solicitar-demo', 'ver-demo');
+  $priority_pages = array('propiedades', 'contacto', 'search-results', 'registro-propietario', 'solicitar-demo');
   $priority_pages = array_merge( $priority_pages, array_keys( af_services_config() ) );
   foreach ( $priority_pages as $slug ) {
     $page = get_page_by_path($slug);

@@ -400,3 +400,42 @@ Feedback: (1) demasiada separación entre los bloques del panel,
 - Sin solapes de elementos, sin texto truncado, sin errores de consola.
 - Interacciones revalidadas: fortaleza, coincidencia, mostrar/ocultar, submit bloqueado.
 - Capturas: `v3-1920.png`, `v3-1440.png`, `v3-1280.png`, `v3-768.png`, `v3-375.png`.
+
+---
+
+# /ver-demo/ eliminada → CTAs van al formulario — 2026-10-08 (ronda 3)
+
+Petición: quitar la pantalla `/ver-demo/` y que los botones lleven directo al
+formulario de `/solicitar-demo/`.
+
+## Cambios
+- `af_demo_preview_url()` ahora devuelve la URL del formulario
+  (`af_demo_signup_url()`). Todos los CTAs que la usaban ya apuntan al formulario:
+  header "Solicita tu demo", footer, hero y CTA final de la home, y los CTA de
+  las 7 páginas de detalle de servicio.
+- Redirección permanente `301` `/ver-demo/` → `/solicitar-demo/`
+  (`af_redirect_ver_demo` en `template_redirect`, cubre enlaces viejos,
+  marcadores y el caso 404).
+- Eliminado el self-healing `af_ensure_demo_preview_page()`.
+- Eliminado `page-ver-demo.php`, `assets/css/demo-preview.css`,
+  `assets/js/demo-preview.js` y los enqueues de Chart.js / shell / demo-preview
+  asociados.
+- Página 768 (`ver-demo`) movida a la papelera (reversible con `wp_update_post`).
+- Quitada `ver-demo` de `$priority_pages` del sitemap.
+- Textos: footer "Ver demo" → **"Solicitar demo"**; hero "Ver demo →" →
+  **"Solicita tu demo →"**; fallback en `af-services.php` → `/solicitar-demo/`.
+
+## Verificación
+| URL | Resultado |
+|---|---|
+| `/ver-demo/` y `/ver-demo` | 301 → `/solicitar-demo/` |
+| `/solicitar-demo/` | 200 |
+| `/` | 200, sin avisos PHP |
+| `/facturacion-electronica/` | 200, CTA → `/solicitar-demo/` |
+
+`php -l` OK en `functions.php`, `footer.php`, `front-page.php`, `af-services.php`.
+Sin referencias restantes a `page-ver-demo`, `demo-preview` ni `af_ensure_demo_preview_page`.
+
+## Pendiente (preexistente, no relacionado)
+- `/contacto/` devuelve **404** (no existe la página; footer y otros enlaces
+  apuntan a `home_url('/contacto/')`). Requiere crear la página o redirigirla.
