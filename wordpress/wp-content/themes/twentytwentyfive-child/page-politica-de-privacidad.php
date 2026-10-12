@@ -11,7 +11,7 @@ get_header();
   <section class="af-legal-hero">
     <div class="container">
       <h1><?php esc_html_e('Política de Privacidad', 'twentytwentyfive-child'); ?></h1>
-      <p><?php esc_html_e('Última actualización: 8 de octubre de 2026', 'twentytwentyfive-child'); ?></p>
+      <p><?php esc_html_e('Última actualización: 12 de octubre de 2026 | Versión 2.0', 'twentytwentyfive-child'); ?></p>
     </div>
   </section>
 
@@ -22,9 +22,9 @@ get_header();
         <h2>1. Introducción</h2>
         <p>Arriendo Fácil ("nosotros", "nuestro", "la Plataforma") es una plataforma de gestión de propiedades en alquiler operada desde Quito, Ecuador. Estamos comprometidos con la protección de tus datos personales y tu privacidad, en cumplimiento con:</p>
         <ul>
-          <li>✓ Reglamento General de Protección de Datos (GDPR) - UE</li>
-          <li>✓ California Consumer Privacy Act (CCPA) - USA</li>
-          <li>✓ Leyes de Protección de Datos Personales - Ecuador</li>
+          <li>Reglamento General de Protección de Datos (GDPR) - UE</li>
+          <li>California Consumer Privacy Act (CCPA) - USA</li>
+          <li>Leyes de Protección de Datos Personales - Ecuador</li>
         </ul>
       </section>
 
@@ -93,7 +93,7 @@ get_header();
 
       <section id="uso-datos">
         <h2>4. Uso de Datos</h2>
-        <h3>✓ Usamos tus datos para:</h3>
+        <h3>Usamos tus datos para:</h3>
         <ul>
           <li>Facilitar contratos, pagos y transacciones</li>
           <li>Generar facturas electrónicas ante SRI</li>
@@ -105,7 +105,7 @@ get_header();
           <li>Soporte técnico y atención al cliente</li>
         </ul>
 
-        <h3>❌ NO usamos datos para:</h3>
+        <h3>NO usamos datos para:</h3>
         <ul>
           <li>Venta a terceros sin consentimiento explícito</li>
           <li>Vigilancia discriminatoria o perfilado ilegal</li>
@@ -200,14 +200,14 @@ get_header();
       <section id="seguridad">
         <h2>8. Seguridad de Datos</h2>
         <ul>
-          <li>✓ Encriptación HTTPS en todas las conexiones</li>
-          <li>✓ Contraseñas encriptadas con bcrypt/Argon2</li>
-          <li>✓ Autenticación de dos factores (2FA) disponible</li>
-          <li>✓ Firewalls y detección de intrusos (WAF Cloudflare)</li>
-          <li>✓ Backups diarios encriptados</li>
-          <li>✓ Acceso limitado por roles (principio de menor privilegio)</li>
-          <li>✓ Auditorías de seguridad anuales</li>
-          <li>✓ Política de notificación de brechas en 72 horas</li>
+          <li>Encriptación HTTPS en todas las conexiones</li>
+          <li>Contraseñas encriptadas con bcrypt/Argon2</li>
+          <li>Autenticación de dos factores (2FA) disponible</li>
+          <li>Firewalls y detección de intrusos (WAF Cloudflare)</li>
+          <li>Backups diarios encriptados</li>
+          <li>Acceso limitado por roles (principio de menor privilegio)</li>
+          <li>Auditorías de seguridad anuales</li>
+          <li>Política de notificación de brechas en 72 horas</li>
         </ul>
       </section>
 
@@ -247,16 +247,16 @@ get_header();
       <section id="contacto">
         <h2>13. Contacto - Oficial de Privacidad</h2>
         <ul>
-          <li>📧 Email: <a href="mailto:privacy@arriendofacil.net">privacy@arriendofacil.net</a></li>
-          <li>📍 Dirección: Quito, Pichincha, Ecuador</li>
-          <li>📞 Teléfono: A través de plataforma</li>
+          <li><strong>Email:</strong> <a href="mailto:privacy@arriendofacil.net">privacy@arriendofacil.net</a></li>
+          <li><strong>Dirección:</strong> Quito, Pichincha, Ecuador</li>
+          <li><strong>Teléfono:</strong> A través de plataforma</li>
         </ul>
         <p><strong>Autoridad de Protección de Datos (Ecuador):</strong> Superintendencia de Telecomunicaciones (SUPERTEL)</p>
       </section>
 
       <p class="af-legal-footer">
-        <strong>© 2026 Arriendo Fácil.</strong> Todos los derechos reservados. 
-        Última actualización: 8 de octubre de 2026.
+        <strong>© 2026 Arriendo Fácil Soluciones Inmobiliarias.</strong> Todos los derechos reservados. 
+        Última actualización: 12 de octubre de 2026 | Versión 2.0
       </p>
     </div>
   </article>
@@ -270,98 +270,98 @@ get_header();
 .af-legal-hero {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: white;
-  padding: var(--space-8) 0;
+  padding: var(--space-5) 0 var(--space-4) 0;
   text-align: left;
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-3);
   border-bottom: 4px solid rgba(255,255,255,0.2);
 }
 
 .af-legal-hero h1 {
   font-size: 2rem;
-  margin-bottom: var(--space-1);
+  margin-bottom: 0.25rem;
   font-weight: 800;
 }
 
 .af-legal-hero p {
   opacity: 0.85;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   margin: 0;
 }
 
 .af-legal-content {
   max-width: 900px;
-  padding: var(--space-8) 0;
+  padding: 0;
 }
 
 .af-legal-body {
-  line-height: 1.8;
+  line-height: 1.6;
   color: var(--color-text-primary);
 }
 
 .af-legal-body section {
-  margin-bottom: var(--space-8);
-  padding: var(--space-6);
+  margin-bottom: var(--space-5);
+  padding: var(--space-4) var(--space-5);
   background: white;
   border-left: 4px solid var(--color-primary);
   border-radius: var(--radius-md);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
 .af-legal-body section:hover {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
   transition: box-shadow 0.2s;
 }
 
 .af-legal-body h2 {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 800;
-  margin: 0 0 var(--space-3) 0;
+  margin: 0 0 var(--space-2) 0;
   color: var(--color-primary);
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-1);
 }
 
 .af-legal-body h2::before {
   content: '';
   display: inline-block;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: white;
   border-radius: 50%;
   text-align: center;
-  line-height: 28px;
-  font-size: 0.9rem;
+  line-height: 24px;
+  font-size: 0.85rem;
   font-weight: bold;
   flex-shrink: 0;
 }
 
 .af-legal-body p {
-  margin: var(--space-3) 0;
-  font-size: 0.95rem;
-  line-height: 1.7;
+  margin: var(--space-2) 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
 }
 
 .af-legal-body h3 {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  margin: var(--space-5) 0 var(--space-3) 0;
+  margin: var(--space-3) 0 var(--space-1) 0;
   color: var(--color-text-primary);
-  border-bottom: 2px solid var(--color-border);
-  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-1);
 }
 
 .af-legal-body ul,
 .af-legal-body ol {
-  margin: var(--space-3) 0 var(--space-3) var(--space-5);
+  margin: var(--space-2) 0 var(--space-2) var(--space-4);
   padding: 0;
 }
 
 .af-legal-body li {
-  margin-bottom: var(--space-2);
-  line-height: 1.7;
-  font-size: 0.95rem;
+  margin-bottom: var(--space-1);
+  line-height: 1.6;
+  font-size: 0.92rem;
 }
 
 .af-legal-body strong {
@@ -372,10 +372,11 @@ get_header();
 .af-legal-body table {
   width: 100%;
   border-collapse: collapse;
-  margin: var(--space-4) 0;
+  margin: var(--space-3) 0;
   background: var(--color-bg-secondary);
   border-radius: var(--radius-md);
   overflow: hidden;
+  font-size: 0.9rem;
 }
 
 .af-legal-body table thead {
@@ -384,16 +385,16 @@ get_header();
 }
 
 .af-legal-body table th {
-  padding: var(--space-3);
+  padding: var(--space-2);
   text-align: left;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .af-legal-body table td {
-  padding: var(--space-3);
+  padding: var(--space-2);
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
 .af-legal-body table tr:last-child td {
@@ -415,13 +416,14 @@ get_header();
 
 .af-legal-footer {
   text-align: center;
-  margin-top: var(--space-10);
-  padding: var(--space-6);
+  margin-top: var(--space-8);
+  padding: var(--space-4);
   background: var(--color-bg-secondary);
   border-radius: var(--radius-md);
   color: var(--color-text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   border: 1px solid var(--color-border);
+  line-height: 1.5;
 }
 
 @media (max-width: 768px) {
@@ -430,24 +432,28 @@ get_header();
   }
   
   .af-legal-body section {
-    padding: var(--space-4);
+    padding: var(--space-3) var(--space-3);
   }
   
   .af-legal-body h2 {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
   }
   
   .af-legal-body h3 {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+  }
+  
+  .af-legal-body p {
+    font-size: 0.9rem;
   }
   
   .af-legal-body table {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
   
   .af-legal-body table th,
   .af-legal-body table td {
-    padding: var(--space-2);
+    padding: var(--space-1);
   }
 }
 </style>
