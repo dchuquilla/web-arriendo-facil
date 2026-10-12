@@ -156,7 +156,7 @@ function af_services_config() {
 			'slug'        => 'reportes-mensuales',
 			'title'       => 'Reportes mensuales',
 			'eyebrow'     => 'Transparencia total',
-			'card_title'  => 'Transparencia total',
+			'card_title'  => 'Reportes mensuales',
 			'card_desc'   => 'Panel con cobros, ocupación y alertas de tu operación en un vistazo.',
 			'tagline'     => 'Un Panel de control con el semáforo de cobros, la ocupación y los vencimientos de tus propiedades, más la liquidación que recibes cada mes.',
 			'icon'        => '📊',
@@ -445,8 +445,8 @@ function af_services_config() {
 				'title' => 'Cómo se hace',
 				'steps' => array(
 					array(
-						'title' => 'Se envía el enlace',
-						'text'  => 'El inquilino completa sus datos y sube sus documentos.',
+						'title' => 'Inquilino crea su perfil',
+						'text'  => 'Completa datos, documento de identidad, certificado laboral y bancario de forma segura.',
 					),
 					array(
 						'title' => 'Validamos identidad',

@@ -13,6 +13,9 @@ require_once dirname(__FILE__) . '/inc/af-input-validation.php';
 require_once dirname(__FILE__) . '/inc/af-rest-security.php';
 require_once dirname(__FILE__) . '/inc/af-gdpr-compliance.php';
 
+// === PERFORMANCE LAYER ===
+require_once dirname(__FILE__) . '/inc/af-performance-optimization.php';
+
 require_once dirname(__FILE__) . '/inc/af-services.php';
 
 function twentytwentyfive_child_asset_version( $relative_path ) {
@@ -889,6 +892,95 @@ function af_ensure_service_pages() {
   }
 }
 add_action( 'init', 'af_ensure_service_pages' );
+
+/**
+ * Ensure the FAQ page exists (self-healing).
+ */
+function af_ensure_faq_page() {
+  $page = get_page_by_path( 'preguntas-frecuentes' );
+
+  if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+    return;
+  }
+
+  wp_insert_post(
+    array(
+      'post_type'     => 'page',
+      'post_status'   => 'publish',
+      'post_title'    => __( 'Preguntas frecuentes', 'twentytwentyfive-child' ),
+      'post_name'     => 'preguntas-frecuentes',
+      'post_content'  => '',
+      'page_template' => 'page-preguntas-frecuentes.php',
+    )
+  );
+}
+add_action( 'init', 'af_ensure_faq_page' );
+
+/**
+ * Ensure the custom login page exists (self-healing).
+ */
+function af_ensure_custom_login_page() {
+  $page = get_page_by_path( 'custom-login' );
+
+  if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+    return;
+  }
+
+  wp_insert_post(
+    array(
+      'post_type'     => 'page',
+      'post_status'   => 'publish',
+      'post_title'    => __( 'Custom Login', 'twentytwentyfive-child' ),
+      'post_name'     => 'custom-login',
+      'post_content'  => '',
+      'page_template' => 'page-custom-login.php',
+    )
+  );
+}
+add_action( 'init', 'af_ensure_custom_login_page' );
+
+/**
+ * Ensure legal pages exist (self-healing).
+ */
+function af_ensure_legal_pages() {
+  $legal_pages = array(
+    array(
+      'slug'     => 'terminos-y-condiciones',
+      'title'    => __( 'Términos y Condiciones', 'twentytwentyfive-child' ),
+      'template' => 'page-terminos-y-condiciones.php',
+    ),
+    array(
+      'slug'     => 'politica-de-privacidad',
+      'title'    => __( 'Política de Privacidad', 'twentytwentyfive-child' ),
+      'template' => 'page-politica-de-privacidad.php',
+    ),
+    array(
+      'slug'     => 'cookie-policy-eu',
+      'title'    => __( 'Política de Cookies', 'twentytwentyfive-child' ),
+      'template' => 'page-cookie-policy-eu.php',
+    ),
+  );
+
+  foreach ( $legal_pages as $page_data ) {
+    $page = get_page_by_path( $page_data['slug'] );
+
+    if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+      continue;
+    }
+
+    wp_insert_post(
+      array(
+        'post_type'     => 'page',
+        'post_status'   => 'publish',
+        'post_title'    => $page_data['title'],
+        'post_name'     => $page_data['slug'],
+        'post_content'  => '',
+        'page_template' => $page_data['template'],
+      )
+    );
+  }
+}
+add_action( 'init', 'af_ensure_legal_pages' );
 
 /**
  * Redirige URLs retiradas: /ver-demo/ y /solicitar-demo/ → /registro/; módulos legacy → inicio.

@@ -30,19 +30,16 @@
           <a href="" aria-label="YouTube" target="_blank" rel="noopener">
             <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.99 2.99 0 00-2.104-2.115C19.53 3.5 12 3.5 12 3.5s-7.53 0-9.394.571A2.99 2.99 0 00.502 6.186C0 8.066 0 12 0 12s0 3.934.502 5.814a2.99 2.99 0 002.104 2.115C4.47 20.5 12 20.5 12 20.5s7.53 0 9.394-.571a2.99 2.99 0 002.104-2.115C24 15.934 24 12 24 12s0-3.934-.502-5.814zM9.6 15.568V8.432L15.818 12 9.6 15.568z"/></svg>
           </a>
-          <a href="https://www.linkedin.com/company/arriendofacil" aria-label="LinkedIn" target="_blank" rel="noopener">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
         </div>
       </div>
 
       <div class="footer-col">
           <h4><?php esc_html_e('Plataforma', 'twentytwentyfive-child'); ?></h4>
           <div class="footer-links">
-            <a href="#como-funciona"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a>
+            <a href="<?php echo esc_url(home_url('/preguntas-frecuentes/')); ?>"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a>
             <a href="<?php echo esc_url( af_signup_url() ); ?>"><?php esc_html_e('Crear cuenta', 'twentytwentyfive-child'); ?></a>
             <a href="<?php echo esc_url(home_url('/contacto/')); ?>"><?php esc_html_e('Contacto y soporte', 'twentytwentyfive-child'); ?></a>
-            <a href="<?php echo esc_url(home_url('/contacto/#faq')); ?>"><?php esc_html_e('Preguntas frecuentes', 'twentytwentyfive-child'); ?></a>
+            <a href="<?php echo esc_url(home_url('/preguntas-frecuentes/')); ?>"><?php esc_html_e('Preguntas frecuentes', 'twentytwentyfive-child'); ?></a>
           </div>
       </div>
 

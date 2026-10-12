@@ -58,9 +58,9 @@
     <!-- Main Navigation -->
     <nav class="nav" id="main-nav" aria-label="<?php esc_attr_e('Navegación principal', 'twentytwentyfive-child'); ?>">
       <ul class="nav-menu">
-        <li><a href="#servicios" class="nav-link"><?php esc_html_e('Servicios', 'twentytwentyfive-child'); ?></a></li>
-        <li><a href="#como-funciona" class="nav-link"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a></li>
-        <li><a href="#contacto" class="nav-link"><?php esc_html_e('Contacto', 'twentytwentyfive-child'); ?></a></li>
+        <li><a href="<?php echo esc_url(home_url('/')); ?>#servicios" class="nav-link"><?php esc_html_e('Servicios', 'twentytwentyfive-child'); ?></a></li>
+        <li><a href="<?php echo esc_url(home_url('/preguntas-frecuentes/')); ?>" class="nav-link"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a></li>
+        <li><a href="<?php echo esc_url(home_url('/contacto/')); ?>" class="nav-link"><?php esc_html_e('Contacto', 'twentytwentyfive-child'); ?></a></li>
       </ul>
 
 <!-- CTA Button in Nav -->
