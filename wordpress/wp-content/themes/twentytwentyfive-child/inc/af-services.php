@@ -95,6 +95,7 @@ function af_services_config() {
 			'icon'        => '🛠️',
 			'accent'      => 'amber',
 			'video_label' => 'Video: cómo gestionamos el mantenimiento',
+			'video_id'    => 'zm1JFhZMlVw',
 			'que'         => array(
 				'title' => '¿Qué hace el sistema?',
 				'intro' => 'Cada incidencia queda atendida y documentada de principio a fin:',
@@ -230,6 +231,7 @@ function af_services_config() {
 			'icon'        => '⚖️',
 			'accent'      => 'violet',
 			'video_label' => 'Video: tu respaldo legal con Arriendo Fácil',
+			'video_id'    => 'oGrAxVxsBZE',
 			'que'         => array(
 				'title' => '¿Qué hace el sistema?',
 				'intro' => 'La sección Contratos cubre todo el ciclo del arriendo:',
@@ -297,6 +299,7 @@ function af_services_config() {
 			'icon'        => '💧',
 			'accent'      => 'teal',
 			'video_label' => 'Video: facturación de servicios por consumo',
+			'video_id'    => 'VqzuHieCuJA',
 			'que'         => array(
 				'title' => '¿Qué hace el sistema?',
 				'intro' => 'La sección Pagos de servicios convierte cada lectura en un cargo:',
@@ -364,6 +367,7 @@ function af_services_config() {
 			'icon'        => '⏰',
 			'accent'      => 'amber',
 			'video_label' => 'Video: alertas tempranas de cobro y pagos',
+			'video_id'    => 'Mgp0gHp-aFo',
 			'que'         => array(
 				'title' => '¿Qué hace el sistema?',
 				'intro' => 'El control de pagos centraliza lo que se debe y lo que se pagó:',
