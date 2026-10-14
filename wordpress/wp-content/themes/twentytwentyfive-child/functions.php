@@ -917,6 +917,81 @@ function af_ensure_faq_page() {
 add_action( 'init', 'af_ensure_faq_page' );
 
 /**
+ * Ensure the contact page exists (self-healing). Usa page-contacto.php por jerarquía de slug.
+ */
+function af_ensure_contact_page() {
+  $page = get_page_by_path( 'contacto' );
+
+  if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+    return;
+  }
+
+  if ( $page instanceof WP_Post ) {
+    wp_update_post( array( 'ID' => $page->ID, 'post_status' => 'publish' ) );
+    return;
+  }
+
+  wp_insert_post(
+    array(
+      'post_type'      => 'page',
+      'post_status'    => 'publish',
+      'post_title'     => __( 'Contacto', 'twentytwentyfive-child' ),
+      'post_name'      => 'contacto',
+      'post_content'   => '',
+      'comment_status' => 'closed',
+    )
+  );
+}
+add_action( 'init', 'af_ensure_contact_page' );
+
+/**
+ * Procesa el formulario de /contacto/ y lo envía por correo.
+ */
+function af_handle_contact_form() {
+  $redirect = home_url( '/contacto/' );
+
+  if ( ! isset( $_POST['af_contact_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['af_contact_nonce'] ) ), 'af_contact_form' ) ) {
+    wp_safe_redirect( add_query_arg( 'contacto', 'error', $redirect ) );
+    exit;
+  }
+
+  // Honeypot: los bots rellenan este campo oculto.
+  if ( ! empty( $_POST['website'] ) ) {
+    wp_safe_redirect( add_query_arg( 'contacto', 'ok', $redirect ) );
+    exit;
+  }
+
+  $name    = sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) );
+  $email   = sanitize_email( wp_unslash( $_POST['email'] ?? '' ) );
+  $subject = sanitize_key( wp_unslash( $_POST['subject'] ?? '' ) );
+  $message = sanitize_textarea_field( wp_unslash( $_POST['message'] ?? '' ) );
+
+  $subjects = array(
+    'demo'    => 'Quiero conocer el sistema',
+    'support' => 'Soporte técnico',
+    'billing' => 'Facturación',
+    'other'   => 'Otro',
+  );
+
+  if ( '' === $name || ! is_email( $email ) || ! isset( $subjects[ $subject ] ) || '' === $message ) {
+    wp_safe_redirect( add_query_arg( 'contacto', 'invalid', $redirect ) );
+    exit;
+  }
+
+  $sent = wp_mail(
+    'arriendofacilnet@gmail.com',
+    sprintf( 'Nuevo mensaje de contacto: %s', $subjects[ $subject ] ),
+    sprintf( "Nombre: %s\nEmail: %s\nAsunto: %s\n\n%s", $name, $email, $subjects[ $subject ], $message ),
+    array( 'Reply-To: ' . $name . ' <' . $email . '>' )
+  );
+
+  wp_safe_redirect( add_query_arg( 'contacto', $sent ? 'ok' : 'error', $redirect ) );
+  exit;
+}
+add_action( 'admin_post_nopriv_af_contact', 'af_handle_contact_form' );
+add_action( 'admin_post_af_contact', 'af_handle_contact_form' );
+
+/**
  * Ensure the custom login page exists (self-healing).
  */
 function af_ensure_custom_login_page() {
@@ -1087,7 +1162,7 @@ function af_llms_txt_template_redirect() {
   echo "- Facturación electrónica SRI\n";
   echo "- Mantenimiento e incidencias con proveedores\n";
   echo "- Panel de control con semáforo de cobros y ocupación\n";
-  echo "- Contratos con notarización y alertas de vencimiento\n";
+  echo "- Contratos generados desde plantilla y alertas de vencimiento\n";
   echo "- Pagos de servicios por consumo (medidores)\n";
   echo "- Control de pagos: seguimiento de cargos y mora\n";
   echo "- Inquilinos: verificación de documentos y score de pago\n\n";

@@ -20,7 +20,24 @@ get_header();
         <div class="af-contact-form-box">
           <h2><?php esc_html_e('Envíanos un mensaje', 'twentytwentyfive-child'); ?></h2>
           
-          <form class="af-contact-form" method="POST" action="">
+          <?php
+          $contact_status = isset( $_GET['contacto'] ) ? sanitize_key( wp_unslash( $_GET['contacto'] ) ) : '';
+          $contact_notices = array(
+            'ok'      => array( 'success', __( '¡Gracias! Recibimos tu mensaje y te responderemos en menos de 24 horas hábiles.', 'twentytwentyfive-child' ) ),
+            'invalid' => array( 'error', __( 'Revisa que todos los campos estén completos y que el email sea válido.', 'twentytwentyfive-child' ) ),
+            'error'   => array( 'error', __( 'No pudimos enviar tu mensaje. Inténtalo de nuevo o escríbenos a arriendofacilnet@gmail.com.', 'twentytwentyfive-child' ) ),
+          );
+          if ( isset( $contact_notices[ $contact_status ] ) ) :
+            ?>
+            <p class="af-contact-notice af-contact-notice--<?php echo esc_attr( $contact_notices[ $contact_status ][0] ); ?>" role="status"><?php echo esc_html( $contact_notices[ $contact_status ][1] ); ?></p>
+          <?php endif; ?>
+
+          <form class="af-contact-form" method="POST" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+            <input type="hidden" name="action" value="af_contact">
+            <?php wp_nonce_field( 'af_contact_form', 'af_contact_nonce' ); ?>
+            <div style="position:absolute;left:-9999px;" aria-hidden="true">
+              <input type="text" name="website" tabindex="-1" autocomplete="off">
+            </div>
             <div class="af-form-row">
               <div class="af-form-group">
                 <label><?php esc_html_e('Nombre', 'twentytwentyfive-child'); ?> *</label>
@@ -119,6 +136,9 @@ get_header();
 
 <style>
 .af-contact-page { background: var(--color-bg-primary); }
+.af-contact-notice { padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.95rem; }
+.af-contact-notice--success { background: #e6f6ec; color: #14532d; }
+.af-contact-notice--error { background: #fdecec; color: #7f1d1d; }
 
 .af-contact-hero {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);

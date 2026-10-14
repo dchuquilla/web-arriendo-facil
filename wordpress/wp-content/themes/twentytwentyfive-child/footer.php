@@ -27,7 +27,7 @@
           <a href="https://www.tiktok.com/@arriendofacil.net?lang=es-419" aria-label="TikTok" target="_blank" rel="noopener">
             <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19.589 6.686a4.793 4.793 0 01-3.77-4.715h-3.307v13.362a2.939 2.939 0 11-2.94-2.94c.245 0 .483.03.711.086V9.12a6.29 6.29 0 00-.71-.041A6.247 6.247 0 109.57 21.57a6.246 6.246 0 006.25-6.246V9.013a8.06 8.06 0 004.72 1.523V7.231a4.778 4.778 0 01-.951-.545z"/></svg>
           </a>
-          <a href="" aria-label="YouTube" target="_blank" rel="noopener">
+          <a href="https://www.youtube.com/@arriendofacil.net99" aria-label="YouTube" target="_blank" rel="noopener">
             <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.99 2.99 0 00-2.104-2.115C19.53 3.5 12 3.5 12 3.5s-7.53 0-9.394.571A2.99 2.99 0 00.502 6.186C0 8.066 0 12 0 12s0 3.934.502 5.814a2.99 2.99 0 002.104 2.115C4.47 20.5 12 20.5 12 20.5s7.53 0 9.394-.571a2.99 2.99 0 002.104-2.115C24 15.934 24 12 24 12s0-3.934-.502-5.814zM9.6 15.568V8.432L15.818 12 9.6 15.568z"/></svg>
           </a>
         </div>

@@ -85,7 +85,7 @@ get_header();
                   <svg class="af-faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8l4 4 4-4"/></svg>
                 </summary>
                 <div class="af-faq-answer">
-                  <p><?php esc_html_e('Sí. Los precios dependen del número de propiedades y servicios que contrates. Puedes ver nuestros planes o contactarnos para un presupuesto personalizado.', 'twentytwentyfive-child'); ?></p>
+                  <p><?php esc_html_e('Hay un plan Free, gratuito, con funciones y número de propiedades limitados y sin facturación electrónica. El plan Premium desbloquea todas las funciones sin límites y se paga con tarjeta en la plataforma, en ciclo mensual o anual.', 'twentytwentyfive-child'); ?></p>
                 </div>
               </details>
 
@@ -124,7 +124,7 @@ get_header();
                   <svg class="af-faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8l4 4 4-4"/></svg>
                 </summary>
                 <div class="af-faq-answer">
-                  <p><?php esc_html_e('Puedes registrar tantas propiedades como necesites. El número de propiedades activas dependerá de tu plan contratado.', 'twentytwentyfive-child'); ?></p>
+                  <p><?php esc_html_e('El plan Free tiene un número limitado de propiedades. Con el plan Premium puedes registrar propiedades sin límite.', 'twentytwentyfive-child'); ?></p>
                 </div>
               </details>
 
@@ -134,7 +134,7 @@ get_header();
                   <svg class="af-faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8l4 4 4-4"/></svg>
                 </summary>
                 <div class="af-faq-answer">
-                  <p><?php esc_html_e('Sí. Puedes actualizar o bajar tu plan en cualquier momento desde tu panel de control. El cambio se reflejará en el próximo ciclo de facturación.', 'twentytwentyfive-child'); ?></p>
+                  <p><?php esc_html_e('Sí. Puedes pasar a Premium en cualquier momento y cancelar la renovación cuando quieras. Conservas el acceso Premium hasta el fin del ciclo pagado y luego tu cuenta vuelve al plan Free sin perder tus datos.', 'twentytwentyfive-child'); ?></p>
                 </div>
               </details>
             </div>
@@ -192,7 +192,7 @@ get_header();
                   <svg class="af-faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8l4 4 4-4"/></svg>
                 </summary>
                 <div class="af-faq-answer">
-                  <p><?php esc_html_e('Puedes registrar pagos de dos formas: manualmente en el sistema o integrado con tu banco. El sistema detecta automáticamente los atrasos desde el primer día del mes.', 'twentytwentyfive-child'); ?></p>
+                  <p><?php esc_html_e('Registras cada pago manualmente en el sistema, indicando si fue transferencia, efectivo, depósito, cheque u otro, y puedes registrar abonos parciales. El sistema no se conecta con bancos. Un cargo se marca como atrasado automáticamente cuando pasa su fecha de vencimiento sin estar pagado.', 'twentytwentyfive-child'); ?></p>
                 </div>
               </details>
 
@@ -202,7 +202,7 @@ get_header();
                   <svg class="af-faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8l4 4 4-4"/></svg>
                 </summary>
                 <div class="af-faq-answer">
-                  <p><?php esc_html_e('El sistema lo marca automáticamente como moroso. Puedes enviar recordatorios, registrar intereses moratorios y generar reportes de morosidad para facilitar tus gestiones de cobro.', 'twentytwentyfive-child'); ?></p>
+                  <p><?php esc_html_e('El cargo se marca automáticamente como atrasado al pasar su fecha de vencimiento y el inquilino aparece en la mora del Panel. Puedes enviarle avisos con confirmación de lectura para gestionar el cobro.', 'twentytwentyfive-child'); ?></p>
                 </div>
               </details>
 
@@ -442,7 +442,7 @@ get_header();
                   <svg class="af-faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path stroke="currentColor" stroke-width="2" d="M6 8l4 4 4-4"/></svg>
                 </summary>
                 <div class="af-faq-answer">
-                  <p><?php esc_html_e('Puedes registrar tantas propiedades como necesites. El número de propiedades activas dependerá de tu plan contratado.', 'twentytwentyfive-child'); ?></p>
+                  <p><?php esc_html_e('El plan Free tiene un número limitado de propiedades. Con el plan Premium puedes registrar propiedades sin límite.', 'twentytwentyfive-child'); ?></p>
                 </div>
               </details>
 
@@ -478,7 +478,7 @@ get_header();
                   <svg class="af-faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path stroke="currentColor" stroke-width="2" d="M6 8l4 4 4-4"/></svg>
                 </summary>
                 <div class="af-faq-answer">
-                  <p><?php esc_html_e('Puedes registrar pagos manualmente o integrarnos con tu banco. El sistema detecta automáticamente atrasos desde el día 1 del mes.', 'twentytwentyfive-child'); ?></p>
+                  <p><?php esc_html_e('Registras cada pago manualmente (transferencia, efectivo, depósito, cheque u otro), incluidos abonos parciales. El sistema no se conecta con bancos. Los cargos impagos se marcan como atrasados al pasar su fecha de vencimiento.', 'twentytwentyfive-child'); ?></p>
                 </div>
               </details>
 
@@ -488,7 +488,7 @@ get_header();
                   <svg class="af-faq-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path stroke="currentColor" stroke-width="2" d="M6 8l4 4 4-4"/></svg>
                 </summary>
                 <div class="af-faq-answer">
-                  <p><?php esc_html_e('El sistema lo marca como moroso automáticamente. Puedes enviar recordatorios, registrar intereses y generar reportes de morosidad para tus cobros.', 'twentytwentyfive-child'); ?></p>
+                  <p><?php esc_html_e('El cargo se marca como atrasado al pasar su fecha de vencimiento y el inquilino aparece en la mora del Panel. Puedes enviarle avisos con confirmación de lectura para gestionar el cobro.', 'twentytwentyfive-child'); ?></p>
                 </div>
               </details>
 

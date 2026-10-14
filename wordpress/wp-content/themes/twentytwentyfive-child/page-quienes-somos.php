@@ -26,7 +26,7 @@ $pillars = array(
 	array(
 		'icon'  => '⚖️',
 		'title' => __( 'Contratos', 'twentytwentyfive-child' ),
-		'text'  => __( 'Generados desde plantilla, con notarización y alertas de vencimiento.', 'twentytwentyfive-child' ),
+		'text'  => __( 'Generados desde plantilla, con alertas de vencimiento.', 'twentytwentyfive-child' ),
 	),
 	array(
 		'icon'  => '🛠️',

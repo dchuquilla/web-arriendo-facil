@@ -91,7 +91,7 @@ function af_services_config() {
 			'eyebrow'     => 'Propiedad cuidada',
 			'card_title'  => 'Mantenimiento',
 			'card_desc'   => 'Incidencias atendidas y registradas, con costos claros.',
-			'tagline'     => 'Coordinamos cada reparación con proveedores de confianza y dejamos el costo registrado para tu liquidación.',
+			'tagline'     => 'Registra cada incidencia, asigna al proveedor y da seguimiento hasta que la reparación queda resuelta, con el costo documentado.',
 			'icon'        => '🛠️',
 			'accent'      => 'amber',
 			'video_label' => 'Video: cómo gestionamos el mantenimiento',
@@ -101,9 +101,9 @@ function af_services_config() {
 				'intro' => 'Cada incidencia queda atendida y documentada de principio a fin:',
 				'items' => array(
 					'Registra qué está dañado, dónde y con qué prioridad (alta, media o baja).',
-					'Asigna un proveedor de confianza (plomero, albañil, carpintero…) y agenda la visita.',
+					'Asigna un proveedor de tu catálogo (plomero, albañil, carpintero…) y agenda la visita.',
 					'Controla el estado: pendiente, en proceso, completado o cancelado.',
-					'Descuenta el costo en tu liquidación o en la garantía, según corresponda.',
+					'Deja registrado el costo de cada reparación para tu control.',
 				),
 			),
 			'como'        => array(
@@ -115,15 +115,15 @@ function af_services_config() {
 					),
 					array(
 						'title' => 'Asignamos proveedor',
-						'text'  => 'Elegimos del catálogo al oficio adecuado y pactamos la fecha de visita.',
+						'text'  => 'Eliges del catálogo al oficio adecuado y registras la fecha de visita.',
 					),
 					array(
 						'title' => 'Se repara y se da seguimiento',
 						'text'  => 'El estado se actualiza hasta completar el trabajo.',
 					),
 					array(
-						'title' => 'Costo en tu liquidación',
-						'text'  => 'El gasto aparece detallado en tu reporte mensual.',
+						'title' => 'Costo registrado',
+						'text'  => 'Queda el detalle del gasto de cada reparación para tu control.',
 					),
 				),
 			),
@@ -133,14 +133,14 @@ function af_services_config() {
 				array( 'value' => '100%', 'label' => 'Costos registrados' ),
 			),
 			'beneficios'  => array(
-				'Incidencias priorizadas y atendidas sin que tú intervengas.',
-				'Proveedores de confianza con tarifas y contacto a la mano.',
-				'Costos trazables, descontados en liquidación o garantía.',
+				'Incidencias priorizadas y con seguimiento de principio a fin.',
+				'Proveedores con tarifas y contacto a la mano.',
+				'Costos de cada reparación registrados y trazables.',
 			),
 			'faq'         => array(
 				array(
 					'q' => '¿Quién paga las reparaciones?',
-					'a' => 'El costo queda registrado y se descuenta en tu liquidación o en la garantía del inquilino, según el caso.',
+					'a' => 'El propietario o gestor del inmueble. Arriendo Fácil solo registra la incidencia, el proveedor y el costo; no cobra ni descuenta nada.',
 				),
 				array(
 					'q' => '¿Puedo ver el avance de una reparación?',
@@ -216,7 +216,7 @@ function af_services_config() {
 				),
 				array(
 					'q' => '¿Qué incluye la liquidación mensual?',
-					'a' => 'Lo cobrado, los gastos de mantenimiento descontados y el saldo que te corresponde, en un documento imprimible.',
+					'a' => 'Lo cobrado, los gastos de mantenimiento registrados y el saldo que te corresponde, en un documento imprimible.',
 				),
 			),
 			'cta'         => $demo_url,
@@ -226,20 +226,20 @@ function af_services_config() {
 			'title'       => 'Contratos en regla',
 			'eyebrow'     => 'Cobertura legal',
 			'card_title'  => 'Contratos en regla',
-			'card_desc'   => 'Contratos generados, notarizados y con vencimientos controlados.',
-			'tagline'     => 'Generamos el contrato desde plantilla, seguimos su notarización y te avisamos antes de cada vencimiento.',
+			'card_desc'   => 'Contratos generados desde plantilla y alertas antes de cada vencimiento.',
+			'tagline'     => 'Genera el contrato de arriendo desde una plantilla con los datos de tu inmueble e inquilino, y recibe avisos antes de que venza.',
 			'icon'        => '⚖️',
 			'accent'      => 'violet',
 			'video_label' => 'Video: tu respaldo legal con Arriendo Fácil',
 			'video_id'    => 'oGrAxVxsBZE',
 			'que'         => array(
 				'title' => '¿Qué hace el sistema?',
-				'intro' => 'La sección Contratos cubre todo el ciclo del arriendo:',
+				'intro' => 'La sección Contratos te ayuda con dos cosas: crear contratos y no olvidar sus vencimientos.',
 				'items' => array(
 					'Crea el contrato vinculando inmueble e inquilino, con fechas, canon, alícuota y día de pago.',
-					'Genera el documento desde una plantilla y lo archiva en el expediente.',
-					'Registra el estado: activo o terminado, y notarización pendiente, en proceso o notarizado.',
-					'Avisa los contratos por vencer a 30, 60 y 90 días y liquida la garantía al salir.',
+					'Genera el documento desde una plantilla y lo archiva en el expediente del inquilino.',
+					'Registra si el contrato está activo o terminado.',
+					'Te notifica los contratos por vencer a 30, 60 y 90 días.',
 				),
 			),
 			'como'        => array(
@@ -251,27 +251,27 @@ function af_services_config() {
 					),
 					array(
 						'title' => 'Se genera el documento',
-						'text'  => 'A partir de la plantilla, listo para firma y notarización.',
+						'text'  => 'A partir de la plantilla, listo para descargar e imprimir. La firma y cualquier trámite legal los gestionas tú.',
 					),
 					array(
-						'title' => 'Seguimos el estado legal',
-						'text'  => 'Pendiente, en proceso o notarizado, visible en la ficha del inquilino.',
+						'title' => 'Queda en el expediente',
+						'text'  => 'El contrato y su estado (activo o terminado) se ven en la ficha del inquilino.',
 					),
 					array(
-						'title' => 'Control de vencimiento y salida',
-						'text'  => 'Alertas anticipadas y liquidación de garantía al check-out.',
+						'title' => 'Te avisamos del vencimiento',
+						'text'  => 'Recibes alertas a 30, 60 y 90 días para renovar o cerrar el contrato a tiempo.',
 					),
 				),
 			),
 			'datos'       => array(
 				array( 'value' => '30/60/90', 'label' => 'Días de aviso antes del vencimiento' ),
-				array( 'value' => '3', 'label' => 'Estados de notarización' ),
+				array( 'value' => '2', 'label' => 'Estados del contrato: activo o terminado' ),
 				array( 'value' => '1', 'label' => 'Expediente digital por inquilino' ),
 			),
 			'beneficios'  => array(
 				'Contrato generado desde plantilla, sin redactar desde cero.',
-				'Estado de notarización siempre visible.',
-				'Alertas de vencimiento y garantía liquidada al salir el inquilino.',
+				'Estado del contrato (activo o terminado) siempre visible.',
+				'Alertas de vencimiento para renovar a tiempo.',
 			),
 			'faq'         => array(
 				array(
@@ -283,8 +283,8 @@ function af_services_config() {
 					'a' => 'El sistema calcula las fechas y avisa a 30, 60 y 90 días antes.',
 				),
 				array(
-					'q' => '¿Qué pasa con la garantía al terminar?',
-					'a' => 'Se liquida en la salida, descontando daños y consumos pendientes.',
+					'q' => '¿Arriendo Fácil notariza los contratos?',
+					'a' => 'No. Nosotros generamos el contrato y te avisamos de su vencimiento; la notarización, si la requieres, la realiza el gestor del inmueble.',
 				),
 			),
 			'cta'         => $demo_url,

@@ -36,7 +36,7 @@ get_header();
           <li>Nombre completo, email, teléfono verificado</li>
           <li>Cédula de identidad o RUC (para verificación legal)</li>
           <li>Dirección de domicilio (principal y de propiedades)</li>
-          <li>Información bancaria (para liquidaciones mensuales)</li>
+          <li>Datos de facturación del plan Premium (nombre, RUC o cédula, correo). Los datos de tarjeta los procesa directamente el proveedor de pagos; Arriendo Fácil no almacena el número completo ni el código de seguridad</li>
           <li>Firma digital y contraseña SRI (encriptados)</li>
           <li>Historial de transacciones y pagos</li>
           <li>Documentos de propiedad (título, factura de compra)</li>
@@ -95,7 +95,7 @@ get_header();
         <h2>4. Uso de Datos</h2>
         <h3>Usamos tus datos para:</h3>
         <ul>
-          <li>Facilitar contratos, pagos y transacciones</li>
+          <li>Facilitar contratos, el seguimiento de pagos y el cobro de suscripciones Premium</li>
           <li>Generar facturas electrónicas ante SRI</li>
           <li>Comunicaciones relacionadas con tu cuenta</li>
           <li>Cumplimiento legal y regulatorio (impuestos, antilavado)</li>
@@ -129,7 +129,7 @@ get_header();
             <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Cumplimiento fiscal SRI</td>
           </tr>
           <tr style="background: var(--color-bg-secondary);">
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Datos de pago</td>
+            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Datos de cobro de suscripción (sin datos completos de tarjeta)</td>
             <td style="padding: var(--space-3); border: 1px solid var(--color-border);">7 años después cierre</td>
             <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Auditoría fiscal y cumplimiento</td>
           </tr>
@@ -226,7 +226,7 @@ get_header();
         <p>Compartimos datos solo con:</p>
         <ul>
           <li>SRI (autoridades fiscales) - facturación legal</li>
-          <li>Proveedores de pagos - procesamiento de transacciones</li>
+          <li>Proveedores de pagos - procesamiento seguro de los cobros con tarjeta del plan Premium</li>
           <li>Cloudflare - almacenamiento y CDN</li>
           <li>Google Analytics - estadísticas agregadas (anónimas)</li>
           <li>Autoridades legales - cuando se requiera por ley</li>

@@ -11,7 +11,7 @@ get_header();
   <section class="af-legal-hero">
     <div class="container">
       <h1><?php esc_html_e('Términos y Condiciones de Uso', 'twentytwentyfive-child'); ?></h1>
-      <p><?php esc_html_e('Arriendo Fácil Soluciones Inmobiliarias | Última actualización: 12 de octubre de 2026 | Versión 2.0 (Corporativa)', 'twentytwentyfive-child'); ?></p>
+      <p><?php esc_html_e('Arriendo Fácil Soluciones Inmobiliarias | Última actualización: 14 de octubre de 2026 | Versión 2.1 (Corporativa)', 'twentytwentyfive-child'); ?></p>
     </div>
   </section>
 
@@ -33,21 +33,22 @@ get_header();
           <li>Gestión centralizada de inventario de propiedades</li>
           <li>Administración de perfiles y documentación de inquilinos</li>
           <li>Gestión de contratos de arrendamiento digitales</li>
-          <li>Plataforma de cobranza y liquidación de rentas</li>
+          <li>Seguimiento de cargos, pagos y mora de las rentas</li>
           <li>Portal de mantenimiento y reparaciones</li>
           <li>Emisión de comprobantes de pago</li>
           <li>Reportería financiera y análisis de desempeño</li>
-          <li>Integración con sistemas de pago electrónico</li>
         </ul>
         <h3>Funcionaidades para Inquilinos:</h3>
         <ul>
-          <li>Portal de pago de rentas</li>
+          <li>Consulta de cargos y estado de pagos</li>
           <li>Solicitud de reparaciones y mantenimiento</li>
           <li>Acceso a documentación del contrato</li>
           <li>Historial de pagos y transacciones</li>
         </ul>
+        <h3>Planes Free y Premium:</h3>
+        <p>El Servicio se ofrece en dos planes. El plan Free es gratuito, con funciones limitadas y un número máximo de propiedades, y no incluye facturación electrónica. El plan Premium desbloquea todas las funciones sin limitaciones y se paga con tarjeta en la plataforma. Las condiciones de cobro se detallan en la sección 6.</p>
         <h3>Limitaciones Críticas:</h3>
-        <p>Arriendo Fácil es exclusivamente una plataforma de tecnología. NO es agencia inmobiliaria, banco, institución aseguradora, asesor legal, gestor fiscal, notaria pública ni agencia de cobros. No realiza ninguna de estas funciones ni asume responsabilidades asociadas.</p>
+        <p>Arriendo Fácil es exclusivamente una plataforma de tecnología. NO es agencia inmobiliaria, banco, institución aseguradora, asesor legal, gestor fiscal, notaria pública ni agencia de cobros. No realiza ninguna de estas funciones ni asume responsabilidades asociadas. En particular, Arriendo Fácil genera contratos y notifica su vencimiento, pero no los notariza; no paga, financia ni descuenta reparaciones o mantenimientos, cuyo costo corresponde al propietario o gestor del inmueble; y no administra ni responde por garantías o depósitos de garantía, que se pactan y gestionan directamente entre propietario e inquilino.</p>
       </section>
 
       <section id="elegibilidad">
@@ -68,7 +69,6 @@ get_header();
           <li>Ser propietario legal de la propiedad o tener poder notariado vigente</li>
           <li>Registrar RUC o cédula de identidad según corresponda</li>
           <li>Proporcionar información fiscal veraz ante el SRI</li>
-          <li>Tener cuenta bancaria activa a nombre del propietario</li>
           <li>Aceptar explícitamente el Contrato de Gestión de Propiedades</li>
           <li>Verificar identidad mediante autenticación multifactor</li>
         </ul>
@@ -100,7 +100,6 @@ get_header();
         <h3>Conductas Explícitamente Prohibidas:</h3>
         <ul>
           <li>Discriminar en selección de inquilinos (Art. 33 Constitución Política de Ecuador)</li>
-          <li>Exigir o aceptar pagos en efectivo o fuera de la plataforma</li>
           <li>Retener depósitos de garantía sin causa legalmente justificada</li>
           <li>Ejercer acoso, intimidación, amenaza o violencia contra inquilinos</li>
           <li>Cambiar unilateralmente términos de contrato vigente sin consentimiento escrito</li>
@@ -141,28 +140,43 @@ get_header();
       </section>
 
       <section id="precios-pagos">
-        <h2>6. MODELO DE PRECIOS, COMISIONES Y PAGOS</h2>
-        <h3>Estructura de Comisiones para Propietarios:</h3>
-        <p>Arriendo Fácil cobra una comisión por servicios de gestión, calculada como porcentaje de la renta mensual acordada:</p>
+        <h2>6. PLANES, PRECIOS Y PAGOS</h2>
+        <h3>Planes Disponibles:</h3>
         <ul>
-          <li><strong>Plan Básico:</strong> 8% de la renta mensual</li>
-          <li><strong>Plan Profesional:</strong> 10% de la renta mensual</li>
-          <li><strong>Plan Premium:</strong> 12% de la renta mensual</li>
+          <li><strong>Plan Free:</strong> acceso gratuito con funciones limitadas y un número máximo de propiedades. No incluye facturación electrónica SRI ni las demás funciones exclusivas del plan Premium.</li>
+          <li><strong>Plan Premium:</strong> desbloquea todas las funciones del Servicio, sin límite de propiedades, y se contrata mediante suscripción de pago.</li>
         </ul>
-        <p>La comisión incluye gestión de solicitudes, procesamiento de pagos, emisión de comprobantes, reportes financieros, atención técnica y acceso a portales.</p>
-        <h3>Liquidación Mensual:</h3>
-        <p><strong>Ejemplo:</strong> Renta $1,000 - Comisión 10% (-$100) - Descuentos (-$50) = Liquidación Neta $850. El saldo se deposita en cuenta bancaria registrada dentro de cinco (5) días hábiles.</p>
-        <h3>Impuestos y Obligaciones Fiscales:</h3>
+        <p>Las funciones y límites de cada plan (incluido el número máximo de propiedades del plan Free) se publican en la plataforma y pueden actualizarse conforme a la sección 14. Arriendo Fácil no cobra comisión sobre las rentas: no recibe, intermedia ni liquida los pagos de arriendo entre propietarios e inquilinos.</p>
+        <h3>Precios y Ciclos de Facturación:</h3>
+        <p>El plan Premium puede contratarse con ciclo mensual o anual. El precio vigente de cada ciclo se muestra en la plataforma antes de confirmar el pago, e incluye o detalla por separado los impuestos aplicables (IVA u otros) según la normativa ecuatoriana. Usted solo será cobrado por el plan que seleccione expresamente.</p>
+        <h3>Pago con Tarjeta:</h3>
         <ul>
-          <li>Arriendo Fácil actúa como intermediaria de pagos, no como responsable tributario</li>
-          <li>Usted es responsable de cumplir obligaciones tributarias derivadas del arrendamiento</li>
-          <li>Arriendo Fácil emitirá comprobante electrónico (factura) conforme a normativa SRI</li>
-          <li>Retenciones en la fuente se aplicarán conforme a tasas vigentes del SRI</li>
+          <li>El plan Premium se paga con tarjeta de crédito o débito directamente en la plataforma, a través de un procesador de pagos de terceros.</li>
+          <li>Los datos de su tarjeta se ingresan y procesan en el entorno seguro del procesador de pagos. Arriendo Fácil no recibe ni almacena el número completo de su tarjeta ni su código de seguridad; únicamente conserva la información necesaria para identificar la transacción (por ejemplo, referencia de pago, últimos dígitos, fecha y monto).</li>
+          <li>Usted declara ser el titular de la tarjeta o contar con autorización del titular para usarla.</li>
+          <li>Al suscribirse, usted autoriza a Arriendo Fácil y a su procesador de pagos a cobrar a su tarjeta el precio del plan, y sus renovaciones, en cada ciclo de facturación.</li>
+          <li>El procesamiento está sujeto además a los términos del procesador de pagos y a las validaciones de su banco emisor (por ejemplo, autenticación adicional). Arriendo Fácil no controla las decisiones de aprobación o rechazo del banco emisor.</li>
         </ul>
-        <h3>Métodos de Pago Aceptados:</h3>
-        <p><strong>Para Inquilinos:</strong> Tarjeta de crédito/débito, transferencia bancaria, billetera digital, depósito directo. <strong>Para Propietarios (Liquidaciones):</strong> Transferencia bancaria (método principal) y billetera digital.</p>
-        <h3>Transacciones y Reembolsos:</h3>
-        <p>Las transacciones procesadas son generalmente irreversibles después de confirmación. Reembolsos pueden procesarse únicamente por: error administrativo comprobado, fraude detectado, o incumplimiento grave de servicio. Proceso: presentar reclamo dentro de treinta (30) días con documentación completa.</p>
+        <h3>Renovación Automática y Cancelación:</h3>
+        <p>La suscripción Premium se renueva automáticamente al final de cada ciclo, mensual o anual, por el mismo ciclo, al precio vigente, hasta que usted la cancele. Puede cancelar la renovación en cualquier momento desde su cuenta; la cancelación surte efecto al final del ciclo ya pagado, durante el cual conserva el acceso Premium. Para evitar el cobro del siguiente ciclo, cancele antes de la fecha de renovación.</p>
+        <h3>Falta de Pago, Rechazo de Tarjeta y Regreso al Plan Free:</h3>
+        <p>Si un cobro es rechazado, Arriendo Fácil podrá reintentarlo y le notificará para que actualice su medio de pago. Si el pago no se regulariza en un plazo razonable, o si cancela su suscripción y termina el ciclo pagado, su cuenta pasará al plan Free. En ese caso:</p>
+        <ul>
+          <li>Las funciones exclusivas de Premium, como la facturación electrónica SRI, se desactivarán.</li>
+          <li>Si el número de propiedades supera el límite del plan Free, no podrá registrar nuevas propiedades hasta ajustarse al límite o volver a Premium; Arriendo Fácil no eliminará sus datos por este motivo.</li>
+          <li>Usted conserva el derecho de solicitar la exportación o eliminación de sus datos conforme a la sección 8.</li>
+        </ul>
+        <h3>Cambios de Plan y de Precio:</h3>
+        <p>Puede pasar de Free a Premium en cualquier momento. Los cambios de precio o de las condiciones de los planes se notificarán con al menos treinta (30) días de anticipación y aplicarán a partir de la siguiente renovación; si no está de acuerdo, puede cancelar antes de esa fecha.</p>
+        <h3>Reembolsos y Contracargos:</h3>
+        <p>Los pagos del plan Premium no son reembolsables por periodos ya iniciados, salvo cobro duplicado o erróneo, fraude comprobado, falla grave del Servicio imputable a Arriendo Fácil, o cuando la ley de defensa del consumidor aplicable lo exija. Para solicitar una revisión, escriba a legal@arriendofacil.net dentro de treinta (30) días desde el cobro, con la documentación correspondiente. Antes de iniciar un contracargo ante su banco, le pedimos contactarnos para resolver el problema; Arriendo Fácil podrá suspender la cuenta mientras un contracargo esté en disputa.</p>
+        <h3>Comprobantes e Impuestos:</h3>
+        <ul>
+          <li>Arriendo Fácil emitirá el comprobante electrónico correspondiente al cobro de su suscripción conforme a la normativa del SRI, con los datos fiscales que usted proporcione.</li>
+          <li>Usted es responsable de cumplir sus propias obligaciones tributarias derivadas de los arrendamientos que administre.</li>
+        </ul>
+        <h3>Pagos de Arriendo entre Propietarios e Inquilinos:</h3>
+        <p>La plataforma permite registrar y dar seguimiento a cargos, pagos y mora de los arriendos, pero los pagos de renta, servicios y garantías se acuerdan y realizan directamente entre propietario e inquilino. Arriendo Fácil no actúa como intermediaria de esos pagos.</p>
       </section>
 
       <section id="limitacion-responsabilidad">
@@ -176,6 +190,8 @@ get_header();
           <li>Garantía de lucro, ingresos o resultados económicos</li>
           <li>Garantía de calidad de inquilinos o propiedades en la plataforma</li>
         </ul>
+        <h3>Procesador de Pagos:</h3>
+        <p>Los cobros con tarjeta son procesados por un tercero. Arriendo Fácil no es responsable por interrupciones, errores o rechazos atribuibles al procesador de pagos o al banco emisor, sin perjuicio de su obligación de corregir los cobros erróneos que le sean imputables.</p>
         <h3>Limitación de Daños:</h3>
         <p>Bajo ninguna circunstancia Arriendo Fácil será responsable por daños indirectos: daños incidentales, consecuentes, punitivos, pérdida de ganancia, pérdida de datos, daño a reputación o negocio, interrupción de servicios. La responsabilidad total agregada se limita al MENOR de: cantidad pagada en últimos seis (6) meses, quinientos dólares USD, o cero si no hay actividad de pago.</p>
         <h3>Excepciones al Límite:</h3>
@@ -187,7 +203,7 @@ get_header();
         <h3>Principios de Tratamiento:</h3>
         <p>Arriendo Fácil trata datos personales conforme a: Política de Privacidad separada, regulaciones ecuatorianas, estándares internacionales (GDPR UE, CCPA California), y Código de Derechos de Consumidores Ecuador.</p>
         <h3>Tipos de Datos Recopilados:</h3>
-        <p><strong>Datos Directos:</strong> identidad (nombre, cédula, RUC, teléfono), ubicación (domicilio), financieros (cuenta bancaria). <strong>Datos Indirectos:</strong> actividad en plataforma (login, transacciones), información técnica (IP, navegador, dispositivo), cookies y tokens.</p>
+        <p><strong>Datos Directos:</strong> identidad (nombre, cédula, RUC, teléfono), ubicación (domicilio), financieros (datos de facturación del plan Premium). <strong>Datos Indirectos:</strong> actividad en plataforma (login, transacciones), información técnica (IP, navegador, dispositivo), cookies y tokens.</p>
         <h3>Propósitos Únicos de Procesamiento:</h3>
         <p>Datos se procesan únicamente para: ejecutar el Servicio contratado, cumplir obligaciones legales (SRI, autoridades), mejorar seguridad y prevenir fraude, comunicaciones de servicio esenciales, análisis agregado y reportería (no personalizada).</p>
         <h3>Derechos del Titular de Datos:</h3>
@@ -233,12 +249,14 @@ get_header();
 
       <section id="facturacion">
         <h2>10. FACTURACIÓN ELECTRÓNICA Y REPORTES TRIBUTARIOS</h2>
+        <h3>Disponibilidad:</h3>
+        <p>La facturación electrónica SRI está disponible únicamente en el plan Premium. Los comprobantes ya emitidos permanecen disponibles aunque su cuenta regrese al plan Free.</p>
         <h3>Autorización para Facturación SRI:</h3>
         <p>Al autorizar a Arriendo Fácil para emitir comprobantes electrónicos: usted reconoce ser responsable del contenido y veracidad, autoriza uso de su firma digital para emisión, autoriza acceso a datos de RUC ante SRI, acepta responsabilidad por omisiones o errores en datos suministrados.</p>
         <h3>Caracteres de la Facturación:</h3>
         <p>Comprobantes electrónicos emitidos por Arriendo Fácil: son válidos conforme a Reglamento de Comprobantes Electrónicos SRI, incluyen claves de acceso y firmas digitales, se envían electrónicamente a correo del propietario, se mantienen en repositorio SRI de manera permanente.</p>
         <h3>Responsabilidad sobre Facturación:</h3>
-        <p>Arriendo Fácil actúa como intermediaria de facturación únicamente. El propietario es responsable de exactitud de datos y cumplimiento fiscal. Arriendo Fácil es responsable solo de transmisión técnica correcta. Si SRI rechaza factura, responsabilidad es del propietario.</p>
+        <p>Arriendo Fácil actúa como intermediaria de facturación únicamente, y solo para cuentas con plan Premium. El propietario es responsable de exactitud de datos y cumplimiento fiscal. Arriendo Fácil es responsable solo de transmisión técnica correcta. Si SRI rechaza factura, responsabilidad es del propietario.</p>
       </section>
 
       <section id="resolución-conflictos">
@@ -256,11 +274,11 @@ get_header();
       <section id="terminacion">
         <h2>12. SUSPENSIÓN Y TERMINACIÓN</h2>
         <h3>Terminación por Usuario:</h3>
-        <p>Usted puede terminar su relación con Arriendo Fácil en cualquier momento solicitando cancelación a través de plataforma. Arriendo Fácil confirmará recepción dentro de 2 días hábiles. Período de transición: 30 días calendarios para transferir datos y cerrar cuentas, durante el cual se continúan servicios y se realiza liquidación final.</p>
+        <p>Usted puede terminar su relación con Arriendo Fácil en cualquier momento solicitando cancelación a través de plataforma. Arriendo Fácil confirmará recepción dentro de 2 días hábiles. Período de transición: 30 días calendarios para transferir datos y cerrar cuentas, durante el cual se continúan los servicios contratados. Si tiene una suscripción Premium vigente, aplican las reglas de cancelación y reembolso de la sección 6.</p>
         <h3>Suspensión Inmediata sin Aviso:</h3>
         <p>Arriendo Fácil puede suspender INMEDIATAMENTE acceso sin aviso previo si: actividad fraudulenta o delictiva comprobada, violación de seguridad grave, amenaza inmediata a otros usuarios o sistema, violación de leyes aplicables.</p>
         <h3>Suspensión con Aviso (5 días):</h3>
-        <p>Arriendo Fácil puede suspender acceso con aviso previo si: incumplimiento reiterado de estos Términos, no pago de comisiones por más de 30 días, acoso o intimidación contra otros usuarios, uso de datos sin autorización, violación de derechos de propiedad intelectual. Usuario tiene derecho a responder en 5 días, apelar en 10 días.</p>
+        <p>Arriendo Fácil puede suspender acceso con aviso previo si: incumplimiento reiterado de estos Términos, falta de pago del plan Premium por más de 30 días, acoso o intimidación contra otros usuarios, uso de datos sin autorización, violación de derechos de propiedad intelectual. Usuario tiene derecho a responder en 5 días, apelar en 10 días.</p>
         <h3>Efectos de la Terminación:</h3>
         <p>Acceso a plataforma se revoca, datos se conservan conforme a retención legal (mínimo 5 años por obligaciones fiscales), obligaciones por servicios ya prestados permanecen vigentes, disputas pendientes se resuelven conforme a estos Términos, propietarios retienen derechos a reclamos contra inquilinos por rentas adeudadas.</p>
       </section>
@@ -295,7 +313,7 @@ get_header();
 
       <p class="af-legal-footer">
         <strong>© 2026 Arriendo Fácil Soluciones Inmobiliarias.</strong> Todos los derechos reservados. 
-        Última actualización: 12 de octubre de 2026 | Versión 2.0 (Corporativa)
+        Última actualización: 14 de octubre de 2026 | Versión 2.1 (Corporativa)
       </p>
     </div>
   </article>

@@ -61,7 +61,7 @@ get_header();
             </li>
             <li>
               <span class="af-demo-includes__name"><?php esc_html_e( 'Contratos y documentos', 'twentytwentyfive-child' ); ?></span>
-              <span class="af-demo-includes__desc"><?php esc_html_e( 'Contratos desde plantilla, notarización y vencimientos.', 'twentytwentyfive-child' ); ?></span>
+              <span class="af-demo-includes__desc"><?php esc_html_e( 'Contratos desde plantilla y alertas de vencimiento.', 'twentytwentyfive-child' ); ?></span>
             </li>
             <li>
               <span class="af-demo-includes__name"><?php esc_html_e( 'Mantenimiento', 'twentytwentyfive-child' ); ?></span>
