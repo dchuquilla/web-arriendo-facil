@@ -112,6 +112,9 @@ ORDER BY
 
         $docs = json_decode(wp_remote_retrieve_body($request), true);
 
+        if (!is_array($docs) || isset($docs['code'])) {
+            $docs = [];
+        }
 
         $formattedDocs = [];
 

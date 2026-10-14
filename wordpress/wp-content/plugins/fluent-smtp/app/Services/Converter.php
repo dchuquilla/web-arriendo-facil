@@ -289,8 +289,8 @@ class Converter
             case 'mailgun':
                 switch ($key) {
                     case 'api_key':
-                        if (defined('WPMS_MAILGUN_***REMOVED***') && WPMS_MAILGUN_***REMOVED***) {
-                            $value = WPMS_MAILGUN_***REMOVED***;
+                        if (defined('WPMS_MAILGUN_API_KEY') && WPMS_MAILGUN_API_KEY) {
+                            $value = WPMS_MAILGUN_API_KEY;
                         }
                         break;
                     case 'domain':
@@ -310,8 +310,8 @@ class Converter
             case 'sendgrid':
                 switch ($key) {
                     case 'api_key':
-                        if (defined('WPMS_SENDGRID_***REMOVED***') && WPMS_SENDGRID_***REMOVED***) {
-                            $value = WPMS_SENDGRID_***REMOVED***;
+                        if (defined('WPMS_SENDGRID_API_KEY') && WPMS_SENDGRID_API_KEY) {
+                            $value = WPMS_SENDGRID_API_KEY;
                         }
                         break;
                     case 'domain':
@@ -326,8 +326,8 @@ class Converter
             case 'sendinblue':
                 switch ($key) {
                     case 'api_key':
-                        if (defined('WPMS_SENDINBLUE_***REMOVED***') && WPMS_SENDINBLUE_***REMOVED***) {
-                            $value = WPMS_SENDINBLUE_***REMOVED***;
+                        if (defined('WPMS_SENDINBLUE_API_KEY') && WPMS_SENDINBLUE_API_KEY) {
+                            $value = WPMS_SENDINBLUE_API_KEY;
                         }
                         break;
                     case 'domain':
@@ -341,8 +341,8 @@ class Converter
             case 'pepipostapi':
                 switch ($key) {
                     case 'api_key':
-                        if (defined('WPMS_PEPIPOST_***REMOVED***') && WPMS_PEPIPOST_***REMOVED***) {
-                            $value = WPMS_PEPIPOST_***REMOVED***;
+                        if (defined('WPMS_PEPIPOST_API_KEY') && WPMS_PEPIPOST_API_KEY) {
+                            $value = WPMS_PEPIPOST_API_KEY;
                         }
                         break;
                 }
@@ -351,8 +351,8 @@ class Converter
             case 'elasticmail':
                 switch ($key) {
                     case 'api_key':
-                        if (defined('FLUENTMAIL_ELASTICMAIL_***REMOVED***') && FLUENTMAIL_ELASTICMAIL_***REMOVED***) {
-                            $value = FLUENTMAIL_ELASTICMAIL_***REMOVED***;
+                        if (defined('FLUENTMAIL_ELASTICMAIL_API_KEY') && FLUENTMAIL_ELASTICMAIL_API_KEY) {
+                            $value = FLUENTMAIL_ELASTICMAIL_API_KEY;
                         }
                         break;
                 }

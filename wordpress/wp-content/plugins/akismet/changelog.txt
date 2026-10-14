@@ -536,7 +536,7 @@ For the latest changes, please see the "Changelog" section of the [readme.txt fi
 * Fix a global warning introduced in 2.2.5
 * Add changelog and additional readme.txt tags
 * Fix an array conversion warning in some versions of PHP
-* Support a new WPCOM_***REMOVED*** constant for easier use with WordPress MU
+* Support a new WPCOM_API_KEY constant for easier use with WordPress MU
 
 = 2.2.5 =
 *Release Date - 13th July, 2009*

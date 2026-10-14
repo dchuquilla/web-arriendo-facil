@@ -239,7 +239,7 @@ class AwsNativeSource implements \FluentSmtpLib\Google\Auth\ExternalAccountCrede
     public static function getSigningVarsFromEnv() : ?array
     {
         $accessKeyId = \getenv('AWS_ACCESS_KEY_ID');
-        $secretAccessKey = \getenv('AWS_***REMOVED***');
+        $secretAccessKey = \getenv('AWS_SECRET_ACCESS_KEY');
         if ($accessKeyId && $secretAccessKey) {
             return [$accessKeyId, $secretAccessKey, \getenv('AWS_SESSION_TOKEN') ?: null];
         }

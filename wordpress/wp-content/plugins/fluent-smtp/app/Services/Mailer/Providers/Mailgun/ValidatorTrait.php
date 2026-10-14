@@ -23,8 +23,8 @@ trait ValidatorTrait
                 $errors['domain_name']['required'] = __('Domain name is required.', 'fluent-smtp');
             }
         } else if($keyStoreType == 'wp_config') {
-            if(!defined('FLUENTMAIL_MAILGUN_***REMOVED***') || !FLUENTMAIL_MAILGUN_***REMOVED***) {
-                $errors['api_key']['required'] = __('Please define FLUENTMAIL_MAILGUN_***REMOVED*** in wp-config.php file.', 'fluent-smtp');
+            if(!defined('FLUENTMAIL_MAILGUN_API_KEY') || !FLUENTMAIL_MAILGUN_API_KEY) {
+                $errors['api_key']['required'] = __('Please define FLUENTMAIL_MAILGUN_API_KEY in wp-config.php file.', 'fluent-smtp');
             }
 
             if(!defined('FLUENTMAIL_MAILGUN_DOMAIN') || !FLUENTMAIL_MAILGUN_DOMAIN) {

@@ -28,8 +28,8 @@ trait ValidatorTrait
                 $errors['access_key']['required'] = __('Please define FLUENTMAIL_AWS_ACCESS_KEY_ID in wp-config.php file.', 'fluent-smtp');
             }
 
-            if (!defined('FLUENTMAIL_AWS_***REMOVED***') || !FLUENTMAIL_AWS_***REMOVED***) {
-                $errors['secret_key']['required'] = __('Please define FLUENTMAIL_AWS_***REMOVED*** in wp-config.php file.', 'fluent-smtp');
+            if (!defined('FLUENTMAIL_AWS_SECRET_ACCESS_KEY') || !FLUENTMAIL_AWS_SECRET_ACCESS_KEY) {
+                $errors['secret_key']['required'] = __('Please define FLUENTMAIL_AWS_SECRET_ACCESS_KEY in wp-config.php file.', 'fluent-smtp');
             }
         }
 

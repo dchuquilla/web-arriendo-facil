@@ -314,7 +314,7 @@ class Handler extends BaseHandler
     {
         if ($connection['key_store'] == 'wp_config') {
             $connection['access_key'] = defined('FLUENTMAIL_AWS_ACCESS_KEY_ID') ? FLUENTMAIL_AWS_ACCESS_KEY_ID : '';
-            $connection['secret_key'] = defined('FLUENTMAIL_AWS_***REMOVED***') ? FLUENTMAIL_AWS_***REMOVED*** : '';
+            $connection['secret_key'] = defined('FLUENTMAIL_AWS_SECRET_ACCESS_KEY') ? FLUENTMAIL_AWS_SECRET_ACCESS_KEY : '';
         }
 
         return $connection;

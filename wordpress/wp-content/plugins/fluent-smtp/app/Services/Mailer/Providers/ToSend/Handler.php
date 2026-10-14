@@ -127,7 +127,7 @@ class Handler extends BaseHandler
     public function setSettings($settings)
     {
         if ($settings['key_store'] == 'wp_config') {
-            $settings['api_key'] = defined('FLUENTMAIL_TOSEND_***REMOVED***') ? FLUENTMAIL_TOSEND_***REMOVED*** : '';
+            $settings['api_key'] = defined('FLUENTMAIL_TOSEND_API_KEY') ? FLUENTMAIL_TOSEND_API_KEY : '';
         }
 
         $this->settings = $settings;
@@ -237,7 +237,7 @@ class Handler extends BaseHandler
     private function filterConnectionVars($connection)
     {
         if ($connection['key_store'] == 'wp_config') {
-            $connection['api_key'] = defined('FLUENTMAIL_TOSEND_***REMOVED***') ? FLUENTMAIL_TOSEND_***REMOVED*** : '';
+            $connection['api_key'] = defined('FLUENTMAIL_TOSEND_API_KEY') ? FLUENTMAIL_TOSEND_API_KEY : '';
         }
 
         return $connection;

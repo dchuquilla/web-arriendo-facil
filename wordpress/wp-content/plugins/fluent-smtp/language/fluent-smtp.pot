@@ -1647,11 +1647,11 @@ msgid "Please define FLUENTMAIL_AWS_ACCESS_KEY_ID in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/AmazonSes/ValidatorTrait.php:32
-msgid "Please define FLUENTMAIL_AWS_***REMOVED*** in wp-config.php file."
+msgid "Please define FLUENTMAIL_AWS_SECRET_ACCESS_KEY in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/ElasticMail/ValidatorTrait.php:23
-msgid "Please define FLUENTMAIL_ELASTICMAIL_***REMOVED*** in wp-config.php file."
+msgid "Please define FLUENTMAIL_ELASTICMAIL_API_KEY in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/Gmail/Handler.php:125
@@ -1672,7 +1672,7 @@ msgstr ""
 
 #: app/Services/Mailer/Providers/TransMail/ValidatorTrait.php:27
 #: app/Services/Mailer/Providers/Mailgun/ValidatorTrait.php:27
-msgid "Please define FLUENTMAIL_MAILGUN_***REMOVED*** in wp-config.php file."
+msgid "Please define FLUENTMAIL_MAILGUN_API_KEY in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/TransMail/ValidatorTrait.php:31
@@ -1698,23 +1698,23 @@ msgid ""
 msgstr ""
 
 #: app/Services/Mailer/Providers/PepiPost/ValidatorTrait.php:24
-msgid "Please define FLUENTMAIL_PEPIPOST_***REMOVED*** in wp-config.php file."
+msgid "Please define FLUENTMAIL_PEPIPOST_API_KEY in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/Postmark/ValidatorTrait.php:24
-msgid "Please define FLUENTMAIL_POSTMARK_***REMOVED*** in wp-config.php file."
+msgid "Please define FLUENTMAIL_POSTMARK_API_KEY in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/SendGrid/ValidatorTrait.php:24
-msgid "Please define FLUENTMAIL_SENDGRID_***REMOVED*** in wp-config.php file."
+msgid "Please define FLUENTMAIL_SENDGRID_API_KEY in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/SendInBlue/ValidatorTrait.php:23
-msgid "Please define FLUENTMAIL_SENDINBLUE_***REMOVED*** in wp-config.php file."
+msgid "Please define FLUENTMAIL_SENDINBLUE_API_KEY in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/Smtp2Go/ValidatorTrait.php:24
-msgid "Please define FLUENTMAIL_SMTP2GO_***REMOVED*** in wp-config.php file."
+msgid "Please define FLUENTMAIL_SMTP2GO_API_KEY in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/Smtp/ValidatorTrait.php:33
@@ -1726,11 +1726,11 @@ msgid "Please define FLUENTMAIL_SMTP_USERNAME in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/SparkPost/ValidatorTrait.php:24
-msgid "Please define FLUENTMAIL_SPARKPOST_***REMOVED*** in wp-config.php file."
+msgid "Please define FLUENTMAIL_SPARKPOST_API_KEY in wp-config.php file."
 msgstr ""
 
 #: app/Services/Mailer/Providers/ToSend/ValidatorTrait.php:27
-msgid "Please define FLUENTMAIL_TOSEND_***REMOVED*** in wp-config.php file."
+msgid "Please define FLUENTMAIL_TOSEND_API_KEY in wp-config.php file."
 msgstr ""
 
 #: app/Services/TransStrings.php:208

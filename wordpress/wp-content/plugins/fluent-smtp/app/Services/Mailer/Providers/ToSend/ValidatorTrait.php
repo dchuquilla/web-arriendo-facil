@@ -23,10 +23,10 @@ trait ValidatorTrait
                 $errors['api_key']['required'] = __('Api key is required.', 'fluent-smtp');
             }
         } else if ($keyStoreType == 'wp_config') {
-            if (!defined('FLUENTMAIL_TOSEND_***REMOVED***') || !FLUENTMAIL_TOSEND_***REMOVED***) {
-                $errors['api_key']['required'] = __('Please define FLUENTMAIL_TOSEND_***REMOVED*** in wp-config.php file.', 'fluent-smtp');
+            if (!defined('FLUENTMAIL_TOSEND_API_KEY') || !FLUENTMAIL_TOSEND_API_KEY) {
+                $errors['api_key']['required'] = __('Please define FLUENTMAIL_TOSEND_API_KEY in wp-config.php file.', 'fluent-smtp');
             } else {
-                $apiKey = FLUENTMAIL_TOSEND_***REMOVED***;
+                $apiKey = FLUENTMAIL_TOSEND_API_KEY;
             }
         }
 

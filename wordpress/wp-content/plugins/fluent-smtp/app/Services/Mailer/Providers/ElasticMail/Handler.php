@@ -292,7 +292,7 @@ class Handler extends BaseHandler
     public function setSettings($settings)
     {
         if ($settings['key_store'] == 'wp_config') {
-            $settings['api_key'] = defined('FLUENTMAIL_ELASTICMAIL_***REMOVED***') ? FLUENTMAIL_ELASTICMAIL_***REMOVED*** : '';
+            $settings['api_key'] = defined('FLUENTMAIL_ELASTICMAIL_API_KEY') ? FLUENTMAIL_ELASTICMAIL_API_KEY : '';
         }
 
         $this->settings = $settings;

@@ -2,7 +2,7 @@
 
 global $wpcom_api_key, $akismet_api_host, $akismet_api_port;
 
-$wpcom_api_key    = defined( 'WPCOM_***REMOVED***' ) ? constant( 'WPCOM_***REMOVED***' ) : '';
+$wpcom_api_key    = defined( 'WPCOM_API_KEY' ) ? constant( 'WPCOM_API_KEY' ) : '';
 $akismet_api_host = Akismet::get_api_key() . '.rest.akismet.com';
 $akismet_api_port = 80;
 

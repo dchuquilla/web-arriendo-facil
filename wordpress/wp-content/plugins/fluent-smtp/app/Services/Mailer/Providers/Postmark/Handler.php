@@ -116,7 +116,7 @@ class Handler extends BaseHandler
     public function setSettings($settings)
     {
         if ($settings['key_store'] == 'wp_config') {
-            $settings['api_key'] = defined('FLUENTMAIL_POSTMARK_***REMOVED***') ? FLUENTMAIL_POSTMARK_***REMOVED*** : '';
+            $settings['api_key'] = defined('FLUENTMAIL_POSTMARK_API_KEY') ? FLUENTMAIL_POSTMARK_API_KEY : '';
         }
 
         $this->settings = $settings;

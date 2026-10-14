@@ -99,7 +99,7 @@ class Handler extends BaseHandler
     public function setSettings($settings)
     {
         if ($settings['key_store'] == 'wp_config') {
-            $settings['api_key'] = defined('FLUENTMAIL_SENDINBLUE_***REMOVED***') ? FLUENTMAIL_SENDINBLUE_***REMOVED*** : '';
+            $settings['api_key'] = defined('FLUENTMAIL_SENDINBLUE_API_KEY') ? FLUENTMAIL_SENDINBLUE_API_KEY : '';
         }
         $this->settings = $settings;
         return $this;
