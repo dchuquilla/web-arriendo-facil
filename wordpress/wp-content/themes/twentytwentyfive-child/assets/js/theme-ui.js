@@ -8,8 +8,8 @@
  var watchdogTimer = null;
  var lastShownAt = 0;
  var minVisibleMs = 220;
- var watchdogMs = 8000;
- var maxVisibleMs = 15000;
+ var watchdogMs = 5000;
+ var maxVisibleMs = 10000;
  var pendingAsyncRequests = 0;
  var pendingTap = null;
  var lastPointerType = '';
@@ -268,10 +268,24 @@
  }
  return false;
  }
- if (document.readyState !== 'complete') {
+ // Initial page load: the overlay only covers parsing; it must not wait for
+ // the window "load" event (slow images/third parties can delay it forever).
+ if (document.readyState === 'loading') {
  showDelayed(null, 180);
+ document.addEventListener('DOMContentLoaded', hideRespectingMinimum, { once: true });
  }
  window.addEventListener('load', hideRespectingMinimum, { once: true });
+ // Safety net: never keep the overlay past this point after the script starts.
+ window.setTimeout(function () {
+ if (pendingAsyncRequests === 0) {
+ hideNow();
+ }
+ }, 4000);
+ document.addEventListener('visibilitychange', function () {
+ if (document.visibilityState === 'visible' && pendingAsyncRequests === 0) {
+ hideNow();
+ }
+ });
  // Ensures BFCache navigations do not leave the overlay visible.
  window.addEventListener('pageshow', function () {
  hideNow();

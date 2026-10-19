@@ -5,7 +5,7 @@
 
 if ( ! defined('ABSPATH') ) { exit; }
 
-define('AF_THEME_VERSION', '2.0.4');
+define('AF_THEME_VERSION', '2.0.5');
 
 // === SECURITY LAYER (load first) ===
 require_once dirname(__FILE__) . '/inc/af-security-headers.php';
