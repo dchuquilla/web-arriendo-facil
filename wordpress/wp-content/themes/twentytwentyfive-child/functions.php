@@ -867,13 +867,6 @@ function af_custom_login_base_url() {
   return wp_login_url();
 }
 
-add_filter( 'login_redirect', function ( $redirect_to, $requested, $user ) {
-  if ( $user instanceof WP_User && ! is_wp_error( $user ) && empty( $requested ) ) {
-    return user_can( $user, 'manage_options' ) ? admin_url() : home_url( '/dashboard/' );
-  }
-  return $redirect_to;
-}, 10, 3 );
-
 function af_render_custom_login() {
   if ( 'GET' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) || isset( $_GET['interim-login'] ) ) {
     return;

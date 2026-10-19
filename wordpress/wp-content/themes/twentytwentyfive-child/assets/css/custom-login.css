@@ -124,8 +124,9 @@
 
 .afl__input {
   width: 100%;
-  height: 56px;
-  padding: 22px 16px 8px;
+  height: 60px;
+  padding: 26px 16px 8px;
+  line-height: 1.2;
   font: inherit;
   font-size: 16px; /* avoids iOS zoom */
   color: var(--afl-navy);
@@ -136,6 +137,16 @@
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 .afl__input--pass { padding-right: 52px; }
+
+/* Browser autofill: keep our look instead of the default blue fill */
+.afl__input:-webkit-autofill,
+.afl__input:-webkit-autofill:hover,
+.afl__input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--afl-navy);
+  -webkit-box-shadow: 0 0 0 100px #f8fafc inset;
+  caret-color: var(--afl-navy);
+  transition: background-color 9999s ease-in-out 0s;
+}
 .afl__input:hover { border-color: rgba(29, 45, 68, 0.3); }
 .afl__input:focus {
   background: #fff;
@@ -146,7 +157,7 @@
 .afl__label {
   position: absolute;
   left: 16px;
-  top: 17px;
+  top: 19px;
   color: var(--afl-muted);
   font-size: 16px;
   pointer-events: none;
@@ -154,8 +165,10 @@
   transition: transform 0.2s ease, color 0.2s ease;
 }
 .afl__input:focus + .afl__label,
-.afl__input:not(:placeholder-shown) + .afl__label {
-  transform: translateY(-10px) scale(0.76);
+.afl__input:not(:placeholder-shown) + .afl__label,
+.afl__input:-webkit-autofill + .afl__label,
+.afl__input:autofill + .afl__label {
+  transform: translateY(-12px) scale(0.76);
   color: var(--afl-green-dark);
 }
 
@@ -168,7 +181,7 @@
 
 .afl__eye {
   position: absolute;
-  top: 8px;
+  top: 10px;
   right: 8px;
   width: 40px;
   height: 40px;

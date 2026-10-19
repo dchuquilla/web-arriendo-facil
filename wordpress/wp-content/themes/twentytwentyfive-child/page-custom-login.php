@@ -17,14 +17,11 @@ if (!in_array($action, $allowed_actions, true)) {
 
 // Already logged in: go straight to the panel.
 if (is_user_logged_in() && 'login' === $action) {
-  wp_safe_redirect(current_user_can('manage_options') ? admin_url() : home_url('/dashboard/'));
+  wp_safe_redirect(admin_url());
   exit;
 }
 
 $redirect_to = isset($_GET['redirect_to']) ? wp_validate_redirect(rawurldecode(wp_unslash($_GET['redirect_to'])), '') : '';
-if ('' === $redirect_to) {
-  $redirect_to = home_url('/dashboard/');
-}
 
 $notice = null;
 if (isset($_GET['login']) && 'failed' === $_GET['login']) {
@@ -114,7 +111,9 @@ $logo = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web
           </div>
 
           <input type="hidden" name="af_custom_login" value="1" />
-          <input type="hidden" name="redirect_to" value="<?php echo esc_attr($redirect_to); ?>" />
+          <?php if ('' !== $redirect_to): ?>
+            <input type="hidden" name="redirect_to" value="<?php echo esc_attr($redirect_to); ?>" />
+          <?php endif; ?>
 
           <button type="submit" name="wp-submit" id="wp-submit" class="afl__btn" data-submit>
             <span class="afl__btn-text"><?php esc_html_e('Iniciar sesión', 'twentytwentyfive-child'); ?></span>
