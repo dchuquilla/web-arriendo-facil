@@ -859,6 +859,102 @@ function af_signup_url() {
 
 
 /**
+ * Custom login UI. The URL is the one managed by WPS Hide Login (wp_login_url());
+ * on GET we render our template instead of the default wp-login.php form.
+ * Authentication still goes through core (POST to the same URL).
+ */
+function af_custom_login_base_url() {
+  return wp_login_url();
+}
+
+add_filter( 'login_redirect', function ( $redirect_to, $requested, $user ) {
+  if ( $user instanceof WP_User && ! is_wp_error( $user ) && empty( $requested ) ) {
+    return user_can( $user, 'manage_options' ) ? admin_url() : home_url( '/dashboard/' );
+  }
+  return $redirect_to;
+}, 10, 3 );
+
+function af_render_custom_login() {
+  if ( 'GET' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) || isset( $_GET['interim-login'] ) ) {
+    return;
+  }
+
+  $template = get_stylesheet_directory() . '/page-custom-login.php';
+  if ( ! file_exists( $template ) ) {
+    return;
+  }
+
+  // wp-login.php does not run the main query; the theme header/footer need it.
+  global $wp_query;
+  if ( ! ( $wp_query instanceof WP_Query ) ) {
+    wp();
+  }
+  $wp_query->is_404 = false;
+  status_header( 200 );
+  nocache_headers();
+
+  add_action( 'wp_enqueue_scripts', 'af_enqueue_custom_login_assets' );
+
+  require $template;
+  exit;
+}
+add_action( 'login_form_login', 'af_render_custom_login' );
+add_action( 'login_form_lostpassword', 'af_render_custom_login' );
+
+function af_enqueue_custom_login_assets() {
+  wp_enqueue_style(
+    'twentytwentyfive-child-custom-login',
+    get_stylesheet_directory_uri() . '/assets/css/custom-login.css',
+    array( 'twentytwentyfive-child-style', 'twentytwentyfive-child-tokens' ),
+    twentytwentyfive_child_asset_version( 'assets/css/custom-login.css' )
+  );
+  wp_enqueue_script(
+    'twentytwentyfive-child-custom-login',
+    get_stylesheet_directory_uri() . '/assets/js/custom-login.js',
+    array(),
+    twentytwentyfive_child_asset_version( 'assets/js/custom-login.js' ),
+    true
+  );
+}
+
+/**
+ * Brute-force throttle: 5 failed attempts per IP in 15 minutes blocks logins for the rest of the window.
+ * Uses REMOTE_ADDR only (forwarded headers are spoofable).
+ */
+function af_login_throttle_key() {
+  return 'af_login_fail_' . md5( (string) ( $_SERVER['REMOTE_ADDR'] ?? '' ) );
+}
+
+add_filter( 'authenticate', function ( $user ) {
+  if ( (int) get_transient( af_login_throttle_key() ) >= 5 ) {
+    return new WP_Error( 'af_locked', __( 'Demasiados intentos.', 'twentytwentyfive-child' ) );
+  }
+  return $user;
+}, 1 );
+
+add_action( 'wp_login_failed', function ( $username, $error = null ) {
+  if ( $error instanceof WP_Error && $error->get_error_code() === 'af_locked' ) {
+    return;
+  }
+  $key = af_login_throttle_key();
+  set_transient( $key, (int) get_transient( $key ) + 1, 15 * MINUTE_IN_SECONDS );
+}, 5, 2 );
+
+add_action( 'wp_login', function () {
+  delete_transient( af_login_throttle_key() );
+} );
+
+// Failed logins submitted from the custom form return to it with a flag.
+add_action( 'wp_login_failed', function ( $username, $error = null ) {
+  if ( empty( $_POST['af_custom_login'] ) ) {
+    return;
+  }
+  $locked = $error instanceof WP_Error && $error->get_error_code() === 'af_locked';
+  wp_safe_redirect( add_query_arg( 'login', $locked ? 'locked' : 'failed', af_custom_login_base_url() ) );
+  exit;
+}, 10, 2 );
+
+/**
  * Ensure the "Toca para ver más" detail pages exist (self-healing).
  * Una página por servicio, usando el template page-detalle-servicio.php.
  */

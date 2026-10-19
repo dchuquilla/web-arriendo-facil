@@ -1,0 +1,349 @@
+/* Custom login – Arriendo Fácil */
+.afl {
+  --afl-green: var(--color-accent-primary, #7dbe52);
+  --afl-green-dark: #4b8b4b;
+  --afl-navy: #1d2d44;
+  --afl-muted: #6b7a8f;
+  --afl-border: rgba(29, 45, 68, 0.14);
+  --afl-error: #d64545;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: calc(100vh - 80px);
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 4vw, 48px);
+  background: linear-gradient(160deg, #f4faef 0%, #ffffff 45%, #eef3f9 100%);
+  font-family: var(--font-family-body, 'Inter', sans-serif);
+}
+
+/* Animated background */
+.afl__bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.afl__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.45;
+  will-change: transform;
+  animation: afl-float 16s ease-in-out infinite;
+}
+.afl__blob--1 { width: 380px; height: 380px; background: #7dbe52; top: -120px; left: -100px; }
+.afl__blob--2 { width: 320px; height: 320px; background: #3b82f6; bottom: -120px; right: 10%; opacity: 0.22; animation-delay: -5s; }
+.afl__blob--3 { width: 260px; height: 260px; background: #b6e08f; bottom: 10%; left: 30%; animation-delay: -9s; }
+
+@keyframes afl-float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(40px, -30px, 0) scale(1.1); }
+}
+
+.afl__shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  width: 100%;
+  max-width: 1040px;
+  background: #fff;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(29, 45, 68, 0.16), 0 2px 0 rgba(255, 255, 255, 0.8) inset;
+  animation: afl-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes afl-rise {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Card */
+.afl__card {
+  padding: clamp(28px, 5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.afl__card > * { animation: afl-rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.afl__card > *:nth-child(2) { animation-delay: 0.08s; }
+.afl__card > *:nth-child(3) { animation-delay: 0.14s; }
+.afl__card > *:nth-child(4) { animation-delay: 0.2s; }
+.afl__card > *:nth-child(5) { animation-delay: 0.26s; }
+
+.afl__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  align-self: flex-start;
+  margin-bottom: 28px;
+  text-decoration: none;
+  color: var(--afl-navy);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+.afl__brand span { display: inline-block; line-height: 1; white-space: nowrap; }
+/* The global `img { width: 100% }` rule would stretch the logo */
+.afl__brand img {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  object-fit: contain;
+  border-radius: 12px;
+  transition: transform 0.4s ease;
+}
+.afl__brand:hover img { transform: rotate(-8deg) scale(1.08); }
+.afl__brand em { font-style: normal; color: var(--afl-green); }
+
+.afl__title {
+  margin: 0 0 6px;
+  font-size: clamp(26px, 3.4vw, 34px);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--afl-navy);
+}
+.afl__subtitle { margin: 0 0 28px; color: var(--afl-muted); font-size: 16px; }
+
+/* Notices */
+.afl__notice {
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-size: 14.5px;
+  font-weight: 500;
+}
+.afl__notice--error { background: #fff1f1; color: #b42323; border: 1px solid #f7c4c4; animation: afl-shake 0.45s both; }
+.afl__notice--success { background: #f0f9eb; color: #3f7a24; border: 1px solid #cfe8bd; }
+
+@keyframes afl-shake {
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+/* Floating-label fields */
+.afl__form { display: flex; flex-direction: column; gap: 18px; }
+.afl__field { position: relative; }
+
+.afl__input {
+  width: 100%;
+  height: 56px;
+  padding: 22px 16px 8px;
+  font: inherit;
+  font-size: 16px; /* avoids iOS zoom */
+  color: var(--afl-navy);
+  background: #f8fafc;
+  border: 1.5px solid var(--afl-border);
+  border-radius: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.afl__input--pass { padding-right: 52px; }
+.afl__input:hover { border-color: rgba(29, 45, 68, 0.3); }
+.afl__input:focus {
+  background: #fff;
+  border-color: var(--afl-green);
+  box-shadow: 0 0 0 4px rgba(125, 190, 82, 0.2);
+}
+
+.afl__label {
+  position: absolute;
+  left: 16px;
+  top: 17px;
+  color: var(--afl-muted);
+  font-size: 16px;
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.afl__input:focus + .afl__label,
+.afl__input:not(:placeholder-shown) + .afl__label {
+  transform: translateY(-10px) scale(0.76);
+  color: var(--afl-green-dark);
+}
+
+.afl__field.is-invalid .afl__input { border-color: var(--afl-error); box-shadow: 0 0 0 4px rgba(214, 69, 69, 0.12); animation: afl-shake 0.35s; }
+.afl__field.is-valid .afl__input { border-color: var(--afl-green); }
+
+.afl__error { margin: 6px 4px 0; min-height: 0; font-size: 13px; color: var(--afl-error); }
+.afl__error:empty { display: none; }
+.afl__caps { margin: 6px 4px 0; font-size: 13px; color: #b7791f; }
+
+.afl__eye {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  border-radius: 10px;
+  color: var(--afl-muted);
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+.afl__eye:hover { color: var(--afl-navy); background: rgba(29, 45, 68, 0.06); }
+.afl__eye:focus-visible { outline: 2px solid var(--afl-green); }
+.afl__eye-slash { opacity: 0; transition: opacity 0.2s; }
+.afl__eye[aria-pressed='true'] .afl__eye-slash { opacity: 1; }
+
+/* Row: remember + forgot */
+.afl__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+.afl__check { display: inline-flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--afl-navy); cursor: pointer; user-select: none; }
+.afl__check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.afl__box {
+  width: 20px; height: 20px;
+  border: 1.5px solid var(--afl-border);
+  border-radius: 6px;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.afl__box::after {
+  content: '';
+  width: 5px; height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  margin-top: -2px;
+  transition: transform 0.2s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.afl__check input:checked + .afl__box { background: var(--afl-green); border-color: var(--afl-green); }
+.afl__check input:checked + .afl__box::after { transform: rotate(45deg) scale(1); }
+.afl__check input:focus-visible + .afl__box { box-shadow: 0 0 0 4px rgba(125, 190, 82, 0.3); }
+.afl__check:active .afl__box { transform: scale(0.9); }
+
+.afl__link { color: var(--afl-green-dark); font-weight: 600; font-size: 14.5px; text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size 0.25s; }
+.afl__link:hover, .afl__link:focus-visible { background-size: 100% 2px; }
+.afl__link--strong { font-size: inherit; }
+
+/* Button */
+.afl__btn {
+  position: relative;
+  overflow: hidden;
+  height: 56px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 14px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #8fcf63 0%, #7dbe52 50%, #5fa93d 100%);
+  background-size: 160% 100%;
+  box-shadow: 0 10px 24px rgba(125, 190, 82, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.4s ease;
+}
+.afl__btn:hover { transform: translateY(-2px); background-position: 100% 0; box-shadow: 0 14px 30px rgba(125, 190, 82, 0.5); }
+.afl__btn:active { transform: translateY(0) scale(0.99); }
+.afl__btn:focus-visible { outline: 3px solid rgba(29, 45, 68, 0.5); outline-offset: 3px; }
+.afl__btn[disabled] { cursor: progress; opacity: 0.9; }
+
+.afl__ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  transform: scale(0);
+  animation: afl-ripple 0.6s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes afl-ripple { to { transform: scale(3); opacity: 0; } }
+
+.afl__spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 22px; height: 22px;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: afl-spin 0.8s linear infinite;
+}
+.afl__btn.is-loading .afl__btn-text { opacity: 0; }
+.afl__btn.is-loading .afl__spinner { opacity: 1; }
+@keyframes afl-spin { to { transform: rotate(360deg); } }
+
+.afl__alt { margin: 24px 0 0; text-align: center; color: var(--afl-muted); font-size: 15px; }
+
+/* Side panel */
+.afl__panel {
+  position: relative;
+  color: #fff;
+  background: linear-gradient(145deg, #1d2d44 0%, #20395a 55%, #2d5a3d 130%);
+  overflow: hidden;
+  perspective: 900px;
+}
+.afl__panel::before,
+.afl__panel::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(125, 190, 82, 0.45), transparent 70%);
+  animation: afl-float 14s ease-in-out infinite;
+}
+.afl__panel::before { width: 360px; height: 360px; top: -140px; right: -120px; }
+.afl__panel::after { width: 280px; height: 280px; bottom: -120px; left: -80px; animation-delay: -6s; }
+
+.afl__panel-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  padding: clamp(28px, 5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+.afl__pill {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(125, 190, 82, 0.18);
+  border: 1px solid rgba(125, 190, 82, 0.45);
+  color: #c9ecae;
+}
+.afl__panel h2 { margin: 0; font-size: clamp(24px, 3vw, 32px); line-height: 1.2; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+
+.afl__features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.afl__features li {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s, border-color 0.3s;
+}
+.afl__features li:hover { transform: translateX(4px); background: rgba(255, 255, 255, 0.1); }
+.afl__features li.is-active { background: rgba(125, 190, 82, 0.18); border-color: rgba(125, 190, 82, 0.55); transform: translateX(8px); }
+.afl__ico { font-size: 24px; flex-shrink: 0; }
+.afl__features strong { display: block; font-size: 15.5px; }
+.afl__features small { display: block; max-height: 0; opacity: 0; overflow: hidden; font-size: 13.5px; color: rgba(255, 255, 255, 0.78); transition: max-height 0.35s ease, opacity 0.35s ease, margin 0.35s; }
+.afl__features li.is-active small { max-height: 48px; opacity: 1; margin-top: 2px; }
+
+.afl__help { color: rgba(255, 255, 255, 0.8); font-size: 14px; text-decoration: none; display: flex; flex-direction: column; gap: 2px; }
+.afl__help span { color: #fff; font-weight: 600; }
+.afl__help:hover span { color: #c9ecae; }
+
+/* Responsive */
+@media (max-width: 860px) {
+  .afl__shell { grid-template-columns: 1fr; max-width: 480px; }
+  .afl__panel { display: none; }
+}
+@media (max-width: 400px) {
+  .afl__row { flex-direction: column; align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .afl *, .afl *::before, .afl *::after { animation: none !important; transition: none !important; }
+}

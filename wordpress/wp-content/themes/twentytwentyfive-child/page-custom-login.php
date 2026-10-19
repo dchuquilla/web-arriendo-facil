@@ -15,371 +15,150 @@ if (!in_array($action, $allowed_actions, true)) {
   $action = 'login';
 }
 
+// Already logged in: go straight to the panel.
+if (is_user_logged_in() && 'login' === $action) {
+  wp_safe_redirect(current_user_can('manage_options') ? admin_url() : home_url('/dashboard/'));
+  exit;
+}
+
+$redirect_to = isset($_GET['redirect_to']) ? wp_validate_redirect(rawurldecode(wp_unslash($_GET['redirect_to'])), '') : '';
+if ('' === $redirect_to) {
+  $redirect_to = home_url('/dashboard/');
+}
+
+$notice = null;
+if (isset($_GET['login']) && 'failed' === $_GET['login']) {
+  $notice = array('type' => 'error', 'text' => __('Usuario o contraseña incorrectos. Inténtalo de nuevo.', 'twentytwentyfive-child'));
+} elseif (isset($_GET['login']) && 'locked' === $_GET['login']) {
+  $notice = array('type' => 'error', 'text' => __('Demasiados intentos fallidos. Espera 15 minutos e inténtalo de nuevo.', 'twentytwentyfive-child'));
+} elseif (isset($_GET['loggedout'])) {
+  $notice = array('type' => 'success', 'text' => __('Cerraste sesión correctamente.', 'twentytwentyfive-child'));
+} elseif (isset($_GET['checkemail']) && 'confirm' === $_GET['checkemail']) {
+  $notice = array('type' => 'success', 'text' => __('Revisa tu correo: te enviamos el enlace de recuperación.', 'twentytwentyfive-child'));
+}
+
 get_header();
+
+$logo = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web-sq.png';
 ?>
 
-<main id="main-content" class="af-login-page">
-  <div class="af-login-container">
-    <div class="af-login-box">
-      <!-- Logo -->
-      <div class="af-login-header">
-        <a href="<?php echo esc_url(home_url('/')); ?>" class="af-login-logo">
-          <img src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-web-sq.png" alt="<?php bloginfo('name'); ?>" width="48" height="48" />
-          <span><?php bloginfo('name'); ?></span>
-        </a>
-      </div>
+<main id="main-content" class="afl" data-afl>
+  <div class="afl__bg" aria-hidden="true">
+    <span class="afl__blob afl__blob--1"></span>
+    <span class="afl__blob afl__blob--2"></span>
+    <span class="afl__blob afl__blob--3"></span>
+  </div>
 
-      <?php if ('login' === $action): ?>
-        <!-- Login Form -->
-        <div class="af-login-form-wrapper">
-          <h1 class="af-login-title"><?php esc_html_e('Inicia sesión', 'twentytwentyfive-child'); ?></h1>
-          <p class="af-login-subtitle"><?php esc_html_e('Accede a tu panel de control', 'twentytwentyfive-child'); ?></p>
+  <div class="afl__shell">
+    <section class="afl__card" aria-labelledby="afl-title">
+      <a href="<?php echo esc_url(home_url('/')); ?>" class="afl__brand" aria-label="<?php esc_attr_e('Ir al inicio', 'twentytwentyfive-child'); ?>">
+        <img src="<?php echo esc_url($logo); ?>" alt="" width="44" height="44" decoding="async" />
+        <span>Arriendo<em>Fácil</em></span>
+      </a>
 
-          <form name="loginform" id="loginform" method="post" action="<?php echo esc_url(wp_login_url()); ?>" novalidate="novalidate">
-            <div class="af-form-group">
-              <label for="user_login" class="af-form-label">
-                <?php esc_html_e('Usuario o correo electrónico', 'twentytwentyfive-child'); ?>
-              </label>
-              <input type="text" name="log" id="user_login" class="af-form-input" value="" size="20" autocapitalize="off" spellcheck="false" />
-            </div>
-
-            <div class="af-form-group">
-              <label for="user_pass" class="af-form-label">
-                <?php esc_html_e('Contraseña', 'twentytwentyfive-child'); ?>
-              </label>
-              <input type="password" name="pwd" id="user_pass" class="af-form-input" value="" size="20" />
-            </div>
-
-            <div class="af-form-group af-form-group--checkbox">
-              <input name="rememberme" type="checkbox" id="rememberme" value="forever" />
-              <label for="rememberme" class="af-form-checkbox-label">
-                <?php esc_html_e('Recuérdame', 'twentytwentyfive-child'); ?>
-              </label>
-            </div>
-
-            <button type="submit" name="wp-submit" id="wp-submit" class="btn btn--primary btn--block">
-              <?php esc_html_e('Inicia sesión', 'twentytwentyfive-child'); ?>
-            </button>
-
-            <?php wp_nonce_field('log-in'); ?>
-            <input type="hidden" name="redirect_to" value="<?php echo esc_attr(home_url('/dashboard/')); ?>" />
-          </form>
-
-          <div class="af-login-footer">
-            <a href="<?php echo esc_url(wp_lostpassword_url()); ?>" class="af-login-link">
-              <?php esc_html_e('¿Olvidaste tu contraseña?', 'twentytwentyfive-child'); ?>
-            </a>
-            <span class="af-login-divider">•</span>
-            <a href="<?php echo esc_url(af_signup_url()); ?>" class="af-login-link">
-              <?php esc_html_e('Crear cuenta', 'twentytwentyfive-child'); ?>
-            </a>
-          </div>
+      <?php if ($notice): ?>
+        <div class="afl__notice afl__notice--<?php echo esc_attr($notice['type']); ?>" role="<?php echo 'error' === $notice['type'] ? 'alert' : 'status'; ?>">
+          <?php echo esc_html($notice['text']); ?>
         </div>
-
-      <?php elseif ('lostpassword' === $action): ?>
-        <!-- Lost Password Form -->
-        <div class="af-login-form-wrapper">
-          <h1 class="af-login-title"><?php esc_html_e('Recuperar contraseña', 'twentytwentyfive-child'); ?></h1>
-          <p class="af-login-subtitle"><?php esc_html_e('Te enviaremos un enlace para establecer una nueva contraseña.', 'twentytwentyfive-child'); ?></p>
-
-          <form method="post" action="<?php echo esc_url(wp_lostpassword_url()); ?>" novalidate="novalidate">
-            <div class="af-form-group">
-              <label for="user_login" class="af-form-label">
-                <?php esc_html_e('Usuario o correo electrónico', 'twentytwentyfive-child'); ?>
-              </label>
-              <input type="text" name="user_login" id="user_login" class="af-form-input" value="" autocomplete="username" />
-              <small class="af-form-help"><?php esc_html_e('Ingresa el correo electrónico asociado a tu cuenta.', 'twentytwentyfive-child'); ?></small>
-            </div>
-
-            <button type="submit" name="wp-submit" class="btn btn--primary btn--block">
-              <?php esc_html_e('Enviar enlace de recuperación', 'twentytwentyfive-child'); ?>
-            </button>
-
-            <?php wp_nonce_field('lostpassword'); ?>
-          </form>
-
-          <div class="af-login-footer">
-            <a href="<?php echo esc_url(wp_login_url()); ?>" class="af-login-link">
-              ← <?php esc_html_e('Volver a iniciar sesión', 'twentytwentyfive-child'); ?>
-            </a>
-          </div>
-        </div>
-
       <?php endif; ?>
-    </div>
 
-    <!-- Right Side: Benefits -->
-    <div class="af-login-info">
-      <div class="af-login-info-content">
-        <h2><?php esc_html_e('Bienvenido a Arriendo Fácil', 'twentytwentyfive-child'); ?></h2>
-        <p><?php esc_html_e('Gestiona tus propiedades de forma sencilla y profesional.', 'twentytwentyfive-child'); ?></p>
+      <?php if ('lostpassword' === $action): ?>
+        <h1 id="afl-title" class="afl__title"><?php esc_html_e('Recupera tu contraseña', 'twentytwentyfive-child'); ?></h1>
+        <p class="afl__subtitle"><?php esc_html_e('Te enviaremos un enlace para crear una nueva.', 'twentytwentyfive-child'); ?></p>
 
-        <ul class="af-login-benefits">
-          <li>
-            <span class="af-login-benefit-icon">🏠</span>
-            <strong><?php esc_html_e('Panel centralizado', 'twentytwentyfive-child'); ?></strong>
-            <small><?php esc_html_e('Todas tus propiedades en un solo lugar', 'twentytwentyfive-child'); ?></small>
+        <form class="afl__form" method="post" action="<?php echo esc_url(network_site_url('wp-login.php?action=lostpassword', 'login_post')); ?>" novalidate data-afl-form>
+          <div class="afl__field">
+            <input type="text" name="user_login" id="user_login" class="afl__input" placeholder=" " autocomplete="username" required maxlength="100" />
+            <label for="user_login" class="afl__label"><?php esc_html_e('Usuario o correo electrónico', 'twentytwentyfive-child'); ?></label>
+            <p class="afl__error" data-error aria-live="polite"></p>
+          </div>
+
+          <button type="submit" name="wp-submit" class="afl__btn" data-submit>
+            <span class="afl__btn-text"><?php esc_html_e('Enviar enlace', 'twentytwentyfive-child'); ?></span>
+            <span class="afl__spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+
+        <p class="afl__alt">
+          <a href="<?php echo esc_url(af_custom_login_base_url()); ?>" class="afl__link">← <?php esc_html_e('Volver a iniciar sesión', 'twentytwentyfive-child'); ?></a>
+        </p>
+
+      <?php else: ?>
+        <h1 id="afl-title" class="afl__title"><?php esc_html_e('Bienvenido de vuelta', 'twentytwentyfive-child'); ?></h1>
+        <p class="afl__subtitle"><?php esc_html_e('Accede a tu panel y gestiona tus propiedades.', 'twentytwentyfive-child'); ?></p>
+
+        <form class="afl__form" id="loginform" name="loginform" method="post" action="<?php echo esc_url(site_url('wp-login.php', 'login_post')); ?>" novalidate data-afl-form>
+          <div class="afl__field">
+            <input type="text" name="log" id="user_login" class="afl__input" placeholder=" " autocomplete="username" autocapitalize="off" spellcheck="false" required maxlength="100" />
+            <label for="user_login" class="afl__label"><?php esc_html_e('Usuario o correo electrónico', 'twentytwentyfive-child'); ?></label>
+            <p class="afl__error" data-error aria-live="polite"></p>
+          </div>
+
+          <div class="afl__field">
+            <input type="password" name="pwd" id="user_pass" class="afl__input afl__input--pass" placeholder=" " autocomplete="current-password" required maxlength="255" />
+            <label for="user_pass" class="afl__label"><?php esc_html_e('Contraseña', 'twentytwentyfive-child'); ?></label>
+            <button type="button" class="afl__eye" data-toggle-pass aria-label="<?php esc_attr_e('Mostrar contraseña', 'twentytwentyfive-child'); ?>" aria-pressed="false">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><path class="afl__eye-slash" d="M3 3l18 18"/></svg>
+            </button>
+            <p class="afl__caps" data-caps hidden><?php esc_html_e('Bloq Mayús está activado', 'twentytwentyfive-child'); ?></p>
+            <p class="afl__error" data-error aria-live="polite"></p>
+          </div>
+
+          <div class="afl__row">
+            <label class="afl__check">
+              <input name="rememberme" type="checkbox" id="rememberme" value="forever" />
+              <span class="afl__box" aria-hidden="true"></span>
+              <?php esc_html_e('Recuérdame', 'twentytwentyfive-child'); ?>
+            </label>
+            <a href="<?php echo esc_url(wp_lostpassword_url()); ?>" class="afl__link"><?php esc_html_e('¿Olvidaste tu contraseña?', 'twentytwentyfive-child'); ?></a>
+          </div>
+
+          <input type="hidden" name="af_custom_login" value="1" />
+          <input type="hidden" name="redirect_to" value="<?php echo esc_attr($redirect_to); ?>" />
+
+          <button type="submit" name="wp-submit" id="wp-submit" class="afl__btn" data-submit>
+            <span class="afl__btn-text"><?php esc_html_e('Iniciar sesión', 'twentytwentyfive-child'); ?></span>
+            <span class="afl__spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+
+        <p class="afl__alt">
+          <?php esc_html_e('¿Aún no tienes cuenta?', 'twentytwentyfive-child'); ?>
+          <a href="<?php echo esc_url(af_signup_url()); ?>" class="afl__link afl__link--strong"><?php esc_html_e('Crear mi cuenta', 'twentytwentyfive-child'); ?></a>
+        </p>
+      <?php endif; ?>
+    </section>
+
+    <aside class="afl__panel" aria-label="<?php esc_attr_e('Beneficios de Arriendo Fácil', 'twentytwentyfive-child'); ?>" data-tilt>
+      <div class="afl__panel-inner">
+        <span class="afl__pill"><?php esc_html_e('Gestión de arriendos', 'twentytwentyfive-child'); ?></span>
+        <h2><?php esc_html_e('Tus propiedades, en un solo lugar', 'twentytwentyfive-child'); ?></h2>
+
+        <ul class="afl__features" data-features>
+          <li class="is-active">
+            <span class="afl__ico" aria-hidden="true">🏠</span>
+            <div><strong><?php esc_html_e('Panel centralizado', 'twentytwentyfive-child'); ?></strong><small><?php esc_html_e('Todas tus propiedades y contratos al día', 'twentytwentyfive-child'); ?></small></div>
           </li>
           <li>
-            <span class="af-login-benefit-icon">💰</span>
-            <strong><?php esc_html_e('Facturación SRI', 'twentytwentyfive-child'); ?></strong>
-            <small><?php esc_html_e('Comprobantes digitales autorizados', 'twentytwentyfive-child'); ?></small>
+            <span class="afl__ico" aria-hidden="true">🧾</span>
+            <div><strong><?php esc_html_e('Facturación SRI', 'twentytwentyfive-child'); ?></strong><small><?php esc_html_e('Comprobantes digitales autorizados', 'twentytwentyfive-child'); ?></small></div>
           </li>
           <li>
-            <span class="af-login-benefit-icon">📊</span>
-            <strong><?php esc_html_e('Liquidaciones mensuales', 'twentytwentyfive-child'); ?></strong>
-            <small><?php esc_html_e('Transparencia total en tus ingresos', 'twentytwentyfive-child'); ?></small>
+            <span class="afl__ico" aria-hidden="true">📊</span>
+            <div><strong><?php esc_html_e('Liquidaciones mensuales', 'twentytwentyfive-child'); ?></strong><small><?php esc_html_e('Transparencia total en tus ingresos', 'twentytwentyfive-child'); ?></small></div>
           </li>
           <li>
-            <span class="af-login-benefit-icon">🛠️</span>
-            <strong><?php esc_html_e('Mantenimiento integrado', 'twentytwentyfive-child'); ?></strong>
-            <small><?php esc_html_e('Gestiona reparaciones sin complicaciones', 'twentytwentyfive-child'); ?></small>
+            <span class="afl__ico" aria-hidden="true">🛠️</span>
+            <div><strong><?php esc_html_e('Mantenimiento integrado', 'twentytwentyfive-child'); ?></strong><small><?php esc_html_e('Gestiona reparaciones sin complicaciones', 'twentytwentyfive-child'); ?></small></div>
           </li>
         </ul>
 
-        <div class="af-login-contact">
-          <p><?php esc_html_e('¿Necesitas ayuda?', 'twentytwentyfive-child'); ?></p>
-          <p>
-            <a href="mailto:arriendofacilnet@gmail.com">📧 arriendofacilnet@gmail.com</a>
-          </p>
-        </div>
+        <a class="afl__help" href="mailto:arriendofacilnet@gmail.com">
+          <?php esc_html_e('¿Necesitas ayuda?', 'twentytwentyfive-child'); ?> <span>arriendofacilnet@gmail.com</span>
+        </a>
       </div>
-    </div>
+    </aside>
   </div>
 </main>
-
-<style>
-.af-login-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg-primary) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-4);
-}
-
-.af-login-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  width: 100%;
-  max-width: 1000px;
-  background: white;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-}
-
-@media (max-width: 768px) {
-  .af-login-container {
-    grid-template-columns: 1fr;
-  }
-}
-
-.af-login-box {
-  padding: var(--space-10);
-  display: flex;
-  flex-direction: column;
-}
-
-@media (max-width: 768px) {
-  .af-login-box {
-    padding: var(--space-8);
-  }
-}
-
-.af-login-header {
-  margin-bottom: var(--space-8);
-}
-
-.af-login-logo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  text-decoration: none;
-  color: var(--color-text-primary);
-  font-weight: 700;
-  font-size: 1.25rem;
-}
-
-.af-login-logo img {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-sm);
-}
-
-.af-login-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: var(--space-2);
-  color: var(--color-text-primary);
-}
-
-.af-login-subtitle {
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-8);
-  font-size: 0.95rem;
-}
-
-.af-form-group {
-  margin-bottom: var(--space-6);
-}
-
-.af-form-group--checkbox {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-6);
-}
-
-.af-form-label {
-  display: block;
-  margin-bottom: var(--space-2);
-  font-weight: 600;
-  color: var(--color-text-primary);
-  font-size: 0.95rem;
-}
-
-.af-form-input {
-  width: 100%;
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  font-size: 1rem;
-  font-family: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.af-form-input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
-}
-
-.af-form-checkbox-label {
-  font-weight: normal;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-}
-
-.af-form-help {
-  display: block;
-  margin-top: var(--space-2);
-  color: var(--color-text-secondary);
-  font-size: 0.875rem;
-}
-
-.btn--block {
-  width: 100%;
-  margin-bottom: var(--space-6);
-}
-
-.af-login-footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--space-2);
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-.af-login-link {
-  color: var(--color-primary);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-.af-login-link:hover {
-  color: var(--color-primary-dark);
-  text-decoration: underline;
-}
-
-.af-login-divider {
-  color: var(--color-text-secondary);
-}
-
-/* Right Side Info */
-.af-login-info {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: white;
-  padding: var(--space-10);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .af-login-info {
-    display: none;
-  }
-}
-
-.af-login-info-content h2 {
-  font-size: 2rem;
-  margin-bottom: var(--space-3);
-  font-weight: 700;
-}
-
-.af-login-info-content > p {
-  opacity: 0.9;
-  margin-bottom: var(--space-8);
-  font-size: 1.05rem;
-}
-
-.af-login-benefits {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 var(--space-10) 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-
-.af-login-benefits li {
-  display: flex;
-  gap: var(--space-4);
-  align-items: flex-start;
-}
-
-.af-login-benefit-icon {
-  font-size: 1.5rem;
-  flex-shrink: 0;
-}
-
-.af-login-benefits strong {
-  display: block;
-  margin-bottom: var(--space-1);
-}
-
-.af-login-benefits small {
-  opacity: 0.8;
-  font-size: 0.9rem;
-}
-
-.af-login-contact {
-  background: rgba(255, 255, 255, 0.1);
-  padding: var(--space-4);
-  border-radius: var(--radius-md);
-  text-align: center;
-}
-
-.af-login-contact p {
-  margin: 0;
-  opacity: 0.9;
-}
-
-.af-login-contact a {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  transition: opacity 0.2s ease;
-}
-
-.af-login-contact a:hover {
-  opacity: 0.8;
-  text-decoration: underline;
-}
-</style>
 
 <?php get_footer();
