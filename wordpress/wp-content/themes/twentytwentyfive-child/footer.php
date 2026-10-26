@@ -50,7 +50,7 @@
           <?php /* Blog oculto por ahora; reactivar cuando exista contenido:
           <a href="<?php echo esc_url(home_url('/blog/')); ?>"><?php esc_html_e('Blog y recursos', 'twentytwentyfive-child'); ?></a>
           */ ?>
-          <a href="<?php echo esc_url(wp_login_url()); ?>" class="footer-owner-link">
+          <a href="<?php echo esc_url(af_custom_login_base_url()); ?>" class="footer-owner-link">
             <?php esc_html_e('Iniciar sesión', 'twentytwentyfive-child'); ?>
           </a>
         </div>

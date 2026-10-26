@@ -5,7 +5,9 @@
 
 if ( ! defined('ABSPATH') ) { exit; }
 
-define('AF_THEME_VERSION', '2.0.5');
+define('AF_THEME_VERSION', '2.0.6');
+
+require_once dirname(__FILE__) . '/inc/af-deploy-refresh.php';
 
 // === SECURITY LAYER (load first) ===
 require_once dirname(__FILE__) . '/inc/af-security-headers.php';
@@ -492,9 +494,9 @@ function twentytwentyfive_child_add_cache_headers() {
   }
 
   if (is_front_page()) {
-    header('Cache-Control: public, max-age=86400, s-maxage=86400, stale-while-revalidate=259200');
+    header('Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=3600');
   } else {
-    header('Cache-Control: public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
+    header('Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=3600');
   }
 }
 add_action('send_headers', 'twentytwentyfive_child_add_cache_headers');
@@ -864,6 +866,16 @@ function af_signup_url() {
  * Authentication still goes through core (POST to the same URL).
  */
 function af_custom_login_base_url() {
+  global $wp_query;
+
+  // WPS Hide Login returns '#' from wp_login_url() on 404 pages.
+  if ( $wp_query instanceof WP_Query && $wp_query->is_404 ) {
+    $wp_query->is_404 = false;
+    $url = wp_login_url();
+    $wp_query->is_404 = true;
+    return $url;
+  }
+
   return wp_login_url();
 }
 
