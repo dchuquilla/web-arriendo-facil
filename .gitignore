@@ -70,3 +70,5 @@ wordpress/wp-content/af-certs/
 wordpress/wp-content/af-certs/**
 wordpress/wp-content/af-certs/**/.htaccess
 wordpress/wp-content/af-certs/**/cert_*
+# Configuration (local credentials, never commit)
+/wordpress/wp-config.php

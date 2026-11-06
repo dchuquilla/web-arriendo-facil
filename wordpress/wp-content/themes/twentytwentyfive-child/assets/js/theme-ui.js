@@ -475,10 +475,9 @@
  });
  }
  function initScrollAnimations() {
- var animatedElements = document.querySelectorAll('[data-animate]');
- var isMobile = window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
+ var animatedElements = document.querySelectorAll('[data-animate], [data-stagger]');
  var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- var shouldAnimate = !isMobile && !prefersReducedMotion && 'IntersectionObserver' in window;
+ var shouldAnimate = !prefersReducedMotion && 'IntersectionObserver' in window;
  if (!animatedElements.length) {
  return;
  }
@@ -489,6 +488,22 @@
  return;
  }
  document.documentElement.classList.add('has-scroll-animations');
+
+ // Auto-apply stagger index to direct children of any [data-stagger] container
+ // so the CSS can offset their reveal using var(--af-stagger-i).
+ // The CSS keys off [data-stagger-ready] (not [data-stagger]) so that if this
+ // JS fails to upgrade (cache, legacy build), the children remain visible.
+ var staggerContainers = document.querySelectorAll('[data-stagger]');
+ staggerContainers.forEach(function (container) {
+ var children = container.children;
+ for (var i = 0; i < children.length; i += 1) {
+ if (!children[i].style.getPropertyValue('--af-stagger-i')) {
+ children[i].style.setProperty('--af-stagger-i', String(i));
+ }
+ }
+ container.setAttribute('data-stagger-ready', '');
+ });
+
  var observer = new IntersectionObserver(function (entries) {
  entries.forEach(function (entry) {
  if (entry.isIntersecting) {
@@ -501,10 +516,37 @@
  observer.observe(element);
  });
  }
+ function initRippleEffect() {
+ var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if (prefersReducedMotion) {
+ return;
+ }
+ document.addEventListener('pointerdown', function (event) {
+ var btn = event.target && event.target.closest ? event.target.closest('.btn--primary') : null;
+ if (!btn || btn.disabled || event.button !== 0) {
+ return;
+ }
+ var rect = btn.getBoundingClientRect();
+ var size = Math.max(rect.width, rect.height);
+ var ripple = document.createElement('span');
+ ripple.className = 'btn-ripple';
+ ripple.style.width = size + 'px';
+ ripple.style.height = size + 'px';
+ ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
+ ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
+ btn.appendChild(ripple);
+ window.setTimeout(function () {
+ if (ripple.parentNode) {
+ ripple.parentNode.removeChild(ripple);
+ }
+ }, 650);
+ }, { passive: true });
+ }
  function init() {
  initGlobalLoadingScreen();
  initHeader();
  initScrollAnimations();
+ initRippleEffect();
  }
  if (document.readyState === 'loading') {
  document.addEventListener('DOMContentLoaded', init, { once: true });

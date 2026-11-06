@@ -276,10 +276,19 @@
   --easing-out: cubic-bezier(0, 0, 0.2, 1);        /* Deceleration */
   --easing-inout: cubic-bezier(0.4, 0, 0.2, 1);    /* Smooth both ways */
 
+  /* Expressive Easings (Transitions.dev inspired) */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);   /* Overshoot bounce — pop-ins */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);      /* Out-expo premium — reveal */
+  --ease-soft: cubic-bezier(0.65, 0, 0.35, 1);        /* In-out balanced — modals */
+  --ease-swift: cubic-bezier(0.3, 0, 0.1, 1);         /* Fast but elegant — clicks */
+  --ease-glide: cubic-bezier(0.16, 1, 0.3, 1);        /* Decelerating glide — hero */
+
   /* Common Transitions */
   --transition: var(--duration-normal) var(--easing-default);
   --transition-fast: var(--duration-fast) var(--easing-default);
   --transition-slow: var(--duration-slow) var(--easing-default);
+  --transition-smooth: var(--duration-normal) var(--ease-smooth);
+  --transition-spring: var(--duration-slow) var(--ease-spring);
 }
 
 /* Respect prefers-reduced-motion */
@@ -426,4 +435,47 @@
   /* Transition (already exists) */
   --transition: var(--duration-normal) var(--easing-default);
   --transition-slow: var(--duration-slow) var(--easing-default);
+}
+
+/* ========================================
+   SHARED KEYFRAMES (reusable animations)
+   ======================================== */
+
+@keyframes af-reveal-up {
+  from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+
+@keyframes af-reveal-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes af-pop-in {
+  0%   { opacity: 0; transform: scale(0.92); }
+  60%  { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes af-shimmer-sweep {
+  0%   { transform: translateX(-120%) skewX(-20deg); }
+  100% { transform: translateX(220%)  skewX(-20deg); }
+}
+
+@keyframes af-eyebrow-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.35); }
+}
+
+@keyframes af-loading-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes af-reveal-up    { from, to { opacity: 1; transform: none; filter: none; } }
+  @keyframes af-pop-in       { from, to { opacity: 1; transform: none; } }
+  @keyframes af-shimmer-sweep,
+  @keyframes af-eyebrow-pulse,
+  @keyframes af-loading-shimmer { from, to { opacity: 1; transform: none; background-position: 0 0; } }
 }

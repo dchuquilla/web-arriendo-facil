@@ -1,4 +1,4 @@
-/* global window, document, fetch, FormData, localStorage, URLSearchParams */
+/* global window, document, fetch, FormData, sessionStorage, localStorage, URLSearchParams */
 (function () {
   'use strict';
 
@@ -42,6 +42,7 @@
     var selector = getUrlParam('selector');
     var token = getUrlParam('token');
     var draftKey = '';
+    var DRAFT_SENSITIVE_FIELDS = ['id_number', 'id_type', 'phone', 'email', 'birth_city', 'nationality'];
     var autosaveTimer = null;
     var submitStageTimer = null;
     var activeSubmit = null;
@@ -244,7 +245,7 @@
     function readDraft() {
       if (!draftKey) return;
       try {
-        var raw = localStorage.getItem(draftKey);
+        var raw = sessionStorage.getItem(draftKey);
         if (!raw) return;
         var parsed = JSON.parse(raw);
         Object.keys(parsed).forEach(function (name) {
@@ -259,10 +260,11 @@
       if (!draftKey) return;
       var snapshot = {};
       Array.prototype.forEach.call(form.elements, function (el) {
-        if (!el.name || el.type === 'file' || el.type === 'submit' || el.type === 'button') return;
+        if (!el.name || el.type === 'file' || el.type === 'submit' || el.type === 'button' || el.type === 'password' || el.type === 'hidden') return;
+        if (DRAFT_SENSITIVE_FIELDS.indexOf(el.name) !== -1) return;
         snapshot[el.name] = el.value;
       });
-      try { localStorage.setItem(draftKey, JSON.stringify(snapshot)); }
+      try { sessionStorage.setItem(draftKey, JSON.stringify(snapshot)); }
       catch (e) { /* storage full */ }
     }
 
@@ -415,7 +417,7 @@
           return;
         }
 
-        try { if (draftKey) localStorage.removeItem(draftKey); } catch (e) { /* noop */ }
+        try { if (draftKey) { sessionStorage.removeItem(draftKey); localStorage.removeItem(draftKey); } } catch (e) { /* noop */ }
 
         var documents = Array.isArray(data.uploaded_documents) ? data.uploaded_documents.length : 0;
         var message = data.message || (i18n.success || 'Perfil legal enviado correctamente.');

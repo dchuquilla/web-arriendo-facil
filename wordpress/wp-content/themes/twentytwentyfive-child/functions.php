@@ -10,7 +10,6 @@ define('AF_THEME_VERSION', '2.0.6');
 require_once dirname(__FILE__) . '/inc/af-deploy-refresh.php';
 
 // === SECURITY LAYER (load first) ===
-require_once dirname(__FILE__) . '/inc/af-security-headers.php';
 require_once dirname(__FILE__) . '/inc/af-input-validation.php';
 require_once dirname(__FILE__) . '/inc/af-rest-security.php';
 require_once dirname(__FILE__) . '/inc/af-gdpr-compliance.php';
@@ -104,7 +103,7 @@ function twentytwentyfive_child_enqueue_assets() {
     'twentytwentyfive-child-theme-ui',
     get_stylesheet_directory_uri() . '/assets/js/theme-ui.js',
     array(),
-    AF_THEME_VERSION,
+    twentytwentyfive_child_asset_version( 'assets/js/theme-ui.js' ),
     true
   );
 

@@ -63,7 +63,7 @@ get_header();
         <p><?php esc_html_e( 'Una plataforma para facturar, dar seguimiento a contratos y mantener tu cartera al día.', 'twentytwentyfive-child' ); ?></p>
       </div>
 
-      <div class="af-svc-grid af-svc-grid--why">
+      <div class="af-svc-grid af-svc-grid--why" data-stagger>
         <?php foreach ( array_values( af_service_cards( 'why' ) ) as $i => $srv ) : ?>
           <a class="af-svc-card af-svc-card--<?php echo esc_attr( $srv['accent'] ); ?><?php echo 'reportes-mensuales' === $srv['slug'] ? ' af-svc-card--featured' : ''; ?>" href="<?php echo esc_url( af_service_detail_url( $srv['slug'] ) ); ?>" aria-label="<?php echo esc_attr( $srv['card_title'] . ' — toca para ver más' ); ?>">
             <span class="af-svc-card__idx"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
@@ -87,7 +87,7 @@ get_header();
         <h2 class="h2"><?php esc_html_e( 'Así funciona por dentro', 'twentytwentyfive-child' ); ?></h2>
       </div>
 
-      <div class="af-svc-grid af-svc-grid--auto">
+      <div class="af-svc-grid af-svc-grid--auto" data-stagger>
         <?php foreach ( array_values( af_service_cards( 'auto' ) ) as $i => $srv ) : ?>
           <a class="af-svc-card af-svc-card--compact af-svc-card--<?php echo esc_attr( $srv['accent'] ); ?>" href="<?php echo esc_url( af_service_detail_url( $srv['slug'] ) ); ?>" aria-label="<?php echo esc_attr( $srv['title'] . ' — toca para ver más' ); ?>">
             <span class="af-svc-card__idx"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
@@ -109,7 +109,7 @@ get_header();
         <p><?php esc_html_e( 'Tres pasos para ordenar tu operación.', 'twentytwentyfive-child' ); ?></p>
       </div>
 
-      <div class="pms-steps">
+      <div class="pms-steps" data-stagger>
         <div class="pms-step pms-step--blue">
           <span class="pms-step__icon" aria-hidden="true">📤</span>
           <div class="pms-step__num">1</div>
