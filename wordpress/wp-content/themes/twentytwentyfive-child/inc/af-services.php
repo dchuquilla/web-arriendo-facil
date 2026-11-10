@@ -435,6 +435,7 @@ function af_services_config() {
 			'icon'        => '🔍',
 			'accent'      => 'rose',
 			'video_label' => 'Video: cómo evaluamos a tus inquilinos',
+			'video_id'    => 'Gz_Y18LuBcE',
 			'que'         => array(
 				'title' => '¿Qué hace el sistema?',
 				'intro' => 'Cada inquilino tiene una ficha con su perfil y su documentación:',
