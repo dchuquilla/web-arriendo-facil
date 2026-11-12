@@ -55,7 +55,7 @@ $afx_allowed = array(
 
 $afx_docs = array(
   'terminos-y-condiciones' => array( 'icon' => 'scale', 'title' => 'Términos y condiciones', 'text' => 'Reglas de uso del servicio.' ),
-  'politica-de-privacidad' => array( 'icon' => 'shield', 'title' => 'Política de privacidad', 'text' => 'Cómo tratamos tus datos.' ),
+  'politica-de-privacidad' => array( 'icon' => 'shield', 'title' => 'Política de privacidad', 'text' => 'Cómo tratamos sus datos.' ),
   'cookie-policy-eu'       => array( 'icon' => 'cookie', 'title' => 'Política de cookies', 'text' => 'Qué cookies usamos y por qué.' ),
 );
 ?>
@@ -127,8 +127,8 @@ $afx_docs = array(
       <aside class="afx-faqhelp" data-afx>
         <span class="afx-faqhelp__icon"><?php echo afx_icon( 'mail', 26 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
         <div>
-          <h2><?php esc_html_e( '¿Tienes preguntas sobre este documento?', 'twentytwentyfive-child' ); ?></h2>
-          <p><?php esc_html_e( 'Escríbenos y te respondemos en un plazo máximo de 15 días hábiles.', 'twentytwentyfive-child' ); ?></p>
+          <h2><?php esc_html_e( '¿Tiene preguntas sobre este documento?', 'twentytwentyfive-child' ); ?></h2>
+          <p><?php esc_html_e( 'Escríbanos y le responderemos en un plazo máximo de 15 días hábiles.', 'twentytwentyfive-child' ); ?></p>
         </div>
         <a class="afx-btn afx-btn--dark" href="mailto:arriendofacilnet@gmail.com">
           <?php esc_html_e( 'Escribir al equipo', 'twentytwentyfive-child' ); ?>
