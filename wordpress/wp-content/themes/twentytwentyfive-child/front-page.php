@@ -111,7 +111,7 @@ $afx_steps = array(
                 <?php esc_html_e( 'Empieza gratis', 'twentytwentyfive-child' ); ?>
                 <?php echo afx_icon( 'arrow', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
               </a>
-              <a class="afx-hero__demo" href="<?php echo esc_url( home_url( '/#como-funciona' ) ); ?>" data-afx-go="como-funciona">
+              <a class="afx-hero__demo" href="https://youtu.be/D7zJZFqUdzQ" target="_blank" rel="noopener" data-afx-video="D7zJZFqUdzQ" data-afx-video-title="<?php echo esc_attr( __( 'Demo de ArriendoFácil', 'twentytwentyfive-child' ) ); ?>" aria-haspopup="dialog">
                 <span class="afx-hero__demo-icon"><?php echo afx_icon( 'play', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
                 <?php esc_html_e( 'Ver demo', 'twentytwentyfive-child' ); ?>
               </a>
