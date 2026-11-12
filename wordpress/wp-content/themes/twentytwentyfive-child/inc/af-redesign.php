@@ -110,6 +110,9 @@ function afx_enqueue_redesign_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'afx_enqueue_redesign_assets', 30 );
 
+// Sin la barra negra de WordPress ("Howdy, …") en el sitio público.
+add_filter( 'show_admin_bar', '__return_false', 100 );
+
 /**
  * Marca temprano la decisión pendiente de cookies: mientras no exista una elección
  * (aceptar, rechazar o personalizar) el sitio queda a la espera del banner.
