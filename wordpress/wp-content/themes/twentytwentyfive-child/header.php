@@ -40,37 +40,45 @@
   <?php esc_html_e('Ir al contenido principal', 'twentytwentyfive-child'); ?>
 </a>
 
-<header class="site-header" role="banner" id="site-header">
-  <div class="container header-inner">
-    <!-- Logo/Brand -->
-    <a class="brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('Arriendo Fácil - Inicio', 'twentytwentyfive-child'); ?>">
-      <img class="brand-logo-img" src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/assets/images/arriendo-facil-logo-web-sq.png" alt="" width="40" height="40" />
-      <span class="brand-word">Arriendo<em>Fácil</em></span>
+<?php
+$afx_is_home   = is_front_page();
+$afx_in_feat   = is_page( array( 'facturacion-electronica', 'pagos-y-cobros' ) );
+$afx_home      = home_url( '/' );
+?>
+<header class="afx-header" role="banner" id="site-header">
+  <div class="afx-header__inner">
+    <a class="afx-brand" href="<?php echo esc_url( $afx_home ); ?>" aria-label="<?php esc_attr_e( 'ArriendoFácil - Inicio', 'twentytwentyfive-child' ); ?>">
+      <?php echo afx_icon( 'home', 38, 'afx-brand__mark' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+      <span class="afx-brand__word">Arriendo<b>Fácil</b></span>
     </a>
 
-    <!-- Hamburger Menu Toggle (mobile only) -->
-    <button class="nav-toggle" id="nav-toggle" aria-label="<?php esc_attr_e('Abrir menú', 'twentytwentyfive-child'); ?>" aria-expanded="false" aria-controls="main-nav">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="afx-burger" id="afx-burger" type="button" aria-label="<?php esc_attr_e( 'Abrir menú', 'twentytwentyfive-child' ); ?>" aria-expanded="false" aria-controls="afx-nav">
+      <span></span><span></span><span></span>
     </button>
 
-    <!-- Main Navigation -->
-    <nav class="nav" id="main-nav" aria-label="<?php esc_attr_e('Navegación principal', 'twentytwentyfive-child'); ?>">
-      <ul class="nav-menu">
-        <li><a href="<?php echo esc_url(home_url('/')); ?>#servicios" class="nav-link"><?php esc_html_e('Servicios', 'twentytwentyfive-child'); ?></a></li>
-        <li><a href="<?php echo esc_url(home_url('/preguntas-frecuentes/')); ?>" class="nav-link"><?php esc_html_e('Cómo funciona', 'twentytwentyfive-child'); ?></a></li>
-        <li><a href="<?php echo esc_url(home_url('/contacto/')); ?>" class="nav-link"><?php esc_html_e('Contacto', 'twentytwentyfive-child'); ?></a></li>
+    <nav class="afx-nav" id="afx-nav" aria-label="<?php esc_attr_e( 'Navegación principal', 'twentytwentyfive-child' ); ?>">
+      <ul class="afx-nav__list">
+        <li><a class="afx-nav__link<?php echo $afx_is_home ? ' is-active' : ''; ?>" href="<?php echo esc_url( $afx_home ); ?>" data-afx-go="inicio" <?php echo $afx_is_home ? 'aria-current="page"' : ''; ?>><?php esc_html_e( 'Inicio', 'twentytwentyfive-child' ); ?></a></li>
+        <li class="afx-nav__item afx-nav__item--has-menu">
+          <button class="afx-nav__link afx-nav__link--menu<?php echo $afx_in_feat ? ' is-active' : ''; ?>" type="button" aria-expanded="false" aria-controls="afx-submenu">
+            <?php esc_html_e( 'Funcionalidades', 'twentytwentyfive-child' ); ?>
+            <?php echo afx_icon( 'chevron', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+          </button>
+          <ul class="afx-submenu" id="afx-submenu">
+            <li><a href="<?php echo esc_url( home_url( '/pagos-y-cobros/' ) ); ?>"><?php echo afx_icon( 'bell', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Pagos y cobros', 'twentytwentyfive-child' ); ?></a></li>
+            <li><a href="<?php echo esc_url( home_url( '/facturacion-electronica/' ) ); ?>"><?php echo afx_icon( 'file', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Facturación electrónica', 'twentytwentyfive-child' ); ?></a></li>
+          </ul>
+        </li>
+        <li><a class="afx-nav__link" href="<?php echo esc_url( $afx_home . '#planes' ); ?>" data-afx-go="planes"><?php esc_html_e( 'Planes', 'twentytwentyfive-child' ); ?></a></li>
+        <li><a class="afx-nav__link" href="<?php echo esc_url( $afx_home . '#faq' ); ?>" data-afx-go="faq"><?php esc_html_e( 'FAQ', 'twentytwentyfive-child' ); ?></a></li>
+        <li><a class="afx-nav__link<?php echo is_page( 'contacto' ) ? ' is-active' : ''; ?>" href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>"><?php esc_html_e( 'Contacto', 'twentytwentyfive-child' ); ?></a></li>
       </ul>
 
-<!-- Auth buttons in Nav -->
-      <div class="nav-actions">
-        <a href="<?php echo esc_url( af_custom_login_base_url() ); ?>" class="btn btn--outline nav-cta nav-login">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
-          <?php esc_html_e( 'Iniciar sesión', 'twentytwentyfive-child' ); ?>
-        </a>
-        <a href="<?php echo esc_url( af_signup_url() ); ?>" class="btn btn--primary nav-cta">
-          <?php esc_html_e( 'Crear mi cuenta', 'twentytwentyfive-child' ); ?>
+      <div class="afx-nav__actions">
+        <a class="afx-nav__login" href="<?php echo esc_url( af_custom_login_base_url() ); ?>"><?php esc_html_e( 'Iniciar sesión', 'twentytwentyfive-child' ); ?></a>
+        <a class="afx-btn afx-btn--grad" href="<?php echo esc_url( af_signup_url() ); ?>">
+          <?php esc_html_e( 'Crear cuenta', 'twentytwentyfive-child' ); ?>
+          <?php echo afx_icon( 'arrow', 20 ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
         </a>
       </div>
     </nav>

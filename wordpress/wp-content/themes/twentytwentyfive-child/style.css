@@ -217,7 +217,7 @@ a {
   transition: color var(--transition);
 }
 
-a:hover {
+a:not([class*="afx-"]):hover {
   text-decoration: none;
   color: var(--color-accent-primary-hover);
 }

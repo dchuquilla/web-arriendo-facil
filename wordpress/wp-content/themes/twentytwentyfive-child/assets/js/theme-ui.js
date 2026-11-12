@@ -6,10 +6,11 @@
  var showTimer = null;
  var hideTimer = null;
  var watchdogTimer = null;
+ var hardCapTimer = null;
  var lastShownAt = 0;
  var minVisibleMs = 220;
  var watchdogMs = 5000;
- var maxVisibleMs = 10000;
+ var maxVisibleMs = 7000;
  var pendingAsyncRequests = 0;
  var pendingTap = null;
  var lastPointerType = '';
@@ -41,6 +42,12 @@
  if (watchdogTimer) {
  window.clearTimeout(watchdogTimer);
  watchdogTimer = null;
+ }
+ }
+ function clearHardCap() {
+ if (hardCapTimer) {
+ window.clearTimeout(hardCapTimer);
+ hardCapTimer = null;
  }
  }
  function armWatchdog() {
@@ -76,6 +83,12 @@
  loader.setAttribute('aria-hidden', 'false');
  document.body.classList.add('af-is-loading');
  lastShownAt = Date.now();
+ // Independent hard cap: repeated show/armWatchdog calls can never extend it.
+ clearHardCap();
+ hardCapTimer = window.setTimeout(function () {
+ pendingAsyncRequests = 0;
+ hideNow();
+ }, maxVisibleMs);
  window.requestAnimationFrame(function () {
  loader.classList.add('is-visible');
  });
@@ -84,6 +97,7 @@
  function hideNow() {
  clearShowTimer();
  clearWatchdog();
+ clearHardCap();
  loader.classList.remove('is-visible');
  loader.setAttribute('aria-hidden', 'true');
  document.body.classList.remove('af-is-loading');
@@ -351,7 +365,13 @@
  }
  pendingTap = null;
  lastPointerMoved = false;
+ // Wait a tick so bubble-phase handlers that cancel the navigation
+ // (in-page transitions, modals) can call preventDefault first.
+ window.setTimeout(function () {
+ if (!event.defaultPrevented) {
  showNow('Cargando...');
+ }
+ }, 0);
  }, true);
  document.addEventListener('submit', function (event) {
  var form = event.target;

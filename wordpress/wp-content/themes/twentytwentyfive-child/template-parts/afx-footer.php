@@ -1,0 +1,76 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+$GLOBALS['afx_footer_rendered'] = true;
+$afx_home                       = home_url( '/' );
+?>
+<footer class="afx-footer" role="contentinfo">
+  <div class="afx-cta">
+    <svg class="afx-cta__wave" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path class="afx-wave afx-wave--sage" d="M300 140C700 120 1000 70 1440 20V140Z"/>
+      <path class="afx-wave afx-wave--green" d="M880 140C1060 80 1240 20 1440 0V140Z"/>
+    </svg>
+    <div class="afx-cta__inner">
+      <span class="afx-cta__icon"><?php echo afx_icon( 'rocket', 34 ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+      <div class="afx-cta__copy">
+        <h2><?php esc_html_e( '¿Listo para simplificar la gestión de tus propiedades?', 'twentytwentyfive-child' ); ?></h2>
+        <p><?php esc_html_e( 'Únete a miles de administradores que ya confían en ArriendoFácil.', 'twentytwentyfive-child' ); ?></p>
+      </div>
+      <a class="afx-btn afx-btn--light afx-btn--lg" href="<?php echo esc_url( af_signup_url() ); ?>">
+        <?php esc_html_e( 'Crear cuenta gratis', 'twentytwentyfive-child' ); ?>
+        <?php echo afx_icon( 'arrow', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+      </a>
+    </div>
+  </div>
+
+  <div class="afx-footer__inner">
+    <a class="afx-brand afx-brand--footer" href="<?php echo esc_url( $afx_home ); ?>" aria-label="<?php esc_attr_e( 'ArriendoFácil - Inicio', 'twentytwentyfive-child' ); ?>">
+      <?php echo afx_icon( 'home', 30, 'afx-brand__mark' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+      <span class="afx-brand__word">Arriendo<b>Fácil</b></span>
+    </a>
+
+    <nav class="afx-footer__col" aria-label="<?php esc_attr_e( 'Enlaces rápidos', 'twentytwentyfive-child' ); ?>">
+      <h4><?php esc_html_e( 'Enlaces rápidos', 'twentytwentyfive-child' ); ?></h4>
+      <a href="<?php echo esc_url( $afx_home ); ?>" data-afx-go="inicio"><?php esc_html_e( 'Inicio', 'twentytwentyfive-child' ); ?></a>
+      <a href="<?php echo esc_url( home_url( '/facturacion-electronica/' ) ); ?>"><?php esc_html_e( 'Funcionalidades', 'twentytwentyfive-child' ); ?></a>
+      <a href="<?php echo esc_url( $afx_home . '#planes' ); ?>" data-afx-go="planes"><?php esc_html_e( 'Planes', 'twentytwentyfive-child' ); ?></a>
+      <a href="<?php echo esc_url( af_custom_login_base_url() ); ?>"><?php esc_html_e( 'Iniciar sesión', 'twentytwentyfive-child' ); ?></a>
+    </nav>
+
+    <nav class="afx-footer__col" aria-label="<?php esc_attr_e( 'Soporte', 'twentytwentyfive-child' ); ?>">
+      <h4><?php esc_html_e( 'Soporte', 'twentytwentyfive-child' ); ?></h4>
+      <a href="<?php echo esc_url( home_url( '/preguntas-frecuentes/' ) ); ?>"><?php esc_html_e( 'FAQ', 'twentytwentyfive-child' ); ?></a>
+      <a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>"><?php esc_html_e( 'Contacto', 'twentytwentyfive-child' ); ?></a>
+      <a href="<?php echo esc_url( home_url( '/quienes-somos/' ) ); ?>"><?php esc_html_e( 'Quiénes somos', 'twentytwentyfive-child' ); ?></a>
+    </nav>
+
+    <div class="afx-footer__col">
+      <h4><?php esc_html_e( 'Síguenos', 'twentytwentyfive-child' ); ?></h4>
+      <div class="afx-social">
+        <a href="https://www.facebook.com/profile.php?id=61590015435478" aria-label="Facebook" target="_blank" rel="noopener">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/arriendofacilnet/" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@arriendofacil.net?lang=es-419" aria-label="TikTok" target="_blank" rel="noopener">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.589 6.686a4.793 4.793 0 01-3.77-4.715h-3.307v13.362a2.939 2.939 0 11-2.94-2.94c.245 0 .483.03.711.086V9.12a6.29 6.29 0 00-.71-.041A6.247 6.247 0 109.57 21.57a6.246 6.246 0 006.25-6.246V9.013a8.06 8.06 0 004.72 1.523V7.231a4.778 4.778 0 01-.951-.545z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@arriendofacil.net99" aria-label="YouTube" target="_blank" rel="noopener">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a2.99 2.99 0 00-2.104-2.115C19.53 3.5 12 3.5 12 3.5s-7.53 0-9.394.571A2.99 2.99 0 00.502 6.186C0 8.066 0 12 0 12s0 3.934.502 5.814a2.99 2.99 0 002.104 2.115C4.47 20.5 12 20.5 12 20.5s7.53 0 9.394-.571a2.99 2.99 0 002.104-2.115C24 15.934 24 12 24 12s0-3.934-.502-5.814zM9.6 15.568V8.432L15.818 12 9.6 15.568z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="afx-footer__legal">
+      <p>© <?php echo esc_html( gmdate( 'Y' ) ); ?> ArriendoFácil. <?php esc_html_e( 'Todos los derechos reservados.', 'twentytwentyfive-child' ); ?></p>
+      <p>
+        <a href="<?php echo esc_url( home_url( '/terminos-y-condiciones/' ) ); ?>"><?php esc_html_e( 'Términos y condiciones', 'twentytwentyfive-child' ); ?></a>
+        <span aria-hidden="true">|</span>
+        <a href="<?php echo esc_url( home_url( '/politica-de-privacidad/' ) ); ?>"><?php esc_html_e( 'Privacidad', 'twentytwentyfive-child' ); ?></a>
+        <span aria-hidden="true">|</span>
+        <a href="<?php echo esc_url( home_url( '/cookie-policy-eu/' ) ); ?>"><?php esc_html_e( 'Cookies', 'twentytwentyfive-child' ); ?></a>
+      </p>
+    </div>
+  </div>
+</footer>

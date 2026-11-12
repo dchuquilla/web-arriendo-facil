@@ -18,6 +18,7 @@ require_once dirname(__FILE__) . '/inc/af-gdpr-compliance.php';
 require_once dirname(__FILE__) . '/inc/af-performance-optimization.php';
 
 require_once dirname(__FILE__) . '/inc/af-services.php';
+require_once dirname(__FILE__) . '/inc/af-redesign.php';
 
 function twentytwentyfive_child_asset_version( $relative_path ) {
   $absolute_path = get_stylesheet_directory() . '/' . ltrim( $relative_path, '/' );
@@ -107,17 +108,6 @@ function twentytwentyfive_child_enqueue_assets() {
     true
   );
 
-  // Flip-card landing component (only on the front page).
-  if ( is_front_page() ) {
-    wp_enqueue_script(
-      'twentytwentyfive-child-pms-flip',
-      get_stylesheet_directory_uri() . '/assets/js/pms-flip.js',
-      array(),
-      twentytwentyfive_child_asset_version( 'assets/js/pms-flip.js' ),
-      true
-    );
-  }
-
   // Página de detalle de servicio ("Toca para ver más").
   if ( is_page_template( 'page-detalle-servicio.php' ) ) {
     wp_enqueue_style(
@@ -157,15 +147,6 @@ function twentytwentyfive_child_enqueue_assets() {
     get_stylesheet_directory_uri() . '/assets/js/sw-register.js',
     array(),
     '1.0.0',
-    true
-  );
-
-  // Cookie wall enforcement (blocks page until cookies accepted)
-  wp_enqueue_script(
-    'twentytwentyfive-child-cookie-wall',
-    get_stylesheet_directory_uri() . '/assets/js/cookie-wall.js',
-    array(),
-    AF_THEME_VERSION,
     true
   );
 
@@ -249,7 +230,6 @@ function twentytwentyfive_child_optimize_script_loading( $tag, $handle, $src ) {
   $defer_handles = array(
     'twentytwentyfive-child-theme-ui',
     'twentytwentyfive-child-nav-prefetch',
-    'twentytwentyfive-child-cookie-wall',
     'twentytwentyfive-child-gallery-lightbox',
     'af-chatbot-frontend',
   );
@@ -1063,7 +1043,7 @@ function af_handle_contact_form() {
 
   $name    = sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) );
   $email   = sanitize_email( wp_unslash( $_POST['email'] ?? '' ) );
-  $subject = sanitize_key( wp_unslash( $_POST['subject'] ?? '' ) );
+  $subject = sanitize_key( wp_unslash( $_POST['subject'] ?? 'other' ) );
   $message = sanitize_textarea_field( wp_unslash( $_POST['message'] ?? '' ) );
 
   $subjects = array(
