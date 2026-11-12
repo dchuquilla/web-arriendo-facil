@@ -19,6 +19,7 @@ require_once dirname(__FILE__) . '/inc/af-performance-optimization.php';
 
 require_once dirname(__FILE__) . '/inc/af-services.php';
 require_once dirname(__FILE__) . '/inc/af-redesign.php';
+require_once dirname(__FILE__) . '/inc/af-hardening.php';
 
 function twentytwentyfive_child_asset_version( $relative_path ) {
   $absolute_path = get_stylesheet_directory() . '/' . ltrim( $relative_path, '/' );

@@ -1,461 +1,265 @@
 <?php
 /**
  * Template Name: Política de Privacidad
- * Página legal con cumplimiento GDPR, CCPA y Ecuador 2026
+ * Política de privacidad y protección de datos personales — rediseño ArriendoFácil.
  */
-if ( ! defined('ABSPATH') ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 get_header();
-?>
 
-<main id="main-content" class="af-legal-page">
-  <section class="af-legal-hero">
-    <div class="container">
-      <h1><?php esc_html_e('Política de Privacidad', 'twentytwentyfive-child'); ?></h1>
-      <p><?php esc_html_e('Última actualización: 12 de octubre de 2026 | Versión 2.0', 'twentytwentyfive-child'); ?></p>
-    </div>
-  </section>
+$afx_sections = array(
 
-  <article class="af-legal-content container">
-    <div class="af-legal-body">
+  array(
+    'id'    => 'quienes',
+    'icon'  => 'users',
+    'title' => 'Quiénes somos y cuál es nuestro rol',
+    'nav'   => 'Quiénes somos',
+    'html'  => <<<'HTML'
+<p>Esta Política explica cómo <strong>Arriendo Fácil</strong> («ArriendoFácil», «nosotros»), con domicilio en Quito, Ecuador, trata datos personales en el sitio arriendofacil.net y en el sistema de gestión de propiedades, de acuerdo con la <strong>Ley Orgánica de Protección de Datos Personales (LOPDP)</strong> y su Reglamento.</p>
+<p>Nuestro rol depende de quién eres:</p>
+<div class="afx-tablewrap"><table>
+<thead><tr><th>Datos de…</th><th>Nuestro rol</th></tr></thead>
+<tbody>
+<tr><td>Administradores de propiedades (titulares de una cuenta) y visitantes del sitio web</td><td><strong>Responsable del tratamiento.</strong> Decidimos para qué y cómo usamos estos datos.</td></tr>
+<tr><td>Inquilinos, solicitantes, propietarios y proveedores que un administrador registra o invita a registrarse</td><td><strong>Encargado del tratamiento.</strong> Tratamos los datos por cuenta y según las instrucciones del administrador, que es quien decide por qué los recolecta y responde frente a esas personas.</td></tr>
+</tbody></table></div>
+<div class="afx-callout"><p><strong>¿Eres inquilino o solicitante?</strong> Tu administrador es quien te pidió los datos y quien decide sobre ellos. Puedes ejercer tus derechos ante él o escribirnos a <a href="mailto:arriendofacilnet@gmail.com">arriendofacilnet@gmail.com</a> y te ayudamos a canalizar tu solicitud.</p></div>
+HTML,
+  ),
 
-      <section id="introduccion">
-        <h2>1. Introducción</h2>
-        <p>Arriendo Fácil ("nosotros", "nuestro", "la Plataforma") es una plataforma de gestión de propiedades en alquiler operada desde Quito, Ecuador. Estamos comprometidos con la protección de tus datos personales y tu privacidad, en cumplimiento con:</p>
-        <ul>
-          <li>Reglamento General de Protección de Datos (GDPR) - UE</li>
-          <li>California Consumer Privacy Act (CCPA) - USA</li>
-          <li>Leyes de Protección de Datos Personales - Ecuador</li>
-        </ul>
-      </section>
+  array(
+    'id'    => 'datos',
+    'icon'  => 'database',
+    'title' => 'Qué datos tratamos',
+    'nav'   => 'Datos que tratamos',
+    'html'  => <<<'HTML'
+<div class="afx-tablewrap"><table>
+<thead><tr><th>Categoría</th><th>Ejemplos</th><th>Origen</th></tr></thead>
+<tbody>
+<tr><td>Cuenta y perfil del administrador</td><td>Nombre, correo electrónico, teléfono, cédula o RUC, contraseña (almacenada cifrada con hash), plan contratado, datos de verificación de identidad.</td><td>Tú, al registrarte</td></tr>
+<tr><td>Inquilinos y solicitantes</td><td>Nombre, cédula o pasaporte, nacionalidad, ciudad de nacimiento, teléfono, correo, fechas y precio de arriendo deseados.</td><td>El administrador o la propia persona, mediante enlaces seguros</td></tr>
+<tr><td>Documentos</td><td>Copia de cédula y papeleta de votación, certificado laboral, certificado bancario, garantías, contratos generados.</td><td>El administrador o el inquilino</td></tr>
+<tr><td>Propiedades y operación</td><td>Direcciones, edificios, cobros, pagos registrados, mora, lecturas de medidores, mantenimientos, calendario, reseñas.</td><td>El administrador</td></tr>
+<tr><td>Proveedores de servicios</td><td>Nombre, teléfono, especialidad, identidad y foto verificadas por nuestro equipo.</td><td>El proveedor o el administrador</td></tr>
+<tr><td>Facturación electrónica (opcional)</td><td>Datos del emisor y receptor, comprobantes, certificado de firma (.p12) y su clave, cifrados.</td><td>El administrador</td></tr>
+<tr><td>Comunicaciones</td><td>Mensajes del formulario de contacto, solicitudes de soporte, preferencias de correo.</td><td>Tú</td></tr>
+<tr><td>Técnicos</td><td>Dirección IP, tipo de navegador, páginas vistas, registros de seguridad, preferencias de cookies.</td><td>Generados al usar el sitio</td></tr>
+</tbody></table></div>
+<p>Los certificados laborales y bancarios y los documentos de identidad reciben protección reforzada (almacenamiento privado, acceso restringido por rol). <strong>No buscamos datos sensibles</strong> (salud, origen étnico, religión, opiniones políticas, biometría con fines de identificación) y pedimos a los administradores no cargarlos. Si los recibimos por error, los eliminaremos.</p>
+HTML,
+  ),
 
-      <section id="datos-recopilamos">
-        <h2>2. Datos que Recopilamos</h2>
-        
-        <h3>2.1 De Propietarios</h3>
-        <ul>
-          <li>Nombre completo, email, teléfono verificado</li>
-          <li>Cédula de identidad o RUC (para verificación legal)</li>
-          <li>Dirección de domicilio (principal y de propiedades)</li>
-          <li>Datos de facturación del plan Premium (nombre, RUC o cédula, correo). Los datos de tarjeta los procesa directamente el proveedor de pagos; Arriendo Fácil no almacena el número completo ni el código de seguridad</li>
-          <li>Firma digital y contraseña SRI (encriptados)</li>
-          <li>Historial de transacciones y pagos</li>
-          <li>Documentos de propiedad (título, factura de compra)</li>
-        </ul>
+  array(
+    'id'    => 'finalidades',
+    'icon'  => 'scale',
+    'title' => 'Para qué usamos los datos y con qué base legal',
+    'nav'   => 'Finalidades',
+    'html'  => <<<'HTML'
+<div class="afx-tablewrap"><table>
+<thead><tr><th>Finalidad</th><th>Base legal</th></tr></thead>
+<tbody>
+<tr><td>Crear y gestionar tu cuenta, prestarte el Servicio y brindarte soporte</td><td>Ejecución del contrato</td></tr>
+<tr><td>Verificar identidad y prevenir fraude, suplantación y abuso</td><td>Interés legítimo y cumplimiento de obligaciones legales</td></tr>
+<tr><td>Enviar correos transaccionales (verificación, avisos de cuenta, cobros y recordatorios que configuras)</td><td>Ejecución del contrato</td></tr>
+<tr><td>Enviar notificaciones y novedades del producto</td><td>Interés legítimo; puedes darte de baja en un clic</td></tr>
+<tr><td>Funciones de inteligencia artificial que tú activas (sección 4)</td><td>Ejecución del contrato y, cuando corresponda, consentimiento</td></tr>
+<tr><td>Emitir comprobantes electrónicos y conservar registros tributarios</td><td>Cumplimiento de obligaciones legales</td></tr>
+<tr><td>Seguridad, mejora y continuidad del Servicio, estadísticas agregadas</td><td>Interés legítimo</td></tr>
+<tr><td>Cookies no esenciales (si las hubiera)</td><td>Tu consentimiento</td></tr>
+<tr><td>Atender requerimientos de autoridades y defender derechos</td><td>Obligación legal e interés legítimo</td></tr>
+</tbody></table></div>
+<p>No usamos tus datos para fines distintos e incompatibles con estos, ni elaboramos perfiles publicitarios. <strong>No vendemos datos personales.</strong></p>
+HTML,
+  ),
 
-        <h3>2.2 De Inquilinos</h3>
-        <ul>
-          <li>Nombre, email, teléfono</li>
-          <li>Cédula de identidad verificada</li>
-          <li>Domicilio actual y anterior</li>
-          <li>Información laboral (empresa, cargo, ingresos estimados)</li>
-          <li>Historial de pagos y mora</li>
-          <li>Datos de emergencia (pariente, contacto)</li>
-          <li>Score de pago (basado en historial)</li>
-        </ul>
+  array(
+    'id'    => 'ia-datos',
+    'icon'  => 'sparkles',
+    'title' => 'Inteligencia artificial y decisiones automatizadas',
+    'nav'   => 'Inteligencia artificial',
+    'html'  => <<<'HTML'
+<p>ArriendoFácil ofrece funciones de apoyo con inteligencia artificial, por ejemplo: redactar o completar el borrador de un contrato, mapear campos de plantillas, estimar costos y <strong>calcular una puntuación orientativa de un solicitante</strong> a partir de los datos que el administrador registró.</p>
+<ul>
+<li><strong>Proveedor:</strong> estas funciones usan la API de Anthropic (modelos Claude). Para generar el resultado enviamos únicamente los datos necesarios de la solicitud.</li>
+<li><strong>Solo cuando se solicita:</strong> las funciones se ejecutan cuando el administrador las activa (o se encolan por su acción), no sobre toda tu información de forma continua.</li>
+<li><strong>Son una ayuda, no una decisión.</strong> Los resultados son borradores y orientaciones. <strong>Ninguna decisión sobre una persona (aprobar o rechazar un arriendo, por ejemplo) se toma únicamente por medios automatizados</strong>; la toma el administrador, que debe revisarla.</li>
+<li><strong>Tus derechos:</strong> puedes pedir información sobre la lógica aplicada, solicitar la revisión humana de una decisión que te afecte y oponerte a que se te evalúe de este modo (sección 9).</li>
+</ul>
+<div class="afx-callout afx-callout--warn"><p>Los administradores no deben usar estas funciones para discriminar por motivos prohibidos por la ley (origen, nacionalidad, género, religión, discapacidad, entre otros).</p></div>
+HTML,
+  ),
 
-        <h3>2.3 Datos Técnicos (Automáticos)</h3>
-        <ul>
-          <li>Dirección IP (detectada a través de Cloudflare)</li>
-          <li>Tipo de dispositivo y navegador</li>
-          <li>Sistema operativo y versión</li>
-          <li>Cookies y localStorage</li>
-          <li>Hora de acceso y duración de sesión</li>
-          <li>Ubicación aproximada (geolocalización por IP, no GPS)</li>
-          <li>Páginas visitadas y acciones (clicks, formularios)</li>
-        </ul>
-      </section>
+  array(
+    'id'    => 'terceros',
+    'icon'  => 'globe',
+    'title' => 'Con quién compartimos datos',
+    'nav'   => 'Terceros',
+    'html'  => <<<'HTML'
+<p>Compartimos datos solo cuando es necesario para prestar el Servicio o cuando la ley lo exige:</p>
+<div class="afx-tablewrap"><table>
+<thead><tr><th>Destinatario</th><th>Para qué</th></tr></thead>
+<tbody>
+<tr><td>Cloudflare</td><td>Seguridad, red de entrega, almacenamiento privado de archivos (contratos y documentos) y analítica web sin cookies.</td></tr>
+<tr><td>Anthropic</td><td>Procesar las solicitudes de inteligencia artificial (sección 4).</td></tr>
+<tr><td>Servicio de Rentas Internas (SRI)</td><td>Solo si usas la facturación electrónica: envío y autorización de comprobantes.</td></tr>
+<tr><td>Airbnb, Booking.com y similares</td><td>Solo si activas la sincronización de calendarios (iCal); las credenciales se guardan cifradas.</td></tr>
+<tr><td>Proveedor de correo electrónico</td><td>Envío de correos transaccionales y notificaciones.</td></tr>
+<tr><td>YouTube (modo privacidad mejorada)</td><td>Solo si pulsas reproducir un video; antes no se carga contenido de YouTube.</td></tr>
+<tr><td>WhatsApp</td><td>Solo cuando tú o el administrador abren un enlace de contacto; la conversación ocurre en WhatsApp, bajo sus propias condiciones.</td></tr>
+<tr><td>Autoridades</td><td>Cuando exista una orden o requerimiento legal válido.</td></tr>
+</tbody></table></div>
+<p>Los administradores y su equipo acceden a los datos de su propia cartera y a nada más; el acceso está separado por cuenta y por rol. Nuestro personal accede solo cuando es necesario (soporte, verificación, seguridad) y bajo deber de confidencialidad.</p>
+HTML,
+  ),
 
-      <section id="base-legal">
-        <h2>3. Base Legal para el Procesamiento</h2>
-        <table style="width:100%; border-collapse: collapse; margin: var(--space-4) 0;">
-          <tr style="background: var(--color-bg-secondary);">
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Base Legal</th>
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Descripción</th>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><strong>Contrato</strong></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Necesario para ejecutar acuerdos de alquiler y servicios</td>
-          </tr>
-          <tr style="background: var(--color-bg-secondary);">
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><strong>Consentimiento</strong></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Para marketing, estadísticas, cookies opcionales</td>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><strong>Obligación Legal</strong></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Cumplimiento fiscal SRI, antilavado AML, prevención de fraude</td>
-          </tr>
-          <tr style="background: var(--color-bg-secondary);">
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><strong>Interés Legítimo</strong></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Seguridad de plataforma, detección de abuso, mejora de servicio</td>
-          </tr>
-        </table>
-      </section>
+  array(
+    'id'    => 'transferencias',
+    'icon'  => 'globe',
+    'title' => 'Transferencias internacionales',
+    'nav'   => 'Transferencias',
+    'html'  => <<<'HTML'
+<p>Algunos de nuestros proveedores (por ejemplo Cloudflare y Anthropic) pueden tratar datos en servidores fuera del Ecuador, incluido Estados Unidos. Cuando esto ocurre, lo hacemos con proveedores que ofrecen garantías adecuadas —como cláusulas contractuales y medidas de seguridad equivalentes— conforme a la LOPDP. Puedes pedirnos información sobre estas garantías escribiéndonos.</p>
+HTML,
+  ),
 
-      <section id="uso-datos">
-        <h2>4. Uso de Datos</h2>
-        <h3>Usamos tus datos para:</h3>
-        <ul>
-          <li>Facilitar contratos, el seguimiento de pagos y el cobro de suscripciones Premium</li>
-          <li>Generar facturas electrónicas ante SRI</li>
-          <li>Comunicaciones relacionadas con tu cuenta</li>
-          <li>Cumplimiento legal y regulatorio (impuestos, antilavado)</li>
-          <li>Prevención de fraude y abuso de plataforma</li>
-          <li>Análisis agregados nunca identificables (estadísticas)</li>
-          <li>Mejora de funcionalidad y experiencia del usuario</li>
-          <li>Soporte técnico y atención al cliente</li>
-        </ul>
+  array(
+    'id'    => 'conservacion',
+    'icon'  => 'calendar',
+    'title' => 'Cuánto tiempo conservamos los datos',
+    'nav'   => 'Conservación',
+    'html'  => <<<'HTML'
+<div class="afx-tablewrap"><table>
+<thead><tr><th>Dato</th><th>Plazo</th></tr></thead>
+<tbody>
+<tr><td>Cuenta activa y datos de operación</td><td>Mientras la cuenta esté activa.</td></tr>
+<tr><td>Cuenta desactivada</td><td>Se mantiene desactivada por un periodo razonable para permitir su recuperación; luego se elimina definitivamente, salvo lo que la ley nos obligue a conservar.</td></tr>
+<tr><td>Comprobantes electrónicos del SRI y sus registros</td><td>El plazo que exija la normativa tributaria (hasta 7 años).</td></tr>
+<tr><td>Mensajes de contacto y soporte</td><td>El tiempo necesario para atenderlos y para acreditar la atención dada.</td></tr>
+<tr><td>Registros de seguridad</td><td>El tiempo estrictamente necesario para proteger el Servicio.</td></tr>
+<tr><td>Enlaces y tokens de acceso</td><td>Caducan automáticamente (los de un solo uso se invalidan tras usarse).</td></tr>
+</tbody></table></div>
+<p>Al vencer los plazos, eliminamos o anonimizamos los datos de forma segura.</p>
+HTML,
+  ),
 
-        <h3>NO usamos datos para:</h3>
-        <ul>
-          <li>Venta a terceros sin consentimiento explícito</li>
-          <li>Vigilancia discriminatoria o perfilado ilegal</li>
-          <li>Decisiones automatizadas que afecten derechos legales</li>
-          <li>Allá del propósito original sin consentimiento nuevo</li>
-          <li>Marketing a inquilinos sin consentimiento previo</li>
-        </ul>
-      </section>
+  array(
+    'id'    => 'seguridad',
+    'icon'  => 'lock',
+    'title' => 'Cómo protegemos tus datos',
+    'nav'   => 'Seguridad',
+    'html'  => <<<'HTML'
+<ul>
+<li>Conexiones cifradas (HTTPS) en todo el sitio.</li>
+<li>Almacenamiento <strong>privado</strong> de contratos y documentos de identidad, sin enlaces públicos.</li>
+<li>Credenciales sensibles (certificados de firma, claves de integraciones) <strong>cifradas</strong> en reposo con algoritmos modernos.</li>
+<li>Acceso por roles: cada administrador ve solo su cartera.</li>
+<li>Protección contra abuso: límites de intentos, verificación anti-bots, tokens firmados y con caducidad.</li>
+<li>Registros de auditoría de operaciones sensibles, como la emisión de comprobantes.</li>
+</ul>
+<p>Ningún sistema es 100 % invulnerable. Si ocurre una vulneración que afecte tus datos, lo notificaremos a la autoridad y a los titulares afectados en los plazos y en la forma que establece la ley. Tú también debes cuidar tu contraseña y no compartirla.</p>
+HTML,
+  ),
 
-      <section id="retencion">
-        <h2>5. Almacenamiento y Retención de Datos</h2>
-        <table style="width:100%; border-collapse: collapse; margin: var(--space-4) 0;">
-          <tr style="background: var(--color-bg-secondary);">
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Tipo de Dato</th>
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Duración</th>
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Motivo</th>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Datos de contrato activo</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Vigencia + 7 años</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Cumplimiento fiscal SRI</td>
-          </tr>
-          <tr style="background: var(--color-bg-secondary);">
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Datos de cobro de suscripción (sin datos completos de tarjeta)</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">7 años después cierre</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Auditoría fiscal y cumplimiento</td>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Cookies funcionales</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Hasta 2 años</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Preferencias del usuario</td>
-          </tr>
-          <tr style="background: var(--color-bg-secondary);">
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Cookies analíticas</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">90 días</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Métricas de navegación</td>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Logs de seguridad</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">90 días</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Detección de amenazas</td>
-          </tr>
-          <tr style="background: var(--color-bg-secondary);">
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Datos borrados (copia seguridad)</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">30 días</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Recuperación ante errores</td>
-          </tr>
-        </table>
-        <p><strong>Destrucción:</strong> Los datos se destruyen de forma irreversible (eliminación criptográfica, no solo eliminación lógica).</p>
-      </section>
+  array(
+    'id'    => 'derechos',
+    'icon'  => 'key',
+    'title' => 'Tus derechos',
+    'nav'   => 'Tus derechos',
+    'html'  => <<<'HTML'
+<p>La LOPDP te reconoce los siguientes derechos sobre tus datos personales:</p>
+<ul>
+<li><strong>Acceso:</strong> saber qué datos tuyos tratamos y cómo.</li>
+<li><strong>Rectificación y actualización:</strong> corregir datos inexactos o incompletos.</li>
+<li><strong>Eliminación:</strong> pedir que borremos tus datos cuando proceda.</li>
+<li><strong>Oposición:</strong> oponerte al tratamiento basado en interés legítimo o con fines de mercadeo.</li>
+<li><strong>Portabilidad:</strong> recibir tus datos en un formato estructurado y de uso común.</li>
+<li><strong>Suspensión:</strong> pedir que limitemos el tratamiento en los casos previstos.</li>
+<li><strong>No ser objeto de decisiones basadas únicamente en tratamiento automatizado</strong> que te afecten significativamente, y pedir revisión humana.</li>
+<li><strong>Retirar tu consentimiento</strong> en cualquier momento, sin efectos retroactivos.</li>
+</ul>
+<h3>Cómo ejercerlos</h3>
+<p>Escríbenos a <a href="mailto:arriendofacilnet@gmail.com">arriendofacilnet@gmail.com</a> indicando tu nombre, el derecho que deseas ejercer y una forma de verificar tu identidad. <strong>Respondemos en un máximo de 15 días</strong> desde que recibimos la solicitud completa. Si tus datos fueron cargados por un administrador, podemos remitirle tu solicitud, ya que él decide sobre ellos.</p>
+<p>Si consideras que tus derechos no fueron atendidos, puedes presentar un reclamo ante la <strong>Superintendencia de Protección de Datos Personales (SPDP)</strong> del Ecuador.</p>
+<div class="afx-callout afx-callout--key"><p>Si eres administrador, puedes desactivar tu cuenta desde tu panel (escribiendo «ELIMINAR» para confirmar). Ten en cuenta que debemos conservar ciertos registros que la ley exige, como los comprobantes electrónicos del SRI.</p></div>
+HTML,
+  ),
 
-      <section id="derechos-gdpr">
-        <h2>6. Tus Derechos de Privacidad (GDPR/CCPA)</h2>
-        
-        <h3>6.1 Derecho de Acceso</h3>
-        <p>Puedes solicitar una copia completa de tus datos personales en formato legible (CSV, PDF). Responderemos en máximo 30 días.</p>
+  array(
+    'id'    => 'correos',
+    'icon'  => 'info',
+    'title' => 'Correos electrónicos y comunicaciones',
+    'nav'   => 'Correos',
+    'html'  => <<<'HTML'
+<p>Enviamos dos tipos de correos:</p>
+<ul>
+<li><strong>Transaccionales</strong> (verificación de correo, restablecer contraseña, avisos de seguridad y de cuenta, correos que tu administrador configura): son necesarios para el Servicio y no se pueden desactivar mientras uses el Servicio.</li>
+<li><strong>Notificaciones y novedades:</strong> puedes darte de baja con un solo clic desde el enlace al pie del correo, sin iniciar sesión.</li>
+</ul>
+HTML,
+  ),
 
-        <h3>6.2 Derecho a la Rectificación</h3>
-        <p>Puedes solicitar que corrijamos datos inexactos o incompletos.</p>
+  array(
+    'id'    => 'menores',
+    'icon'  => 'shield',
+    'title' => 'Menores de edad',
+    'nav'   => 'Menores',
+    'html'  => <<<'HTML'
+<p>El Servicio no está dirigido a menores de 18 años y no recolectamos conscientemente sus datos. Si un administrador debe registrar datos de un menor (por ejemplo, un ocupante), debe contar con la autorización de sus representantes legales. Si descubrimos datos de un menor cargados sin autorización, los eliminaremos.</p>
+HTML,
+  ),
 
-        <h3>6.3 Derecho al Olvido ("Right to be Forgotten")</h3>
-        <p>Puedes solicitar la eliminación de tus datos, excepto donde hay obligación legal (7 años de retención fiscal).</p>
+  array(
+    'id'    => 'cookies',
+    'icon'  => 'cookie',
+    'title' => 'Cookies y tecnologías similares',
+    'nav'   => 'Cookies',
+    'html'  => <<<'HTML'
+<p>Usamos solo las cookies necesarias para que el sitio funcione y para recordar tus decisiones. <strong>Hoy no usamos cookies publicitarias ni píxeles de seguimiento de terceros.</strong> Puedes aceptar, rechazar o personalizar tus preferencias en cualquier momento. Todos los detalles están en la <a href="/cookie-policy-eu/">Política de cookies</a>.</p>
+HTML,
+  ),
 
-        <h3>6.4 Derecho a la Portabilidad</h3>
-        <p>Puedes solicitar tus datos en formato estructurado para transferencia a otro servicio.</p>
+  array(
+    'id'    => 'cambios',
+    'icon'  => 'refresh',
+    'title' => 'Cambios a esta Política',
+    'nav'   => 'Cambios',
+    'html'  => <<<'HTML'
+<p>Podemos actualizar esta Política para reflejar cambios en el Servicio o en la ley. Publicaremos la versión vigente con su fecha y, si el cambio es importante, te lo avisaremos por correo o dentro del sistema con anticipación razonable. Si no estás de acuerdo con un cambio, puedes dejar de usar el Servicio y solicitar la eliminación de tu cuenta.</p>
+HTML,
+  ),
 
-        <h3>6.5 Derecho a Oponerme al Procesamiento</h3>
-        <p>Puedes oponer al procesamiento para fines de marketing o análisis.</p>
+  array(
+    'id'    => 'contacto',
+    'icon'  => 'info',
+    'title' => 'Contacto',
+    'nav'   => 'Contacto',
+    'html'  => <<<'HTML'
+<p>Para cualquier consulta sobre privacidad o para ejercer tus derechos, escríbenos a <a href="mailto:arriendofacilnet@gmail.com">arriendofacilnet@gmail.com</a>. También puedes usar el <a href="/contacto/">formulario de contacto</a>.</p>
+<p><strong>Autoridad de control:</strong> Superintendencia de Protección de Datos Personales (SPDP), Ecuador.</p>
+HTML,
+  ),
 
-        <h3>6.6 Cómo Ejercer Derechos</h3>
-        <p>Envía solicitud a: <a href="mailto:privacy@arriendofacil.net">privacy@arriendofacil.net</a> con copia de tu cédula.</p>
-      </section>
+);
 
-      <section id="cookies">
-        <h2>7. Cookies y Rastreo</h2>
-        
-        <h3>Tipos de Cookies:</h3>
-        <ul>
-          <li><strong>Funcionales:</strong> Autenticación, sesión, preferencias (NECESARIAS)</li>
-          <li><strong>Analíticas:</strong> Google Analytics para medir uso (OPCIONAL)</li>
-          <li><strong>Marketing:</strong> Retargeting y publicidad personalizada (OPCIONAL)</li>
-        </ul>
+get_template_part(
+  'template-parts/afx-legal',
+  null,
+  array(
+    'slug'     => 'politica-de-privacidad',
+    'tag'      => 'Documentos legales',
+    'title'    => 'Política de',
+    'accent'   => 'privacidad',
+    'lead'     => 'Qué datos tratamos, para qué, con quién los compartimos y cómo puedes ejercer tus derechos. En lenguaje claro y conforme a la LOPDP del Ecuador.',
+    'meta'     => array( 'Versión 3.0', 'Vigente desde el 12 de noviembre de 2026', 'LOPDP · Ecuador' ),
+    'summary'  => array(
+      '<strong>No vendemos tus datos</strong> ni los usamos para publicidad de terceros.',
+      'Con los datos de tus inquilinos actuamos <strong>por tu cuenta</strong>: tú decides, nosotros los protegemos.',
+      'La <strong>IA es una ayuda</strong>: ninguna decisión sobre una persona se toma solo de forma automática.',
+      'Contratos y documentos se guardan en <strong>almacenamiento privado</strong> y las credenciales sensibles, cifradas.',
+      'Puedes <strong>ejercer tus derechos</strong> (acceso, rectificación, eliminación y más) y te respondemos en máximo 15 días.',
+      'Puedes reclamar ante la <strong>Superintendencia de Protección de Datos Personales</strong>.',
+    ),
+    'sections' => $afx_sections,
+  )
+);
 
-        <h3>Opt-out:</h3>
-        <ul>
-          <li>Rechaza cookies en el banner de consentimiento</li>
-          <li>Configura tu navegador para bloquear cookies terceras</li>
-          <li>Usa Do Not Track en tu navegador</li>
-        </ul>
-      </section>
-
-      <section id="seguridad">
-        <h2>8. Seguridad de Datos</h2>
-        <ul>
-          <li>Encriptación HTTPS en todas las conexiones</li>
-          <li>Contraseñas encriptadas con bcrypt/Argon2</li>
-          <li>Autenticación de dos factores (2FA) disponible</li>
-          <li>Firewalls y detección de intrusos (WAF Cloudflare)</li>
-          <li>Backups diarios encriptados</li>
-          <li>Acceso limitado por roles (principio de menor privilegio)</li>
-          <li>Auditorías de seguridad anuales</li>
-          <li>Política de notificación de brechas en 72 horas</li>
-        </ul>
-      </section>
-
-      <section id="transferencias">
-        <h2>9. Transferencias Internacionales</h2>
-        <p>Tus datos se almacenan en servidores en Ecuador y a través de Cloudflare (USA/UE). Estas transferencias cumplen con:</p>
-        <ul>
-          <li>Decisiones de Adecuación (Adequacy Decisions)</li>
-          <li>Cláusulas Contractuales Estándar (SCC)</li>
-          <li>Cumplimiento GDPR Art. 45-49</li>
-        </ul>
-      </section>
-
-      <section id="terceros">
-        <h2>10. Compartición con Terceros</h2>
-        <p>Compartimos datos solo con:</p>
-        <ul>
-          <li>SRI (autoridades fiscales) - facturación legal</li>
-          <li>Proveedores de pagos - procesamiento seguro de los cobros con tarjeta del plan Premium</li>
-          <li>Cloudflare - almacenamiento y CDN</li>
-          <li>Google Analytics - estadísticas agregadas (anónimas)</li>
-          <li>Autoridades legales - cuando se requiera por ley</li>
-        </ul>
-        <p><strong>NO compartimos sin consentimiento:</strong> Datos con fines de marketing o venta a terceros.</p>
-      </section>
-
-      <section id="menores">
-        <h2>11. Protección de Menores</h2>
-        <p>Este servicio no está dirigido a personas menores de 18 años. No recopilamos datos de menores deliberadamente. Si descubrimos que hemos recopilado datos de un menor, los eliminaremos inmediatamente.</p>
-      </section>
-
-      <section id="cambios">
-        <h2>12. Cambios a esta Política</h2>
-        <p>Podemos actualizar esta política en cualquier momento. Cambios materiales serán notificados por email con 15 días de anticipación. El continuar usando el servicio constituye aceptación.</p>
-      </section>
-
-      <section id="contacto">
-        <h2>13. Contacto - Oficial de Privacidad</h2>
-        <ul>
-          <li><strong>Email:</strong> <a href="mailto:privacy@arriendofacil.net">privacy@arriendofacil.net</a></li>
-          <li><strong>Dirección:</strong> Quito, Pichincha, Ecuador</li>
-          <li><strong>Teléfono:</strong> A través de plataforma</li>
-        </ul>
-        <p><strong>Autoridad de Protección de Datos (Ecuador):</strong> Superintendencia de Telecomunicaciones (SUPERTEL)</p>
-      </section>
-
-      <p class="af-legal-footer">
-        <strong>© 2026 Arriendo Fácil Soluciones Inmobiliarias.</strong> Todos los derechos reservados. 
-        Última actualización: 12 de octubre de 2026 | Versión 2.0
-      </p>
-    </div>
-  </article>
-</main>
-
-<style>
-.af-legal-page {
-  background: var(--color-bg-primary);
-}
-
-.af-legal-hero {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: white;
-  padding: var(--space-5) 0 var(--space-4) 0;
-  text-align: left;
-  margin-bottom: var(--space-3);
-  border-bottom: 4px solid rgba(255,255,255,0.2);
-}
-
-.af-legal-hero h1 {
-  font-size: 2rem;
-  margin-bottom: 0.25rem;
-  font-weight: 800;
-}
-
-.af-legal-hero p {
-  opacity: 0.85;
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.af-legal-content {
-  max-width: 900px;
-  padding: 0;
-}
-
-.af-legal-body {
-  line-height: 1.6;
-  color: var(--color-text-primary);
-}
-
-.af-legal-body section {
-  margin-bottom: var(--space-5);
-  padding: var(--space-4) var(--space-5);
-  background: white;
-  border-left: 4px solid var(--color-primary);
-  border-radius: var(--radius-md);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-}
-
-.af-legal-body section:hover {
-  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
-  transition: box-shadow 0.2s;
-}
-
-.af-legal-body h2 {
-  font-size: 1.25rem;
-  font-weight: 800;
-  margin: 0 0 var(--space-2) 0;
-  color: var(--color-primary);
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.af-legal-body h2::before {
-  content: '';
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: white;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 24px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.af-legal-body p {
-  margin: var(--space-2) 0;
-  font-size: 0.92rem;
-  line-height: 1.6;
-}
-
-.af-legal-body h3 {
-  font-size: 0.95rem;
-  font-weight: 700;
-  margin: var(--space-3) 0 var(--space-1) 0;
-  color: var(--color-text-primary);
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: var(--space-1);
-}
-
-.af-legal-body ul,
-.af-legal-body ol {
-  margin: var(--space-2) 0 var(--space-2) var(--space-4);
-  padding: 0;
-}
-
-.af-legal-body li {
-  margin-bottom: var(--space-1);
-  line-height: 1.6;
-  font-size: 0.92rem;
-}
-
-.af-legal-body strong {
-  color: var(--color-primary);
-  font-weight: 700;
-}
-
-.af-legal-body table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: var(--space-3) 0;
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  font-size: 0.9rem;
-}
-
-.af-legal-body table thead {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: white;
-}
-
-.af-legal-body table th {
-  padding: var(--space-2);
-  text-align: left;
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-
-.af-legal-body table td {
-  padding: var(--space-2);
-  border-bottom: 1px solid var(--color-border);
-  font-size: 0.88rem;
-}
-
-.af-legal-body table tr:last-child td {
-  border-bottom: none;
-}
-
-.af-legal-body a {
-  color: var(--color-primary);
-  text-decoration: none;
-  font-weight: 600;
-  border-bottom: 1px dotted var(--color-primary);
-}
-
-.af-legal-body a:hover {
-  border-bottom-style: solid;
-  background: rgba(var(--color-primary-rgb), 0.05);
-  padding: 0 2px;
-}
-
-.af-legal-footer {
-  text-align: center;
-  margin-top: var(--space-8);
-  padding: var(--space-4);
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
-  color: var(--color-text-secondary);
-  font-size: 0.82rem;
-  border: 1px solid var(--color-border);
-  line-height: 1.5;
-}
-
-@media (max-width: 768px) {
-  .af-legal-hero h1 {
-    font-size: 1.5rem;
-  }
-  
-  .af-legal-body section {
-    padding: var(--space-3) var(--space-3);
-  }
-  
-  .af-legal-body h2 {
-    font-size: 1.1rem;
-  }
-  
-  .af-legal-body h3 {
-    font-size: 0.9rem;
-  }
-  
-  .af-legal-body p {
-    font-size: 0.9rem;
-  }
-  
-  .af-legal-body table {
-    font-size: 0.8rem;
-  }
-  
-  .af-legal-body table th,
-  .af-legal-body table td {
-    padding: var(--space-1);
-  }
-}
-</style>
-
-<?php get_footer();
+get_footer();

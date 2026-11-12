@@ -1,408 +1,150 @@
 <?php
 /**
  * Template Name: Política de Cookies
- * Información sobre cookies y tecnologías de rastreo - GDPR/CCPA compliant
+ * Política de cookies — rediseño ArriendoFácil.
  */
-if ( ! defined('ABSPATH') ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 get_header();
-?>
 
-<main id="main-content" class="af-legal-page">
-  <section class="af-legal-hero">
-    <div class="container">
-      <h1><?php esc_html_e('Política de Cookies', 'twentytwentyfive-child'); ?></h1>
-      <p><?php esc_html_e('Última actualización: 12 de octubre de 2026 | Versión 2.0', 'twentytwentyfive-child'); ?></p>
-    </div>
-  </section>
+$afx_sections = array(
 
-  <article class="af-legal-content container">
-    <div class="af-legal-body">
+  array(
+    'id'    => 'que-son',
+    'icon'  => 'cookie',
+    'title' => 'Qué son las cookies',
+    'nav'   => 'Qué son',
+    'html'  => <<<'HTML'
+<p>Las cookies son pequeños archivos que un sitio web guarda en tu navegador. Sirven para que el sitio funcione, recuerde tus preferencias o mida su uso. Esta política también cubre tecnologías similares, como el almacenamiento local del navegador (<code>localStorage</code> y <code>sessionStorage</code>).</p>
+<p>Esta política complementa nuestra <a href="/politica-de-privacidad/">Política de privacidad</a> y se rige por la LOPDP del Ecuador y, para visitantes de la Unión Europea y el EEE, por el RGPD y la Directiva ePrivacy.</p>
+HTML,
+  ),
 
-      <section id="introduccion">
-        <h2>1. Introducción</h2>
-        <p>Utilizamos cookies y tecnologías similares para almacenar y acceder a información en tu dispositivo. Aceptar estas tecnologías nos permitirá procesar datos como el comportamiento de navegación. No aceptar puede afectar negativamente ciertas funciones del sitio.</p>
-        <p>Esta política explica qué son las cookies, cómo las usamos, y tus derechos de control.</p>
-      </section>
+  array(
+    'id'    => 'consentimiento',
+    'icon'  => 'check',
+    'title' => 'Cómo gestionamos tu consentimiento',
+    'nav'   => 'Consentimiento',
+    'html'  => <<<'HTML'
+<p>La primera vez que entras al sitio te mostramos un aviso con tres opciones de igual importancia:</p>
+<ul>
+<li><strong>Aceptar todas</strong> las categorías.</li>
+<li><strong>Solo las necesarias</strong> (rechazar todo lo opcional).</li>
+<li><strong>Personalizar</strong>, para elegir categoría por categoría.</li>
+</ul>
+<p>Antes de que elijas, <strong>no se instala ninguna cookie</strong> ni se cargan servicios de terceros que no sean estrictamente necesarios. Tu decisión se guarda por hasta 12 meses y puedes cambiarla cuando quieras (sección 6). Rechazar no limita el uso del Servicio.</p>
+HTML,
+  ),
 
-      <section id="que-son">
-        <h2>2. ¿Qué son las Cookies?</h2>
-        <p>Las cookies son pequeños archivos de texto almacenados en tu navegador o dispositivo. Se usan para:</p>
-        <ul>
-          <li>Recordar tu sesión de login</li>
-          <li>Guardar preferencias (idioma, tema oscuro)</li>
-          <li>Medir uso de la plataforma (estadísticas)</li>
-          <li>Personalizar anuncios y contenido</li>
-        </ul>
-        <p><strong>No son virus:</strong> Las cookies no pueden infectar tu dispositivo, pero pueden rastrear tu actividad.</p>
-      </section>
+  array(
+    'id'    => 'tabla',
+    'icon'  => 'database',
+    'title' => 'Cookies que usamos',
+    'nav'   => 'Cookies que usamos',
+    'html'  => <<<'HTML'
+<div class="afx-tablewrap"><table>
+<thead><tr><th>Cookie</th><th>Categoría</th><th>Finalidad</th><th>Duración</th></tr></thead>
+<tbody>
+<tr><td><code>cmplz_banner-status</code></td><td>Necesaria</td><td>Recuerda que ya respondiste al aviso de cookies.</td><td>12 meses</td></tr>
+<tr><td><code>cmplz_policy_id</code></td><td>Necesaria</td><td>Versión de la política a la que respondiste.</td><td>12 meses</td></tr>
+<tr><td><code>cmplz_consented_services</code></td><td>Necesaria</td><td>Servicios para los que diste consentimiento.</td><td>12 meses</td></tr>
+<tr><td><code>cmplz_functional</code>, <code>cmplz_preferences</code>, <code>cmplz_statistics</code>, <code>cmplz_marketing</code></td><td>Necesaria</td><td>Guardan tu elección en cada categoría.</td><td>12 meses</td></tr>
+<tr><td><code>wordpress_logged_in_*</code>, <code>wordpress_sec_*</code></td><td>Necesaria</td><td>Mantienen tu sesión iniciada de forma segura. Solo si inicias sesión.</td><td>Sesión o hasta 14 días con «Recordarme»</td></tr>
+<tr><td><code>wp-settings-*</code>, <code>wp-settings-time-*</code></td><td>Necesaria</td><td>Preferencias de interfaz de tu usuario. Solo si inicias sesión.</td><td>12 meses</td></tr>
+<tr><td><code>wordpress_test_cookie</code></td><td>Necesaria</td><td>Comprueba que tu navegador acepta cookies al iniciar sesión.</td><td>Sesión</td></tr>
+<tr><td><code>__cf_bm</code></td><td>Necesaria (seguridad)</td><td>Cloudflare la puede usar para distinguir tráfico legítimo de bots.</td><td>30 minutos</td></tr>
+</tbody></table></div>
+<p>Dentro del panel de gestión también usamos <code>localStorage</code> y <code>sessionStorage</code> para recordar ajustes de interfaz (por ejemplo, el menú lateral colapsado o filtros del calendario). Estos datos permanecen en tu dispositivo y no se envían a terceros.</p>
+<div class="afx-callout afx-callout--key"><p><strong>Hoy no usamos</strong> cookies de publicidad, píxeles de seguimiento (como Meta Pixel) ni Google Analytics. Si esto cambiara, actualizaremos esta política y volveremos a pedir tu consentimiento antes de activarlos.</p></div>
+HTML,
+  ),
 
-      <section id="tipos-cookies">
-        <h2>3. Tipos de Cookies que Usamos</h2>
+  array(
+    'id'    => 'terceros',
+    'icon'  => 'globe',
+    'title' => 'Servicios de terceros',
+    'nav'   => 'Terceros',
+    'html'  => <<<'HTML'
+<ul>
+<li><strong>YouTube (youtube-nocookie.com):</strong> los videos de demostración se cargan <strong>solo cuando pulsas reproducir</strong>, en modo de privacidad mejorada. Antes de ese clic no se contacta a YouTube. Al reproducir, Google puede tratar datos según su propia política.</li>
+<li><strong>Cloudflare:</strong> proveedor de seguridad y red de entrega del sitio. Su analítica web <strong>no usa cookies</strong> y mide el tráfico de forma agregada (páginas vistas y rendimiento), sin identificarte entre sitios.</li>
+<li><strong>Tipografías:</strong> las fuentes se sirven desde nuestro propio servidor; no se descargan de servidores de terceros.</li>
+<li><strong>WhatsApp:</strong> los botones de contacto son enlaces simples. No se carga ningún código de WhatsApp hasta que haces clic.</li>
+</ul>
+HTML,
+  ),
 
-        <h3>3.1 Cookies Funcionales (NECESARIAS)</h3>
-        <table style="width:100%; border-collapse: collapse; margin: var(--space-4) 0;">
-          <tr style="background: var(--color-bg-secondary);">
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Cookie</th>
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Propósito</th>
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Duración</th>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>wordpress_logged_in</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Autenticación de usuario</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Sesión</td>
-          </tr>
-          <tr style="background: var(--color-bg-secondary);">
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>wordpress_sec</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Seguridad SSL/HTTPS</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Sesión</td>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>wordpress_test_cookie</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Verificar soporte de cookies</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Sesión</td>
-          </tr>
-          <tr style="background: var(--color-bg-secondary);">
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>af_user_prefs</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Preferencias (tema, idioma)</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">1 año</td>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>PHPSESSID</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">ID de sesión del servidor</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Sesión</td>
-          </tr>
-        </table>
-        <p><strong>Estado:</strong> SIEMPRE ACTIVAS (requeridas para usar la plataforma)</p>
+  array(
+    'id'    => 'categorias',
+    'icon'  => 'eye',
+    'title' => 'Categorías de cookies',
+    'nav'   => 'Categorías',
+    'html'  => <<<'HTML'
+<div class="afx-tablewrap"><table>
+<thead><tr><th>Categoría</th><th>¿Se puede desactivar?</th><th>Uso actual</th></tr></thead>
+<tbody>
+<tr><td><strong>Funcionales / necesarias</strong></td><td>No; sin ellas el sitio no funciona.</td><td>Sesión, seguridad y registro de tu elección.</td></tr>
+<tr><td><strong>Preferencias</strong></td><td>Sí</td><td>Sin cookies de este tipo en uso.</td></tr>
+<tr><td><strong>Estadísticas</strong></td><td>Sí</td><td>Sin cookies en uso (la analítica de Cloudflare no usa cookies).</td></tr>
+<tr><td><strong>Marketing</strong></td><td>Sí</td><td>Sin cookies en uso.</td></tr>
+</tbody></table></div>
+HTML,
+  ),
 
-        <h3>3.2 Cookies Analíticas (ESTADÍSTICAS - OPCIONAL)</h3>
-        <table style="width:100%; border-collapse: collapse; margin: var(--space-4) 0;">
-          <tr style="background: var(--color-bg-secondary);">
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Cookie</th>
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Propósito</th>
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Duración</th>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>_ga</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Google Analytics - ID de usuario</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">2 años</td>
-          </tr>
-          <tr style="background: var(--color-bg-secondary);">
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>_gid</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Google Analytics - ID de sesión</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">24 horas</td>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>_gat</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Google Analytics - control de tasa</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">1 minuto</td>
-          </tr>
-        </table>
-        <p><strong>Estado:</strong> OPCIONAL (necesita consentimiento previo)</p>
-        <p><strong>Información recopilada:</strong> Páginas visitadas, tiempo en sitio, dispositivo, navegador (ANÓNIMA)</p>
+  array(
+    'id'    => 'cambiar',
+    'icon'  => 'refresh',
+    'title' => 'Cómo cambiar o retirar tu consentimiento',
+    'nav'   => 'Cambiar mi elección',
+    'html'  => <<<'HTML'
+<ul>
+<li><strong>Desde el sitio:</strong> usa el botón flotante «Utilizamos cookies» (abajo a la derecha) para reabrir el panel y cambiar tu elección en cualquier momento.</li>
+<li><strong>Desde tu navegador:</strong> puedes bloquear o borrar cookies en la configuración de Chrome, Firefox, Safari o Edge. Si bloqueas las necesarias, partes del sitio (como iniciar sesión) pueden dejar de funcionar.</li>
+</ul>
+<p>Retirar tu consentimiento no afecta la validez del tratamiento realizado antes de retirarlo.</p>
+HTML,
+  ),
 
-        <h3>3.3 Cookies de Marketing (PUBLICIDAD - OPCIONAL)</h3>
-        <table style="width:100%; border-collapse: collapse; margin: var(--space-4) 0;">
-          <tr style="background: var(--color-bg-secondary);">
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Cookie</th>
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Propósito</th>
-            <th style="padding: var(--space-3); text-align: left; border: 1px solid var(--color-border);">Proveedor</th>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>fbq</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Facebook Pixel - Retargeting</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Meta / Facebook</td>
-          </tr>
-          <tr style="background: var(--color-bg-secondary);">
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>gclid</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Google Ads - Conversiones</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">Google</td>
-          </tr>
-          <tr>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);"><code>li_sugar</code></td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">LinkedIn - Retargeting</td>
-            <td style="padding: var(--space-3); border: 1px solid var(--color-border);">LinkedIn</td>
-          </tr>
-        </table>
-        <p><strong>Estado:</strong> OPCIONAL (necesita consentimiento previo)</p>
-        <p><strong>Información recopilada:</strong> Intereses, páginas visitadas, clicks, conversiones (PERSONALIZADA)</p>
-      </section>
+  array(
+    'id'    => 'ue',
+    'icon'  => 'scale',
+    'title' => 'Visitantes de la Unión Europea y el EEE',
+    'nav'   => 'UE / EEE',
+    'html'  => <<<'HTML'
+<p>Si accedes desde la Unión Europea o el Espacio Económico Europeo, solo instalamos cookies no esenciales con tu consentimiento previo, libre, informado e inequívoco, en línea con el RGPD y la Directiva ePrivacy. Puedes ejercer los derechos descritos en nuestra <a href="/politica-de-privacidad/#derechos">Política de privacidad</a> y reclamar ante la autoridad de protección de datos de tu país.</p>
+HTML,
+  ),
 
-      <section id="localStorage">
-        <h2>4. Almacenamiento Local (LocalStorage)</h2>
-        <p>Además de cookies, usamos localStorage del navegador para:</p>
-        <ul>
-          <li>Guardar preferencias de usuario</li>
-          <li>Caché de datos para mejor rendimiento</li>
-          <li>Tokens de sesión (más seguros que cookies)</li>
-        </ul>
-        <p><strong>Diferencia:</strong> LocalStorage persiste más tiempo que cookies y no se envía automáticamente al servidor.</p>
-      </section>
+  array(
+    'id'    => 'cambios',
+    'icon'  => 'info',
+    'title' => 'Cambios y contacto',
+    'nav'   => 'Cambios y contacto',
+    'html'  => <<<'HTML'
+<p>Actualizaremos esta política si cambian las cookies que usamos o la normativa, y volveremos a pedir tu consentimiento cuando corresponda. Para dudas, escríbenos a <a href="mailto:arriendofacilnet@gmail.com">arriendofacilnet@gmail.com</a>.</p>
+HTML,
+  ),
 
-      <section id="control-cookies">
-        <h2>5. Cómo Controlar Cookies</h2>
+);
 
-        <h3>5.1 En nuestro sitio</h3>
-        <ul>
-          <li>1. Verás un banner de consentimiento al entrar</li>
-          <li>2. Elige "Aceptar todas" o "Personalizar"</li>
-          <li>3. En "Personalizar", selecciona qué cookies aceptas</li>
-          <li>4. Tu decisión se guarda en una cookie de consentimiento</li>
-          <li>5. Puedes cambiar preferencias en cualquier momento (pie de página)</li>
-        </ul>
+get_template_part(
+  'template-parts/afx-legal',
+  null,
+  array(
+    'slug'     => 'cookie-policy-eu',
+    'tag'      => 'Documentos legales',
+    'title'    => 'Política de',
+    'accent'   => 'cookies',
+    'lead'     => 'Qué cookies usamos, para qué sirven y cómo puedes aceptarlas, rechazarlas o cambiarlas cuando quieras.',
+    'meta'     => array( 'Versión 3.0', 'Vigente desde el 12 de noviembre de 2026', 'LOPDP · RGPD' ),
+    'summary'  => array(
+      'Antes de que elijas, <strong>no instalamos cookies opcionales</strong>.',
+      'Puedes <strong>aceptar, rechazar o personalizar</strong>, con la misma facilidad.',
+      '<strong>No usamos</strong> cookies de publicidad ni píxeles de seguimiento.',
+      'Los videos de YouTube se cargan <strong>solo si pulsas reproducir</strong>.',
+      'Puedes <strong>cambiar tu elección</strong> en cualquier momento desde el botón flotante.',
+    ),
+    'sections' => $afx_sections,
+  )
+);
 
-        <h3>5.2 En tu navegador</h3>
-        <ul>
-          <li><strong>Chrome:</strong> Configuración → Privacidad → Borrar cookies</li>
-          <li><strong>Firefox:</strong> Preferencias → Privacidad → Gestionar datos</li>
-          <li><strong>Safari:</strong> Preferencias → Privacidad → Administrar datos</li>
-          <li><strong>Edge:</strong> Configuración → Privacidad → Borrar datos de exploración</li>
-        </ul>
-
-        <h3>5.3 Do Not Track (DNT)</h3>
-        <p>Si activas "Do Not Track" en tu navegador, respetaremos tu preferencia. Sin embargo, algunas cookies funcionales seguirán siendo necesarias.</p>
-
-        <h3>5.4 Herramientas de privacidad</h3>
-        <ul>
-          <li>Privacy Badger (EFF) - bloqueador de rastreo</li>
-          <li>uBlock Origin - bloqueador de anuncios</li>
-          <li>Ghostery - visualiza rastreadores</li>
-        </ul>
-      </section>
-
-      <section id="terceros">
-        <h2>6. Cookies de Terceros</h2>
-        <p>Permitimos que socios agreguen cookies para:</p>
-        <ul>
-          <li>Google Analytics - análisis de uso</li>
-          <li>Facebook Pixel - seguimiento de conversiones</li>
-          <li>LinkedIn Insight - análisis de audiencia</li>
-          <li>Cloudflare - seguridad y rendimiento</li>
-        </ul>
-        <p><strong>Puedes optar por no participar:</strong> Usa <a href="https://optout.aboutads.info/">Digital Advertising Alliance</a> o configuración del navegador.</p>
-      </section>
-
-      <section id="cambios">
-        <h2>7. Cambios a esta Política</h2>
-        <p>Podemos actualizar esta política en cualquier momento. Los cambios significativos serán comunicados por email o banner prominente en el sitio.</p>
-      </section>
-
-      <section id="contacto">
-        <h2>8. Contacto - Privacidad</h2>
-        <ul>
-          <li><strong>Email:</strong> <a href="mailto:privacy@arriendofacil.net">privacy@arriendofacil.net</a></li>
-          <li><strong>Ubicación:</strong> Quito, Pichincha, Ecuador</li>
-          <li><strong>Documentos:</strong> <a href="<?php echo esc_url(home_url('/politica-de-privacidad/')); ?>">Política de Privacidad completa</a></li>
-        </ul>
-      </section>
-
-      <p class="af-legal-footer">
-        <strong>© 2026 Arriendo Fácil Soluciones Inmobiliarias.</strong> Todos los derechos reservados. 
-        Última actualización: 12 de octubre de 2026 | Versión 2.0
-      </p>
-    </div>
-  </article>
-</main>
-
-<style>
-.af-legal-page {
-  background: var(--color-bg-primary);
-}
-
-.af-legal-hero {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: white;
-  padding: var(--space-5) 0 var(--space-4) 0;
-  text-align: left;
-  margin-bottom: var(--space-3);
-  border-bottom: 4px solid rgba(255,255,255,0.2);
-}
-
-.af-legal-hero h1 {
-  font-size: 2rem;
-  margin-bottom: 0.25rem;
-  font-weight: 800;
-}
-
-.af-legal-hero p {
-  opacity: 0.85;
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.af-legal-content {
-  max-width: 900px;
-  padding: 0;
-}
-
-.af-legal-body {
-  line-height: 1.6;
-  color: var(--color-text-primary);
-}
-
-.af-legal-body section {
-  margin-bottom: var(--space-5);
-  padding: var(--space-4) var(--space-5);
-  background: white;
-  border-left: 4px solid var(--color-primary);
-  border-radius: var(--radius-md);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-}
-
-.af-legal-body section:hover {
-  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
-  transition: box-shadow 0.2s;
-}
-
-.af-legal-body h2 {
-  font-size: 1.25rem;
-  font-weight: 800;
-  margin: 0 0 var(--space-2) 0;
-  color: var(--color-primary);
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.af-legal-body h2::before {
-  content: '';
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: white;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 24px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.af-legal-body p {
-  margin: var(--space-2) 0;
-  font-size: 0.92rem;
-  line-height: 1.6;
-}
-
-.af-legal-body h3 {
-  font-size: 0.95rem;
-  font-weight: 700;
-  margin: var(--space-3) 0 var(--space-1) 0;
-  color: var(--color-text-primary);
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: var(--space-1);
-}
-
-.af-legal-body ul,
-.af-legal-body ol {
-  margin: var(--space-2) 0 var(--space-2) var(--space-4);
-  padding: 0;
-}
-
-.af-legal-body li {
-  margin-bottom: var(--space-1);
-  line-height: 1.6;
-  font-size: 0.92rem;
-}
-
-.af-legal-body strong {
-  color: var(--color-primary);
-  font-weight: 700;
-}
-
-.af-legal-body table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: var(--space-3) 0;
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  font-size: 0.9rem;
-}
-
-.af-legal-body table thead {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: white;
-}
-
-.af-legal-body table th {
-  padding: var(--space-2);
-  text-align: left;
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-
-.af-legal-body table td {
-  padding: var(--space-2);
-  border-bottom: 1px solid var(--color-border);
-  font-size: 0.88rem;
-}
-
-.af-legal-body table tr:last-child td {
-  border-bottom: none;
-}
-
-.af-legal-body code {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: white;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.82rem;
-  font-weight: 600;
-}
-
-.af-legal-body a {
-  color: var(--color-primary);
-  text-decoration: none;
-  font-weight: 600;
-  border-bottom: 1px dotted var(--color-primary);
-}
-
-.af-legal-body a:hover {
-  border-bottom-style: solid;
-  background: rgba(var(--color-primary-rgb), 0.05);
-  padding: 0 2px;
-}
-
-.af-legal-footer {
-  text-align: center;
-  margin-top: var(--space-8);
-  padding: var(--space-4);
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
-  color: var(--color-text-secondary);
-  font-size: 0.82rem;
-  border: 1px solid var(--color-border);
-  line-height: 1.5;
-}
-
-@media (max-width: 768px) {
-  .af-legal-hero h1 {
-    font-size: 1.5rem;
-  }
-  
-  .af-legal-body section {
-    padding: var(--space-4);
-  }
-  
-  .af-legal-body h2 {
-    font-size: 1.15rem;
-  }
-  
-  .af-legal-body h3 {
-    font-size: 0.95rem;
-  }
-  
-  .af-legal-body table {
-    font-size: 0.85rem;
-  }
-  
-  .af-legal-body table th,
-  .af-legal-body table td {
-    padding: var(--space-2);
-  }
-}
-</style>
-
-<?php get_footer();
+get_footer();

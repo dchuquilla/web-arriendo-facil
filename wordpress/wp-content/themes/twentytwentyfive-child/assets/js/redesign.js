@@ -241,7 +241,14 @@
       faqLinks.forEach(function (a) {
         var on = a.getAttribute('href') === '#' + id;
         a.classList.toggle('is-active', on);
-        if (on) { a.setAttribute('aria-current', 'true'); } else { a.removeAttribute('aria-current'); }
+        if (on) {
+          a.setAttribute('aria-current', 'true');
+          var ul = a.parentNode.parentNode;
+          [ul, ul.parentNode].forEach(function (host) {
+            if (host.scrollHeight > host.clientHeight + 2) { host.scrollTop = a.offsetTop - (host.clientHeight - a.offsetHeight) / 2; }
+            if (host.scrollWidth > host.clientWidth + 2) { host.scrollLeft = a.offsetLeft - (host.clientWidth - a.offsetWidth) / 2; }
+          });
+        } else { a.removeAttribute('aria-current'); }
       });
     };
     var secObs = new win.IntersectionObserver(function (entries) {
