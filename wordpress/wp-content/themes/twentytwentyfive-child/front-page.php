@@ -227,7 +227,58 @@ $afx_steps = array(
       </div>
     </section>
 
-    <!-- 2 · FAQ -->
+    <!-- 2 · Planes -->
+    <section class="afx-stage" id="planes" data-afx-stage data-title="<?php esc_attr_e( 'Planes y precios', 'twentytwentyfive-child' ); ?>">
+      <div class="afx-stage__media" aria-hidden="true">
+        <img class="afx-stage__bg" src="<?php echo esc_url( $afx_img . 'stage-sala.jpg' ); ?>" alt="" width="1408" height="768" loading="lazy" decoding="async" style="object-position:55% 50%">
+        <span class="afx-stage__tint"></span>
+      </div>
+      <div class="afx-wrap afx-stage__grid afx-stage__grid--plans">
+        <div class="afx-stage__intro" data-afx-stagec>
+          <p class="afx-tag afx-tag--dark"><?php echo afx_icon( 'bolt', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Planes y precios', 'twentytwentyfive-child' ); ?></p>
+          <h2 class="afx-title"><?php esc_html_e( 'Elige el', 'twentytwentyfive-child' ); ?> <span><?php esc_html_e( 'plan ideal', 'twentytwentyfive-child' ); ?></span> <?php esc_html_e( 'para ti', 'twentytwentyfive-child' ); ?></h2>
+          <p class="afx-stage__lead"><?php esc_html_e( 'Escala tu negocio con planes flexibles y sin costos ocultos.', 'twentytwentyfive-child' ); ?></p>
+        </div>
+
+        <div class="afx-stage__card afx-stage__card--plans" data-afx-stagec>
+          <article class="afx-plan">
+            <h3><?php esc_html_e( 'Plan Free', 'twentytwentyfive-child' ); ?></h3>
+            <p class="afx-plan__price"><b>$0</b> <span><?php esc_html_e( '/mes', 'twentytwentyfive-child' ); ?></span></p>
+            <ul>
+              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Hasta 4 propiedades', 'twentytwentyfive-child' ); ?></li>
+              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Funciones limitadas', 'twentytwentyfive-child' ); ?></li>
+            </ul>
+            <a class="afx-btn afx-btn--soft afx-btn--block" href="<?php echo esc_url( af_signup_url() ); ?>"><?php esc_html_e( 'Comenzar ahora', 'twentytwentyfive-child' ); ?></a>
+          </article>
+
+          <article class="afx-plan">
+            <h3><?php esc_html_e( 'Plan Básico', 'twentytwentyfive-child' ); ?></h3>
+            <p class="afx-plan__price"><b>$10</b> <span><?php esc_html_e( '/mes', 'twentytwentyfive-child' ); ?></span></p>
+            <ul>
+              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Hasta 15 propiedades', 'twentytwentyfive-child' ); ?></li>
+              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Todas las funciones principales', 'twentytwentyfive-child' ); ?></li>
+              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Soporte por email', 'twentytwentyfive-child' ); ?></li>
+            </ul>
+            <a class="afx-btn afx-btn--soft afx-btn--block" href="<?php echo esc_url( af_signup_url() ); ?>"><?php esc_html_e( 'Comenzar ahora', 'twentytwentyfive-child' ); ?></a>
+          </article>
+
+          <article class="afx-plan afx-plan--pro">
+            <span class="afx-plan__crown"><?php echo afx_icon( 'crown', 26 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><span class="afx-sr"><?php esc_html_e( 'Recomendado', 'twentytwentyfive-child' ); ?></span></span>
+            <h3><?php esc_html_e( 'Plan Profesional', 'twentytwentyfive-child' ); ?></h3>
+            <p class="afx-plan__price"><b>$20</b> <span><?php esc_html_e( '/mes', 'twentytwentyfive-child' ); ?></span></p>
+            <ul>
+              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Propiedades ilimitadas', 'twentytwentyfive-child' ); ?></li>
+              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Soporte con chatbot', 'twentytwentyfive-child' ); ?></li>
+              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Facturación electrónica', 'twentytwentyfive-child' ); ?></li>
+            </ul>
+            <a class="afx-btn afx-btn--dark afx-btn--block" href="<?php echo esc_url( af_signup_url() ); ?>"><?php esc_html_e( 'Comenzar ahora', 'twentytwentyfive-child' ); ?></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 3 · FAQ -->
     <section class="afx-stage" id="faq" data-afx-stage data-title="<?php esc_attr_e( 'Preguntas frecuentes', 'twentytwentyfive-child' ); ?>">
       <div class="afx-stage__media" aria-hidden="true">
         <img class="afx-stage__bg" src="<?php echo esc_url( $afx_img . 'stage-edificio.jpg' ); ?>" alt="" width="1408" height="768" loading="lazy" decoding="async" style="object-position:60% 50%">
@@ -259,45 +310,6 @@ $afx_steps = array(
               </div>
             <?php endforeach; ?>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3 · Planes -->
-    <section class="afx-stage" id="planes" data-afx-stage data-title="<?php esc_attr_e( 'Planes y precios', 'twentytwentyfive-child' ); ?>">
-      <div class="afx-stage__media" aria-hidden="true">
-        <img class="afx-stage__bg" src="<?php echo esc_url( $afx_img . 'stage-sala.jpg' ); ?>" alt="" width="1408" height="768" loading="lazy" decoding="async" style="object-position:55% 50%">
-        <span class="afx-stage__tint"></span>
-      </div>
-      <div class="afx-wrap afx-stage__grid">
-        <div class="afx-stage__intro" data-afx-stagec>
-          <p class="afx-tag afx-tag--dark"><?php echo afx_icon( 'bolt', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Planes y precios', 'twentytwentyfive-child' ); ?></p>
-          <h2 class="afx-title"><?php esc_html_e( 'Elige el', 'twentytwentyfive-child' ); ?> <span><?php esc_html_e( 'plan ideal', 'twentytwentyfive-child' ); ?></span> <?php esc_html_e( 'para ti', 'twentytwentyfive-child' ); ?></h2>
-          <p class="afx-stage__lead"><?php esc_html_e( 'Escala tu negocio con planes flexibles y sin costos ocultos.', 'twentytwentyfive-child' ); ?></p>
-        </div>
-
-        <div class="afx-stage__card afx-stage__card--plans" data-afx-stagec>
-          <article class="afx-plan">
-            <h3><?php esc_html_e( 'Plan Básico', 'twentytwentyfive-child' ); ?></h3>
-            <p class="afx-plan__price"><b>$10</b> <span><?php esc_html_e( '/mes', 'twentytwentyfive-child' ); ?></span></p>
-            <ul>
-              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Hasta 5 propiedades', 'twentytwentyfive-child' ); ?></li>
-              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Soporte por email', 'twentytwentyfive-child' ); ?></li>
-            </ul>
-            <a class="afx-btn afx-btn--soft afx-btn--block" href="<?php echo esc_url( af_signup_url() ); ?>"><?php esc_html_e( 'Comenzar ahora', 'twentytwentyfive-child' ); ?></a>
-          </article>
-
-          <article class="afx-plan afx-plan--pro">
-            <span class="afx-plan__crown"><?php echo afx_icon( 'crown', 26 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><span class="afx-sr"><?php esc_html_e( 'Recomendado', 'twentytwentyfive-child' ); ?></span></span>
-            <h3><?php esc_html_e( 'Plan Profesional', 'twentytwentyfive-child' ); ?></h3>
-            <p class="afx-plan__price"><b>$20</b> <span><?php esc_html_e( '/mes', 'twentytwentyfive-child' ); ?></span></p>
-            <ul>
-              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Hasta 30 propiedades', 'twentytwentyfive-child' ); ?></li>
-              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Soporte prioritario', 'twentytwentyfive-child' ); ?></li>
-              <li><?php echo afx_icon( 'check', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Facturación', 'twentytwentyfive-child' ); ?></li>
-            </ul>
-            <a class="afx-btn afx-btn--dark afx-btn--block" href="<?php echo esc_url( af_signup_url() ); ?>"><?php esc_html_e( 'Comenzar ahora', 'twentytwentyfive-child' ); ?></a>
-          </article>
         </div>
       </div>
     </section>

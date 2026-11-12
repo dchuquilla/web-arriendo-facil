@@ -688,7 +688,7 @@ body.afx-body .cmplz-cookiebanner .cmplz-btn.cmplz-save-preferences:hover { back
   content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
   background: var(--afx-wave-bg) center bottom / 100% 42% no-repeat;
 }
-.afx-stage__card--plans { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.8rem, 2vw, 1.6rem); padding-top: clamp(2rem, 4.4vh, 2.8rem); }
+.afx-stage__card--plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(0.8rem, 2vw, 1.6rem); padding-top: clamp(2rem, 4.4vh, 2.8rem); }
 
 /* Pasos */
 .afx-steps { --afx-icon: clamp(84px, 13vh, 124px); display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: start; gap: 0.5rem; }
@@ -716,7 +716,9 @@ a.afx-step__icon:focus-visible, button.afx-step__icon:focus-visible { outline: n
 .afx-stage__card--faq .afx-acc__panel p { font-size: 0.98rem; }
 
 /* Planes en tarjeta */
-.afx-stage__card--plans .afx-plan { padding: clamp(1.2rem, 2.6vh, 1.7rem) clamp(1.1rem, 1.8vw, 1.6rem); }
+.afx-stage__card--plans .afx-plan { padding: clamp(1.2rem, 2.6vh, 1.7rem) clamp(0.9rem, 1.4vw, 1.3rem); }
+.afx-stage__card--plans .afx-plan li { align-items: flex-start; font-size: 0.88rem; line-height: 1.35; }
+.afx-stage__card--plans .afx-plan li .afx-icon { flex: none; margin-top: 0.1rem; }
 .afx-stage__card--plans .afx-plan__price b { font-size: clamp(2rem, 3vw, 2.5rem); }
 .afx-stage__card--plans .afx-plan__crown { top: -22px; right: -6px; }
 
@@ -745,6 +747,7 @@ html.afx-fp .afx-home > .afx-dots {
 @media (min-width: 961px) {
   .afx-stage__tint { background: linear-gradient(90deg, rgba(14, 36, 26, 0.88) 0%, rgba(24, 60, 43, 0.6) 42%, rgba(24, 60, 43, 0.16) 100%); }
   .afx-stage__grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.3fr); gap: clamp(1.5rem, 4vw, 4rem); }
+  .afx-stage__grid--plans { grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.6fr); }
   html.afx-fp { scroll-behavior: auto; }
   html.afx-fp .afx-home { position: relative; height: calc(100svh - var(--afx-header-h) - var(--afx-bar-h)); overflow: hidden; background: var(--afx-azul-mar); }
   html.afx-fp .afx-story { display: contents; }
