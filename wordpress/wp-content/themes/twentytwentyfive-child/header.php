@@ -45,7 +45,7 @@ $afx_home      = home_url( '/' );
 <header class="afx-header" role="banner" id="site-header">
   <div class="afx-header__inner">
     <a class="afx-brand" href="<?php echo esc_url( $afx_home ); ?>" aria-label="<?php esc_attr_e( 'ArriendoFácil - Inicio', 'twentytwentyfive-child' ); ?>">
-      <?php echo afx_icon( 'home', 38, 'afx-brand__mark' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+      <img class="afx-brand__mark" src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-mark.png' ); ?>" width="56" height="38" alt="" decoding="async">
       <span class="afx-brand__word">Arriendo<b>Fácil</b></span>
     </a>
 
