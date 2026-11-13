@@ -232,6 +232,27 @@
     });
   });
 
+  /* Tarjeta de plan que se voltea */
+  $$('[data-afx-flip]').forEach(function (card) {
+    var faces = $$('.afx-plan__face', card);
+    function setFlip(on) {
+      card.classList.toggle('is-flipped', on);
+      faces.forEach(function (face, i) {
+        var visible = (i === 0) !== on;
+        face.setAttribute('aria-hidden', visible ? 'false' : 'true');
+        $$('button, a', face).forEach(function (el) {
+          if (visible) { el.removeAttribute('tabindex'); } else { el.setAttribute('tabindex', '-1'); }
+        });
+      });
+      var next = $('.afx-plan__face:not([aria-hidden="true"]) [data-afx-flip-btn]', card);
+      if (next && doc.activeElement && card.contains(doc.activeElement)) { next.focus(); }
+    }
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('a')) { return; }
+      setFlip(!card.classList.contains('is-flipped'));
+    });
+  });
+
   /* ------------------------------------------------------------------ *
    * FAQ: categoría activa según el scroll
    * ------------------------------------------------------------------ */

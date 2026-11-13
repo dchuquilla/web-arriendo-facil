@@ -348,7 +348,8 @@ body.afx-body {
 .afx-plan:hover { transform: translateY(-6px); }
 .afx-plan--pro { border-color: var(--afx-verde-dolar); }
 .afx-plan h3 { text-align: center; font-size: 0.98rem; font-weight: 700; }
-.afx-plan__price { margin-top: 1rem; text-align: center; }
+.afx-plan__desc { margin-top: 0.25rem; text-align: center; color: var(--afx-texto-2); font-size: 0.82rem; }
+.afx-plan__price { margin-top: 0.7rem; text-align: center; }
 .afx-plan__price b { font-size: 2.3rem; font-weight: 800; letter-spacing: -0.03em; }
 .afx-plan__price span { color: var(--afx-texto-2); font-size: 0.95rem; margin-left: 0.2rem; }
 .afx-plan ul { display: grid; gap: 0.7rem; margin: 1.5rem 0 1.8rem; }
@@ -357,6 +358,31 @@ body.afx-body {
 .afx-plan .afx-btn { margin-top: auto; }
 .afx-plan__crown { position: absolute; top: -26px; right: -16px; color: var(--afx-oro); transform: rotate(18deg); filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.18)); }
 .afx-plan__crown .afx-icon { fill: currentColor; }
+
+/* Tarjeta que se voltea (Plan Básico) */
+.afx-plan--flip { padding: 0; background: none; border: 0; box-shadow: none; perspective: 1200px; cursor: pointer; }
+.afx-plan__inner { display: grid; flex: 1; transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.afx-plan--flip.is-flipped .afx-plan__inner { transform: rotateY(180deg); }
+.afx-plan__face {
+  grid-area: 1 / 1; display: flex; flex-direction: column; padding: 1.7rem 1.6rem;
+  background: #fff; border-radius: 18px; box-shadow: var(--afx-shadow-md);
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.afx-plan__face--back { transform: rotateY(180deg); }
+.afx-plan__face--back ul { margin: 1.1rem 0 1.2rem; gap: 0.6rem; }
+.afx-plan__face--back li { align-items: flex-start; font-size: 0.88rem; line-height: 1.35; }
+.afx-plan__face--back li .afx-icon { flex: none; margin-top: 0.1rem; }
+.afx-plan__face--back li.is-no { color: var(--afx-texto-2); opacity: 0.85; }
+.afx-plan__face--back li.is-no .afx-icon { color: #c0392b; }
+.afx-plan__flip {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; margin: 0 auto 0.9rem; padding: 0.3rem 0.7rem;
+  background: none; border: 0; border-radius: 999px; cursor: pointer; color: var(--afx-verde-accion); font: inherit; font-size: 0.84rem; font-weight: 700;
+}
+.afx-plan__flip:hover { text-decoration: underline; }
+.afx-plan__face--back .afx-plan__flip { margin-top: auto; }
+.afx-plan--flip:not(.is-flipped) .afx-plan__face--back,
+.afx-plan--flip.is-flipped .afx-plan__face--front { visibility: hidden; transition: visibility 0s 0.35s; }
+@media (prefers-reduced-motion: reduce) { .afx-plan__inner { transition-duration: 0.01s; } }
 
 /* Banda CTA */
 .afx-cta { position: relative; overflow: hidden; background: var(--afx-azul-mar); color: #fff; }
@@ -731,6 +757,8 @@ a.afx-step__icon:focus-visible, button.afx-step__icon:focus-visible { outline: n
 
 /* Planes en tarjeta */
 .afx-stage__card--plans .afx-plan { padding: clamp(1.2rem, 2.6vh, 1.7rem) clamp(0.9rem, 1.4vw, 1.3rem); }
+.afx-stage__card--plans .afx-plan--flip { padding: 0; }
+.afx-stage__card--plans .afx-plan__face { padding: clamp(1.2rem, 2.6vh, 1.7rem) clamp(0.9rem, 1.4vw, 1.3rem); }
 .afx-stage__card--plans .afx-plan li { align-items: flex-start; font-size: 0.88rem; line-height: 1.35; }
 .afx-stage__card--plans .afx-plan li .afx-icon { flex: none; margin-top: 0.1rem; }
 .afx-stage__card--plans .afx-plan__price b { font-size: clamp(2rem, 3vw, 2.5rem); }

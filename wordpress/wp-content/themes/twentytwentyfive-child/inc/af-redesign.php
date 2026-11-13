@@ -26,6 +26,7 @@ function afx_icon( $name, $size = 20, $class = '' ) {
       'mail'       => '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
       'pin'        => '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
       'check'      => '<path d="M20 6 9 17l-5-5"/>',
+      'x'          => '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
       'plus'       => '<path d="M12 5v14"/><path d="M5 12h14"/>',
       'play'       => '<path d="M7 4.5v15l12-7.5z"/>',
       'crown'      => '<path d="m2 6 4.5 5L12 4l5.5 7L22 6l-2 13H4z"/>',
