@@ -35,7 +35,6 @@ HTML,
 <li>Llevar el control de cobros, pagos, mora, lecturas de medidores y alertas.</li>
 <li>Coordinar mantenimiento y reparaciones con proveedores.</li>
 <li>Usar calendario, avisos, reportes y catálogos de propiedades para compartir.</li>
-<li>Sincronizar disponibilidad con plataformas como Airbnb y Booking.com.</li>
 <li>Emitir comprobantes electrónicos del SRI (funcionalidad complementaria).</li>
 <li>Brindarle apoyo con funciones de inteligencia artificial (sección 8).</li>
 </ul>
@@ -166,8 +165,6 @@ HTML,
     'title' => 'Integraciones, proveedores y calificaciones',
     'nav'   => 'Terceros',
     'html'  => <<<'HTML'
-<h3>Plataformas externas</h3>
-<p>Puede conectar calendarios de plataformas como Airbnb o Booking.com (por ejemplo mediante enlaces iCal). Las credenciales que registre se guardan cifradas. La sincronización puede tener retrasos o fallar por causas ajenas a nosotros; <strong>verifique su disponibilidad</strong> antes de confirmar reservas. Las condiciones de cada plataforma las acepta directamente con ella.</p>
 <h3>Proveedores de mantenimiento y servicios</h3>
 <p>Los proveedores son profesionales independientes. Aunque nuestro equipo pueda revisar su identidad y fotografía, esa revisión es informativa y <strong>no es una garantía</strong> de calidad, idoneidad ni de cumplimiento. La contratación y el pago del servicio se acuerdan directamente con el proveedor.</p>
 <h3>Mensajería y catálogos</h3>
@@ -246,6 +243,23 @@ HTML,
 <li>Nuestra responsabilidad total frente a usted por cualquier reclamo relacionado con el Servicio se limita al monto que haya pagado a ArriendoFácil en los 12 meses anteriores al hecho.</li>
 </ul>
 <div class="afx-callout"><p>Nada en estos Términos excluye ni limita la responsabilidad que no pueda excluirse por ley, incluida la derivada de dolo o culpa grave, ni los derechos irrenunciables de las personas consumidoras.</p></div>
+HTML,
+  ),
+
+  array(
+    'id'    => 'facilitador',
+    'icon'  => 'scale',
+    'title' => 'Plataforma facilitadora y consentimientos',
+    'nav'   => 'Facilitador',
+    'html'  => <<<'HTML'
+<h3>Mero facilitador administrativo</h3>
+<p>ArriendoFácil es únicamente un <strong>facilitador administrativo y tecnológico</strong>. No es parte, mandatario, garante ni intermediario de los contratos de arrendamiento, y <strong>no asume responsabilidad solidaria ni subsidiaria</strong> por los contratos redactados, generados, subidos o firmados por los usuarios, por su contenido, validez o cumplimiento, ni por los datos, documentos o comprobantes que el usuario registre.</p>
+<h3>Responsabilidad del usuario</h3>
+<p>El usuario es el único responsable de la veracidad de la información que ingrese; de contar con el consentimiento de inquilinos, propietarios y terceros cuyos datos registre; del contenido de los contratos; y de la información tributaria y de facturación que gestione. El usuario mantendrá indemne a ArriendoFácil frente a reclamos de terceros derivados de esos actos.</p>
+<h3>Casillas de aceptación obligatorias</h3>
+<p>Para registrarse, crear un contrato, registrar un inquilino o guardar la configuración de facturación, el usuario debe marcar una casilla que confirma lo anterior. Dejamos constancia de la fecha y versión aceptadas.</p>
+<h3>Confidencialidad de administradores y personal</h3>
+<p>Quienes accedan a datos de otros usuarios (administradores, personal y colaboradores) deben mantener en reserva la información, documentos y datos personales a los que accedan, usarla solo para la gestión encargada, no copiarla ni divulgarla, y devolverla o eliminarla al terminar su relación. Esta obligación subsiste después de terminada la relación y su incumplimiento genera responsabilidad civil y penal según la ley ecuatoriana.</p>
 HTML,
   ),
 

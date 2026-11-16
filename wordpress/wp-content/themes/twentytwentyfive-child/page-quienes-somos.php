@@ -25,7 +25,7 @@ $afx_modules = array(
   array( 'file', 'Contratos', 'Genéralos desde plantillas, con apoyo de IA para completarlos, y recibe alertas de vencimiento.', '' ),
   array( 'wallet', 'Cobros y pagos', 'Cargos, pagos registrados, mora y medidores con seguimiento claro de cada arriendo.', '' ),
   array( 'wrench', 'Mantenimiento', 'Incidencias, proveedores verificados, prioridades y costos trazables.', '' ),
-  array( 'calendar', 'Calendario y catálogos', 'Vencimientos, avisos y catálogos para compartir por PDF o WhatsApp. Sincroniza con Airbnb y Booking.', '' ),
+  array( 'calendar', 'Calendario y catálogos', 'Vencimientos, avisos y catálogos para compartir por PDF o WhatsApp.', '' ),
   array( 'sparkles', 'Asistente con IA', 'Borradores de contratos, estimación de costos y apoyo para evaluar solicitantes. Tú decides.', '' ),
   array( 'file-down', 'Facturación electrónica SRI', 'Si la necesitas, emite tus comprobantes desde el mismo sistema.', 'Bonus' ),
 );

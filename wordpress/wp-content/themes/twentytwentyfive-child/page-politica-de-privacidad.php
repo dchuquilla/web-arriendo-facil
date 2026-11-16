@@ -101,7 +101,6 @@ HTML,
 <tr><td>Cloudflare</td><td>Seguridad, red de entrega, almacenamiento privado de archivos (contratos y documentos) y analítica web sin cookies.</td></tr>
 <tr><td>Anthropic</td><td>Procesar las solicitudes de inteligencia artificial (sección 4).</td></tr>
 <tr><td>Servicio de Rentas Internas (SRI)</td><td>Solo si usa la facturación electrónica: envío y autorización de comprobantes.</td></tr>
-<tr><td>Airbnb, Booking.com y similares</td><td>Solo si activas la sincronización de calendarios (iCal); las credenciales se guardan cifradas.</td></tr>
 <tr><td>Proveedor de correo electrónico</td><td>Envío de correos transaccionales y notificaciones.</td></tr>
 <tr><td>YouTube (modo privacidad mejorada)</td><td>Solo si pulsa reproducir un video; antes no se carga contenido de YouTube.</td></tr>
 <tr><td>WhatsApp</td><td>Solo cuando usted o el administrador abren un enlace de contacto; la conversación ocurre en WhatsApp, bajo sus propias condiciones.</td></tr>
