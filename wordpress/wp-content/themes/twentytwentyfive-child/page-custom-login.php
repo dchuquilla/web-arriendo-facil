@@ -23,15 +23,41 @@ if (is_user_logged_in() && 'login' === $action) {
 
 $redirect_to = isset($_GET['redirect_to']) ? wp_validate_redirect(rawurldecode(wp_unslash($_GET['redirect_to'])), '') : '';
 
-$notice = null;
-if (isset($_GET['login']) && 'failed' === $_GET['login']) {
+$notice  = null;
+$login_s = isset($_GET['login']) ? sanitize_key(wp_unslash($_GET['login'])) : '';
+$verify  = isset($_GET['af_verify_admin']) ? sanitize_key(wp_unslash($_GET['af_verify_admin'])) : '';
+$error_s = isset($_GET['error']) ? sanitize_key(wp_unslash($_GET['error'])) : '';
+$check_s = isset($_GET['checkemail']) ? sanitize_key(wp_unslash($_GET['checkemail'])) : '';
+
+if ('failed' === $login_s) {
   $notice = array('type' => 'error', 'text' => __('Usuario o contraseña incorrectos. Inténtalo de nuevo.', 'twentytwentyfive-child'));
-} elseif (isset($_GET['login']) && 'locked' === $_GET['login']) {
+} elseif ('locked' === $login_s) {
   $notice = array('type' => 'error', 'text' => __('Demasiados intentos fallidos. Espera 15 minutos e inténtalo de nuevo.', 'twentytwentyfive-child'));
+} elseif ('unverified' === $login_s) {
+  $notice = array(
+    'type' => 'error',
+    'text' => __('Tu correo electrónico aún no ha sido verificado. Revisa tu bandeja de entrada (y la carpeta de spam) o solicita un nuevo enlace.', 'twentytwentyfive-child'),
+    'link' => array(af_signup_url() . '#reenviar', __('Reenviar correo de verificación', 'twentytwentyfive-child')),
+  );
+} elseif ('ok' === $verify) {
+  $notice = array('type' => 'success', 'text' => __('Tu correo fue verificado correctamente. Ya puedes iniciar sesión.', 'twentytwentyfive-child'));
+} elseif ('failed' === $verify || 'invalid' === $verify) {
+  $notice = array(
+    'type' => 'error',
+    'text' => __('El enlace de verificación no es válido o ya venció. Solicita uno nuevo para activar tu cuenta.', 'twentytwentyfive-child'),
+    'link' => array(af_signup_url() . '#reenviar', __('Reenviar correo de verificación', 'twentytwentyfive-child')),
+  );
+} elseif ('invalidkey' === $error_s || 'expiredkey' === $error_s) {
+  $notice = array('type' => 'error', 'text' => __('El enlace para restablecer la contraseña no es válido o ya venció. Solicita uno nuevo a continuación.', 'twentytwentyfive-child'));
+  $action = 'lostpassword';
 } elseif (isset($_GET['loggedout'])) {
   $notice = array('type' => 'success', 'text' => __('Cerraste sesión correctamente.', 'twentytwentyfive-child'));
-} elseif (isset($_GET['checkemail']) && 'confirm' === $_GET['checkemail']) {
-  $notice = array('type' => 'success', 'text' => __('Revisa tu correo: te enviamos el enlace de recuperación.', 'twentytwentyfive-child'));
+} elseif ('confirm' === $check_s) {
+  $notice = array('type' => 'success', 'text' => __('Si la cuenta existe, te enviamos un enlace para restablecer tu contraseña. Revisa tu correo (y la carpeta de spam).', 'twentytwentyfive-child'));
+} elseif ('limited' === $check_s) {
+  $notice = array('type' => 'error', 'text' => __('Hiciste demasiadas solicitudes. Espera un momento antes de intentarlo de nuevo.', 'twentytwentyfive-child'));
+} elseif (isset($_GET['password']) && 'changed' === sanitize_key(wp_unslash($_GET['password']))) {
+  $notice = array('type' => 'success', 'text' => __('Tu contraseña fue actualizada. Ya puedes iniciar sesión.', 'twentytwentyfive-child'));
 }
 
 get_header();
@@ -56,6 +82,9 @@ $logo = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web
       <?php if ($notice): ?>
         <div class="afl__notice afl__notice--<?php echo esc_attr($notice['type']); ?>" role="<?php echo 'error' === $notice['type'] ? 'alert' : 'status'; ?>">
           <?php echo esc_html($notice['text']); ?>
+          <?php if (!empty($notice['link'])): ?>
+            <a class="afl__link afl__link--strong" href="<?php echo esc_url($notice['link'][0]); ?>"><?php echo esc_html($notice['link'][1]); ?></a>
+          <?php endif; ?>
         </div>
       <?php endif; ?>
 
@@ -64,6 +93,7 @@ $logo = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web
         <p class="afl__subtitle"><?php esc_html_e('Te enviaremos un enlace para crear una nueva.', 'twentytwentyfive-child'); ?></p>
 
         <form class="afl__form" method="post" action="<?php echo esc_url(network_site_url('wp-login.php?action=lostpassword', 'login_post')); ?>" novalidate data-afl-form>
+          <input type="hidden" name="af_custom_login" value="1" />
           <div class="afl__field">
             <input type="text" name="user_login" id="user_login" class="afl__input" placeholder=" " autocomplete="username" required maxlength="100" />
             <label for="user_login" class="afl__label"><?php esc_html_e('Usuario o correo electrónico', 'twentytwentyfive-child'); ?></label>

@@ -194,7 +194,6 @@ function twentytwentyfive_child_enqueue_assets() {
     ) );
   }
 
-  // Registro de administrador (form publico en /registro/).
   // Quiénes somos.
   if ( is_page_template( 'page-quienes-somos.php' ) ) {
     wp_enqueue_style(
@@ -202,21 +201,6 @@ function twentytwentyfive_child_enqueue_assets() {
       get_stylesheet_directory_uri() . '/assets/css/quienes-somos.css',
       array( 'twentytwentyfive-child-style', 'twentytwentyfive-child-tokens' ),
       twentytwentyfive_child_asset_version( 'assets/css/quienes-somos.css' )
-    );
-  }
-
-  if ( is_page( 'registro' ) ) {
-    wp_enqueue_style(
-      'twentytwentyfive-child-admin-signup',
-      get_stylesheet_directory_uri() . '/assets/css/admin-signup.css',
-      array( 'twentytwentyfive-child-style', 'twentytwentyfive-child-tokens' ),
-      twentytwentyfive_child_asset_version( 'assets/css/admin-signup.css' )
-    );
-    wp_enqueue_style(
-      'twentytwentyfive-child-registro',
-      get_stylesheet_directory_uri() . '/assets/css/registro.css',
-      array( 'twentytwentyfive-child-admin-signup' ),
-      twentytwentyfive_child_asset_version( 'assets/css/registro.css' )
     );
   }
 
@@ -885,6 +869,7 @@ function af_render_custom_login() {
 }
 add_action( 'login_form_login', 'af_render_custom_login' );
 add_action( 'login_form_lostpassword', 'af_render_custom_login' );
+add_action( 'login_form_checkemail', 'af_render_custom_login' );
 
 function af_enqueue_custom_login_assets() {
   wp_enqueue_style(
@@ -934,10 +919,65 @@ add_action( 'wp_login_failed', function ( $username, $error = null ) {
   if ( empty( $_POST['af_custom_login'] ) ) {
     return;
   }
-  $locked = $error instanceof WP_Error && $error->get_error_code() === 'af_locked';
-  wp_safe_redirect( add_query_arg( 'login', $locked ? 'locked' : 'failed', af_custom_login_base_url() ) );
+  $code   = $error instanceof WP_Error ? $error->get_error_code() : '';
+  $status = 'failed';
+  if ( 'af_locked' === $code ) {
+    $status = 'locked';
+  } elseif ( 'af_admin_email_pending' === $code ) {
+    // Solo se llega aquí con la contraseña correcta, por lo que no revela si una cuenta existe.
+    $status = 'unverified';
+  }
+  wp_safe_redirect( add_query_arg( 'login', $status, af_custom_login_base_url() ) );
   exit;
 }, 10, 2 );
+
+/**
+ * Recuperación de contraseña segura: la respuesta es siempre la misma exista o no la cuenta
+ * (evita enumerar usuarios), con límite por IP y por cuenta, y sin pasar por la pantalla
+ * en inglés de wp-login.php.
+ */
+function af_handle_lostpassword_post() {
+  if ( 'POST' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) ) {
+    return;
+  }
+
+  $login = isset( $_POST['user_login'] ) ? trim( (string) wp_unslash( $_POST['user_login'] ) ) : '';
+  $state = 'confirm';
+
+  if ( class_exists( 'Arriendo_Facil_Rate_Limiter' ) && Arriendo_Facil_Rate_Limiter::is_rate_limited( 'password_reset' ) ) {
+    $state = 'limited';
+  } elseif ( '' !== $login && strlen( $login ) <= 100 ) {
+    $key = 'af_pwreset_' . md5( strtolower( $login ) );
+    if ( false === get_transient( $key ) ) {
+      set_transient( $key, 1, 10 * MINUTE_IN_SECONDS );
+      $_POST['user_login'] = $login;
+      retrieve_password(); // El resultado se descarta a propósito.
+    }
+  }
+
+  wp_safe_redirect( add_query_arg( 'checkemail', $state, af_custom_login_base_url() ) );
+  exit;
+}
+add_action( 'login_form_lostpassword', 'af_handle_lostpassword_post', 1 );
+add_action( 'login_form_retrievepassword', 'af_handle_lostpassword_post', 1 );
+
+// Pantallas de wp-login.php (restablecer contraseña): siempre en español y con la identidad de la marca.
+add_filter( 'locale', function ( $locale ) {
+  return ( isset( $GLOBALS['pagenow'] ) && 'wp-login.php' === $GLOBALS['pagenow'] ) ? 'es_EC' : $locale;
+}, 20 );
+add_filter( 'login_display_language_dropdown', '__return_false' );
+add_filter( 'login_headerurl', 'home_url' );
+add_filter( 'login_headertext', function () {
+  return 'Arriendo Fácil';
+} );
+add_action( 'login_enqueue_scripts', function () {
+  wp_enqueue_style(
+    'twentytwentyfive-child-core-login',
+    get_stylesheet_directory_uri() . '/assets/css/core-login.css',
+    array( 'login' ),
+    twentytwentyfive_child_asset_version( 'assets/css/core-login.css' )
+  );
+} );
 
 /**
  * Ensure the "Toca para ver más" detail pages exist (self-healing).

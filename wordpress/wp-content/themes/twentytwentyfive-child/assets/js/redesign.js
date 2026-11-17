@@ -349,6 +349,8 @@
     }
     if (!pinned) { setupNatural(cleanups); }
     setupPointerDepth(cleanups);
+    setupRegister(cleanups);
+    setup404(cleanups);
 
     return function () { cleanups.forEach(function (fn) { fn(); }); };
   });
@@ -669,6 +671,60 @@
     cleanups.push(function () {
       hider.kill();
       if (header) { header.classList.remove('is-hidden', 'is-scrolled'); }
+    });
+  }
+
+  /* ---------- Registro: entrada escalonada ---------- */
+  function setupRegister(cleanups) {
+    var card = $('[data-afx-reg-card]');
+    if (!card) { return; }
+    var items = $$('[data-afx-reg-item]');
+    var intro = $('[data-afx-reg-intro]');
+    var groups = $$('.af-admin-signup__head, .af-admin-signup__group', card);
+    var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    if (intro) { tl.from(intro.children, { y: 26, opacity: 0, duration: 0.7, stagger: 0.08, clearProps: 'all' }, 0); }
+    tl.from(card, { y: 40, opacity: 0, duration: 0.8, clearProps: 'all' }, 0.1)
+      .from(groups, { y: 22, opacity: 0, duration: 0.6, stagger: 0.12, clearProps: 'all' }, 0.35);
+    if (items.length) { tl.from(items, { x: -14, opacity: 0, duration: 0.5, stagger: 0.07, clearProps: 'all' }, 0.5); }
+    cleanups.push(function () { tl.kill(); gsap.set([card, intro, groups, items], { clearProps: 'all' }); });
+  }
+
+  /* ---------- 404: escena animada ---------- */
+  function setup404(cleanups) {
+    var scene = $('[data-afx-404-scene]');
+    if (!scene) { return; }
+    var digits = $$('.afx-404__digit', scene);
+    var house = $('[data-house]', scene);
+    var door = $('[data-door]', scene);
+    var glow = $('.afx-404__glow', scene);
+    var sign = $('[data-sign]', scene);
+    var copy = $$('[data-afx-404-in]');
+
+    var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    tl.from(copy, { y: 28, opacity: 0, duration: 0.7, stagger: 0.09, clearProps: 'all' }, 0)
+      .from(digits, { y: -140, opacity: 0, duration: 1, ease: 'bounce.out', stagger: 0.18, transformOrigin: '50% 100%' }, 0.1)
+      .from(house, { y: 40, opacity: 0, scale: 0.92, duration: 0.8, ease: 'back.out(1.6)', svgOrigin: '260 314' }, 0.45)
+      .from(sign, { opacity: 0, y: -30, duration: 0.6 }, 0.9)
+      .to(door, { scaleX: 0.28, duration: 0.9, ease: 'power2.inOut', svgOrigin: '232 270' }, 1.1)
+      .to(glow, { opacity: 1, duration: 0.9 }, 1.1);
+
+    var loops = [
+      gsap.fromTo(sign, { rotation: -7, svgOrigin: '376 196' }, { rotation: 7, svgOrigin: '376 196', duration: 2.2, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1.3 }),
+      gsap.to(digits[0], { y: -8, duration: 2.6, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1.6 }),
+      gsap.to(digits[1], { y: -8, duration: 3.1, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1.9 })
+    ];
+
+    var onEnter = function () { gsap.to(door, { scaleX: 0.12, duration: 0.5, ease: 'power2.out', overwrite: 'auto', svgOrigin: '232 270' }); };
+    var onLeave = function () { gsap.to(door, { scaleX: 0.28, duration: 0.6, ease: 'power2.out', overwrite: 'auto', svgOrigin: '232 270' }); };
+    scene.addEventListener('pointerenter', onEnter);
+    scene.addEventListener('pointerleave', onLeave);
+
+    cleanups.push(function () {
+      tl.kill();
+      loops.forEach(function (t) { t.kill(); });
+      scene.removeEventListener('pointerenter', onEnter);
+      scene.removeEventListener('pointerleave', onLeave);
+      gsap.set([copy, digits, house, door, glow, sign], { clearProps: 'all' });
     });
   }
 

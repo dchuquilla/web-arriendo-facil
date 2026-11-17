@@ -4,117 +4,60 @@
  * Página pública de registro: conecta los botones "Crear mi cuenta" con el flujo de
  * auto-registro del plugin (shortcode [af_property_admin_signup]).
  *
- * Layout: panel de marca (izquierda) + tarjeta de formulario (derecha),
- * en un contenedor amplio para aprovechar el ancho de pantalla.
- *
  * @package Arriendo_Facil
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 get_header();
+
+$td = 'twentytwentyfive-child';
 ?>
 
-<main id="main-content" class="af-demo-page">
-  <div class="af-demo-shell">
+<main id="main-content" class="afx-main afx-reg">
+  <?php echo afx_waves( 'soft' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+  <div class="afx-wrap afx-reg__grid">
 
-    <div class="af-demo-grid">
+    <aside class="afx-reg__intro" data-afx-reg-intro>
+      <span class="afx-tag"><?php echo afx_icon( 'building', 16 ); // phpcs:ignore ?> <?php esc_html_e( 'Para administradores de propiedades', $td ); ?></span>
+      <h1 class="afx-title afx-reg__title">
+        <?php esc_html_e( 'Crea tu cuenta y', $td ); ?>
+        <span><?php esc_html_e( 'empieza a gestionar', $td ); ?></span>
+      </h1>
+      <p class="afx-reg__lead"><?php esc_html_e( 'Inmuebles, contratos, inquilinos, mantenimiento y pagos en un solo panel. Empiezas con el plan Free, sin tarjeta y sin compromiso.', $td ); ?></p>
 
-      <!-- ── Panel de marca ─────────────────────────────────────── -->
-      <aside class="af-demo-intro">
-        <div class="af-demo-intro__block af-demo-intro__block--top">
-          <span class="af-demo-eyebrow"><?php esc_html_e( 'Para gestores de propiedades', 'twentytwentyfive-child' ); ?></span>
-          <h1 class="af-demo-title"><?php esc_html_e( 'Crea tu cuenta y comienza a gestionar', 'twentytwentyfive-child' ); ?></h1>
-          <p class="af-demo-lead"><?php esc_html_e( 'Regístrate en un minuto, verifica tu correo y entra a tu panel con datos de ejemplo para conocer el sistema.', 'twentytwentyfive-child' ); ?></p>
-        </div>
+      <ol class="afx-reg__steps">
+        <li data-afx-reg-item>
+          <span class="afx-reg__step-num" aria-hidden="true">1</span>
+          <span><strong><?php esc_html_e( 'Completa el formulario', $td ); ?></strong><?php esc_html_e( 'Datos de tu empresa o gestión e identificación.', $td ); ?></span>
+        </li>
+        <li data-afx-reg-item>
+          <span class="afx-reg__step-num" aria-hidden="true">2</span>
+          <span><strong><?php esc_html_e( 'Verifica tu correo', $td ); ?></strong><?php esc_html_e( 'Confirma el enlace que te enviaremos (vigente 24 horas).', $td ); ?></span>
+        </li>
+        <li data-afx-reg-item>
+          <span class="afx-reg__step-num" aria-hidden="true">3</span>
+          <span><strong><?php esc_html_e( 'Entra a tu panel', $td ); ?></strong><?php esc_html_e( 'Registra tus inmuebles y administra tu cartera.', $td ); ?></span>
+        </li>
+      </ol>
 
-        <ol class="af-demo-steps">
-          <li>
-            <span class="af-demo-steps__num" aria-hidden="true">1</span>
-            <span class="af-demo-steps__txt">
-              <strong><?php esc_html_e( 'Completa el formulario', 'twentytwentyfive-child' ); ?></strong>
-              <span class="af-demo-steps__desc"><?php esc_html_e( 'Empresa o gestor, contacto e identificación.', 'twentytwentyfive-child' ); ?></span>
-            </span>
-          </li>
-          <li>
-            <span class="af-demo-steps__num" aria-hidden="true">2</span>
-            <span class="af-demo-steps__txt">
-              <strong><?php esc_html_e( 'Verifica tu correo', 'twentytwentyfive-child' ); ?></strong>
-              <span class="af-demo-steps__desc"><?php esc_html_e( 'Haz clic en el enlace que te enviamos.', 'twentytwentyfive-child' ); ?></span>
-            </span>
-          </li>
-          <li>
-            <span class="af-demo-steps__num" aria-hidden="true">3</span>
-            <span class="af-demo-steps__txt">
-              <strong><?php esc_html_e( 'Entra a tu panel', 'twentytwentyfive-child' ); ?></strong>
-              <span class="af-demo-steps__desc"><?php esc_html_e( 'Con datos de ejemplo para recorrerlo y luego cargar tu cartera.', 'twentytwentyfive-child' ); ?></span>
-            </span>
-          </li>
-        </ol>
+      <ul class="afx-reg__perks">
+        <li data-afx-reg-item><?php echo afx_icon( 'home', 18 ); // phpcs:ignore ?><span><?php esc_html_e( 'Gestión de inmuebles, contratos e inquilinos', $td ); ?></span></li>
+        <li data-afx-reg-item><?php echo afx_icon( 'wrench', 18 ); // phpcs:ignore ?><span><?php esc_html_e( 'Mantenimiento con proveedores y costos', $td ); ?></span></li>
+        <li data-afx-reg-item><?php echo afx_icon( 'wallet', 18 ); // phpcs:ignore ?><span><?php esc_html_e( 'Control de pagos y, como complemento, facturación electrónica SRI', $td ); ?></span></li>
+        <li data-afx-reg-item><?php echo afx_icon( 'shield', 18 ); // phpcs:ignore ?><span><?php esc_html_e( 'Teléfono e identificación cifrados en nuestros sistemas', $td ); ?></span></li>
+      </ul>
 
-        <div class="af-demo-intro__block">
-          <span class="af-demo-includes__title"><?php esc_html_e( 'Qué puedes gestionar', 'twentytwentyfive-child' ); ?></span>
-          <ul class="af-demo-includes">
-            <li>
-              <span class="af-demo-includes__name"><?php esc_html_e( 'Control de pagos y facturación', 'twentytwentyfive-child' ); ?></span>
-              <span class="af-demo-includes__desc"><?php esc_html_e( 'Cargos mensuales, pagos de servicios y facturación electrónica SRI.', 'twentytwentyfive-child' ); ?></span>
-            </li>
-            <li>
-              <span class="af-demo-includes__name"><?php esc_html_e( 'Contratos y documentos', 'twentytwentyfive-child' ); ?></span>
-              <span class="af-demo-includes__desc"><?php esc_html_e( 'Contratos desde plantilla y alertas de vencimiento.', 'twentytwentyfive-child' ); ?></span>
-            </li>
-            <li>
-              <span class="af-demo-includes__name"><?php esc_html_e( 'Mantenimiento', 'twentytwentyfive-child' ); ?></span>
-              <span class="af-demo-includes__desc"><?php esc_html_e( 'Incidencias con proveedores, prioridad y costos.', 'twentytwentyfive-child' ); ?></span>
-            </li>
-            <li>
-              <span class="af-demo-includes__name"><?php esc_html_e( 'Inquilinos', 'twentytwentyfive-child' ); ?></span>
-              <span class="af-demo-includes__desc"><?php esc_html_e( 'Ficha del inquilino y verificación de sus documentos.', 'twentytwentyfive-child' ); ?></span>
-            </li>
-          </ul>
-        </div>
+      <p class="afx-reg__help">
+        <?php esc_html_e( '¿Tienes dudas antes de empezar?', $td ); ?>
+        <a href="<?php echo esc_url( home_url( '/preguntas-frecuentes/' ) ); ?>"><?php esc_html_e( 'Preguntas frecuentes', $td ); ?></a>
+        <span aria-hidden="true">·</span>
+        <a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>"><?php esc_html_e( 'Contáctanos', $td ); ?></a>
+      </p>
+    </aside>
 
-        <div class="af-demo-note">
-          <span class="af-demo-note__icon" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          </span>
-          <p class="af-demo-note__txt">
-            <strong><?php esc_html_e( 'Sin compromiso.', 'twentytwentyfive-child' ); ?></strong>
-            <?php esc_html_e( 'Te acompañamos por correo y chat durante tus primeros pasos.', 'twentytwentyfive-child' ); ?>
-          </p>
-        </div>
-
-        <div class="af-demo-intro__foot">
-          <div class="af-demo-stats">
-            <div class="af-demo-stats__item">
-              <b>1 panel</b>
-              <span><?php esc_html_e( 'para toda tu cartera', 'twentytwentyfive-child' ); ?></span>
-            </div>
-            <div class="af-demo-stats__item">
-              <b>SRI</b>
-              <span><?php esc_html_e( 'facturación electrónica', 'twentytwentyfive-child' ); ?></span>
-            </div>
-            <div class="af-demo-stats__item">
-              <b>Día 1</b>
-              <span><?php esc_html_e( 'detección de mora', 'twentytwentyfive-child' ); ?></span>
-            </div>
-          </div>
-          <p class="af-demo-help">
-            <?php esc_html_e( '¿Tienes dudas? Escríbenos y te acompañamos.', 'twentytwentyfive-child' ); ?>
-            <a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>"><?php esc_html_e( 'Habla con nosotros', 'twentytwentyfive-child' ); ?> &rarr;</a>
-          </p>
-
-          <p class="af-demo-help af-demo-help--faq">
-            <a href="<?php echo esc_url( home_url( '/contacto/#faq' ) ); ?>"><?php esc_html_e( 'Tengo dudas antes de empezar — ver preguntas frecuentes', 'twentytwentyfive-child' ); ?></a>
-          </p>
-        </div>
-      </aside>
-
-      <!-- ── Tarjeta de formulario ──────────────────────────────── -->
-      <div class="af-demo-card">
-        <?php echo do_shortcode( '[af_property_admin_signup]' ); ?>
-      </div>
-
+    <div class="afx-reg__card" data-afx-reg-card>
+      <?php echo do_shortcode( '[af_property_admin_signup]' ); ?>
     </div>
 
   </div>

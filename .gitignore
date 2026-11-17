@@ -72,3 +72,6 @@ wordpress/wp-content/af-certs/**/.htaccess
 wordpress/wp-content/af-certs/**/cert_*
 # Configuration (local credentials, never commit)
 /wordpress/wp-config.php
+
+# Almacenamiento privado de documentos (identidad, contratos, plantillas, RIDE): nunca al repositorio
+/af-private-storage/
