@@ -21,6 +21,7 @@ class AF_GDPR_Compliance {
         
         // REST endpoints for GDPR
         add_action( 'rest_api_init', [ __CLASS__, 'register_gdpr_endpoints' ] );
+        add_action( 'af_gdpr_delete_export_file', [ __CLASS__, 'delete_export_file' ] );
     }
 
     /**
@@ -115,10 +116,13 @@ class AF_GDPR_Compliance {
 
         // Send email with download link (or attached file)
         $export_file = self::create_export_file( $user_id, $data );
+        if ( '' === $export_file ) {
+            return new WP_Error( 'af_gdpr_export_failed', 'No se pudo generar la exportación. Intenta nuevamente más tarde.', [ 'status' => 500 ] );
+        }
         wp_mail(
             $user->user_email,
             'Tu datos personales - Exportación GDPR',
-            "Aquí están tus datos personales como lo requiere GDPR.\n\nArchivo: $export_file",
+            "Aquí están tus datos personales como lo requiere GDPR.\n\nArchivo (disponible por 24 horas): $export_file",
             [ 'Content-Type: text/plain; charset=UTF-8' ]
         );
 
@@ -214,12 +218,44 @@ class AF_GDPR_Compliance {
      * Create export file (JSON format)
      */
     private static function create_export_file( $user_id, $data ) {
-        $filename = "gdpr_export_user_{$user_id}_" . date( 'Y-m-d_His' ) . '.json';
-        $filepath = wp_upload_dir()['path'] . '/' . $filename;
+        $upload = wp_upload_dir();
+        $dir    = trailingslashit( $upload['basedir'] ) . 'af-gdpr-exports';
+        $url    = trailingslashit( $upload['baseurl'] ) . 'af-gdpr-exports';
 
-        file_put_contents( $filepath, wp_json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+        if ( ! wp_mkdir_p( $dir ) ) {
+            return '';
+        }
+        // Never list the directory, never run anything from it.
+        if ( ! file_exists( $dir . '/index.php' ) ) {
+            file_put_contents( $dir . '/index.php', "<?php\n// Silence is golden.\n" );
+        }
+        if ( ! file_exists( $dir . '/.htaccess' ) ) {
+            file_put_contents( $dir . '/.htaccess', "Options -Indexes\n<FilesMatch \"\\.(php|phtml)$\">\n  Require all denied\n</FilesMatch>\n" );
+        }
 
-        return wp_upload_dir()['url'] . '/' . $filename;
+        // 128-bit random name: the emailed link is the only way to find the file.
+        $filename = 'gdpr_export_' . bin2hex( random_bytes( 16 ) ) . '.json';
+        $filepath = $dir . '/' . $filename;
+
+        if ( false === file_put_contents( $filepath, wp_json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ) ) {
+            return '';
+        }
+
+        // The export contains personal data: remove it after 24 hours.
+        wp_schedule_single_event( time() + DAY_IN_SECONDS, 'af_gdpr_delete_export_file', [ $filepath ] );
+
+        return $url . '/' . $filename;
+    }
+
+    /**
+     * Deletes an expired export file (scheduled by create_export_file).
+     */
+    public static function delete_export_file( $filepath ) {
+        $base = wp_normalize_path( trailingslashit( wp_upload_dir()['basedir'] ) . 'af-gdpr-exports/' );
+        $path = wp_normalize_path( (string) $filepath );
+        if ( 0 === strpos( $path, $base ) && false === strpos( $path, '..' ) && is_file( $path ) ) {
+            wp_delete_file( $path );
+        }
     }
 
     /**
