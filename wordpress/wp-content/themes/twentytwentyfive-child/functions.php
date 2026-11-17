@@ -944,9 +944,12 @@ function af_handle_lostpassword_post() {
   $login = isset( $_POST['user_login'] ) ? trim( (string) wp_unslash( $_POST['user_login'] ) ) : '';
   $state = 'confirm';
 
-  if ( class_exists( 'Arriendo_Facil_Rate_Limiter' ) && Arriendo_Facil_Rate_Limiter::is_rate_limited( 'password_reset' ) ) {
+  // Solo se admite el correo electrónico (nunca el nombre de usuario).
+  if ( ! is_email( $login ) || strlen( $login ) > 100 ) {
+    $state = 'invalid';
+  } elseif ( class_exists( 'Arriendo_Facil_Rate_Limiter' ) && Arriendo_Facil_Rate_Limiter::is_rate_limited( 'password_reset' ) ) {
     $state = 'limited';
-  } elseif ( '' !== $login && strlen( $login ) <= 100 ) {
+  } else {
     $key = 'af_pwreset_' . md5( strtolower( $login ) );
     if ( false === get_transient( $key ) ) {
       set_transient( $key, 1, 10 * MINUTE_IN_SECONDS );

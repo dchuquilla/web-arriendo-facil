@@ -40,7 +40,11 @@
     var field = input.closest('.afl__field');
     var v = input.value.trim();
     if (!v) {
-      setError(field, input.type === 'password' || input.id === 'user_pass' ? 'Ingresa tu contraseña.' : 'Ingresa tu usuario o correo.');
+      setError(field, input.type === 'password' || input.id === 'user_pass' ? 'Ingresa tu contraseña.' : (input.hasAttribute('data-email-only') ? 'Ingresa tu correo electrónico.' : 'Ingresa tu usuario o correo.'));
+      return false;
+    }
+    if (input.hasAttribute('data-email-only') && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+      setError(field, 'Ingresa un correo electrónico válido.');
       return false;
     }
     if (input.id === 'user_login' && v.indexOf('@') !== -1 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {

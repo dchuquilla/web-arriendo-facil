@@ -54,6 +54,9 @@ if ('failed' === $login_s) {
   $notice = array('type' => 'success', 'text' => __('Cerraste sesión correctamente.', 'twentytwentyfive-child'));
 } elseif ('confirm' === $check_s) {
   $notice = array('type' => 'success', 'text' => __('Si la cuenta existe, te enviamos un enlace para restablecer tu contraseña. Revisa tu correo (y la carpeta de spam).', 'twentytwentyfive-child'));
+} elseif ('invalid' === $check_s) {
+  $notice = array('type' => 'error', 'text' => __('Ingresa un correo electrónico válido. La recuperación solo funciona con el correo de la cuenta.', 'twentytwentyfive-child'));
+  $action = 'lostpassword';
 } elseif ('limited' === $check_s) {
   $notice = array('type' => 'error', 'text' => __('Hiciste demasiadas solicitudes. Espera un momento antes de intentarlo de nuevo.', 'twentytwentyfive-child'));
 } elseif (isset($_GET['password']) && 'changed' === sanitize_key(wp_unslash($_GET['password']))) {
@@ -90,13 +93,13 @@ $logo = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web
 
       <?php if ('lostpassword' === $action): ?>
         <h1 id="afl-title" class="afl__title"><?php esc_html_e('Recupera tu contraseña', 'twentytwentyfive-child'); ?></h1>
-        <p class="afl__subtitle"><?php esc_html_e('Te enviaremos un enlace para crear una nueva.', 'twentytwentyfive-child'); ?></p>
+        <p class="afl__subtitle"><?php esc_html_e('Ingresa el correo de tu cuenta y te enviaremos un enlace para crear una nueva.', 'twentytwentyfive-child'); ?></p>
 
         <form class="afl__form" method="post" action="<?php echo esc_url(network_site_url('wp-login.php?action=lostpassword', 'login_post')); ?>" novalidate data-afl-form>
           <input type="hidden" name="af_custom_login" value="1" />
           <div class="afl__field">
-            <input type="text" name="user_login" id="user_login" class="afl__input" placeholder=" " autocomplete="username" required maxlength="100" />
-            <label for="user_login" class="afl__label"><?php esc_html_e('Usuario o correo electrónico', 'twentytwentyfive-child'); ?></label>
+            <input type="email" name="user_login" id="user_login" class="afl__input" placeholder=" " autocomplete="email" autocapitalize="off" spellcheck="false" inputmode="email" required maxlength="100" data-email-only />
+            <label for="user_login" class="afl__label"><?php esc_html_e('Correo electrónico', 'twentytwentyfive-child'); ?></label>
             <p class="afl__error" data-error aria-live="polite"></p>
           </div>
 
