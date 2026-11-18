@@ -1121,27 +1121,22 @@ add_action( 'admin_post_nopriv_af_contact', 'af_handle_contact_form' );
 add_action( 'admin_post_af_contact', 'af_handle_contact_form' );
 
 /**
- * Ensure the custom login page exists (self-healing).
+ * The login URL is now the WPS Hide Login slug (af-admin), rendered via
+ * af_render_custom_login(). Remove the legacy /custom-login/ page once.
  */
-function af_ensure_custom_login_page() {
-  $page = get_page_by_path( 'custom-login' );
-
-  if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+function af_remove_legacy_custom_login_page() {
+  if ( get_option( 'af_legacy_custom_login_removed' ) ) {
     return;
   }
 
-  wp_insert_post(
-    array(
-      'post_type'     => 'page',
-      'post_status'   => 'publish',
-      'post_title'    => __( 'Custom Login', 'twentytwentyfive-child' ),
-      'post_name'     => 'custom-login',
-      'post_content'  => '',
-      'page_template' => 'page-custom-login.php',
-    )
-  );
+  $page = get_page_by_path( 'custom-login' );
+  if ( $page instanceof WP_Post ) {
+    wp_delete_post( $page->ID, true );
+  }
+
+  update_option( 'af_legacy_custom_login_removed', 1 );
 }
-add_action( 'init', 'af_ensure_custom_login_page' );
+add_action( 'init', 'af_remove_legacy_custom_login_page' );
 
 /**
  * Ensure legal pages exist (self-healing).
