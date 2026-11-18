@@ -1,0 +1,17 @@
+/* Ventana flotante "tu sesión caducó" (wp-auth-check) con la identidad Arriendo Fácil */
+#wp-auth-check-wrap #wp-auth-check-bg { background: #10231a; opacity: 0.62; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+#wp-auth-check-wrap #wp-auth-check {
+  top: 50%; bottom: auto; left: 50%; width: min(440px, calc(100vw - 24px)); height: min(640px, calc(100dvh - 24px)); max-height: none;
+  margin: 0; padding: 0; transform: translate(-50%, -50%); overflow: hidden; background: #f6f7ef;
+  border: 1px solid #d3ddcc; border-radius: 24px; box-shadow: 0 40px 90px -30px rgba(10, 30, 20, 0.7);
+}
+#wp-auth-check-wrap #wp-auth-check-form iframe { display: block; height: 100%; border: 0; }
+#wp-auth-check-wrap .wp-auth-check-close {
+  top: 10px; right: 10px; z-index: 2; width: 32px; height: 32px; border-radius: 50%; background: rgba(255, 255, 255, 0.9);
+  color: #426747; line-height: 32px; box-shadow: 0 1px 6px rgba(24, 60, 43, 0.18);
+}
+#wp-auth-check-wrap .wp-auth-check-close:before { font-size: 18px; line-height: 32px; }
+#wp-auth-check-wrap .wp-auth-check-close:hover, #wp-auth-check-wrap .wp-auth-check-close:focus { color: #183c2b; background: #e5ecdd; }
+@media screen and (max-width: 480px) {
+  #wp-auth-check-wrap #wp-auth-check { left: 0; top: 0; width: 100%; height: 100dvh; transform: none; border: 0; border-radius: 0; }
+}

@@ -968,6 +968,11 @@ add_action( 'login_form_retrievepassword', 'af_handle_lostpassword_post', 1 );
 add_filter( 'locale', function ( $locale ) {
   return ( isset( $GLOBALS['pagenow'] ) && 'wp-login.php' === $GLOBALS['pagenow'] ) ? 'es_EC' : $locale;
 }, 20 );
+// El catálogo de traducción ya se cargó antes de que el tema exista: se cambia de idioma explícitamente.
+add_action( 'login_init', function () {
+  unload_textdomain( 'default' );
+  load_default_textdomain( 'es_EC' );
+}, 1 );
 add_filter( 'login_display_language_dropdown', '__return_false' );
 add_filter( 'login_headerurl', 'home_url' );
 add_filter( 'login_headertext', function () {
@@ -1296,3 +1301,13 @@ function af_llms_txt_template_redirect() {
   exit;
 }
 add_action( 'template_redirect', 'af_llms_txt_template_redirect' );
+
+// Ventana de reautenticación (sesión caducada) con el diseño de la marca.
+function af_style_auth_check() {
+  $file = get_stylesheet_directory() . '/assets/css/auth-check.css';
+  if ( is_readable( $file ) ) {
+    wp_add_inline_style( 'wp-auth-check', (string) file_get_contents( $file ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+  }
+}
+add_action( 'admin_enqueue_scripts', 'af_style_auth_check', 30 );
+add_action( 'wp_enqueue_scripts', 'af_style_auth_check', 30 );

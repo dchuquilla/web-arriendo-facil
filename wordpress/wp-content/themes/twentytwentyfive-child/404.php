@@ -25,7 +25,7 @@ $links = array(
     <div class="afx-404__copy">
       <span class="afx-tag" data-afx-404-in><?php echo afx_icon( 'alert', 16 ); // phpcs:ignore ?> <?php esc_html_e( 'Error 404', $td ); ?></span>
       <h1 class="afx-title afx-title--xl" data-afx-404-in>
-        <?php esc_html_e( 'Esta lugar', $td ); ?>
+        <?php esc_html_e( 'Este lugar', $td ); ?>
         <span><?php esc_html_e( 'ya no está disponible', $td ); ?></span>
       </h1>
       <p class="afx-404__lead" data-afx-404-in><?php esc_html_e( 'La página que buscas no existe, cambió de dirección o fue retirada. Vuelve al inicio o ve directo a una de estas secciones.', $td ); ?></p>
