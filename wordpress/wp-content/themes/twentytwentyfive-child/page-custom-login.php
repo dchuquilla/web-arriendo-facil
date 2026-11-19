@@ -138,7 +138,7 @@ $logo = get_stylesheet_directory_uri() . '/assets/images/arriendo-facil-logo-web
             <label class="afl__check">
               <input name="rememberme" type="checkbox" id="rememberme" value="forever" />
               <span class="afl__box" aria-hidden="true"></span>
-              <?php esc_html_e('Recuérdame', 'twentytwentyfive-child'); ?>
+              <?php esc_html_e('Mantener sesión iniciada en este dispositivo', 'twentytwentyfive-child'); ?>
             </label>
             <a href="<?php echo esc_url(wp_lostpassword_url()); ?>" class="afl__link"><?php esc_html_e('¿Olvidaste tu contraseña?', 'twentytwentyfive-child'); ?></a>
           </div>
